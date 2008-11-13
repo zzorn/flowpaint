@@ -4,7 +4,7 @@ import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
 
 /**
- *             Spike of rendering 2D graphics with scala.
+ * Spike of rendering 2D graphics with scala.
  *
  * @author Hans Haggstrom
  */
@@ -15,16 +15,18 @@ object FlowPaintSpike {
   case class Point(x: Float, y: Float) {
     def distance(otherPoint: Point): Float = {
       // TODO: Calculate distance
+      0
     }
   }
 
   case class Line(position: Point, angle: Float) {
-    def intersect(otherLine: Line): Option[Point] = {
+    def intersect(otherLine: Line): Point = {
       if (otherLine.angle == angle) {
-        None
+        null
       }
       else {
         // TODO: Calculate intersection point
+        Point(0,0)
 
       }
     }
@@ -33,7 +35,7 @@ object FlowPaintSpike {
   object Line {
     def apply(a: Point, b: Point): Line = {
       // TODO: Calculate angle from a to b
-      angle = 0.0f
+      val angle = 0.0f
       new Line(a, angle)
     }
   }
@@ -60,6 +62,9 @@ object FlowPaintSpike {
     def calculateColor(stroke: StrokeSegment, positionAlongStroke: Float, centerDistance: Float): Int
   }
 
+  /**
+   * Just a simple test brush.
+   */
   class FixedSizeBrush( radius : Float ) extends Brush{
     def calculateColor(stroke: StrokeSegment,
                       positionAlongStroke: Float,
@@ -115,7 +120,7 @@ object FlowPaintSpike {
 
                   val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
 
-                  putPixel(point.x, point.y, color)
+                  putPixel(point.x.toInt, point.y.toInt, color)
                 }
               }
             }

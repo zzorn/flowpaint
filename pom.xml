@@ -25,6 +25,22 @@
       <name>Scala-Tools Maven2 Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
     </repository>
+
+    <!-- A mirror of third party libraries that are not available from any official repository -->
+    <repository>
+      <id>skycastle-central-repository</id>
+      <url>http://zzorn.xiiris.com:8081/nexus/content/groups/public</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>skycastle-snapshots-repository</id>
+      <url>http://zzorn.xiiris.com:8081/nexus/content/groups/public-snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
   </repositories>
 
   <!-- Places to retrieve maven plugins from -->

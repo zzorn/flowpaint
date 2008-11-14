@@ -185,7 +185,9 @@ object FlowPaintSpike {
 
                           var centerDistance = point distance strokePos
 
-                          if (Math.abs(centerDistance) <= maxBrushRadius)
+                          if (Math.abs(centerDistance) <= maxBrushRadius &&
+                          positionAlongStroke >= 0 &&
+                          positionAlongStroke <= 1)
                             {
 
                               // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..

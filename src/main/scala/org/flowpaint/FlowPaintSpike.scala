@@ -2,6 +2,7 @@ package org.flowpaint
 
 import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
+import scala.compat.Platform.currentTime
 
 /**
  *             Spike of rendering 2D graphics with scala.
@@ -156,7 +157,7 @@ object FlowPaintSpike {
 
 
 
-        def drawStrokeSegment(segment: StrokeSegment, area: Area, brush: Brush) {
+        def drawStrokeSegment(segment: StrokeSegment, area: Area, brush: Brush, maxBrushRadius: Int) {
 
           val length = segment.length
 
@@ -184,16 +185,22 @@ object FlowPaintSpike {
 
                           var centerDistance = point distance strokePos
 
-                          // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
-                          // This means adding brush size to segment endpoints, and removing it from the brush.
+                          if (Math.abs(centerDistance) <= maxBrushRadius)
+                            {
 
-                          // Multiply center distance with -1 if it is on the left side of the stroke
-                          if (point leftOf strokeLine)
-                            centerDistance = -centerDistance
+                              // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
+                              // This means adding brush size to segment endpoints, and removing it from the brush.
 
-                          val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
+                              // Multiply center distance with -1 if it is on the left side of the stroke
+                              if (point leftOf strokeLine)
+                                centerDistance = -centerDistance
 
-                          putPixel(point.x.toInt, point.y.toInt, color)
+                              val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
+
+                              color
+                              putPixel(point.x.toInt, point.y.toInt, color)
+
+                            }
                         }
                     }
                   }
@@ -204,22 +211,40 @@ object FlowPaintSpike {
 
         def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
 
-        def rnd(value : Int):Float = (Math.random * value).toFloat
+
+        val random = new scala.util.Random(42)
+
+        def runTest(): Long ={
+          val startTime = currentTime
+        def rnd(value : Int):Float = random.nextFloat * value
 
         val sizeX = 500
         val sizeY = 500
         val area = Area(0, 0, sizeX, sizeY)
-        val fixedSizeBrush = new FixedSizeBrush(20)
+        val RADIUS: Int = 20
+          val fixedSizeBrush = new FixedSizeBrush(RADIUS)
         var segment : StrokeSegment= null
+
         for (i <- 0 to 3)
           {
             segment = StrokeSegment(
               SegmentEnd(Point(rnd(sizeX), rnd (sizeY)), degrees(rnd (360))),
               SegmentEnd(Point(rnd (sizeX), rnd (sizeY)), degrees(rnd (360))))
 
-            drawStrokeSegment(segment, area, fixedSizeBrush)
+            drawStrokeSegment(segment, area, fixedSizeBrush, RADIUS)
 
           }
+          val testRunTime = currentTime - startTime
+          println ("  Test run run in: " + testRunTime + " ms")
+          testRunTime
+        }
+
+        var sum = 0L
+        val TEST_RUNS = 5
+        for (i <- 1 to TEST_RUNS) sum += runTest
+        sum /= TEST_RUNS
+
+        println ("Used time on average: " + sum + " ms")
 
 
       }

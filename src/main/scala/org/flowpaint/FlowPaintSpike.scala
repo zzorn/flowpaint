@@ -4,7 +4,7 @@ import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
 
 /**
- * Spike of rendering 2D graphics with scala.
+ *            Spike of rendering 2D graphics with scala.
  *
  * @author Hans Haggstrom
  */
@@ -14,29 +14,72 @@ object FlowPaintSpike {
 
   case class Point(x: Float, y: Float) {
     def distance(otherPoint: Point): Float = {
-      // TODO: Calculate distance
-      0
+      val xDiff = x - otherPoint.x
+      val yDiff = y - otherPoint.y
+      Math.sqrt(xDiff * xDiff + yDiff * yDiff).toFloat
     }
+
+    /**
+     * @return true if this point is to the left of the specified line, seen along the direction of the line,
+     *            false if it is on the line or to the right of the line.
+     */
+    def leftOf(line: Line): Boolean =
+      {
+        // TODO: Implement
+        false
+      }
   }
 
-  case class Line(position: Point, angle: Float) {
-    def intersect(otherLine: Line): Point = {
-      if (otherLine.angle == angle) {
-        null
-      }
-      else {
-        // TODO: Calculate intersection point
-        Point(0,0)
+  case class Line(start: Point, end: Point) {
+    def x1 = start.x
 
+    def y1 = start.y
+
+    def x2 = end.x
+
+    def y2 = end.y
+
+    /**
+     * @return the intersection point between this line and another line, or null if they are parallel
+     */
+    def intersect(otherLine: Line): Point = {
+
+      def det(a: Float, b: Float, c: Float, d: Float): Float =
+        {
+          a * d - b * c;
+        }
+
+      val x3 = otherLine.x1
+      val y3 = otherLine.y1
+      val x4 = otherLine.x2
+      val y4 = otherLine.y2
+
+      val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
+
+      if (det3 == 0)
+        null // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
+      else {
+        val det1: Float = det(x1, y1, x2, y2)
+        val det2: Float = det(x3, y3, x4, y4)
+
+        val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
+        val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
+
+        Point(x, y)
       }
+
     }
+
   }
 
   object Line {
-    def apply(a: Point, b: Point): Line = {
-      // TODO: Calculate angle from a to b
-      val angle = 0.0f
-      new Line(a, angle)
+    def apply(p: Point, angle: Float): Line = {
+
+      // Calculate another point one unit along in the direction of the angle
+      val x = p.x + Math.cos(angle).toFloat
+      val y = p.y + Math.sin(angle).toFloat
+
+      Line(p, Point(x, y))
     }
   }
 
@@ -63,14 +106,34 @@ object FlowPaintSpike {
   }
 
   /**
-   * Just a simple test brush.
+   *         Just a simple test brush.
    */
-  class FixedSizeBrush( radius : Float ) extends Brush{
+  class FixedSizeBrush(radius: Float) extends Brush {
     def calculateColor(stroke: StrokeSegment,
                       positionAlongStroke: Float,
                       centerDistance: Float): Int = {
-      if (Math.abs(centerDistance) < radius)
-        0
+      if (Math.abs(centerDistance) < radius &&
+              positionAlongStroke >= 0 &&
+              positionAlongStroke <= 1)
+        {
+          val normalizedCenter = 1f - Math.abs(centerDistance / radius)
+
+          val r = 1
+          val g = 1 - (1 - positionAlongStroke ) * normalizedCenter 
+          val b = 1 - normalizedCenter
+
+          val red = (255 * r).toInt
+          val green = (255 * g).toInt
+          val blue = (255 * b).toInt
+          val alpha = 255
+
+          val color = ((alpha & 0xFF) << 24) |
+                  ((red & 0xFF) << 16) |
+                  ((green & 0xFF) << 8) |
+                  ((blue & 0xFF) << 0);
+
+          color
+        }
       else
         0xFFFFFF
     }
@@ -85,7 +148,7 @@ object FlowPaintSpike {
         def putPixel(x: Int, y: Int, color: Int) {
 
           // NOTE: Naive unoptimized implementation, TODO: Optimized access to a bitmap
-          g.setColor(new Color(color))
+          g.setColor(new Color(color, false)) // NOTE: If we enable alpha color, rendering is _really_ slow
           g.drawLine(x, y, x, y)
 
         }
@@ -112,11 +175,19 @@ object FlowPaintSpike {
 
                   val strokePos = Line(point, centerPoint) intersect strokeLine
 
-                  val positionAlongStroke = (startPoint distance strokePos) / length
-                  val centerDistance = point distance strokePos
+                  val startToStrokePos = (startPoint distance strokePos) / length
+                  val endToStrokePos = (endPoint distance strokePos) / length
+                  val positionAlongStroke = if (endToStrokePos <= 1) startToStrokePos else 1 - endToStrokePos
+
+
+                  var centerDistance = point distance strokePos
 
                   // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
-                  // This means adding brush size to segment endpoints, and removing it from the brush. 
+                  // This means adding brush size to segment endpoints, and removing it from the brush.
+
+                  // Multiply center distance with -1 if it is on the left side of the stroke
+                  if (point leftOf strokeLine)
+                    centerDistance = -centerDistance
 
                   val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
 
@@ -127,10 +198,13 @@ object FlowPaintSpike {
 
         }
 
-        val segment = StrokeSegment(SegmentEnd(Point(50, 200), 50),
-          SegmentEnd(Point(5000, 300), 20))
+        def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
 
-        drawStrokeSegment(segment, Area(10, 10, 400, 400), new FixedSizeBrush(50))
+        val segment = StrokeSegment(
+          SegmentEnd(Point(100, 300), degrees(30)),
+          SegmentEnd(Point(400, 100), degrees(110)))
+
+        drawStrokeSegment(segment, Area(0, 0, 500, 500), new FixedSizeBrush(50))
 
       }
     }

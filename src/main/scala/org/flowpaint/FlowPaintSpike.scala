@@ -4,7 +4,7 @@ import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
 
 /**
- *            Spike of rendering 2D graphics with scala.
+ *             Spike of rendering 2D graphics with scala.
  *
  * @author Hans Haggstrom
  */
@@ -21,7 +21,7 @@ object FlowPaintSpike {
 
     /**
      * @return true if this point is to the left of the specified line, seen along the direction of the line,
-     *            false if it is on the line or to the right of the line.
+     *             false if it is on the line or to the right of the line.
      */
     def leftOf(line: Line): Boolean =
       {
@@ -106,7 +106,7 @@ object FlowPaintSpike {
   }
 
   /**
-   *         Just a simple test brush.
+   *          Just a simple test brush.
    */
   class FixedSizeBrush(radius: Float) extends Brush {
     def calculateColor(stroke: StrokeSegment,
@@ -119,7 +119,7 @@ object FlowPaintSpike {
           val normalizedCenter = 1f - Math.abs(centerDistance / radius)
 
           val r = 1
-          val g = 1 - (1 - positionAlongStroke ) * normalizedCenter 
+          val g = 1 - (1 - positionAlongStroke) * normalizedCenter
           val b = 1 - normalizedCenter
 
           val red = (255 * r).toInt
@@ -167,44 +167,60 @@ object FlowPaintSpike {
 
               val centerPoint = Line(startPoint, segment.start.angle) intersect
                       Line(endPoint, segment.end.angle)
+              if (centerPoint != null)
+                {
+                  val strokeLine = Line(startPoint, endPoint)
 
-              val strokeLine = Line(startPoint, endPoint)
+                  area iterate {
+                    point: Point => {
 
-              area iterate {
-                point: Point => {
-
-                  val strokePos = Line(point, centerPoint) intersect strokeLine
-
-                  val startToStrokePos = (startPoint distance strokePos) / length
-                  val endToStrokePos = (endPoint distance strokePos) / length
-                  val positionAlongStroke = if (endToStrokePos <= 1) startToStrokePos else 1 - endToStrokePos
+                      val strokePos = Line(point, centerPoint) intersect strokeLine
+                      if (strokePos != null)
+                        {
+                          val startToStrokePos = (startPoint distance strokePos) / length
+                          val endToStrokePos = (endPoint distance strokePos) / length
+                          val positionAlongStroke = if (endToStrokePos <= 1) startToStrokePos else 1 - endToStrokePos
 
 
-                  var centerDistance = point distance strokePos
+                          var centerDistance = point distance strokePos
 
-                  // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
-                  // This means adding brush size to segment endpoints, and removing it from the brush.
+                          // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
+                          // This means adding brush size to segment endpoints, and removing it from the brush.
 
-                  // Multiply center distance with -1 if it is on the left side of the stroke
-                  if (point leftOf strokeLine)
-                    centerDistance = -centerDistance
+                          // Multiply center distance with -1 if it is on the left side of the stroke
+                          if (point leftOf strokeLine)
+                            centerDistance = -centerDistance
 
-                  val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
+                          val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
 
-                  putPixel(point.x.toInt, point.y.toInt, color)
+                          putPixel(point.x.toInt, point.y.toInt, color)
+                        }
+                    }
+                  }
                 }
-              }
             }
 
         }
 
         def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
 
-        val segment = StrokeSegment(
-          SegmentEnd(Point(100, 300), degrees(30)),
-          SegmentEnd(Point(400, 100), degrees(110)))
+        def rnd(value : Int):Float = (Math.random * value).toFloat
 
-        drawStrokeSegment(segment, Area(0, 0, 500, 500), new FixedSizeBrush(50))
+        val sizeX = 500
+        val sizeY = 500
+        val area = Area(0, 0, sizeX, sizeY)
+        val fixedSizeBrush = new FixedSizeBrush(20)
+        var segment : StrokeSegment= null
+        for (i <- 0 to 3)
+          {
+            segment = StrokeSegment(
+              SegmentEnd(Point(rnd(sizeX), rnd (sizeY)), degrees(rnd (360))),
+              SegmentEnd(Point(rnd (sizeX), rnd (sizeY)), degrees(rnd (360))))
+
+            drawStrokeSegment(segment, area, fixedSizeBrush)
+
+          }
+
 
       }
     }

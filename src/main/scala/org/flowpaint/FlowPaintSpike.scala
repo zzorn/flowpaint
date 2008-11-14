@@ -3,13 +3,12 @@ package org.flowpaint
 import brush.GradientTestBrush
 import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
-import renderer.StrokeRenderer.{StrokeSegment, SegmentEnd, Area, Point}
 import renderer.{StrokeRenderer, RenderSurface}
 import scala.compat.Platform.currentTime
 import util.PerformanceTester
 
 /**
- * Spike of rendering 2D graphics with scala.
+ *   Spike of rendering 2D graphics with scala.
  *
  * @author Hans Haggstrom
  */
@@ -39,22 +38,22 @@ object FlowPaintSpike {
           def rnd(value: Int): Float = random.nextFloat * value
           def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
 
-          val area = Area(0, 0, sizeX, sizeY)
-          var segment: StrokeSegment = null
+          val area = util.RectangleInt(0, 0, sizeX, sizeY)
 
-          segment = StrokeSegment(
-            SegmentEnd( Point(rnd(sizeX), rnd(sizeY)), degrees(rnd(360)), rnd(80)),
-            SegmentEnd( Point(rnd(sizeX), rnd(sizeY)), degrees(rnd(360)), rnd(80)))
-
-          StrokeRenderer.drawStrokeSegment(segment, area, new GradientTestBrush(), surface)
+          val strokeMaxRadius: Int = 80
+          
+          StrokeRenderer.drawStrokeSegment(
+            rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
+            rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
+            new GradientTestBrush(), area, surface )
 
         }
 
-        PerformanceTester.timeFunction( 30, testedFunction )
+        PerformanceTester.timeFunction(30, testedFunction)
       }
     }
 
-    
+
     val drawPanel = new DrawPanel()
 
     drawPanel.setPreferredSize(new Dimension(sizeX, sizeY))

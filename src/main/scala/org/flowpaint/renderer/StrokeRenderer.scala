@@ -2,217 +2,66 @@ package org.flowpaint.renderer
 
 import brush.Brush
 import org.flowpaint.brush
+import util.RectangleInt
 
 /**
- *        Renders a stroke segment.
+ * Renders a stroke segment.
  *
  * @author Hans Haggstrom
  */
 object StrokeRenderer {
-  case class Point(var x: Float, var y: Float) {
-    def distance(otherPoint: Point): Float = {
-      val xDiff = x - otherPoint.x
-      val yDiff = y - otherPoint.y
-      Math.sqrt(xDiff * xDiff + yDiff * yDiff).toFloat
-    }
-
-    def angleTo(otherPoint: Point): Float = {
-      if (x == otherPoint.x &&
-              y == otherPoint.y)
-        0
-      else {
-        Math.atan2(otherPoint.y - y, otherPoint.x - x).toFloat
-      }
-
-    }
-
-    /**
-     * @return true if this point is to the left of the specified line, seen along the direction of the line,
-     *                       false if it is on the line or to the right of the line.
-     */
-    def leftOf(line: Line): Boolean =
-      {
-        // TODO: Implement, so that we can have non-symmetrical brushes
-        false
-      }
-  }
-
-  case class Line(start: Point, end: Point) {
-    def x1 = start.x
-
-    def y1 = start.y
-
-    def x2 = end.x
-
-    def y2 = end.y
-
-    /**
-     * @return the intersection point between this line and another line, or null if they are parallel
-     */
-    def intersect(otherLine: Line, intersectionOut: Point) = {
-
-      def det(a: Float, b: Float, c: Float, d: Float): Float =
-        {
-          a * d - b * c;
-        }
-
-      val x3 = otherLine.x1
-      val y3 = otherLine.y1
-      val x4 = otherLine.x2
-      val y4 = otherLine.y2
-
-      val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
-
-      if (det3 == 0)
-        null // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
-      else {
-        val det1: Float = det(x1, y1, x2, y2)
-        val det2: Float = det(x3, y3, x4, y4)
-
-        val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
-        val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
-
-        intersectionOut.x = x
-        intersectionOut.y = y
-      }
-
-    }
-
-  }
-
 
   /**
-   * @param intersectionOut the point to store the intersection point between the lines to.
-   * @return true if an intersection was found, false if the lines are parallel
-   *       (can be either no intersection, or a line intersection)
+   * Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
-  def intersect(x1: Float, y1: Float,
-               x2: Float, y2: Float,
-               x3: Float, y3: Float,
-               x4: Float, y4: Float,
-               intersectionOut: Point): Boolean = {
-
-    // OPTIMIZE: Inline?  Could also pre-calculate the values for one of the lines, as one of them is in the same place
-    def det(a: Float, b: Float, c: Float, d: Float): Float =
-      {
-        a * d - b * c;
-      }
+  def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
+                       endX: Float, endY: Float, endAngleIn: Float, endRadius: Float,
+                       brush: Brush, area: RectangleInt, surface: RenderSurface) {
 
 
-    val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
+    def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
 
-    if (det3 == 0)
-      false // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
-    else {
-      val det1: Float = det(x1, y1, x2, y2)
-      val det2: Float = det(x3, y3, x4, y4)
-
-      val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
-      val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
-
-      intersectionOut.x = x
-      intersectionOut.y = y
-
-      true
+    def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
+      val xDiff = x2 - x1
+      val yDiff = y2 - y1
+      xDiff * xDiff + yDiff * yDiff
     }
 
-  }
+    // TODO: Handle special case of parallel start and end angles better,
+    // this is a quick hack, and might result in some numerical inaccuracies
+    // It also doesn't support the case of opposite start and end angles
+    val endAngle = if (endAngleIn == startAngle) endAngleIn + 0.001f else endAngleIn
 
+    val squaredLength = squaredDistance(startX, startY, endX, endY)
 
+    if (squaredLength > 0) {
 
-  object Line {
-    def apply(p: Point, angle: Float): Line = {
+      val length = Math.sqrt(squaredLength).toFloat
 
-      // Calculate another point one unit along in the direction of the angle
-      val x = p.x + Math.cos(angle).toFloat
-      val y = p.y + Math.sin(angle).toFloat
-
-      Line(p, Point(x, y))
-    }
-  }
-
-  case class Area(x1: Int, y1: Int, x2: Int, y2: Int) {
-    def iterate(segment: StrokeSegment, visitor: (Int, Int) => Unit) {
-
-      // Use segment bounding box to reudce the area needed to be iterated through
-      val minX = segment.minX.toInt
-      val minY = segment.minY.toInt
-      val maxX = segment.maxX.toInt
-      val maxY = segment.maxY.toInt
-
-      for (y <- minY to maxY;
-           x <- minX to maxX) visitor(x, y)
-
-    }
-  }
-
-
-
-  case class SegmentEnd(point: Point, angle: Float, radius: Float)
-
-  case class StrokeSegment(start: SegmentEnd, end: SegmentEnd) {
-    def length: Float = start.point distance end.point
-
-    def minX: Float = Math.min(start.point.x - start.radius, end.point.x - end.radius)
-
-    def minY: Float = Math.min(start.point.y - start.radius, end.point.y - end.radius)
-
-    def maxX: Float = Math.max(start.point.x + start.radius, end.point.x + end.radius)
-
-    def maxY: Float = Math.max(start.point.y + start.radius, end.point.y + end.radius)
-  }
-
-
-
-
-
-  def between(value: Float, min: Float, max: Float): Boolean = value < max && value >= min
-
-  def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
-
-  def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
-    val xDiff = x2 - x1
-    val yDiff = y2 - y1
-    xDiff * xDiff + yDiff * yDiff
-  }
-
-  def drawStrokeSegment(segment: StrokeSegment, area: Area, brush: Brush, surface: RenderSurface) {
-
-    val length = segment.length
-    val squaredLength = length * length
-
-    if (length > 0) {
-
-      val startAngle: Float = segment.start.angle
-      val endAngle: Float = segment.end.angle
-
-      val startX = segment.start.point.x
-      val startY = segment.start.point.y
-      val endX = segment.end.point.x
-      val endY = segment.end.point.y
-
-      val startRadius: Float = segment.start.radius
-      val endRadius: Float = segment.end.radius
-
-      val centerPoint = Point(startX, startY)
+      // Calculate a bounding box for the stroke segment
+      val minX: Float = Math.min(startX - startRadius, endX - endRadius)
+      val minY: Float = Math.min(startY - startRadius, endY - endRadius)
+      val maxX: Float = Math.max(startX + startRadius, endX + endRadius)
+      val maxY: Float = Math.max(startY + startRadius, endY + endRadius)
 
       // Calculate points one unit along in the direction of the start and end angles
-      val segmentStart2x = startX + Math.cos(startAngle).toFloat
-      val segmentStart2y = startY + Math.sin(startAngle).toFloat
-      val segmentEnd2x = endX + Math.cos(endAngle).toFloat
-      val segmentEnd2y = endY + Math.sin(endAngle).toFloat
+      val startX2 = startX + Math.cos(startAngle).toFloat
+      val startY2 = startY + Math.sin(startAngle).toFloat
+      val endX2 = endX + Math.cos(endAngle).toFloat
+      val endY2 = endY + Math.sin(endAngle).toFloat
 
-      val intersectionFound = intersect(startX, startY, segmentStart2x, segmentStart2y,
-        endX, endY, segmentEnd2x, segmentEnd2y, centerPoint)
+      // Calculate the point at which the start and end angle converge
+      val centerPoint = Point(0, 0)
+      val intersectionFound = intersect(startX, startY, startX2, startY2,
+        endX, endY, endX2, endY2, centerPoint)
 
       if (intersectionFound)
         {
-          //val strokeLine = Line(startPoint, endPoint)
-
           val strokePos = Point(0, 0)
 
-          area iterate (segment, (x: Int, y: Int) => {
+          area iterate (minX, minY, maxX, maxY, (x: Int, y: Int) => {
 
+            // Get the point along the stroke that this pixel maps to (depends on the local brush angle)
             val strokeIntersectionFound = intersect(x, y, centerPoint.x, centerPoint.y,
               startX, startY, endX, endY,
               strokePos)
@@ -222,6 +71,7 @@ object StrokeRenderer {
                 val startToStrokePosSquared = squaredDistance(startX, startY, strokePos.x, strokePos.y) / squaredLength
                 val endToStrokePosSquared = squaredDistance(endX, endY, strokePos.x, strokePos.y) / squaredLength
 
+                // Check that the current pixel maps to between the segment start and endpoint
                 if (startToStrokePosSquared <= 1 && endToStrokePosSquared <= 1)
                   {
                     val positionAlongStroke = Math.sqrt(startToStrokePosSquared).toFloat
@@ -231,6 +81,7 @@ object StrokeRenderer {
 
                     var centerDistanceSquared = squaredDistance(x, y, strokePos.x, strokePos.y)
 
+                    // Check that the current pixel is within the correct radius from the segment
                     if (centerDistanceSquared <= radiusSquared && radius > 0)
                       {
                         val positionAcrossStroke = Math.sqrt(centerDistanceSquared).toFloat / radius
@@ -259,7 +110,63 @@ object StrokeRenderer {
 
   }
 
-  def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
+
+
+
+  /**
+   *  @return true if this point is to the left of the specified line, seen along the direction of the line,
+   *                         false if it is on the line or to the right of the line.
+   */
+  /*
+    def leftOf(line: Line): Boolean =
+      {
+        // TODO: Implement, so that we can have non-symmetrical brushes
+        false
+      }
+  */
+
+
+  /**
+   *  Simple helper class to hold a coordinate pair.
+   */
+  private case class Point(var x: Float, var y: Float)
+
+  /**
+   * @param intersectionOut the point to store the intersection point between the lines to.
+   * @return true if an intersection was found, false if the lines are parallel
+   *        (can be either no intersection, or a line intersection)
+   */
+  private def intersect(x1: Float, y1: Float,
+               x2: Float, y2: Float,
+               x3: Float, y3: Float,
+               x4: Float, y4: Float,
+               intersectionOut: Point): Boolean = {
+
+    // TODO: Inline to optimize?  Could also pre-calculate the values for one of the lines, as one of them is in the same place
+    def det(a: Float, b: Float, c: Float, d: Float): Float =
+      {
+        a * d - b * c;
+      }
+
+
+    val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
+
+    if (det3 == 0)
+      false // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
+    else {
+      val det1: Float = det(x1, y1, x2, y2)
+      val det2: Float = det(x3, y3, x4, y4)
+
+      val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
+      val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
+
+      intersectionOut.x = x
+      intersectionOut.y = y
+
+      true
+    }
+
+  }
 
 
 }

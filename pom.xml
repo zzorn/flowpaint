@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Basics -->
@@ -37,11 +38,15 @@
 
   <!-- External libraries used -->
   <dependencies>
+
+    <!-- Scala -->
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
     </dependency>
+
+    <!-- Testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -54,13 +59,28 @@
       <version>1.2.5</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Primitive collections -->
+    <dependency>
+      <groupId>trove</groupId>
+      <artifactId>trove</artifactId>
+      <version>2.0.4</version>
+    </dependency>
+
   </dependencies>
 
   <!-- Build configuration -->
   <build>
+
     <sourceDirectory>src/main/scala</sourceDirectory>
+
     <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+    <finalName>flowpaint</finalName>
+
     <plugins>
+
+      <!-- Scala compile -->
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
@@ -74,13 +94,15 @@
         </executions>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
-<!-- TODO: Use 1.5 if no library requires higher, as it allows installation on not-so-recently updated computers too
-          <args>
-            <arg>-target:jvm-1.5</arg>
-          </args>
--->
+          <!-- TODO: Use 1.5 if no library requires higher, as it allows installation on not-so-recently updated computers too
+                    <args>
+                      <arg>-target:jvm-1.5</arg>
+                    </args>
+          -->
         </configuration>
       </plugin>
+
+      <!-- Scala eclipse plugin  TODO: Does it work? Remove? -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -98,6 +120,20 @@
           </classpathContainers>
         </configuration>
       </plugin>
+
+      <!-- Creating an executable jar -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assemble/executable.xml</descriptor>
+          </descriptors>
+          <archive>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 

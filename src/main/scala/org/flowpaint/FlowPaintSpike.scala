@@ -5,7 +5,7 @@ import javax.swing.{JPanel, JFrame, JLabel}
 import scala.compat.Platform.currentTime
 
 /**
- *             Spike of rendering 2D graphics with scala.
+ *               Spike of rendering 2D graphics with scala.
  *
  * @author Hans Haggstrom
  */
@@ -20,9 +20,19 @@ object FlowPaintSpike {
       Math.sqrt(xDiff * xDiff + yDiff * yDiff).toFloat
     }
 
+    def angleTo(otherPoint: Point): Float = {
+      if (x == otherPoint.x &&
+              y == otherPoint.y)
+        0
+      else {
+        Math.atan2(otherPoint.y - y, otherPoint.x - x).toFloat
+      }
+
+    }
+
     /**
      * @return true if this point is to the left of the specified line, seen along the direction of the line,
-     *             false if it is on the line or to the right of the line.
+     *               false if it is on the line or to the right of the line.
      */
     def leftOf(line: Line): Boolean =
       {
@@ -73,6 +83,7 @@ object FlowPaintSpike {
 
   }
 
+
   object Line {
     def apply(p: Point, angle: Float): Line = {
 
@@ -107,7 +118,7 @@ object FlowPaintSpike {
   }
 
   /**
-   *          Just a simple test brush.
+   *            Just a simple test brush.
    */
   class FixedSizeBrush(radius: Float) extends Brush {
     def calculateColor(stroke: StrokeSegment,
@@ -161,53 +172,52 @@ object FlowPaintSpike {
 
           val length = segment.length
 
-          if (length > 0)
-            {
-              val startPoint: Point = segment.start.point
-              val endPoint: Point = segment.end.point
+          //          if (length > 0)
+          {
+            val startPoint: Point = segment.start.point
+            val endPoint: Point = segment.end.point
 
-              val centerPoint = Line(startPoint, segment.start.angle) intersect
-                      Line(endPoint, segment.end.angle)
-              if (centerPoint != null)
-                {
-                  val strokeLine = Line(startPoint, endPoint)
+            val centerPoint = if (length == 0) startPoint else Line(startPoint, segment.start.angle) intersect
+                    Line(endPoint, segment.end.angle)
+            if (centerPoint != null)
+              {
+                val strokeLine = Line(startPoint, endPoint)
 
-                  area iterate {
-                    point: Point => {
+                def between(value: Float, min: Float, max: Float): Boolean = value < max && value >= min
 
-                      val strokePos = Line(point, centerPoint) intersect strokeLine
-                      if (strokePos != null)
-                        {
-                          val startToStrokePos = (startPoint distance strokePos) / length
-                          val endToStrokePos = (endPoint distance strokePos) / length
-                          val positionAlongStroke = if (endToStrokePos <= 1) startToStrokePos else 1 - endToStrokePos
+                area iterate {
+                  point: Point => {
 
+                    val strokePos = if (length == 0) startPoint else Line(point, centerPoint) intersect strokeLine
+                    if (strokePos != null)
+                      {
+                        val startToStrokePos = if (length == 0) 0.5f else (startPoint distance strokePos) / length
+                        val endToStrokePos = if (length == 0) 0.5f else (endPoint distance strokePos) / length
+                        val positionAlongStroke = if (endToStrokePos <= 1) startToStrokePos else 1 - endToStrokePos
 
-                          var centerDistance = point distance strokePos
+                        var centerDistance = point distance strokePos
 
-                          if (Math.abs(centerDistance) <= maxBrushRadius &&
-                          positionAlongStroke >= 0 &&
-                          positionAlongStroke <= 1)
-                            {
+                        if (Math.abs(centerDistance) <= maxBrushRadius && between(positionAlongStroke, 0, 1))
+                          {
 
-                              // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
-                              // This means adding brush size to segment endpoints, and removing it from the brush.
+                            // TODO: Calculate the interpolated stroke radius, and normalize the center distance value too..
+                            // This means adding brush size to segment endpoints, and removing it from the brush.
 
-                              // Multiply center distance with -1 if it is on the left side of the stroke
-                              if (point leftOf strokeLine)
-                                centerDistance = -centerDistance
+                            // Multiply center distance with -1 if it is on the left side of the stroke
+                            if (point leftOf strokeLine)
+                              centerDistance = -centerDistance
 
-                              val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
+                            val color = brush.calculateColor(segment, positionAlongStroke, centerDistance)
 
-                              color
-                              putPixel(point.x.toInt, point.y.toInt, color)
+                            color
+                            putPixel(point.x.toInt, point.y.toInt, color)
 
-                            }
-                        }
-                    }
+                          }
+                      }
                   }
                 }
-            }
+              }
+          }
 
         }
 
@@ -216,37 +226,37 @@ object FlowPaintSpike {
 
         val random = new scala.util.Random(42)
 
-        def runTest(): Long ={
+        def runTest(): Long = {
           val startTime = currentTime
-        def rnd(value : Int):Float = random.nextFloat * value
+          def rnd(value: Int): Float = random.nextFloat * value
 
-        val sizeX = 500
-        val sizeY = 500
-        val area = Area(0, 0, sizeX, sizeY)
-        val RADIUS: Int = 20
+          val sizeX = 500
+          val sizeY = 500
+          val area = Area(0, 0, sizeX, sizeY)
+          val RADIUS: Int = 20
           val fixedSizeBrush = new FixedSizeBrush(RADIUS)
-        var segment : StrokeSegment= null
+          var segment: StrokeSegment = null
 
-        for (i <- 0 to 3)
-          {
-            segment = StrokeSegment(
-              SegmentEnd(Point(rnd(sizeX), rnd (sizeY)), degrees(rnd (360))),
-              SegmentEnd(Point(rnd (sizeX), rnd (sizeY)), degrees(rnd (360))))
+          for (i <- 0 to 10)
+            {
+              segment = StrokeSegment(
+                SegmentEnd(Point(rnd(sizeX), rnd(sizeY)), degrees(rnd(360))),
+                SegmentEnd(Point(rnd(sizeX), rnd(sizeY)), degrees(rnd(360))))
 
-            drawStrokeSegment(segment, area, fixedSizeBrush, RADIUS)
+              drawStrokeSegment(segment, area, fixedSizeBrush, RADIUS)
 
-          }
+            }
           val testRunTime = currentTime - startTime
-          println ("  Test run run in: " + testRunTime + " ms")
+          println("  Test run run in: " + testRunTime + " ms")
           testRunTime
         }
 
         var sum = 0L
-        val TEST_RUNS = 5
+        val TEST_RUNS = 3
         for (i <- 1 to TEST_RUNS) sum += runTest
         sum /= TEST_RUNS
 
-        println ("Used time on average: " + sum + " ms")
+        println("Used time on average: " + sum + " ms")
 
 
       }

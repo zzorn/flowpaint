@@ -45,10 +45,10 @@ object FlowPaint {
     val stroke = new Stroke( brush )
     def createPoint(x : Float, y:Float, angle:Float, radius:Float):StrokePoint = {
       val strokePoint = new StrokePoint
-      strokePoint.setProperty( "x",x )
-      strokePoint.setProperty( "y",y )
-      strokePoint.setProperty( "angle",Math.toRadians(angle).toFloat)
-      strokePoint.setProperty( "radius",radius )
+      strokePoint.data.setProperty( "x",x )
+      strokePoint.data.setProperty( "y",y )
+      strokePoint.data.setProperty( "angle",Math.toRadians(angle).toFloat)
+      strokePoint.data.setProperty( "radius",radius )
       strokePoint
     }
     stroke.points.add( createPoint( 100, 100, 190, 20 ) )

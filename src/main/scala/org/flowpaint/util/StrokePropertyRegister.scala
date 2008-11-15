@@ -1,4 +1,4 @@
-package org.flowpaint.model
+package org.flowpaint.util
 
 import scala.collection.mutable.HashMap
 import scala.collection.{mutable, immutable}
@@ -8,6 +8,7 @@ import scala.collection.{mutable, immutable}
  *
  * @author Hans Haggstrom
  */
+// TODO: Add synchronization, as this is accessed from the pen listeners
 object StrokePropertyRegister {
 
   private val idToName = new HashMap[Int, String]()

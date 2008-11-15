@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Color}
 
 /**
- *        A RenderSurface implementation that uses a single surface to render on, the same size as the screen
+ *         A RenderSurface implementation that uses a single surface to render on, the same size as the screen
  *
  * @author Hans Haggstrom
  */
@@ -48,7 +48,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
   }
 
 
-  private val TRANSPARENT_COLOR = new Color( 0, 0, 0, 0 ).getRGB()
+  private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
 
   def provideContent(minX: Float, minY: Float,
                     maxX: Float, maxY: Float,
@@ -60,8 +60,8 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
         // Use segment bounding box to reudce the area needed to be iterated through
         val sX = Math.max(minX.toInt, 0)
         val sY = Math.max(minY.toInt, 0)
-        val eX = Math.min(maxX.toInt, width)
-        val eY = Math.min(maxY.toInt, height)
+        val eX = Math.min(maxX.toInt, width - 1)
+        val eY = Math.min(maxY.toInt, height - 1)
 
         for (y <- sY to eY;
              x <- sX to eX)

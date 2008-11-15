@@ -1,6 +1,7 @@
 package org.flowpaint.renderer
 
 import brush.Brush
+import java.awt.Color
 import org.flowpaint.brush
 import util.RectangleInt
 
@@ -11,12 +12,15 @@ import util.RectangleInt
  */
 object StrokeRenderer {
 
+  private val TRANSPARENT_COLOR = new Color( 0, 0, 0, 0 ).getRGB()
+
+
   /**
    * Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
   def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
                        endX: Float, endY: Float, endAngleIn: Float, endRadius: Float,
-                       brush: Brush, area: RectangleInt, surface: RenderSurface) {
+                       brush: Brush, surface: RenderSurface) {
 
 
     def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
@@ -59,7 +63,9 @@ object StrokeRenderer {
         {
           val strokePos = Point(0, 0)
 
-          area iterate (minX, minY, maxX, maxY, (x: Int, y: Int) => {
+          surface.provideContent (minX, minY, maxX, maxY, (x: Int, y: Int) => {
+            // Default result color
+            var color = TRANSPARENT_COLOR;
 
             // Get the point along the stroke that this pixel maps to (depends on the local brush angle)
             val strokeIntersectionFound = intersect(x, y, centerPoint.x, centerPoint.y,
@@ -92,15 +98,15 @@ object StrokeRenderer {
                             positionAcrossStroke = -positionAcrossStroke
                         */
 
-                        val color = brush.calculateColor(positionAlongStroke, positionAcrossStroke)
-
-                        surface.putPixel(x, y, color)
-
+                        color = brush.calculateColor(positionAlongStroke, positionAcrossStroke)
                       }
 
                   }
 
               }
+
+            // Return calculated color
+            color
           })
 
         }

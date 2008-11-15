@@ -22,7 +22,9 @@ object FlowPaintSpike {
     class DrawPanel extends JPanel {
       override def paintComponent(g: Graphics): Unit = {
 
+/*
         val surface = new RenderSurface {
+
           def putPixel(x: Int, y: Int, color: Int) = {
             // NOTE: Naive unoptimized implementation, TODO: Optimized access to a bitmap
             g.setColor(new Color(color, false)) // NOTE: If we enable alpha color, rendering is _really_ slow
@@ -38,18 +40,17 @@ object FlowPaintSpike {
           def rnd(value: Int): Float = random.nextFloat * value
           def degrees(d: Double): Float = (d * Math.Pi / 180.0).toFloat
 
-          val area = util.RectangleInt(0, 0, sizeX, sizeY)
-
           val strokeMaxRadius: Int = 80
           
           StrokeRenderer.drawStrokeSegment(
             rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
             rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
-            new GradientTestBrush(), area, surface )
+            new GradientTestBrush(), surface )
 
         }
 
         PerformanceTester.timeFunction(30, testedFunction)
+*/
       }
     }
 

@@ -37,6 +37,7 @@ object FlowPaint {
     frame.show
   }
 
+  
   private def createTestPainting() : Painting = {
 
     val brush = new GradientTestBrush()

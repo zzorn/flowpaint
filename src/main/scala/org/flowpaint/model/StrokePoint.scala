@@ -11,6 +11,12 @@ import util.DataSample
  */
 class StrokePoint( ) {
 
+
   val data : DataSample = new DataSample()
 
+  def this( aData : DataSample  ) = {
+    this()
+
+    data.setValuesFrom(aData)
+  }
 }

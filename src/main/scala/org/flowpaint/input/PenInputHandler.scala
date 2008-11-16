@@ -11,7 +11,11 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
-class PenInputHandler extends PenListener {
+class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener {
+
+  println("PenInputHandler created")
+
+
   private var xOffs = 0f
   private var yOffs = 0f
   private var xScale = 1f
@@ -37,6 +41,8 @@ class PenInputHandler extends PenListener {
   }
 
   def penButtonEvent(event: PButtonEvent): Unit = {
+
+    println("button event " + event)
 
     val dataSample = createDataSample(event)
 
@@ -92,7 +98,15 @@ class PenInputHandler extends PenListener {
   }
 
   private def sendSample( sample : DataSample ) {
-    // TODO
+
+    // We need to handle the samples in the Swing thread
+    // TODO: Queue incoming events, and send them in batches to the swing thread side?
+    javax.swing.SwingUtilities.invokeLater( new Runnable() {
+      def run(){
+        sampleListener(sample)
+      }
+    })
+
   }
 
   private def createDataSample(event: jpen.PenEvent): DataSample = {

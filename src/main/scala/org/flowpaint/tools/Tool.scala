@@ -15,9 +15,9 @@ trait Tool {
      *
      * @param event            an event from the input devices.  Can contain one or more variables that
      *                         describe its state.
-     * @param flowPaintController the {@link FlowPaintController }.  Can be used to access the view and other parts
+     * @param controller the {@link FlowPaintController }.  Can be used to access the view and other parts
      *                         of the program.
      */
-    def onEvent( event : DataSample )
+    def onEvent( event : DataSample, controller : FlowPaintController  )
 
 }

@@ -1,6 +1,6 @@
 package org.flowpaint.util
 
-import gnu.trove.TIntFloatHashMap
+import gnu.trove.{TIntFloatHashMap, TIntFloatProcedure}
 
 /**
  *  A datapoint along a stroke.  Can have one or more Float properties, indexed with Int id:s.
@@ -10,7 +10,24 @@ import gnu.trove.TIntFloatHashMap
  */
 class DataSample {
 
-  private val properties = new TIntFloatHashMap(2);
+  def this( source : DataSample ) = {
+    this()
+    setValuesFrom( source )
+  }
+
+  private val properties = new TIntFloatHashMap(2)
+
+  private val copyValuesProcedure = new TIntFloatProcedure {
+    def execute(id: Int, value: Float): Boolean = {
+      setProperty(id, value)
+      true
+    }
+  }
+
+  def setValuesFrom( otherSample : DataSample ) {
+    otherSample.properties.forEachEntry( copyValuesProcedure)
+  }
+
 
   def contains( id : Int ): Boolean = properties.contains(id)
 

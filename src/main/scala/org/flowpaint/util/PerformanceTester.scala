@@ -37,5 +37,22 @@ object PerformanceTester {
     average
   }
 
+  private var startTime = 0L
+  def startTimer()  {startTime = currentTime}
+  def showTiming(taskName : String) = println( taskName + " took " + (currentTime - startTime) +" ms.")
+
+  /**
+   * Takes the task name as a parameter, and should be followed by the task to time
+   * (returns a function that takes the task to time as a parameter). 
+   */
+  def time[T](taskName : String)(task : => T) {
+
+    startTimer()
+
+    task
+
+    showTiming(taskName)
+  }
+
 
 }

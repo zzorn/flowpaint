@@ -1,6 +1,7 @@
 package org.flowpaint.model
 
 
+import _root_.scala.collection.jcl.ArrayList
 import renderer.{PictureProvider, RenderSurface}
 
 /**
@@ -10,10 +11,10 @@ import renderer.{PictureProvider, RenderSurface}
  */
 class Layer extends PictureProvider {
 
-  private var strokes : List[Stroke] = Nil
+  private val strokes = new ArrayList[Stroke]
 
   def addStroke( stroke:Stroke ) {
-    strokes = stroke :: strokes
+    strokes.add( stroke )
   }
 
   def updateSurface(surface: RenderSurface) = {

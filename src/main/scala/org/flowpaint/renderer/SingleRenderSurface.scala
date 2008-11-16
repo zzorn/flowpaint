@@ -63,14 +63,23 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
         val eX = Math.min(maxX.toInt, width - 1)
         val eY = Math.min(maxY.toInt, height - 1)
 
-        for (y <- sY to eY;
-             x <- sX to eX)
-          {
+        // NOTE: While should be a bit faster than a for comprehension.
+        var y = sY
+        while ( y <= eY ) {
+
+          var x = sX
+          while ( x <= eX ) {
+
             val color: Int = colorCalculator(x, y)
 
             if (color != TRANSPARENT_COLOR)
               buffer.setRGB(x, y, color)
+
+            x += 1
           }
+
+          y += 1
+        }
       }
   }
 

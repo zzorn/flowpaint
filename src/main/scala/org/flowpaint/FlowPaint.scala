@@ -3,7 +3,7 @@ package org.flowpaint
 import brush.GradientTestBrush
 import java.awt.Dimension
 import javax.swing.JFrame
-import model.{Stroke, Painting, StrokePoint}
+import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
 import util.DataSample
 

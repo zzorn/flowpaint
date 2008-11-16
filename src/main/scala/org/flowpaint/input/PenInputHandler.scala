@@ -2,7 +2,6 @@ package org.flowpaint.input
 
 import jpen._
 import jpen.event.PenListener
-import model.StrokePoint
 import util.DataSample
 
 

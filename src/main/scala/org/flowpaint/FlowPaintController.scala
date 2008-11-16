@@ -19,8 +19,8 @@ class FlowPaintController() {
   var currentTool = new StrokeTool()
   var currentPainting = new Painting()
   var currentBrush : Brush = new GradientTestBrush()
-  var currentRadius = 50f
-  var currentAngle = 0f
+  var currentRadius = 30f
+  var currentAngle = Math.toRadians( 90+45 ).toFloat
 
   // Render cache bitmap
   val surface = new SingleRenderSurface( currentPainting )

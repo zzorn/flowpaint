@@ -39,7 +39,7 @@ class StrokeTool extends Tool {
 
     if (isStrokeActive )
       {
-        currentStroke.addPoint(event);
+        currentStroke.addPoint(event, controller.surface);
       }
   }
 

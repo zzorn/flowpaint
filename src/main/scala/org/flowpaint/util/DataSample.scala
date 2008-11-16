@@ -19,7 +19,7 @@ class DataSample {
 
   private val copyValuesProcedure = new TIntFloatProcedure {
     def execute(id: Int, value: Float): Boolean = {
-      setProperty(id, value)
+      setPropertyWithId(id, value)
       true
     }
   }
@@ -29,21 +29,21 @@ class DataSample {
   }
 
 
-  def contains( id : Int ): Boolean = properties.contains(id)
+  def containsId( id : Int ): Boolean = properties.contains(id)
 
-  def getProperty(id: Int, defaultValue: Float): Float =
+  def getPropertyWithId(id: Int, defaultValue: Float): Float =
     if (properties.contains(id))
       properties.get(id)
     else
       defaultValue
 
-  def setProperty(id: Int, value: Float) : Unit = properties.put( id, value )
+  def setPropertyWithId(id: Int, value: Float) : Unit = properties.put( id, value )
 
 
   // Use StrokePropertyRegister to allow querying by name instead of id:
-  def contains( name : String ): Boolean = contains( StrokePropertyRegister.getId( name ) )
-  def getProperty(name: String, defaultValue: Float): Float = getProperty( StrokePropertyRegister.getId( name ), defaultValue )
-  def setProperty(name: String, value: Float) : Unit= setProperty(  StrokePropertyRegister.getId( name ), value )
+  def contains( name : String ): Boolean = containsId( StrokePropertyRegister.getId( name ) )
+  def getProperty(name: String, defaultValue: Float): Float = getPropertyWithId( StrokePropertyRegister.getId( name ), defaultValue )
+  def setProperty(name: String, value: Float) : Unit= setPropertyWithId(  StrokePropertyRegister.getId( name ), value )
 
 
 }

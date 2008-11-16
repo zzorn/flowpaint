@@ -13,6 +13,7 @@
       <includes>
         <include>org.scala-lang:scala-library</include>
         <include>trove:trove</include>
+        <include>jpen:jpen</include>
       </includes>
     </dependencySet>
   </dependencySets>

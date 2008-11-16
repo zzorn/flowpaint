@@ -55,13 +55,6 @@
   <!-- External libraries used -->
   <dependencies>
 
-    <!-- Scala -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
-
     <!-- Testing -->
     <dependency>
       <groupId>junit</groupId>
@@ -74,6 +67,13 @@
       <artifactId>specs</artifactId>
       <version>1.2.5</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Scala -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
     </dependency>
 
     <!-- Primitive collections -->

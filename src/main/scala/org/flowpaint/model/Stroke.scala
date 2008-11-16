@@ -9,7 +9,7 @@ import scala.collection.jcl.ArrayList
 import util.{DataSample, RectangleInt}
 
 /**
- *    A brush stroke on some layer.
+ *     A brush stroke on some layer.
  *
  * @author Hans Haggstrom
  */
@@ -18,7 +18,7 @@ case class Stroke(brush: Brush) extends PictureProvider {
 
 
   /**
-   *  Adds a stroke point.  Doesn't update the picture.
+   *   Adds a stroke point.  Doesn't update the picture.
    */
   def addPoint(data: DataSample) {
     points.add(data)
@@ -26,7 +26,7 @@ case class Stroke(brush: Brush) extends PictureProvider {
 
 
   /**
-   *  Adds a stroke point and updates the render surface with the latest stroke segment
+   *   Adds a stroke point and updates the render surface with the latest stroke segment
    */
   def addPoint(data: DataSample, surface: RenderSurface) {
 
@@ -69,11 +69,11 @@ case class Stroke(brush: Brush) extends PictureProvider {
   private def renderStrokeSegment(startPoint: DataSample, endPoint: DataSample, surface: RenderSurface) {
     val startX = startPoint.getProperty("x", 0)
     val startY = startPoint.getProperty("y", 0)
-    val startAngle = startPoint.getProperty("angle", 0)
+    val startAngle = startPoint.getProperty("angle", 0) * Math.Pi.toFloat * 2
     val startRadius = startPoint.getProperty("radius", 1)
     val endX = endPoint.getProperty("x", 0)
     val endY = endPoint.getProperty("y", 0)
-    val endAngle = endPoint.getProperty("angle", 0)
+    val endAngle = endPoint.getProperty("angle", 0) * Math.Pi.toFloat * 2
     val endRadius = endPoint.getProperty("radius", 10)
 
     StrokeRenderer.drawStrokeSegment(

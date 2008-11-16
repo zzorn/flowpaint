@@ -23,7 +23,7 @@ object StrokeRenderer {
                        startData : DataSample, endData : DataSample,
                        brush: Brush, surface: RenderSurface) {
 
-
+    if (endAngleIn == startAngle) return // TODO Special case treatment for this?
 
     def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
       val xDiff = x2 - x1

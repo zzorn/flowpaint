@@ -46,8 +46,6 @@ class StrokeTool extends Tool {
   def startStroke(sketchController: FlowPaintController)
     {
 
-      println("stroke started")
-
       currentStroke = new Stroke( sketchController.currentBrush )
 
       val initialSample = new DataSample(currentStatus);
@@ -64,8 +62,6 @@ class StrokeTool extends Tool {
 
   def endStroke(sketchController: FlowPaintController)
     {
-      println("stroke ended")
-
       // Temp:
       //      sketchController.currentPainting.currentLayer.addStroke( stroke )
 

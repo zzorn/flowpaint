@@ -1,19 +1,20 @@
 package org.flowpaint.input
 
+import java.lang.reflect.InvocationTargetException
+import java.util.ArrayList
+import java.util.concurrent.{ArrayBlockingQueue, BlockingQueue}
 import jpen._
 import jpen.event.PenListener
 import util.DataSample
+import util.PerformanceTester.time
 
 
 /**
- *  Recieves pen events, and turns them into data samples.
+ *  Recieves pen events, and turns them into data samples, that are sent in the swing thread to the specified sampleListener.
  *
  * @author Hans Haggstrom
  */
 class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener {
-
-  println("PenInputHandler created")
-
 
   private var xOffs = 0f
   private var yOffs = 0f
@@ -22,6 +23,85 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
 
   /**Used for syncronizing on the projection variables. */
   private val projectionLock = new Object
+
+  private val MAX_INPUT_EVENT_QUEUE = 10000
+  private val MAX_SAMPLES_TO_HANDLE_AT_ONCE = 100
+  private val myQueuedInput : BlockingQueue[DataSample]  = new ArrayBlockingQueue[DataSample]( MAX_INPUT_EVENT_QUEUE );
+
+  // Handle DataSamples in the queue with tools that run in the swing thread
+  val sampleMover : Thread = new Thread( new Runnable()
+  {
+
+      def run() {
+          val samples = new ArrayList[DataSample]()
+
+          while ( true )
+          {
+              // Get next samples
+              waitForSamples( samples )
+
+              // Handle the samples in the Swing thread.  Blocks until ready
+              sendSamplesInSwingThread( samples )
+
+              // Reuse collection.
+              samples.clear();
+          }
+      }
+
+  } )
+
+
+/*
+  sampleMover.start();
+*/
+
+
+  def waitForSamples( samples : ArrayList[DataSample] )
+  {
+      // Wait for first sample
+      var dataSample : DataSample = null
+      try
+      {
+          dataSample = myQueuedInput.take()
+      }
+      catch
+      {
+        case e : InterruptedException => // We were interrupted, didn't get anything.
+      }
+
+      if ( dataSample != null )
+      {
+          samples.add( dataSample );
+      }
+
+      // Get the rest of the available samples
+      myQueuedInput.drainTo( samples, MAX_SAMPLES_TO_HANDLE_AT_ONCE );
+  }
+
+  def sendSamplesInSwingThread( samples : ArrayList[DataSample])
+  {
+      try
+      {
+          javax.swing.SwingUtilities.invokeAndWait( new Runnable()
+          {
+
+              def run()
+              {
+                for( i <- 0 until samples.size) sampleListener( samples.get(i) )
+              }
+
+          } );
+      }
+      catch
+      {
+        case e : InterruptedException => println ("Interrupted while handling input events " + e )
+//          LOGGER.log( Level.INFO, "Interrupted while handling input events", e );
+        case e : InvocationTargetException => println ("Problem when handling input events " + e )
+//        LOGGER.log( Level.WARNING, "Problem when handling input events", e );
+      }
+  }
+
+
 
   /**
    *  Used to update the projection that should be applied to pen input
@@ -41,8 +121,6 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
 
   def penButtonEvent(event: PButtonEvent): Unit = {
 
-    println("button event " + event)
-
     val dataSample = createDataSample(event)
 
     val value: Float = if (event.button.value.booleanValue ) 1f else 0f
@@ -53,7 +131,7 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
       case PButton.Type.CENTER => dataSample.setProperty("centerButton", value);
     }
 
-    sendSample(dataSample);
+    queueSample(dataSample);
   }
 
 
@@ -78,7 +156,7 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
             }
       )
 
-    sendSample(dataSample);
+    queueSample(dataSample);
   }
 
   def penScrollEvent(p1: PScrollEvent): Unit = {
@@ -96,16 +174,19 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
 
   }
 
-  private def sendSample( sample : DataSample ) {
+  private def queueSample( sample : DataSample) {
 
-    // We need to handle the samples in the Swing thread
-    // TODO: Queue incoming events, and send them in batches to the swing thread side?
-    javax.swing.SwingUtilities.invokeLater( new Runnable() {
-      def run(){
-        sampleListener(sample)
-      }
-    })
-
+    sampleListener(sample)
+/*
+    try
+    {
+        myQueuedInput.put( sample );
+    }
+    catch
+    {
+      case e : InterruptedException =>  // Interrupted, just return.  The sample is lost, but it doesn't matter that much.
+    }
+*/
   }
 
   private def createDataSample(event: jpen.PenEvent): DataSample = {

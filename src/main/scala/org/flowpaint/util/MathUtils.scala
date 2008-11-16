@@ -13,23 +13,25 @@ object MathUtils {
   /**
    *  Turn an angle in radians to a normalized value between 0 to 1.
    */
-  def normalizeAngle(angleRadians: Float): Float = rollToZeroToOne(angleRadians / (Math.Pi.toFloat * 2f))
+  def normalizeAngle(angleRadians: Float): Float = wrapToZeroToOne(angleRadians / (Math.Pi.toFloat * 2f))
 
   
-  def rollToZeroToOne(a: Float): Float = {
+  def wrapToZeroToOne(a: Float): Float = {
     val v = a % 1f
 
-    if (v < 0) 1f - v
-    else v
+    if (v < 0)
+      v + 1
+    else
+      v
   }
 
   /**
    *  The distance between two numbers between 0 and 1, if we assume that the value can roll over between 0 and 1
    */
-  def rolledDistance(a: Float, b: Float): Float = {
+  def wrappedDistance(a: Float, b: Float): Float = {
     // Roll to 0 to 1 range
-    val an = rollToZeroToOne(a)
-    val bn = rollToZeroToOne(b)
+    val an = wrapToZeroToOne(a)
+    val bn = wrapToZeroToOne(b)
 
     // Determine order
     var smaller = an
@@ -50,17 +52,18 @@ object MathUtils {
       rolledDistance
   }
 
-  def rolledInterpolate(t: Float, a: Float, b: Float): Float = {
+
+  def wrappedInterpolate(t: Float, a: Float, b: Float): Float = {
     // Roll to 0 to 1 range
-    val an = rollToZeroToOne(a)
-    val bn = rollToZeroToOne(b)
+    val an = wrapToZeroToOne(a)
+    val bn = wrapToZeroToOne(b)
 
     if (Math.abs(an - bn) <= 0.5) // Closer through direct path than wrapped path
-      rollToZeroToOne( interpolate(t, an, bn) )
+      wrapToZeroToOne( interpolate(t, an, bn) )
     else if (an < bn) // Wrap a up, then roll back when interpolation done
-      rollToZeroToOne(interpolate(t, an + 1, bn))
+      wrapToZeroToOne(interpolate(t, an + 1, bn))
     else // Wrap b up, then roll back when interpolation done
-      rollToZeroToOne(interpolate(t, an, bn + 1))
+      wrapToZeroToOne(interpolate(t, an, bn + 1))
   }
 
 

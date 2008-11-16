@@ -26,7 +26,7 @@ class StrokeAngleTilter( ) extends StrokeFilter {
 
     val angle = MathUtils.normalizeAngle( (Math.Pi * 0.5f + Math.atan2( newY - oldY, newX - oldX )).toFloat )
 
-    val smoothAngle = MathUtils.rolledInterpolate( SMOOTHING, angle, previousAngle )
+    val smoothAngle = MathUtils.wrappedInterpolate( SMOOTHING, angle, previousAngle )
     previousAngle = smoothAngle
 
     pointData.setProperty("angle", smoothAngle)

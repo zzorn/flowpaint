@@ -28,6 +28,12 @@ class DataSample {
     otherSample.properties.forEachEntry( copyValuesProcedure)
   }
 
+  /**
+   * Removes all current values
+   */
+  def clear(){
+    properties.clear
+  }
 
   def containsId( id : Int ): Boolean = properties.contains(id)
 

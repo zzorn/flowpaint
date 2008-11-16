@@ -1,9 +1,10 @@
 package org.flowpaint
 
 
-import brush.{Brush, GradientTestBrush}
+import brush._
+import filters.{ColorUndulationFilter, StrokeFilter}
 import input.PenInputHandler
-import model.Painting
+import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
 import tools.StrokeTool
 import util.DataSample
@@ -18,9 +19,10 @@ class FlowPaintController() {
   // State / datamodel info
   var currentTool = new StrokeTool()
   var currentPainting = new Painting()
-  var currentBrush : Brush = new GradientTestBrush()
+  var currentBrush : Brush = new Brush( new GradientTestInk(), List( new StrokeAngleTilter(), new ColorUndulationFilter() ) )
   var currentRadius = 30f
   var currentAngle = Math.toRadians( 90+45 ).toFloat
+
 
   // Render cache bitmap
   val surface = new SingleRenderSurface( currentPainting )

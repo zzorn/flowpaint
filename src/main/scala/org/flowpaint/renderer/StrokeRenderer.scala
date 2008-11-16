@@ -3,7 +3,7 @@ package org.flowpaint.renderer
 import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
-import util.RectangleInt
+import util.{DataSample, RectangleInt}
 
 /**
  * Renders a stroke segment.
@@ -20,10 +20,10 @@ object StrokeRenderer {
    */
   def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
                        endX: Float, endY: Float, endAngleIn: Float, endRadius: Float,
+                       startData : DataSample, endData : DataSample,
                        brush: Brush, surface: RenderSurface) {
 
 
-    def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
 
     def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
       val xDiff = x2 - x1
@@ -82,7 +82,7 @@ object StrokeRenderer {
                   {
                     val positionAlongStroke = Math.sqrt(startToStrokePosSquared).toFloat
 
-                    val radius = interpolate(positionAlongStroke, startRadius, endRadius)
+                    val radius = util.MathUtils.interpolate(positionAlongStroke, startRadius, endRadius)
                     val radiusSquared = radius * radius
 
                     var centerDistanceSquared = squaredDistance(x, y, strokePos.x, strokePos.y)
@@ -98,7 +98,9 @@ object StrokeRenderer {
                             positionAcrossStroke = -positionAcrossStroke
                         */
 
-                        color = brush.calculateColor(positionAlongStroke, positionAcrossStroke)
+                        color = brush.ink.calculateColor(
+                          positionAlongStroke, positionAcrossStroke,
+                          startData, endData )
                       }
 
                   }

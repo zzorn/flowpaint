@@ -1,6 +1,5 @@
 package org.flowpaint
 
-import brush.GradientTestBrush
 import java.awt.Dimension
 import javax.swing.JFrame
 import model.{Stroke, Painting}
@@ -34,9 +33,10 @@ object FlowPaint {
   }
 
   
+/*
   private def createTestPainting() : Painting = {
 
-    val brush = new GradientTestBrush()
+    val brush = new Brush()
     
     val stroke = new Stroke( brush )
     def createPoint(x : Float, y:Float, angle:Float, radius:Float):DataSample = {
@@ -58,5 +58,6 @@ object FlowPaint {
 
     painting
   }
+*/
 
 }

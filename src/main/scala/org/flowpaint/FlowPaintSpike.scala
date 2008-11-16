@@ -1,6 +1,5 @@
 package org.flowpaint
 
-import brush.GradientTestBrush
 import java.awt.{Dimension, Graphics, Color}
 import javax.swing.{JPanel, JFrame, JLabel}
 import renderer.{StrokeRenderer, RenderSurface}
@@ -45,7 +44,7 @@ object FlowPaintSpike {
           StrokeRenderer.drawStrokeSegment(
             rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
             rnd(sizeX), rnd(sizeY), degrees(rnd(360)), rnd(strokeMaxRadius),
-            new GradientTestBrush(), surface )
+            new GradientTestInk(), surface )
 
         }
 

@@ -1,5 +1,6 @@
 package org.flowpaint.tools
 
+import filters.StrokeListener
 import model.Stroke
 import util.DataSample
 
@@ -14,7 +15,9 @@ class StrokeTool extends Tool {
   val currentStatus: DataSample = new DataSample()
 
   var currentStroke: Stroke = null
-  
+  var currentPointIndex = 0
+  var currentStrokeStartTime = 0L
+
 
   def onEvent(event: DataSample, controller: FlowPaintController) = {
 
@@ -39,25 +42,42 @@ class StrokeTool extends Tool {
 
     if (isStrokeActive )
       {
-        currentStroke.addPoint(event, controller.surface);
+        addStrokePoint(currentStroke, event, controller)
       }
   }
 
+
+
   def startStroke(sketchController: FlowPaintController)
     {
-
+      currentPointIndex = 0
+      currentStrokeStartTime = getTime()
       currentStroke = new Stroke( sketchController.currentBrush )
 
       val initialSample = new DataSample(currentStatus);
 
       sketchController.fillDataSampleWithCurrentSettings(initialSample);
 
-      currentStroke.addPoint(initialSample);
+      addStrokePoint(currentStroke, initialSample, sketchController)
 
       // Add stroke, so that we get a preview of it
       // TODO: add with a proper undoable command later
       sketchController.currentPainting.currentLayer.addStroke(currentStroke)
     }
+
+  def addStrokePoint(stroke:Stroke, point:DataSample, controller: FlowPaintController)
+  {
+    point.setProperty("index", currentPointIndex)
+    point.setProperty("time", (getTime() - currentStrokeStartTime).toFloat / 1000f)
+    
+    stroke.brush.filterStrokePoint( point, new StrokeListener(){
+
+      def addStrokePoint( pointData : DataSample ) {
+        stroke.addPoint( pointData, controller.surface )
+      }
+
+    })
+  }
 
 
   def endStroke(sketchController: FlowPaintController)
@@ -94,6 +114,8 @@ class StrokeTool extends Tool {
 
 
   def isStrokeActive = currentStroke != null
+
+  def getTime() = System.currentTimeMillis
 
 }
 

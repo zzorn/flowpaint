@@ -9,6 +9,12 @@ package org.flowpaint.util
 object MathUtils {
   def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
 
+  def squaredDistance(x1:Float, y1:Float, x2:Float, y2:Float) : Float = {
+    val xDiff = x2-x1
+    val yDiff = y2 - y1
+    xDiff*xDiff+yDiff*yDiff
+  }
+
 
   /**
    *  Turn an angle in radians to a normalized value between 0 to 1.

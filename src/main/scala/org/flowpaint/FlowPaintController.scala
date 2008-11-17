@@ -2,7 +2,7 @@ package org.flowpaint
 
 
 import brush._
-import filters.{ColorUndulationFilter, StrokeFilter}
+import filters.{ RadiusFromPressureFilter, StrokeFilter}
 import input.PenInputHandler
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
@@ -19,8 +19,8 @@ class FlowPaintController() {
   // State / datamodel info
   var currentTool = new StrokeTool()
   var currentPainting = new Painting()
-  var currentBrush : Brush = new Brush( new GradientTestInk(), List( new StrokeAngleTilter(), new ColorUndulationFilter() ) )
-  var currentRadius = 30f
+  var currentBrush : Brush = new Brush( new GradientTestInk(), List( new StrokeAngleTilter(), new RadiusFromPressureFilter( 20 ) ) )
+//  var currentRadius = 15f
   var currentAngle = Math.toRadians( 90+45 ).toFloat
 
 
@@ -45,7 +45,9 @@ class FlowPaintController() {
 
   def fillDataSampleWithCurrentSettings( sample : DataSample )
     {
-      sample.setProperty( "radius", currentRadius )
+/*
+      sample.setProperty( "maxRadius", currentRadius )
+*/
       sample.setProperty( "angle", currentAngle)
     }
 

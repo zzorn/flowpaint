@@ -28,12 +28,12 @@ class GradientTestInk extends Ink {
     val time: Float = getInterpolatedProperty("time", 0)
 
     //val dots = noise.noise2( time*0.1f, positionAcrossStroke*5 )
-    val dots2 = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*57f, positionAcrossStroke*3.3f, 1.1f )
-    val stripes = 0.5f + 0.5f * Math.sin(time*20).toFloat
+    val dots2 = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*37f, positionAcrossStroke*2.3f, 1.1f )
+    val stripes = 0.25f + 0.25f * Math.sin(time*3).toFloat
 
-    val red = 1f
-    val blue = 0
-    val green = dots2
+    val red = stripes
+    val blue = stripes / 2
+    val green = stripes / 2
 
 /*
     val red = getInterpolatedProperty("red",0)
@@ -41,7 +41,7 @@ class GradientTestInk extends Ink {
     val blue = getInterpolatedProperty("blue",0)
 */
 
-    val alpha = 1f - Math.abs(positionAcrossStroke)
+    val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2
 
     val r = (255 * red).toInt
     val g = (255 * green).toInt

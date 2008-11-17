@@ -2,7 +2,7 @@ package org.flowpaint
 
 
 import brush._
-import filters.{ RadiusFromPressureFilter, StrokeFilter}
+import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
 import input.PenInputHandler
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
@@ -19,7 +19,8 @@ class FlowPaintController() {
   // State / datamodel info
   var currentTool = new StrokeTool()
   var currentPainting = new Painting()
-  var currentBrush : Brush = new Brush( new GradientTestInk(), List( new StrokeAngleTilter(), new RadiusFromPressureFilter( 20 ) ) )
+  var currentBrush : Brush = new Brush( new GradientTestInk(),
+    List( new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter( 20 ) ) )
 //  var currentRadius = 15f
   var currentAngle = Math.toRadians( 90+45 ).toFloat
 

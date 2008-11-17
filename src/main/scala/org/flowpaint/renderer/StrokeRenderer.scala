@@ -4,6 +4,7 @@ import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
 import util.{DataSample, RectangleInt}
+import util.MathUtils.squaredDistance
 
 /**
  *     Renders a stroke segment.
@@ -21,12 +22,6 @@ object StrokeRenderer {
                        endX: Float, endY: Float, endAngle: Float, endRadius: Float,
                        startData: DataSample, endData: DataSample,
                        brush: Brush, surface: RenderSurface) {
-
-    def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
-      val xDiff = x2 - x1
-      val yDiff = y2 - y1
-      xDiff * xDiff + yDiff * yDiff
-    }
 
     val squaredLength = squaredDistance(startX, startY, endX, endY)
 

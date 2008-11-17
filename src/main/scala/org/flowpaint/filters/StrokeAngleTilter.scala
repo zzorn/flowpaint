@@ -3,67 +3,61 @@ package org.flowpaint.brush
 import filters.StrokeFilter
 import util.DataSample
 import util.MathUtils
+import Math.abs
 
 /**
  *   Tilts the angle of a stroke to be perpendicular to its direction
  *
  * @author Hans Haggstrom
  */
-class StrokeAngleTilter() extends StrokeFilter {
-  val previousData = new DataSample()
+class StrokeAngleTilter(  ) extends StrokeFilter {
 
-  var previousAngle = 0f
-  var previousX =0f
-  var previousY =0f
 
-  val MINIMUM_MOVEMENT_DISTANCE_FOR_ANGLE_UPDATE = 1000f
-  val SMOOTHING = 0.3f
+  var smoothing = 0f
 
-  val HALF_Pi = (0.5 * Math.Pi).toFloat
+  private val previousData = new DataSample()
+
+  private var previousAngle = 0f
+  private var previousX =0f
+  private var previousY =0f
+
+  private val MINIMUM_MOVEMENT_DISTANCE_FOR_ANGLE_UPDATE = 1000f
+
+
+  private val HALF_Pi = (0.5 * Math.Pi).toFloat
 
   protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) {
 
+/*
     val oldX = previousData.getProperty("x", 0)
     val oldY = previousData.getProperty("y", 0)
+*/
     val newX = pointData.getProperty("x", 0)
     val newY = pointData.getProperty("y", 0)
-
-    // Do not change if traveled distance is too low
-//    val angle = MathUtils.normalizeAngle( (0.5*Math.Pi+ Math.atan2(newY - previousY, newX - previousX)).toFloat)
-//    val angle = (0.5 * Math.Pi + Math.atan2(newY - previousY, newX - previousX)).toFloat
-
-
-/*
-    val angle = {
-      val xDiff = oldX - newX
-      val yDiff = oldY - newY
-      if ( xDiff == 0 ) HALF_Pi
-      else if ( yDiff == 0 ) HALF_Pi
-      else HALF_Pi + Math.atan2(yDiff , xDiff).toFloat
-    }
-*/
 
     val xDiff = previousX - newX
     val yDiff = previousY - newY
 
-    val angle = HALF_Pi + Math.atan2(yDiff , xDiff).toFloat
+    /*
+    val angle = if (xDiff == 0 && yDiff == 0) previousAngle
+    else {
 
-
-    //val angle = MathUtils.normalizeAngle((Math.Pi * 0.5f - Math.atan2(newY - previousY, newX - previousX)).toFloat)
-//    val angle = 0.5f
-
-/*
-    val smoothAngle = MathUtils.wrappedInterpolate(SMOOTHING, angle, previousAngle)
-    previousAngle = smoothAngle
+      previousAngle = HALF_Pi + Math.atan2(yDiff , xDiff).toFloat
+      previousAngle
+    }
 */
 
-    previousX = MathUtils.interpolate(SMOOTHING, newX, previousX )
-    previousY = MathUtils.interpolate(SMOOTHING, newY, previousY )
+    val angle = HALF_Pi + Math.atan2(yDiff , xDiff).toFloat
+
+    previousX = MathUtils.interpolate(smoothing, newX, previousX )
+    previousY = MathUtils.interpolate(smoothing, newY, previousY )
 
     pointData.setProperty("angle", angle )
 
+
+/*
     previousData.setValuesFrom(pointData)
-    
+*/
 
     resultCallback(pointData)
   }

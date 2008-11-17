@@ -12,32 +12,23 @@ class GradientTestInk extends Ink {
   def calculateColor(positionAlongStroke: Float, positionAcrossStroke: Float,
                     startData: DataSample, endData: DataSample): Int = {
 
-    /*
-        val r = 1
-        val g = 1 - (1 - positionAlongStroke) * normalizedCenter
-        val b = 1 - normalizedCenter
-    */
-    /*
-        val red = (255 * r).toInt
-        val green = (255 * g).toInt
-        val blue = (255 * b).toInt
-    */
 
-
-    val red = util.MathUtils.interpolate(
+    def getInterpolatedProperty( name:String, default:Float ) :Float = {
+        util.MathUtils.interpolate(
       positionAlongStroke,
-      startData.getProperty("red", 0),
-      endData.getProperty("red", 0))
+      startData.getProperty(name, default),
+      endData.getProperty(name, default))
+    }
 
-    val green = util.MathUtils.interpolate(
-      positionAlongStroke,
-      startData.getProperty("green", 0),
-      endData.getProperty("green", 0))
+    val red = 1f
+    val blue = 0f
+    val green = (0.5 + 0.5 * Math.sin(getInterpolatedProperty("time",0)*20)).toFloat
 
-    val blue = util.MathUtils.interpolate(
-      positionAlongStroke,
-      startData.getProperty("blue", 0),
-      endData.getProperty("blue", 0))
+/*
+    val red = getInterpolatedProperty("red",0)
+    val green = getInterpolatedProperty("green",0)
+    val blue = getInterpolatedProperty("blue",0)
+*/
 
     val alpha = 1f - positionAcrossStroke
 

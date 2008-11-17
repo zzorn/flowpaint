@@ -16,6 +16,8 @@ object MathUtils {
   }
 
 
+  def normalizeAngle(angleRadians: Double): Float = normalizeAngle( angleRadians.toFloat ) 
+
   /**
    *  Turn an angle in radians to a normalized value between 0 to 1.
    */

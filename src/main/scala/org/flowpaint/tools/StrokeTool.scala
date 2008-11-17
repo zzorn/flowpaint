@@ -19,7 +19,7 @@ class StrokeTool extends Tool {
   var currentStrokeStartTime = 0L
 
 
-  def onEvent(event: DataSample, controller: FlowPaintController) = {
+  def onEvent(event: DataSample) = {
 
     currentStatus.setValuesFrom(event)
 
@@ -31,41 +31,41 @@ class StrokeTool extends Tool {
         {
           if (pressed)
             {
-              startStroke(controller)
+              startStroke()
             }
           else
             {
-              endStroke(controller)
+              endStroke()
             }
         }
     }
 
     if (isStrokeActive )
       {
-        addStrokePoint(currentStroke, event, controller)
+        addStrokePoint(currentStroke, event)
       }
   }
 
 
 
-  def startStroke(sketchController: FlowPaintController)
+  def startStroke()
     {
       currentPointIndex = 0
       currentStrokeStartTime = getTime()
-      currentStroke = new Stroke( sketchController.currentBrush )
+      currentStroke = new Stroke( FlowPaintController.currentBrush )
 
       val initialSample = new DataSample(currentStatus);
 
-      sketchController.fillDataSampleWithCurrentSettings(initialSample);
+      FlowPaintController.fillDataSampleWithCurrentSettings(initialSample);
 
-      addStrokePoint(currentStroke, initialSample, sketchController)
+      addStrokePoint(currentStroke, initialSample )
 
       // Add stroke, so that we get a preview of it
       // TODO: add with a proper undoable command later
-      sketchController.currentPainting.currentLayer.addStroke(currentStroke)
+      FlowPaintController.currentPainting.currentLayer.addStroke(currentStroke)
     }
 
-  def addStrokePoint(stroke:Stroke, point:DataSample, controller: FlowPaintController)
+  def addStrokePoint(stroke:Stroke, point:DataSample)
   {
     point.setProperty("index", currentPointIndex)
     point.setProperty("time", (getTime() - currentStrokeStartTime).toFloat / 1000f)
@@ -73,14 +73,14 @@ class StrokeTool extends Tool {
     stroke.brush.filterStrokePoint( point, new StrokeListener(){
 
       def addStrokePoint( pointData : DataSample ) {
-        stroke.addPoint( pointData, controller.surface )
+        stroke.addPoint( pointData, FlowPaintController.surface )
       }
 
     })
   }
 
 
-  def endStroke(sketchController: FlowPaintController)
+  def endStroke()
     {
       // Temp:
       //      sketchController.currentPainting.currentLayer.addStroke( stroke )

@@ -18,6 +18,6 @@ trait Tool {
      * @param controller the {@link FlowPaintController }.  Can be used to access the view and other parts
      *                         of the program.
      */
-    def onEvent( event : DataSample, controller : FlowPaintController  )
+    def onEvent( event : DataSample )
 
 }

@@ -1,5 +1,6 @@
 package org.flowpaint.model
 
+import _root_.scala.collection.jcl.ArrayList
 import renderer.{PictureProvider, RenderSurface}
 import util.PerformanceTester.time
 
@@ -9,7 +10,9 @@ import util.PerformanceTester.time
  * @author Hans Haggstrom
  */
 class Painting extends PictureProvider {
-  var layers: List[Layer] = List(new Layer)
+  var layers: ArrayList[Layer] = new ArrayList()
+
+  clear()
 
   def currentLayer: Layer = layers(0)
 
@@ -21,6 +24,11 @@ class Painting extends PictureProvider {
                 layers.foreach(layer => layer.updateSurface(surface))
               }
 
+  }
+
+  def clear() {
+    layers.clear
+    layers.add( new Layer )
   }
 }
 

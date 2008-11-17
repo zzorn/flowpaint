@@ -52,4 +52,33 @@ class FlowPaintController() {
     }
 
 
+  def quit() {
+    System.exit(0)
+  }
+
+  def clearPicture() {
+    currentPainting.clear()
+    surface.clear()
+    paintPanel.repaint()
+  }
+
+  def showAbout() {
+    // TODO
+  }
+
+  def quickSave() {
+    // TODO
+  }
+
+  def exportAs() {
+    // TODO
+  }
+
+  def reportIssue() {
+    // TODO
+  }
+
+  def goToHomePage() {
+    // TODO
+  }
 }

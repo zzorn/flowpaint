@@ -1,7 +1,6 @@
 package org.flowpaint.brush
 
 import ink.Ink
-import j3d.texture.procedural.PerlinNoiseGenerator
 import util.DataSample
 
 /**
@@ -11,7 +10,6 @@ import util.DataSample
  */
 class GradientTestInk extends Ink {
 
-  val noise = new PerlinNoiseGenerator()
 
 
   def calculateColor(positionAlongStroke: Float, positionAcrossStroke: Float,
@@ -28,12 +26,12 @@ class GradientTestInk extends Ink {
     val time: Float = getInterpolatedProperty("time", 0)
 
     //val dots = noise.noise2( time*0.1f, positionAcrossStroke*5 )
-    val dots2 = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*37f, positionAcrossStroke*2.3f, 1.1f )
+    val dots2 = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*60f, positionAcrossStroke*2.3f, 1.1f )
     val stripes = 0.25f + 0.25f * Math.sin(time*3).toFloat
 
-    val red = stripes
-    val blue = stripes / 2
-    val green = stripes / 2
+    val red = stripes * 2
+    val blue = 0
+    val green = stripes 
 
 /*
     val red = getInterpolatedProperty("red",0)

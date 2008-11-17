@@ -11,7 +11,6 @@ import util.DataSample
 class GradientTestInk extends Ink {
   def calculateColor(positionAlongStroke: Float, positionAcrossStroke: Float,
                     startData: DataSample, endData: DataSample): Int = {
-    val normalizedCenter = 1f - positionAcrossStroke
 
     /*
         val r = 1
@@ -40,7 +39,7 @@ class GradientTestInk extends Ink {
       startData.getProperty("blue", 0),
       endData.getProperty("blue", 0))
 
-    val alpha = normalizedCenter
+    val alpha = 1f - positionAcrossStroke
 
     val r = (255 * red).toInt
     val g = (255 * green).toInt

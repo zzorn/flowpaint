@@ -17,7 +17,7 @@ class StrokeAngleTilter() extends StrokeFilter {
   var previousY =0f
 
   val MINIMUM_MOVEMENT_DISTANCE_FOR_ANGLE_UPDATE = 1000f
-  val SMOOTHING = 0.75f
+  val SMOOTHING = 0.1f
 
   protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) {
 
@@ -27,21 +27,22 @@ class StrokeAngleTilter() extends StrokeFilter {
     val newY = pointData.getProperty("y", 0)
 
     // Do not change if traveled distance is too low
-    val angle = if (MathUtils.squaredDistance(previousX, previousY, newX, newY) > MINIMUM_MOVEMENT_DISTANCE_FOR_ANGLE_UPDATE )
-      {
-        previousX = newX
-        previousY = newY
-        MathUtils.normalizeAngle((Math.Pi * 0.5f + Math.atan2(newY - oldY, newX - oldX)).toFloat)
-      }
-      else
-        previousAngle
+    val angle = MathUtils.normalizeAngle( (0.5*Math.Pi+ Math.atan2(newY - previousY, newX - previousX)).toFloat)
+    //val angle = MathUtils.normalizeAngle((Math.Pi * 0.5f - Math.atan2(newY - previousY, newX - previousX)).toFloat)
+//    val angle = 0.5f
 
+/*
     val smoothAngle = MathUtils.wrappedInterpolate(SMOOTHING, angle, previousAngle)
     previousAngle = smoothAngle
+*/
 
-    pointData.setProperty("angle", smoothAngle)
+    previousX = MathUtils.interpolate(SMOOTHING, newX, previousX )
+    previousY = MathUtils.interpolate(SMOOTHING, newY, previousY )
+
+    pointData.setProperty("angle", 0.25f)
 
     previousData.setValuesFrom(pointData)
+    
 
     resultCallback(pointData)
   }

@@ -70,10 +70,19 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
           var x = sX
           while ( x <= eX ) {
 
-            val color: Int = colorCalculator(x, y)
+            var color: Int = colorCalculator(x, y)
 
-            if (color != TRANSPARENT_COLOR)
+
+            val alpha = util.ColorUtils.getAlpha(color)
+            if (alpha > 0) {
+
+              if (alpha < 1) {
+                val originalColor = buffer.getRGB(x, y)
+                color =  util.ColorUtils.mixRGBWithAlpha( color, originalColor )
+              }
+
               buffer.setRGB(x, y, color)
+            }
 
             x += 1
           }

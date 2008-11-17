@@ -6,35 +6,27 @@ import org.flowpaint.brush
 import util.{DataSample, RectangleInt}
 
 /**
- * Renders a stroke segment.
+ *  Renders a stroke segment.
  *
  * @author Hans Haggstrom
  */
 object StrokeRenderer {
-
-  private val TRANSPARENT_COLOR = new Color( 0, 0, 0, 0 ).getRGB()
+  private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
 
 
   /**
-   * Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
+   *  Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
   def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
-                       endX: Float, endY: Float, endAngleIn: Float, endRadius: Float,
-                       startData : DataSample, endData : DataSample,
+                       endX: Float, endY: Float, endAngle: Float, endRadius: Float,
+                       startData: DataSample, endData: DataSample,
                        brush: Brush, surface: RenderSurface) {
-
-    //if (endAngleIn == startAngle) return // TODO Special case treatment for this?
 
     def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
       val xDiff = x2 - x1
       val yDiff = y2 - y1
       xDiff * xDiff + yDiff * yDiff
     }
-
-    // TODO: Handle special case of parallel start and end angles better,
-    // this is a quick hack, and might result in some numerical inaccuracies
-    // It also doesn't support the case of opposite start and end angles
-    val endAngle = if (endAngleIn == startAngle) endAngleIn + 0.001f else endAngleIn
 
     val squaredLength = squaredDistance(startX, startY, endX, endY)
 
@@ -49,69 +41,74 @@ object StrokeRenderer {
       val maxY: Float = Math.max(startY + startRadius, endY + endRadius)
 
       // Calculate points one unit along in the direction of the start and end angles
-      val startX2 = startX + Math.cos(startAngle).toFloat
-      val startY2 = startY + Math.sin(startAngle).toFloat
+      val startAngleOffsetX = Math.cos(startAngle).toFloat
+      val startAngleOffsetY = Math.sin(startAngle).toFloat
+      val startX2 = startX + startAngleOffsetX
+      val startY2 = startY + startAngleOffsetY
       val endX2 = endX + Math.cos(endAngle).toFloat
       val endY2 = endY + Math.sin(endAngle).toFloat
 
-      // Calculate the point at which the start and end angle converge
+      // Calculate the point at which the start and end angle converge, or wether the angles are parallel
       val centerPoint = Point(0, 0)
-      val intersectionFound = intersect(startX, startY, startX2, startY2,
+      val fixedCenterpoint = intersect(startX, startY, startX2, startY2,
         endX, endY, endX2, endY2, centerPoint)
 
-      if (intersectionFound)
-        {
-          val strokePos = Point(0, 0)
+      val strokePos = Point(0, 0)
 
-          surface.provideContent (minX, minY, maxX, maxY, (x: Int, y: Int) => {
-            // Default result color
-            var color = TRANSPARENT_COLOR;
+      surface.provideContent(minX, minY, maxX, maxY, (x: Int, y: Int) => {
+        // Default result color
+        var color = TRANSPARENT_COLOR;
 
-            // Get the point along the stroke that this pixel maps to (depends on the local brush angle)
-            val strokeIntersectionFound = intersect(x, y, centerPoint.x, centerPoint.y,
-              startX, startY, endX, endY,
-              strokePos)
+        // If the angles were parallel, we have to move the center point continuously relative to the query point
+        if (!fixedCenterpoint){
+          centerPoint.x = x + startAngleOffsetX
+          centerPoint.y = y + startAngleOffsetY
+        }
 
-            if (strokeIntersectionFound)
+        // Get the point along the stroke that this pixel maps to (depends on the local brush angle)
+        val strokeIntersectionFound = intersect(x, y, centerPoint.x, centerPoint.y,
+          startX, startY, endX, endY,
+          strokePos)
+
+        if (strokeIntersectionFound)
+          {
+            val startToStrokePosSquared = squaredDistance(startX, startY, strokePos.x, strokePos.y) / squaredLength
+            val endToStrokePosSquared = squaredDistance(endX, endY, strokePos.x, strokePos.y) / squaredLength
+
+            // Check that the current pixel maps to between the segment start and endpoint
+            if (startToStrokePosSquared <= 1 && endToStrokePosSquared <= 1)
               {
-                val startToStrokePosSquared = squaredDistance(startX, startY, strokePos.x, strokePos.y) / squaredLength
-                val endToStrokePosSquared = squaredDistance(endX, endY, strokePos.x, strokePos.y) / squaredLength
+                val positionAlongStroke = Math.sqrt(startToStrokePosSquared).toFloat
 
-                // Check that the current pixel maps to between the segment start and endpoint
-                if (startToStrokePosSquared <= 1 && endToStrokePosSquared <= 1)
+                val radius = util.MathUtils.interpolate(positionAlongStroke, startRadius, endRadius)
+                val radiusSquared = radius * radius
+
+                var centerDistanceSquared = squaredDistance(x, y, strokePos.x, strokePos.y)
+
+                // Check that the current pixel is within the correct radius from the segment
+                if (centerDistanceSquared <= radiusSquared && radius > 0)
                   {
-                    val positionAlongStroke = Math.sqrt(startToStrokePosSquared).toFloat
+                    val positionAcrossStroke = Math.sqrt(centerDistanceSquared).toFloat / radius
 
-                    val radius = util.MathUtils.interpolate(positionAlongStroke, startRadius, endRadius)
-                    val radiusSquared = radius * radius
+                    /* TODO: Give across a sign depending on which side of the stroke the point is
+                      // Multiply center distance with -1 if it is on the left side of the stroke
+                      if (point leftOf strokeLine)
+                        positionAcrossStroke = -positionAcrossStroke
+                    */
 
-                    var centerDistanceSquared = squaredDistance(x, y, strokePos.x, strokePos.y)
-
-                    // Check that the current pixel is within the correct radius from the segment
-                    if (centerDistanceSquared <= radiusSquared && radius > 0)
-                      {
-                        val positionAcrossStroke = Math.sqrt(centerDistanceSquared).toFloat / radius
-
-                        /* TODO: Give across a sign depending on which side of the stroke the point is
-                          // Multiply center distance with -1 if it is on the left side of the stroke
-                          if (point leftOf strokeLine)
-                            positionAcrossStroke = -positionAcrossStroke
-                        */
-
-                        color = brush.ink.calculateColor(
-                          positionAlongStroke, positionAcrossStroke,
-                          startData, endData )
-                      }
-
+                    color = brush.ink.calculateColor(
+                      positionAlongStroke, positionAcrossStroke,
+                      startData, endData)
                   }
 
               }
 
-            // Return calculated color
-            color
-          })
+          }
 
-        }
+        // Return calculated color
+        color
+      })
+
 
     }
 
@@ -119,11 +116,9 @@ object StrokeRenderer {
   }
 
 
-
-
   /**
-   *  @return true if this point is to the left of the specified line, seen along the direction of the line,
-   *                         false if it is on the line or to the right of the line.
+   * @return true if this point is to the left of the specified line, seen along the direction of the line,
+   *                          false if it is on the line or to the right of the line.
    */
   /*
     def leftOf(line: Line): Boolean =
@@ -135,20 +130,20 @@ object StrokeRenderer {
 
 
   /**
-   *  Simple helper class to hold a coordinate pair.
+   *   Simple helper class to hold a coordinate pair.
    */
   private case class Point(var x: Float, var y: Float)
 
   /**
    * @param intersectionOut the point to store the intersection point between the lines to.
    * @return true if an intersection was found, false if the lines are parallel
-   *        (can be either no intersection, or a line intersection)
+   *         (can be either no intersection, or a line intersection)
    */
   private def intersect(x1: Float, y1: Float,
-               x2: Float, y2: Float,
-               x3: Float, y3: Float,
-               x4: Float, y4: Float,
-               intersectionOut: Point): Boolean = {
+                       x2: Float, y2: Float,
+                       x3: Float, y3: Float,
+                       x4: Float, y4: Float,
+                       intersectionOut: Point): Boolean = {
 
     // TODO: Inline to optimize?  Could also pre-calculate the values for one of the lines, as one of them is in the same place
     def det(a: Float, b: Float, c: Float, d: Float): Float =

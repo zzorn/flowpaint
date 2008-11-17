@@ -90,6 +90,14 @@
         <version>2-081113</version>
     </dependency>
 
+    <!-- Noise functions and other fun stuff -->
+    <dependency>
+        <groupId>j3d-org</groupId>
+        <artifactId>j3d-org-java3d-all</artifactId>
+        <version>0.9</version>
+    </dependency>
+
+
 
   </dependencies>
 

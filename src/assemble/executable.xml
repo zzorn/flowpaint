@@ -14,6 +14,7 @@
         <include>org.scala-lang:scala-library</include>
         <include>trove:trove</include>
         <include>jpen:jpen</include>
+        <include>j3d-org:j3d-org-java3d-all</include>
       </includes>
     </dependencySet>
   </dependencySets>

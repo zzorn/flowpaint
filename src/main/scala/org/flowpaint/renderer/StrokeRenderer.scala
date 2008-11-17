@@ -6,7 +6,7 @@ import org.flowpaint.brush
 import util.{DataSample, RectangleInt}
 
 /**
- *  Renders a stroke segment.
+ *     Renders a stroke segment.
  *
  * @author Hans Haggstrom
  */
@@ -15,7 +15,7 @@ object StrokeRenderer {
 
 
   /**
-   *  Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
+   *     Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
   def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
                        endX: Float, endY: Float, endAngle: Float, endRadius: Float,
@@ -60,7 +60,7 @@ object StrokeRenderer {
         var color = TRANSPARENT_COLOR;
 
         // If the angles were parallel, we have to move the center point continuously relative to the query point
-        if (!fixedCenterpoint){
+        if (!fixedCenterpoint) {
           centerPoint.x = x + startAngleOffsetX
           centerPoint.y = y + startAngleOffsetY
         }
@@ -88,13 +88,13 @@ object StrokeRenderer {
                 // Check that the current pixel is within the correct radius from the segment
                 if (centerDistanceSquared <= radiusSquared && radius > 0)
                   {
-                    val positionAcrossStroke = Math.sqrt(centerDistanceSquared).toFloat / radius
+                    val relativeCenterDistance = Math.sqrt(centerDistanceSquared).toFloat / radius
 
-                    /* TODO: Give across a sign depending on which side of the stroke the point is
-                      // Multiply center distance with -1 if it is on the left side of the stroke
-                      if (point leftOf strokeLine)
-                        positionAcrossStroke = -positionAcrossStroke
-                    */
+                    // Give across a sign depending on which side of the stroke the point is
+                    val positionAcrossStroke = if (util.MathUtils.rightOf(startX, startY, endX, endY, x, y))
+                      relativeCenterDistance
+                    else
+                      -relativeCenterDistance
 
                     color = brush.ink.calculateColor(
                       positionAlongStroke, positionAcrossStroke,
@@ -118,7 +118,7 @@ object StrokeRenderer {
 
   /**
    * @return true if this point is to the left of the specified line, seen along the direction of the line,
-   *                          false if it is on the line or to the right of the line.
+   *                             false if it is on the line or to the right of the line.
    */
   /*
     def leftOf(line: Line): Boolean =
@@ -130,14 +130,14 @@ object StrokeRenderer {
 
 
   /**
-   *   Simple helper class to hold a coordinate pair.
+   *      Simple helper class to hold a coordinate pair.
    */
   private case class Point(var x: Float, var y: Float)
 
   /**
    * @param intersectionOut the point to store the intersection point between the lines to.
    * @return true if an intersection was found, false if the lines are parallel
-   *         (can be either no intersection, or a line intersection)
+   *            (can be either no intersection, or a line intersection)
    */
   private def intersect(x1: Float, y1: Float,
                        x2: Float, y2: Float,

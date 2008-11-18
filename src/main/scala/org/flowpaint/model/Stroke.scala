@@ -73,14 +73,16 @@ case class Stroke(brush: Brush) extends PictureProvider {
   }
 
   private def renderStrokeSegment(startPoint: DataSample, endPoint: DataSample, surface: RenderSurface) {
+    val DEFAULT_RADIUS = 10f
+
     val startX = startPoint.getProperty("x", 0)
     val startY = startPoint.getProperty("y", 0)
     val startAngle = startPoint.getProperty("angle", 0) //* Math.Pi.toFloat * 2
-    val startRadius = startPoint.getProperty("radius", 1)
+    val startRadius = startPoint.getProperty("radius", DEFAULT_RADIUS)
     val endX = endPoint.getProperty("x", 0)
     val endY = endPoint.getProperty("y", 0)
     val endAngle = endPoint.getProperty("angle", 0) //* Math.Pi.toFloat * 2
-    val endRadius = endPoint.getProperty("radius", 10)
+    val endRadius = endPoint.getProperty("radius", DEFAULT_RADIUS)
 
     StrokeRenderer.drawStrokeSegment(
       startX, startY, startAngle, startRadius,

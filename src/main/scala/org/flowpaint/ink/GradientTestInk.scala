@@ -10,10 +10,17 @@ import util.DataSample
  */
 class GradientTestInk extends Ink {
 
+  var blueParam = 0f
+
+  def this( blue : Float ) {
+    this()
+    blueParam = blue
+  }
 
 
   def calculateColor(positionAlongStroke: Float, positionAcrossStroke: Float,
                     startData: DataSample, endData: DataSample): Int = {
+
 
 
     def getInterpolatedProperty( name:String, default:Float ) :Float = {
@@ -30,7 +37,7 @@ class GradientTestInk extends Ink {
     val stripes = 0.25f + 0.25f * Math.sin(time*3).toFloat
 
     val red = stripes * 2
-    val blue = 0
+    val blue = blueParam
     val green = stripes 
 
 /*

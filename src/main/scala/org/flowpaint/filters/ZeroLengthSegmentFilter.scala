@@ -39,6 +39,9 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
       // and not reset with the latest point data.
       pointData.setValuesFrom( previousData )
 
+      // Clear the temp data
+      previousData.clear
+
       // Process normally
       resultCallback(pointData)
     }

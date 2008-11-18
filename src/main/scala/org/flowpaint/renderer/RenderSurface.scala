@@ -1,7 +1,7 @@
 package org.flowpaint.renderer
 
 
-import java.awt.Graphics2D
+import java.awt.{Graphics2D, Color}
 
 /**
  *  Represents a surface that can be rendered to.
@@ -16,6 +16,11 @@ trait RenderSurface {
    * Clears the poicture to the default background color
    */
   def clear()
+
+  /**
+   * Clears the poicture to the specified color
+   */
+  def clearToColor( color : Color )
 
   def setViewPortSize(aWidth: Int, aHeight: Int)
 

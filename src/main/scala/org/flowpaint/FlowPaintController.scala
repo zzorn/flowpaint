@@ -1,6 +1,7 @@
 package org.flowpaint
 
 
+import _root_.scala.collection.jcl.ArrayList
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
@@ -24,6 +25,7 @@ object FlowPaintController {
   var currentBrush: Brush = null
   var currentAngle: Float = 0f
 
+  val availableBrushes = new ArrayList[Brush]()
 
   // Render cache bitmap
   var surface: SingleRenderSurface = null
@@ -39,11 +41,22 @@ object FlowPaintController {
 
   def start() {
 
+    val brush1 = new Brush(new GradientTestInk(),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
+    val brush2 = new Brush(new GradientTestInk(),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
+    val brush3 = new Brush(new GradientTestInk(),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(50)))
+
+   // Init brush collection
+    availableBrushes.add( brush1 )
+    availableBrushes.add( brush2 )
+    availableBrushes.add( brush3 )
+
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()
-    currentBrush = new Brush(new GradientTestInk(),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
+    currentBrush = brush1
 
     currentAngle = Math.toRadians(90 + 45).toFloat
 

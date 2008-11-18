@@ -6,6 +6,7 @@ import java.awt.{Dimension, BorderLayout}
 import javax.swing._
 import javax.swing.plaf.ColorUIResource
 import java.awt.event.KeyEvent
+import ui.BrushSelectionUi
 
 /**
  *
@@ -51,6 +52,8 @@ object FlowPaintUi {
     mainPanel.add(toolBar, BorderLayout.NORTH)
 
     mainPanel.add(createMainView(), BorderLayout.CENTER)
+
+    mainPanel.add(new BrushSelectionUi( FlowPaintController.availableBrushes ), BorderLayout.EAST)
 
     status = new JLabel(" ")
     mainPanel.add(status, BorderLayout.SOUTH)

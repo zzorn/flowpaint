@@ -16,11 +16,19 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
 
   def clear() {
+    clearToColor(java.awt.Color.WHITE)
+  }
+
+  def clearToColor( color : Color ) {
     if (buffer != null) {
       val graphics = buffer.getGraphics
-      graphics.setColor(java.awt.Color.WHITE)
+      graphics.setColor(color)
       graphics.fillRect(0, 0, width, height)
     }
+  }
+
+  def updateSurface() {
+    pictureProvider.updateSurface(this)
   }
 
   def setViewPortSize(aWidth: Int, aHeight: Int) {
@@ -34,7 +42,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
-        pictureProvider.updateSurface(this)
+        updateSurface()
       }
   }
 

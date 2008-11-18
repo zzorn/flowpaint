@@ -24,6 +24,12 @@ case class Stroke(brush: Brush) extends PictureProvider {
     points.add(data)
   }
 
+  /**
+   * Removes all stroke points from this stroke.
+   */
+  def clear() {
+    points.clear
+  }
 
   /**
    *   Adds a stroke point and updates the render surface with the latest stroke segment

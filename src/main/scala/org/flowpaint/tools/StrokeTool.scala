@@ -69,7 +69,9 @@ class StrokeTool extends Tool {
   {
     point.setProperty("index", currentPointIndex)
     point.setProperty("time", (getTime() - currentStrokeStartTime).toFloat / 1000f)
-    
+
+    currentPointIndex += 1
+
     stroke.brush.filterStrokePoint( point, new StrokeListener(){
 
       def addStrokePoint( pointData : DataSample ) {

@@ -19,8 +19,6 @@ class PaintPanel( surface: RenderSurface) extends JPanel {
 
     def componentResized(e :ComponentEvent ) = {
 
-      println ("View resize: "+e)
-
       surface.setViewPortSize( getWidth, getHeight )
     }
   })

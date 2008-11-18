@@ -31,7 +31,7 @@ object QuickSave {
     val exportResult = file.PngExporter.exportPng( buffer, fileName )
 
     // Show message if we succeeded
-    if (exportResult == null) FlowPaintUi.showMessage( "Quick Saved current picture as '"+fileName.getAbsolutePath().toString+"'" )
+    if (exportResult == null) FlowPaintUi.showMessage( "Saved current picture to '"+fileName.getAbsolutePath().toString+"'" )
 
     return exportResult
   }
@@ -47,8 +47,6 @@ object QuickSave {
       val name =  baseName + util.StringUtils.zeroPadInteger( i, 3 ) + suffix
 
       val file = new File( name )
-
-      println ("trying filename " + file )
 
       if (!file.exists) return file
     }

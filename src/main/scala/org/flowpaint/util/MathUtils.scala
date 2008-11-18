@@ -19,7 +19,7 @@ object MathUtils {
   def normalizeAngle(angleRadians: Double): Float = normalizeAngle(angleRadians.toFloat)
 
   /**
-   *   Turn an angle in radians to a normalized value between 0 to 1.
+   *    Turn an angle in radians to a normalized value between 0 to 1.
    */
   def normalizeAngle(angleRadians: Float): Float = wrapToZeroToOne(angleRadians / (Math.Pi.toFloat * 2f))
 
@@ -34,7 +34,13 @@ object MathUtils {
   }
 
   /**
-   *   The distance between two numbers between 0 and 1, if we assume that the value can roll over between 0 and 1
+   * Converts a function that maps doubles to -1..1 to a function that maps floats or doubles to 0..1 floats.
+   */
+  def normalizeFunction(f: (Double) => Double): (Float) => Float =
+    (v: Float) => (0.5 + 0.5 * f(v)).toFloat
+
+  /**
+   *    The distance between two numbers between 0 and 1, if we assume that the value can roll over between 0 and 1
    */
   def wrappedDistance(a: Float, b: Float): Float = {
     // Roll to 0 to 1 range
@@ -87,8 +93,8 @@ object MathUtils {
 
 
   /**
-   *  Check if two points are on the same side of a given line.
-   *  Algorithm from Sedgewick page 350.
+   *   Check if two points are on the same side of a given line.
+   *   Algorithm from Sedgewick page 350.
    *
    * @param x0 Line start x.
    * @param y0 Line start y.
@@ -100,8 +106,8 @@ object MathUtils {
    * @param py1 Second point y.
    *
    * @return < 0 if points on opposite sides, <br>
-   *          = 0 if one of the points is exactly on the line, or <br>
-   *          > 0 if points on same side. <br>
+   *           = 0 if one of the points is exactly on the line, or <br>
+   *           > 0 if points on same side. <br>
    */
   def sameSide(x0: Float, y0: Float, x1: Float, y1: Float,
               px0: Float, py0: Float, px1: Float, py1: Float): Int =

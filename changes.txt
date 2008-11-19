@@ -1,4 +1,15 @@
 
-TODO: Collect changes here.
+Changelist for FlowPaint
+
+  FlowPaint v. 0.1
+
+    Enhancements 
+      * Issue 12:  Zipped binary package
+      * Issue 21:  Brush selection UI
+
+    Bugfixes 
+      * Issue 1:  A stroke in the direction of the stroke angle sometimes produces circular dots
+      * Issue 3:  Blobs / wild angle changes appear along stroke when drawing slowly straight up/down/left/right
+      * Issue 6:  About dialog wording changes
 
 

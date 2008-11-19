@@ -27,6 +27,7 @@ echo ""
 ###############
 echo "#### Creating Webstart release"
 
+mvn clean
 mvn assembly:assembly
 
 

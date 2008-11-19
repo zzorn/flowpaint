@@ -4,9 +4,7 @@
 # Public domain, adapt and use as you want.
 # Prints the generated changelist to stdout, pipe it to the file you want
 
-import csv
-import os
-import getopt, sys
+import csv, getopt, os, sys, datetime, time
 from distutils import version
 
 def usage():
@@ -19,11 +17,6 @@ def usage():
     print ' -r, --release    The release to create a changelist for.  All releases up to and including this release are included in the report.  Default is 1.0.'
     print ' -t, --temp       The name of the temporary file to load the issue csv to.  Defaults to issue-changes.csv.'
     print ' -q, --quiet      Does not print any output if there are no errors.'
-
-
-# Utility for formatting each entry
-def createEntry( issueNumber, kind, summary ):
-    return '      * Issue ' + issueNumber + ':  ' + summary 
 
 
 
@@ -118,10 +111,13 @@ def main():
                 releases[milestone] = release
 
             if status == 'Verified' or status == 'Fixed':
+            
+                entry = '      * Issue ' + issueNumber + ' ('+priority+'):  ' + summary 
+                
                 if kind == 'Defect':
-                    release['bugfixes'].append( createEntry( issueNumber, kind, summary ) ) 
+                    release['bugfixes'].append( entry ) 
                 if kind == 'Enhancement':
-                    release['enhancements'].append( createEntry( issueNumber, kind, summary ) ) 
+                    release['enhancements'].append( entry ) 
 
 
     # Output the releases
@@ -138,7 +134,7 @@ def main():
     NL = '\n'
 
     output += NL
-    output += 'Changelist for ' + APP_NAME
+    output += 'Changelist for ' + APP_NAME + NL
 
     for releaseId in releaseIds:
         if compareVersion( releaseId, RELEASE ) >= 0:
@@ -169,6 +165,7 @@ def main():
 
     output += NL
     output += NL
+    output += 'This changelist was automatically generated on ' + str( datetime.date.today() ) + '.' + NL
 
     if (OUTPUT_FILE == ''):
         print output

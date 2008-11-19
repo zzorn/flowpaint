@@ -40,13 +40,13 @@ object FlowPaintController {
 
   def start() {
 
-    val brush1 = new Brush(new GradientTestInk(0f),
+    val brush1 = new Brush(new GradientTestInk(0f, 0f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
-    val brush2 = new Brush(new GradientTestInk(0.25f),
+    val brush2 = new Brush(new GradientTestInk(0.25f, 0f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(15)))
-    val brush3 = new Brush(new GradientTestInk(0.5f),
+    val brush3 = new Brush(new GradientTestInk(0.5f, 0.5f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
-    val brush4 = new Brush(new GradientTestInk(1f),
+    val brush4 = new Brush(new GradientTestInk(1f, 1f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(70)))
 
    // Init brush collection

@@ -52,7 +52,6 @@ class BrushPreview(val brush: Brush) extends JPanel {
     }
 
     generatePoint(-1) // NOTE: Generating one initial point, as some of the filters remove initial points.  Fix filters..
-    println("brush preview rendered")
     for (i <- 0 to STEPS) {
       generatePoint(i)
     }

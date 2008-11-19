@@ -71,7 +71,7 @@ object StrokeRenderer {
             val endToStrokePosSquared = squaredDistance(endX, endY, strokePos.x, strokePos.y) / squaredLength
 
             // Check that the current pixel maps to between the segment start and endpoint
-            if (startToStrokePosSquared < 1 && endToStrokePosSquared <= 1)
+            if (startToStrokePosSquared <= 1 && endToStrokePosSquared <= 1)
               {
                 val positionAlongStroke = Math.sqrt(startToStrokePosSquared).toFloat
 

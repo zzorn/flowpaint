@@ -56,7 +56,7 @@ class StrokeTool extends Tool {
 
       val initialSample = new DataSample(currentStatus);
 
-      FlowPaintController.fillDataSampleWithCurrentSettings(initialSample);
+      initialSample.setProperty( "pressure", 0.5f )
 
       addStrokePoint(currentStroke, initialSample )
 

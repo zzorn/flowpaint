@@ -15,10 +15,11 @@ import util.DataSample
 // Multiple strokes would also support multi-bristle brushes (way cool)
 trait StrokeFilter {
 
-  final def filterStrokePoint( pointData : DataSample, nextFilters: List[StrokeFilter]  ) {
+  final def filterStrokePoint( pointData : DataSample, nextFilters: List[StrokeFilter], finalListener: StrokeListener  ) {
 
     filterStrokePoint( pointData,
-      (result : DataSample) => nextFilters.head.filterStrokePoint( result, nextFilters.tail ) )
+      (result : DataSample) => if (nextFilters.isEmpty) finalListener.addStrokePoint(result)
+              else nextFilters.head.filterStrokePoint( result, nextFilters.tail, finalListener ) )
 
   }
 

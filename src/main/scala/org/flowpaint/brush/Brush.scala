@@ -15,7 +15,8 @@ case class Brush( ink : Ink, filters : List[StrokeFilter] ) {
   def filterStrokePoint(pointData:DataSample,listener: StrokeListener )  {
 
     if (!filters.isEmpty) {
-      filters.head.filterStrokePoint( pointData, filters.tail ::: List( listener ) )
+
+      filters.head.filterStrokePoint( pointData, filters.tail,listener )
     }
 
 

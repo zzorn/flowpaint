@@ -23,7 +23,6 @@ object FlowPaintController {
   var currentTool: Tool = null
   var currentPainting: Painting = null
   var currentBrush: Brush = null
-  var currentAngle: Float = 0f
 
   val availableBrushes = new ArrayList[Brush]()
 
@@ -41,24 +40,26 @@ object FlowPaintController {
 
   def start() {
 
-    val brush1 = new Brush(new GradientTestInk(),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
-    val brush2 = new Brush(new GradientTestInk(),
+    val brush1 = new Brush(new GradientTestInk(0f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
-    val brush3 = new Brush(new GradientTestInk(),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(50)))
+    val brush2 = new Brush(new GradientTestInk(0.25f),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(15)))
+    val brush3 = new Brush(new GradientTestInk(0.5f),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
+    val brush4 = new Brush(new GradientTestInk(1f),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(70)))
 
    // Init brush collection
     availableBrushes.add( brush1 )
     availableBrushes.add( brush2 )
     availableBrushes.add( brush3 )
+    availableBrushes.add( brush4 )
 
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()
-    currentBrush = brush1
+    currentBrush = brush2
 
-    currentAngle = Math.toRadians(90 + 45).toFloat
 
     // Render cache bitmap
     surface = new SingleRenderSurface(currentPainting)
@@ -84,13 +85,6 @@ object FlowPaintController {
   }
 
 
-  def fillDataSampleWithCurrentSettings(sample: DataSample)
-    {
-      /*
-            sample.setProperty( "maxRadius", currentRadius )
-      */
-      sample.setProperty("angle", currentAngle)
-    }
 
 
   def quit() {

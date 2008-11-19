@@ -10,6 +10,7 @@ import util.DataSample
 class ZeroLengthSegmentFilter extends StrokeFilter {
 
   private var previousData = new DataSample()
+  private var temp = new DataSample()
 
   private var oldX = 0f
   private var oldY = 0f
@@ -35,12 +36,20 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
       // Overwrite values with latest ones
       previousData.setValuesFrom( pointData )
 
+/*
+      temp.clear
+      temp.setValuesFrom(pointData)
+*/
+
       // Copy all values to the newest point, to also catch any old ones that were set for discarded points
       // and not reset with the latest point data.
       pointData.setValuesFrom( previousData )
 
-      // Clear the temp data
+/*
+      // Clear the old temp data, but retain the most recent
       previousData.clear
+      previousData.setValuesFrom( temp )
+*/
 
       // Process normally
       resultCallback(pointData)

@@ -47,7 +47,7 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
 
 /*
       // Clear the old temp data, but retain the most recent
-      previousData.clear
+//      previousData.clear
       previousData.setValuesFrom( temp )
 */
 

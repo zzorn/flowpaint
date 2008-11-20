@@ -5,6 +5,8 @@ import _root_.scala.collection.jcl.ArrayList
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
+import gradient.TwoColorGradient
+import ink.NoiseInk
 import input.PenInputHandler
 import java.awt.Font
 import model.{Stroke, Painting}
@@ -40,10 +42,22 @@ object FlowPaintController {
 
   def start() {
 
+    def sampleFromColor(r:Float, g:Float, b:Float, a:Float):DataSample ={
+
+      val data = new DataSample()
+      data.setProperty("red",r)
+      data.setProperty("green",g)
+      data.setProperty("blue",b)
+      data.setProperty("alpha",a)
+      data
+    }
+    val twoColorGradient = new TwoColorGradient( sampleFromColor(0,0,0.5f,1), sampleFromColor(0,0.5f,1,0.1f) )
+
+
     val brush1 = new Brush(new GradientTestInk(0f, 0f),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
-    val brush2 = new Brush(new GradientTestInk(0.25f, 0f),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(15)))
+      List(new ZeroLengthSegmentFilter(  ), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
+    val brush2 = new Brush(new NoiseInk( twoColorGradient, (14f,1.4f)),
+      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(20)))
     val brush3 = new Brush(new GradientTestInk(0.5f, 0.5f),
       List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
     val brush4 = new Brush(new GradientTestInk(1f, 1f),
@@ -58,7 +72,7 @@ object FlowPaintController {
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()
-    currentBrush = brush2
+    currentBrush = brush3
 
 
     // Render cache bitmap

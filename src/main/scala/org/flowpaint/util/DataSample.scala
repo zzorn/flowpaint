@@ -35,6 +35,29 @@ class DataSample {
     properties.clear
   }
 
+  /**
+   * Interpolate this DataSample towards the specified target value, by the specified amount, 0 = no change, 1 = become target.
+   * If a value is in only one of the samples, that value is used directly.
+   */
+  def interpolate( amount : Float, target: DataSample ) {
+
+    val interpolateValuesProcedure = new TIntFloatProcedure {
+      def execute(id: Int, value: Float): Boolean = {
+        if (properties.contains( id )) {
+          properties.put( id, MathUtils.interpolate(amount, properties.get(id), value) )
+        }
+        else {
+          properties.put( id, value )
+        }
+
+        true
+      }
+    }
+
+
+    target.properties.forEachEntry( interpolateValuesProcedure )
+  }
+
   def containsId( id : Int ): Boolean = properties.contains(id)
 
   def getPropertyWithId(id: Int, defaultValue: Float): Float =

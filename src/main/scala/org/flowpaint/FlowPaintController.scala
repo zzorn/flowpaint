@@ -5,8 +5,8 @@ import _root_.scala.collection.jcl.ArrayList
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
-import gradient.TwoColorGradient
-import ink.NoiseInk
+import gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
+import ink.{GradientInk, NoiseInk, Ink}
 import input.PenInputHandler
 import java.awt.Font
 import model.{Stroke, Painting}
@@ -15,7 +15,7 @@ import tools.{StrokeTool, Tool}
 import util.DataSample
 
 /**
- *   Provides common methods of the application for various tools etc.
+ *    Provides common methods of the application for various tools etc.
  *
  * @author Hans Haggstrom
  */
@@ -42,37 +42,148 @@ object FlowPaintController {
 
   def start() {
 
-    def sampleFromColor(r:Float, g:Float, b:Float, a:Float):DataSample ={
+    def sampleFromColor(r: Float, g: Float, b: Float, a: Float): DataSample = {
 
       val data = new DataSample()
-      data.setProperty("red",r)
-      data.setProperty("green",g)
-      data.setProperty("blue",b)
-      data.setProperty("alpha",a)
+      data.setProperty("red", r)
+      data.setProperty("green", g)
+      data.setProperty("blue", b)
+      data.setProperty("alpha", a)
       data
     }
-    val twoColorGradient = new TwoColorGradient( sampleFromColor(0,0,0.5f,1), sampleFromColor(0,0.5f,1,0.1f) )
+    val twoColorGradient = new TwoColorGradient(sampleFromColor(0, 0, 0.5f, 1), sampleFromColor(0, 0.5f, 1, 0.1f))
+
+    def makeGradientPoint(position: Float, r: Float, g: Float, b: Float, a: Float): GradientPoint = {
+
+      GradientPoint(position, sampleFromColor(r, g, b, a))
+    }
+    val smoothTransparentBlackTransparentGradient = new MultiGradient(
+      makeGradientPoint(0, 0, 0, 0, 0),
+      makeGradientPoint(0.1f, 0, 0, 0, 0.01f),
+      makeGradientPoint(0.2f, 0, 0, 0, 0.03f),
+      makeGradientPoint(0.3f, 0, 0, 0, 0.04f),
+      makeGradientPoint(0.4f, 0, 0, 0, 0.05f),
+      makeGradientPoint(0.6f, 0, 0, 0, 0.05f),
+      makeGradientPoint(0.7f, 0, 0, 0, 0.04f),
+      makeGradientPoint(0.8f, 0, 0, 0, 0.03f),
+      makeGradientPoint(0.9f, 0, 0, 0, 0.01f),
+      makeGradientPoint(1, 0, 0, 0, 0))
+
+    def makeColoredGradient( r:Float, g:Float, b:Float ) : Gradient = {
+
+      new MultiGradient(
+        makeGradientPoint(0.0f, r*0.7f, g*0.7f, b*0.3f, 0.0f),
+        makeGradientPoint(0.2f, r*0.9f, g*0.8f, b*0.6f, 0.1f),
+        makeGradientPoint(0.4f, r*1.0f, g*1.0f, b*0.7f, 0.4f),
+        makeGradientPoint(0.5f, r*1.0f, g*1.0f, b*0.8f, 0.5f),
+        makeGradientPoint(0.6f, r*1.0f, g*1.0f, b*0.7f, 0.4f),
+        makeGradientPoint(0.8f, r*0.9f, g*0.8f, b*0.6f, 0.1f),
+        makeGradientPoint(1.0f, r*0.7f, g*0.7f, b*0.3f, 0.0f))
+    }
 
 
-    val brush1 = new Brush(new GradientTestInk(0f, 0f),
-      List(new ZeroLengthSegmentFilter(  ), new StrokeAngleTilter(), new RadiusFromPressureFilter(5)))
-    val brush2 = new Brush(new NoiseInk( twoColorGradient, (14f,1.4f)),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(20)))
-    val brush3 = new Brush(new GradientTestInk(0.5f, 0.5f),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(30)))
-    val brush4 = new Brush(new GradientTestInk(1f, 1f),
-      List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(), new RadiusFromPressureFilter(70)))
+    val sepiaPenGradient = makeColoredGradient( 0.4f,0.25f,0.1f )
+    val maroonPenGradient = makeColoredGradient( 0.6f,0.1f,0.2f )
+    val ocraPenGradient = makeColoredGradient( 0.9f,0.7f,0.2f )
+    val sapGreenPenGradient = makeColoredGradient( 0.3f,0.6f,0.1f )
+    val purplePenGradient = makeColoredGradient( 0.3f,0.1f,0.5f )
 
-   // Init brush collection
-    availableBrushes.add( brush1 )
-    availableBrushes.add( brush2 )
-    availableBrushes.add( brush3 )
-    availableBrushes.add( brush4 )
+    val grey = 0.35f
+    val blackGradient = new MultiGradient(
+      makeGradientPoint(0.0f, grey, grey, grey, 0.0f),
+//      makeGradientPoint(0.1f, grey, grey, grey, 0.05f),
+      makeGradientPoint(0.5f, grey, grey, grey, 0.4f),
+//      makeGradientPoint(0.9f, grey, grey, grey, 0.05f),
+      makeGradientPoint(1.0f, grey, grey, grey, 0.0f) )
+
+    val inkGradient = new MultiGradient(
+      makeGradientPoint(0.0f, 0.2f, 0, 0.3f, 0.5f),
+      makeGradientPoint(0.1f, 0, 0, 0.2f, 0.8f),
+      makeGradientPoint(0.5f, 0, 0, 0, 0.9f),
+      makeGradientPoint(0.9f, 0, 0, 0.2f, 0.8f),
+      makeGradientPoint(1.0f, 0.1f, 0, 0.4f, 0.5f) )
+
+    val a = 0.8f
+    val b = 0.6f
+    val c = 0.3f
+    val marbleGradient = new MultiGradient(
+      makeGradientPoint(0.0f, c, c, c, 0.5f),
+      makeGradientPoint(0.2f, a, a, a, 0.3f),
+      makeGradientPoint(0.4f, c, c, c, 0.5f),
+      makeGradientPoint(0.6f, c, c, c, 0.5f),
+      makeGradientPoint(0.8f, b, b, b, 0.3f),
+      makeGradientPoint(1.0f, c, c, c, 0.5f) )
+
+    val sunflowerGradient = new MultiGradient(
+      makeGradientPoint(0.0f, 1.0f, 1.0f, 0.2f, 1),
+      makeGradientPoint(0.5f, 1.0f, 0.8f, 0.1f, 1),
+      makeGradientPoint(0.9f, 0.9f, 0.5f, 0.0f, 1),
+      makeGradientPoint(1.0f, 0.7f, 0.3f, 0.0f, 1)
+      )
+
+    val fireGradient = new MultiGradient(
+      makeGradientPoint(0.0f, 1.0f, 0.9f, 0.2f, 1),
+      makeGradientPoint(0.3f, 1.0f, 0.7f, 0.0f, 1),
+      makeGradientPoint(0.4f, 0.8f, 0.2f, 0.0f, 1f),
+      makeGradientPoint(0.5f, 0.6f, 0.1f, 0.0f, 0.8f),
+      makeGradientPoint(0.6f, 0.4f, 0f, 0.0f, 0f),
+      makeGradientPoint(1.0f, 0, 0, 0, 0))
+
+    val skyCloudGradient = new MultiGradient(
+      makeGradientPoint(0.0f, 0f, 0.2f, 0.7f, 1),
+      makeGradientPoint(0.7f, 0f, 0.2f, 0.7f, 1),
+      makeGradientPoint(0.72f, 0.5f, 0.5f, 0.9f, 1),
+      makeGradientPoint(0.75f, 1f, 1f, 1.0f, 1),
+      makeGradientPoint(1.0f, 0.85f, 0.85f, 0.9f, 1)
+    )
+
+    val alienGradient = new MultiGradient(
+      makeGradientPoint(0.0f, 0.4f, 0.9f, 0.0f, 0f),
+      makeGradientPoint(0.3f, 0.3f, 0.8f, 0.1f, 0.7f),
+      makeGradientPoint(0.5f, 0.2f, 0.7f, 0.3f, 1),
+      makeGradientPoint(0.7f, 0.1f, 0.6f, 0.3f, 0.7f),
+      makeGradientPoint(1.0f, 0.0f, 0.0f, 0.2f, 0f)
+    )
+
+    def addBrush(ink: Ink,radius: Float, tilt :Float): Brush = {
+      val brush = new Brush(ink,
+        List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(tilt), new RadiusFromPressureFilter(radius)))
+      availableBrushes.add(brush)
+      brush
+    }
+
+    currentBrush = addBrush(new GradientInk(blackGradient), 3,0)
+    addBrush(new GradientInk(inkGradient), 6, 0.8f)
+
+    addBrush(new GradientTestInk(0f, 1f), 10,0)
+    addBrush(new GradientTestInk(0.5f, 1f), 30,0)
+    addBrush(new GradientTestInk(1f, 1f), 80,0)
+
+    addBrush(new GradientInk(sepiaPenGradient), 15,0)
+    addBrush(new GradientInk(maroonPenGradient), 15,0)
+    addBrush(new GradientInk(ocraPenGradient), 15,0)
+    addBrush(new GradientInk(sapGreenPenGradient), 15,0)
+    addBrush(new GradientInk(purplePenGradient), 15,0)
+
+    addBrush(new NoiseInk(sepiaPenGradient, (77f, 2f)), 30,0)
+    addBrush(new NoiseInk(maroonPenGradient, (77f, 2f)), 30,0)
+    addBrush(new NoiseInk(ocraPenGradient, (77f, 2f)), 30,0)
+    addBrush(new NoiseInk(sapGreenPenGradient, (77f, 2f)), 30,0)
+    addBrush(new NoiseInk(purplePenGradient, (77f, 2f)), 30,0)
+
+    addBrush(new NoiseInk(twoColorGradient, (14f, 1.4f)), 40,0)
+
+    addBrush(new GradientInk(smoothTransparentBlackTransparentGradient), 60,0)
+
+    addBrush(new NoiseInk(sunflowerGradient, (15f, 4f)), 50,0.2f)
+    addBrush(new NoiseInk(fireGradient, (20f, 0.5f)), 30,0)
+    addBrush(new NoiseInk(skyCloudGradient, (10f, 0.2f)), 150,0.1f)
+    addBrush(new NoiseInk(alienGradient, (40f, 2f)), 20,0)
+    addBrush(new NoiseInk(marbleGradient , (80f, 5f)), 80,0)
 
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()
-    currentBrush = brush3
 
 
     // Render cache bitmap
@@ -97,8 +208,6 @@ object FlowPaintController {
 
     FlowPaintUi.frame.show
   }
-
-
 
 
   def quit() {

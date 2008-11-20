@@ -48,7 +48,7 @@ class NoiseInk(gradient: Gradient,
     val red = noise.getProperty("red", 0)
     val green = noise.getProperty("green", 0)
     val blue= noise.getProperty("blue", 0)
-    val alpha= noise.getProperty("alpha", 1)
+    val alpha= noise.getProperty("alpha", 1) * (1f - Math.abs(positionAcrossStroke))
 
     util.ColorUtils.createRGBAColor( red, green, blue, alpha )
   }

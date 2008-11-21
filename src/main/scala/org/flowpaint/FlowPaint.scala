@@ -13,18 +13,17 @@ import util.DataSample
  */
 object FlowPaint {
   val APPLICATION_NAME = "FlowPaint"
-  val VERSION = "0.1"
-  val VERSION_DESC = "Alpha"
+  val VERSION = "0.1.0"
   val RELEASE_DATE = "November 2008"
   val HOMEPAGE_PRETTY = "www.flowpaint.org"
   val HOMEPAGE_URL = "http://" + HOMEPAGE_PRETTY
 
-  val DESCRIPTION = APPLICATION_NAME + " v. " + VERSION + " " + VERSION_DESC
-  val FULL_DESCRIPTION = DESCRIPTION + ", released " + RELEASE_DATE
+  val NAME_AND_VERSION = APPLICATION_NAME + " v. " + VERSION
+  val NAME_VERSION_AND_DATE = NAME_AND_VERSION + ", released " + RELEASE_DATE
 
   // TODO: Move to some resource file?
   val ABOUT = "<html>" +
-          "<p><center><b>" + FULL_DESCRIPTION + "</b></center></p>" +
+          "<p><center><b>" + NAME_VERSION_AND_DATE + "</b></center></p>" +
           "<p></p>"+
           "<p>FlowPaint aims to be an intuitive and powerful cross-platform next generation paint program.</p>" +
           "<p></p>"+

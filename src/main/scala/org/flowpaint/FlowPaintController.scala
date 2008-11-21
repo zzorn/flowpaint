@@ -299,7 +299,7 @@ object FlowPaintController {
     optionPane.setMessage(FlowPaint.ABOUT);
     optionPane.setMessageType(javax.swing.JOptionPane.PLAIN_MESSAGE);
     //   optionPane.setIcon()
-    val dialog = optionPane.createDialog(FlowPaintUi.frame, FlowPaint.DESCRIPTION);
+    val dialog = optionPane.createDialog(FlowPaintUi.frame, FlowPaint.NAME_AND_VERSION);
     dialog.setVisible(true);
   }
 

@@ -39,7 +39,7 @@ object FlowPaintUi {
 
   def createUi(): JFrame = {
 
-    val frame = new JFrame(FlowPaint.APPLICATION_NAME + " " + FlowPaint.VERSION + " " + FlowPaint.VERSION_DESC)
+    val frame = new JFrame(FlowPaint.NAME_AND_VERSION)
     val mainPanel: JComponent = new JPanel(new BorderLayout())
     frame.setContentPane(mainPanel)
     mainPanel.setPreferredSize(new Dimension(sizeX, sizeY))

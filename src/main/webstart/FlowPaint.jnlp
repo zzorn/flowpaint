@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-      codebase="http://www.flowpaint.org/webstart"
+      codebase="http://flowpaint.nfshost.com/webstart/"
       href="FlowPaint.jnlp">
   <information>
     <title>FlowPaint</title>
@@ -8,7 +8,7 @@
     <homepage href="http://www.flowpaint.org"/>
 
     <description>FlowPaint</description>
-    <description kind="short">An immersive paint program</description>
+    <description kind="short">Intuitive and powerful next generation paint program</description>
     <!--
         <icon href="icon.gif"/>
         <icon kind="splash" href="splash.gif"/>

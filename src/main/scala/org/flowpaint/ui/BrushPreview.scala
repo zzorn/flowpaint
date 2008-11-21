@@ -30,11 +30,13 @@ class BrushPreview(val brush: Brush) extends JPanel {
 
       // TODO: Use nicer smoother curves later
 
+      val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
+
       val dataSample = new DataSample()
       dataSample.setProperty("index", i.toFloat)
       dataSample.setProperty("x", w * f)
       dataSample.setProperty("y", h * f)
-      dataSample.setProperty("pressure", 1f - Math.abs((1f - f * 2)))
+      dataSample.setProperty("pressure", pressure) //1f - Math.abs((1f - f * 2))
       dataSample.setProperty("time", f * 0.5f)
 
 
@@ -86,11 +88,12 @@ class BrushPreview(val brush: Brush) extends JPanel {
   })
 
   private var mousePressedOnThisButton = false
-  private val UNPRESSED_COLOR = new Color(230, 230, 230)
+  private val UNPRESSED_COLOR = new Color(230,230,230)
+  private val PRESSED_COLOR=  new Color(250,210,100)
 
   private def press() {
     mousePressedOnThisButton = true
-    painting.backgroundColor = java.awt.Color.WHITE
+    painting.backgroundColor = PRESSED_COLOR
     surface.updateSurface()
     repaint()
   }
@@ -105,12 +108,12 @@ class BrushPreview(val brush: Brush) extends JPanel {
   unpress()
   addMouseListener(new MouseAdapter() {
     override def mousePressed(e: java.awt.event.MouseEvent) {
+      FlowPaintController.currentBrush = brush
       press()
     }
 
     override def mouseReleased(e: java.awt.event.MouseEvent) {
       if (mousePressedOnThisButton) {
-        FlowPaintController.currentBrush = brush
         unpress()
       }
     }

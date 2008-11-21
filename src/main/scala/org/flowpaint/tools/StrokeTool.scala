@@ -57,6 +57,7 @@ class StrokeTool extends Tool {
       val initialSample = new DataSample(currentStatus);
 
       initialSample.setProperty( "pressure", 0.5f )
+      initialSample.setProperty( "randomSeed", Math.random.toFloat )
 
       addStrokePoint(currentStroke, initialSample )
 

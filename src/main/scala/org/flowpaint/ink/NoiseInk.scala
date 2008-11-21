@@ -11,19 +11,24 @@ import util.DataSample
 
 class NoiseInk(gradient: Gradient,
               noiseScale: (Float, Float),
-              randomSeed: Long,
               propertyName : String,
               resultMapper: (Float) => Float ) extends Ink {
 
 
+/*
   def this(gradient: Gradient,
               noiseScale: (Float, Float)) {
     this ( gradient, noiseScale,13351L, "time", (a:Float) => a )
   }
+*/
 
-  val w = {
-    val random = new Random(randomSeed)
-    random.nextFloat * 1000
+  var alphaWithDistance= 1f
+
+  def this(gradient: Gradient,
+              noiseScale: (Float, Float),
+              alphaWithDistance : Float) {
+    this ( gradient, noiseScale, "time", (a:Float) => a )
+    this.alphaWithDistance = alphaWithDistance
   }
 
 
@@ -42,13 +47,21 @@ class NoiseInk(gradient: Gradient,
 
     val u = interpolatedProperty(propertyName , 1) * noiseScale._1
     val v = positionAcrossStroke * noiseScale._2
+    val w = startData.getProperty("randomSeed", 0.5f) * 1000
 
+    
     val noise : DataSample =  gradient( resultMapper( 0.5f + 0.5f * util.PerlinNoise.perlinNoise(u, v, w) ) )
+
+    val noiseAlpha: Float = noise.getProperty("alpha", 1)
+
+
+    val distanceFromEdge = 1f - Math.abs(positionAcrossStroke)
+    val alphaMul = if( distanceFromEdge >= alphaWithDistance)  1f else distanceFromEdge / alphaWithDistance
 
     val red = noise.getProperty("red", 0)
     val green = noise.getProperty("green", 0)
     val blue= noise.getProperty("blue", 0)
-    val alpha= noise.getProperty("alpha", 1) * (1f - Math.abs(positionAcrossStroke))
+    val alpha = noiseAlpha * alphaMul
 
     util.ColorUtils.createRGBAColor( red, green, blue, alpha )
   }

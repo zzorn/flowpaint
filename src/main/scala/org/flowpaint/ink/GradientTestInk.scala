@@ -37,7 +37,7 @@ class GradientTestInk extends Ink {
     //val dots = noise.noise2( time*0.1f, positionAcrossStroke*5 )
     val noise = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*60f, positionAcrossStroke*2.3f, 1.1f )
     val dots2 = util.MathUtils.interpolate(bumpiness, 1f, noise)
-    val stripes = 0.25f + 0.25f * Math.sin(time*2).toFloat
+    val stripes = 0.25f + 0.25f * Math.sin(time*8).toFloat
 
     val red = stripes + 0.5f
     val blue = blueParam

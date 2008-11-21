@@ -18,8 +18,8 @@ issueReleasePrefix=Release-
 echo "##### Creating release packages for $userReadableName version $version"
 echo "### Compiling"
 
-#mvn clean
-#mvn assembly:assembly
+mvn clean
+mvn assembly:assembly
 
 # TODO: Check exit status of compile - what's the idiom for that in shell script?
 

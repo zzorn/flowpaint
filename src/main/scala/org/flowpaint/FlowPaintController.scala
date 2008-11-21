@@ -280,18 +280,17 @@ object FlowPaintController {
   }
 
   def reportIssue() {
-    val launcher = new BrowserLauncher()
-    launcher.openURLinBrowser("http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user");
+    util.InternetUtils.openUrlInBrowser( "http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user",
+            "issue report page")
   }
 
   def requestFeature() {
-    val launcher = new BrowserLauncher()
-    launcher.openURLinBrowser("http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user");
+    util.InternetUtils.openUrlInBrowser( "http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user",
+            "feature request page")
   }
 
   def goToHomePage() {
-    val launcher = new BrowserLauncher()
-    launcher.openURLinBrowser("http://code.google.com/p/flowpaint");
+    util.InternetUtils.openUrlInBrowser( FlowPaint.HOMEPAGE_URL, FlowPaint.APPLICATION_NAME + " homepage")
   }
 
   def showAbout() {

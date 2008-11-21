@@ -14,13 +14,21 @@ and has some rendering artefacts, but it can be used for light sketching.
 
 This first version of FlowPaint contains the following major features:
 
-  * A procedural brush system with a set of hand crafted brushes.
+  * A procedural brush system with a set of hand-crafted brushes.
   * A quick-save feature that allows uninterrupted sketching. 
+
+See changes.txt for a full list of implemented features and fixed bugs, 
+and for the known open bugs.
 
 
 == License ==
 
 FlowPaint is licensed under GNU GPL v2, see the license.txt file for details.
+
+
+== Disclaimer ==
+
+Use at your own risk.  The authors take no responsibility of use or misuse of this software.
 
 
 == Download ==
@@ -42,13 +50,14 @@ certificate for FlowPaint (signed by zzorn), click Accept / Run to start FlowPai
 
 === Zipped Package ===
 
-If WebStart didn't work, you can install FlowPaint from the zipped package.
+If WebStart didn't work, you can install FlowPaint from a zipped package.
 
-Move the package to a suitable location (e.g. you home directory or My Documents) 
-and unzip it, by right click on it and selecting 'Extract Here'  (or similar - depends on 
-you installed unzip software).  
+You can find the package download link on the flowpaint homepage (www.flowpaint.org)
+Move the package to a suitable location (e.g. you home directory or My Documents). 
+Unzip it, by right clicking on it and selecting 'Extract Here'  (or similar - depends on 
+you installed unzip software), or with  unzip flowpaint-0.1.0  on unix systems.
 
-It should extract a directory named flowpaint-0.1 (or similar, depending on the version).
+It should extract a directory named flowpaint-0.1.0 (or similar, depending on the version).
 
 In Windows, change to that directory and double-click flowpaint.bat.  Flowpaint should start.
 
@@ -97,9 +106,6 @@ Mailing list:   *TODO*
 Lead developer: Hans Häggström (zzorn at iki.fi)
 
 
-== Disclaimer ==
-
-Use at your own risk.  The authors take no responsibility of use or misuse of this software.
 
 
 

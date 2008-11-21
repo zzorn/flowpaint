@@ -16,7 +16,7 @@ object FlowPaint {
   val VERSION = "0.1"
   val VERSION_DESC = "Alpha"
   val RELEASE_DATE = "November 2008"
-  val HOMEPAGE_PRETTY = "code.google.com/p/flowpaint/"
+  val HOMEPAGE_PRETTY = "www.flowpaint.org"
   val HOMEPAGE_URL = "http://" + HOMEPAGE_PRETTY
 
   val DESCRIPTION = APPLICATION_NAME + " v. " + VERSION + " " + VERSION_DESC

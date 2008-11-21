@@ -90,6 +90,7 @@ def main():
 
     # Handle each issue, build a list of releases
     releases = {}
+    openBugs = []
     for row in reader:
         if len(row) > 0:
             issueNumber = row[headers['ID']]
@@ -110,15 +111,16 @@ def main():
                 release['enhancements'] = []
                 releases[milestone] = release
 
+            entry = '      * Issue ' + issueNumber + ' ('+priority+'):  ' + summary 
+
             if status == 'Verified' or status == 'Fixed':
-            
-                entry = '      * Issue ' + issueNumber + ' ('+priority+'):  ' + summary 
-                
                 if kind == 'Defect':
                     release['bugfixes'].append( entry ) 
                 if kind == 'Enhancement':
                     release['enhancements'].append( entry ) 
 
+            if (status == 'Accepted' or status == 'Started') and kind == 'Defect':
+                openBugs.append( entry ) 
 
     # Output the releases
 
@@ -136,6 +138,7 @@ def main():
     output += NL
     output += 'Changelist for ' + APP_NAME + NL
 
+    latestRelease = True
     for releaseId in releaseIds:
         if compareVersion( releaseId, RELEASE ) >= 0:
 
@@ -159,9 +162,16 @@ def main():
                 output += e + NL
 
             output += NL
-            output += '    Bugfixes ' + NL
+            output += '    Fixed bugs ' + NL
             for b in release['bugfixes']:
                 output += b + NL
+
+            if latestRelease:                
+                latestRelease = False
+                output += NL
+                output += '    Known open bugs ' + NL
+                for b in openBugs:
+                    output += b + NL
 
     output += NL
     output += NL

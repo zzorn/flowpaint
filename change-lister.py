@@ -16,13 +16,14 @@ def usage():
     print ' -o, --output     The name of the output file to save the report to.  If not specified, will print to stdout.'
     print ' -r, --release    The release to create a changelist for.  All releases up to and including this release are included in the report.  Default is 1.0.'
     print ' -t, --temp       The name of the temporary file to load the issue csv to.  Defaults to issue-changes.csv.'
+    print '     --prefix     The prefix used by the project for marking which release an issue belongs to.  Defaults to "Release".  (Currently only its length is used)'
     print ' -q, --quiet      Does not print any output if there are no errors.'
 
 
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hp:n:o:r:t:q", ["help", "project=","name=","output=","release=","temp=", "quiet"])
+        opts, args = getopt.getopt(sys.argv[1:], "hp:n:o:r:t:q", ["help", "project=","name=","output=","release=","temp=", "quiet", "prefix="])
     except getopt.GetoptError, err:
         # print help information and exit:
         print
@@ -35,6 +36,7 @@ def main():
     ISSUE_IMPORT_FILE = "issue-changes.csv"
     OUTPUT_FILE = ''
     RELEASE = '1.0' 
+    RELESE_PREFIX = 'Release' 
     QUIET = False
 
     output = None
@@ -55,6 +57,8 @@ def main():
             RELEASE = a
         elif o in ("-t", "--temp"):
             ISSUE_IMPORT_FILE = a
+        elif o in ("--prefix"):
+            RELESE_PREFIX = a
         else:
             assert False, 'unhandled option'
 
@@ -97,7 +101,7 @@ def main():
             kind = row[headers['Type']]
             status = row[headers['Status']]
             priority = row[headers['Priority']]
-            milestone = row[headers['Milestone']] [7:] # Assumes issues are marked with a release tag like Milestone0.1
+            milestone = row[headers['Milestone']] [ len(RELESE_PREFIX) : ] 
             owner = row[headers['Owner']]
             summary = row[headers['Summary']]
 

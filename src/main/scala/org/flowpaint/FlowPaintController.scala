@@ -7,7 +7,8 @@ import edu.stanford.ejalbert.BrowserLauncher
 import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
 import gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
 import ink.{GradientInk, NoiseInk, Ink}
-import input.PenInputHandler
+import input.{InputHandler}
+
 import java.awt.Font
 import model.{Stroke, Painting}
 import renderer.{SingleRenderSurface, RenderSurface}
@@ -36,7 +37,7 @@ object FlowPaintController {
   var paintPanel: PaintPanel = null
 
   // Input source
-  var penInput: PenInputHandler = null
+  var penInput: InputHandler = null
 
   var penManager: jpen.PenManager = null
 
@@ -236,7 +237,7 @@ object FlowPaintController {
     paintPanel = new PaintPanel(surface, true)
 
     // Input source
-    penInput = new PenInputHandler( (sample: DataSample) => {
+    penInput = new InputHandler( (sample: DataSample) => {
       currentTool.onEvent(sample)
       paintPanel.repaint()
     })
@@ -245,6 +246,10 @@ object FlowPaintController {
 
     penManager.pen.addListener(penInput)
 
+/* The JPen library already forwards mouse events.
+    paintPanel.addMouseMotionListener( penInput )
+    paintPanel.addMouseListener( penInput )
+*/
 
     FlowPaintUi.init()
 

@@ -75,4 +75,22 @@ class DataSample {
   def setProperty(name: String, value: Float) : Unit= setPropertyWithId(  StrokePropertyRegister.getId( name ), value )
 
 
+  override def toString: String = {
+
+    var output = "DataSample( "
+
+    properties.forEachEntry( new  TIntFloatProcedure (){
+      def execute(id : Int, value: Float): Boolean = {
+
+        val name = StrokePropertyRegister.getName( id )
+
+        output += " "+name+" "+value + " "
+
+        return true
+      }
+
+    })
+
+    return output + ")"
+  }
 }

@@ -19,6 +19,7 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
+// TODO: Extract the default brush setup code..
 object FlowPaintController {
 
   // State / datamodel info
@@ -232,10 +233,10 @@ object FlowPaintController {
     surface = new SingleRenderSurface(currentPainting)
 
     // Rendering UI
-    paintPanel = new PaintPanel(surface)
+    paintPanel = new PaintPanel(surface, true)
 
     // Input source
-    penInput = new PenInputHandler((sample: DataSample) => {
+    penInput = new PenInputHandler( (sample: DataSample) => {
       currentTool.onEvent(sample)
       paintPanel.repaint()
     })

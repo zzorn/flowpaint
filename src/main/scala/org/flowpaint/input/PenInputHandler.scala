@@ -22,12 +22,15 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
   private var yScale = 1f
 
   /**Used for syncronizing on the projection variables. */
+/*
   private val projectionLock = new Object
+*/
 
   private val MAX_INPUT_EVENT_QUEUE = 10000
   private val MAX_SAMPLES_TO_HANDLE_AT_ONCE = 100
   private val myQueuedInput : BlockingQueue[DataSample]  = new ArrayBlockingQueue[DataSample]( MAX_INPUT_EVENT_QUEUE );
 
+/*
   // Handle DataSamples in the queue with tools that run in the swing thread
   val sampleMover : Thread = new Thread( new Runnable()
   {
@@ -49,6 +52,7 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
       }
 
   } )
+*/
 
 
 /*
@@ -56,6 +60,7 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
 */
 
 
+/*
   def waitForSamples( samples : ArrayList[DataSample] )
   {
       // Wait for first sample
@@ -77,7 +82,9 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
       // Get the rest of the available samples
       myQueuedInput.drainTo( samples, MAX_SAMPLES_TO_HANDLE_AT_ONCE );
   }
+*/
 
+/*
   def sendSamplesInSwingThread( samples : ArrayList[DataSample])
   {
       try
@@ -100,6 +107,7 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
 //        LOGGER.log( Level.WARNING, "Problem when handling input events", e );
       }
   }
+*/
 
 
 
@@ -111,12 +119,16 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
                          yOffs: Float,
                          xScale: Float,
                          yScale: Float) {
+/*
     projectionLock.synchronized{
+*/
       this.xOffs = xOffs;
       this.yOffs = yOffs;
       this.xScale = xScale;
       this.yScale = yScale;
+/*
     }
+*/
   }
 
   def penButtonEvent(event: PButtonEvent): Unit = {
@@ -140,7 +152,13 @@ class PenInputHandler (sampleListener : (DataSample)=>Unit)  extends PenListener
     val dataSample = createDataSample(event)
 
     def setCoordinate(name: String, value: Float, scale: Float, offset: Float) =
-      projectionLock.synchronized{dataSample.setProperty(name, value * scale + offset)}
+/*
+      projectionLock.synchronized{
+*/
+        dataSample.setProperty(name, value * scale + offset)
+/*
+      }
+*/
 
     event.levels.foreach((level: PLevel) =>
             {

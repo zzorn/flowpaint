@@ -65,7 +65,7 @@ class BrushPreview(val brush: Brush) extends JPanel {
   private val stroke = new Stroke(brush)
   private val painting = new Painting()
   private val surface = new SingleRenderSurface(painting)
-  private val paintPanel = new PaintPanel(surface)
+  private val paintPanel = new PaintPanel(surface, false)
 
   setLayout(new java.awt.BorderLayout())
   setPreferredSize(new Dimension(32, 32))

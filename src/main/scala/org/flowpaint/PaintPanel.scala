@@ -35,22 +35,44 @@ class PaintPanel( surface: RenderSurface, useCrosshairCursor : Boolean ) extends
 
   def createThinCrosshairCursor() : Cursor = {
 
-    val size = 15
-    val mid = 7
-    val image = new BufferedImage( size, size, BufferedImage.TYPE_INT_ARGB )
+    val size = 18
+    val mid = 9
+    val cut = 3
+    val image = new BufferedImage( size+1, size+1, BufferedImage.TYPE_INT_ARGB )
+    val g = image.getGraphics
+    
+    g.setColor( Color.BLACK )
+    g.drawLine( mid, 0, mid, mid - cut)
+    g.drawLine( mid, mid+cut, mid, size)
+
+    g.setColor( Color.WHITE )
+    g.drawLine( mid, 1, mid, size-1)
+    g.drawLine( 1, mid, size-1, mid)
+
+    val toolkit = java.awt.Toolkit.getDefaultToolkit();
+    val cursor = toolkit.createCustomCursor(image, new Point( mid, mid), "ThinCrosshair")
+
+    cursor
+  }
+
+  def createCrosshairCursor() : Cursor = {
+
+    val size = 18
+    val mid = 9
+    val image = new BufferedImage( size+1, size+1, BufferedImage.TYPE_INT_ARGB )
     val g = image.getGraphics
 
-    jeps// White half transparent outline (for visibility on black bg.)
-    g.setColor( new Color( 255, 255, 255, 128 ) )
-    g.drawLine( mid+1, 0, mid+1, size)
-    g.drawLine( mid-1, 0, mid-1, size)
-    g.drawLine( 0, mid+1, size, mid+1)
-    g.drawLine( 0, mid-1, size, mid-1)
-
-    // Black mid
     g.setColor( Color.BLACK )
     g.drawLine( mid, 0, mid, size)
     g.drawLine( 0, mid, size, mid)
+    g.drawLine( mid-1, 0, mid-1, size)
+    g.drawLine( 0, mid-1, size, mid-1)
+    g.drawLine( mid+1, 0, mid+1, size)
+    g.drawLine( 0, mid+1, size, mid+1)
+
+    g.setColor( Color.WHITE )
+    g.drawLine( mid, 1, mid, size-1)
+    g.drawLine( 1, mid, size-1, mid)
 
     val toolkit = java.awt.Toolkit.getDefaultToolkit();
     val cursor = toolkit.createCustomCursor(image, new Point( mid, mid), "ThinCrosshair")

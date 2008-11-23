@@ -1,6 +1,7 @@
 = FlowPaint =
 
-Radme instructions for FlowPaint version 0.1.0, released in November 2008
+Documentation for FlowPaint version 0.1, released in November 2008
+
 
 == About ==
 
@@ -102,7 +103,7 @@ and clears the canvas, allowing you to directly start on the next one.
 
 Home Page:      www.flowpaint.org
 IRC Channel:    #flowpaint on irc.freenode.net
-Mailing list:   *TODO*
+Mailing list:   http://groups.google.com/group/flowpaint
 Lead developer: Hans Häggström (zzorn at iki.fi)
 
 

@@ -2,4 +2,4 @@
 
 echo #### Starting FlowPaint
 
-java -Djava.library.path=nativelibs -jar target/flowpaint-executable.jar
+java -Djava.library.path=nativelibs -jar flowpaint.jar

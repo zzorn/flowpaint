@@ -56,16 +56,16 @@ echo ""
 
 ###########################################################################
 echo "#### Updating application.properties"
-./set-property.py -f $applicationPropertiesFile -p "version" -v $version
-./set-property.py -f $applicationPropertiesFile -p "repositoryVersion" -v $revision
-./set-property.py -f $applicationPropertiesFile -p "releaseDate" -v $releaseDate
-./set-property.py -f $applicationPropertiesFile -p "homepage" -v $homepage
-./set-property.py -f $applicationPropertiesFile -p "bugReportUrl" -v $bugReportUrl
-./set-property.py -f $applicationPropertiesFile -p "featureRequestUrl" -v $featureRequestUrl
-./set-property.py -f $applicationPropertiesFile -p "applicationName" -v $userReadableName
-./set-property.py -f $applicationPropertiesFile -p "oneLineDescription" -v $oneLineDescription
-./set-property.py -f $applicationPropertiesFile -p "credits" -v $credits
-./set-property.py -f $applicationPropertiesFile -p "license" -v $license
+./set-property.py -q -f $applicationPropertiesFile -p "version" -v "$version"
+./set-property.py -q -f $applicationPropertiesFile -p "repositoryVersion" -v "$revision"
+./set-property.py -q -f $applicationPropertiesFile -p "releaseDate" -v "$releaseDate"
+./set-property.py -q -f $applicationPropertiesFile -p "homepage" -v "$homepage"
+./set-property.py -q -f $applicationPropertiesFile -p "bugReportUrl" -v "$bugReportUrl"
+./set-property.py -q -f $applicationPropertiesFile -p "featureRequestUrl" -v "$featureRequestUrl"
+./set-property.py -q -f $applicationPropertiesFile -p "applicationName" -v "$userReadableName"
+./set-property.py -q -f $applicationPropertiesFile -p "oneLineDescription" -v "$oneLineDescription"
+./set-property.py -q -f $applicationPropertiesFile -p "credits" -v "$credits"
+./set-property.py -q -f $applicationPropertiesFile -p "license" -v "$license"
 
 ###########################################################################
 echo "#### Compiling"

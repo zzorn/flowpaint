@@ -21,7 +21,7 @@ jnlpFileLocation=src/main/webstart/FlowPaint.jnlp
 issueReleasePrefix=Release-
 keystoreFile=FlowPaintKeystore
 keystoreUser=zzorn
-applicationPropertiesFile=src/main/resources/application.properties
+appProperties=src/main/resources/application.properties
 homepage=www.flowpaint.org
 bugReportUrl=http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user
 featureRequestUrl=http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user
@@ -56,16 +56,16 @@ echo ""
 
 ###########################################################################
 echo "#### Updating application.properties"
-./set-property.py -q -f $applicationPropertiesFile -p "version" -v "$version"
-./set-property.py -q -f $applicationPropertiesFile -p "repositoryVersion" -v "$revision"
-./set-property.py -q -f $applicationPropertiesFile -p "releaseDate" -v "$releaseDate"
-./set-property.py -q -f $applicationPropertiesFile -p "homepage" -v "$homepage"
-./set-property.py -q -f $applicationPropertiesFile -p "bugReportUrl" -v "$bugReportUrl"
-./set-property.py -q -f $applicationPropertiesFile -p "featureRequestUrl" -v "$featureRequestUrl"
-./set-property.py -q -f $applicationPropertiesFile -p "applicationName" -v "$userReadableName"
-./set-property.py -q -f $applicationPropertiesFile -p "oneLineDescription" -v "$oneLineDescription"
-./set-property.py -q -f $applicationPropertiesFile -p "credits" -v "$credits"
-./set-property.py -q -f $applicationPropertiesFile -p "license" -v "$license"
+./set-property.py -q -f $appProperties -p "version" -v "$version"
+./set-property.py -q -f $appProperties -p "repositoryVersion" -v "$revision"
+./set-property.py -q -f $appProperties -p "releaseDate" -v "$releaseDate"
+./set-property.py -q -f $appProperties -p "homepage" -v "$homepage"
+./set-property.py -q -f $appProperties -p "bugReportUrl" -v "$bugReportUrl"
+./set-property.py -q -f $appProperties -p "featureRequestUrl" -v "$featureRequestUrl"
+./set-property.py -q -f $appProperties -p "applicationName" -v "$userReadableName"
+./set-property.py -q -f $appProperties -p "oneLineDescription" -v "$oneLineDescription"
+./set-property.py -q -f $appProperties -p "credits" -v "$credits"
+./set-property.py -q -f $appProperties -p "license" -v "$license"
 
 ###########################################################################
 echo "#### Compiling"

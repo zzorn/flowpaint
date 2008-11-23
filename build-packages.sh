@@ -6,6 +6,7 @@
 
 # Application specific variables:
 version=`cat VERSION`
+releaseDate=`date +"%m %B %Y"`
 userReadableName=Flowpaint
 appName=flowpaint
 binDirName=$appName-$version-bin
@@ -29,6 +30,17 @@ echo "#### Generating changes.txt from completed issues"
 ./change-lister.py --quiet --name $userReadableName --project $googleCodeProjectId --output changes.txt --release $version --temp temporary-issue-list.csv --prefix $issueReleasePrefix
 rm temporary-issue-list.csv
 
+echo "#### Downloading and generating readme.txt"
+echo "### Generate title, version and release date information for readme.txt"
+echo "= $userReadableName =" > readme.txt
+echo "" > readme.txt
+echo "Documentation for $userReadableName version $version, released $releaseDate" >> readme.txt
+echo "### Downloading bulk of documentation for readme.txt from the wiki"
+# Append everything from the third line on (remove labels and original title)
+wget http://flowpaint.googlecode.com/svn/wiki/Documentation.wiki
+tail Documentation.wiki -n +3 >> readme.txt
+rm Documentation.wiki
+
 
 echo "#### Building source package"
 echo "### Removing old package if found"
@@ -39,6 +51,10 @@ rm -r $srcDirName
 
 echo "### Exporting sources"
 svn export . $srcDirName
+
+echo "### Adding generated files to sources"
+cp readme.txt $srcDirName/
+cp changes.txt $srcDirName/
 
 echo "### Zipping source package up"
 zip -r $sourcePackageName $srcDirName

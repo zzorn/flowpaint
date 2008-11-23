@@ -1,4 +1,3 @@
-#labels Featured,Phase-Deploy
 = Flowpaint =
 
 Documentation for Flowpaint version 0.1, released 23 November 2008

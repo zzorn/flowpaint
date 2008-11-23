@@ -14,7 +14,7 @@ object FlowPaint {
 
   // TODO: Move these to some property file?
   val APPLICATION_NAME = "FlowPaint"
-  val VERSION = "0.1.0"
+  val VERSION = "0.1"
   val RELEASE_DATE = "in November 2008"
   val HOMEPAGE_PRETTY = "www.flowpaint.org"
   val TAG_LINE= "FlowPaint aims to be an intuitive and powerful next generation paint program."
@@ -23,8 +23,8 @@ object FlowPaint {
 
 
   val HOMEPAGE_URL = "http://" + HOMEPAGE_PRETTY
-  val NAME_AND_VERSION = APPLICATION_NAME + " v. " + VERSION
-  val NAME_VERSION_AND_DATE = NAME_AND_VERSION + ", released " + RELEASE_DATE
+  val NAME_AND_VERSION = APPLICATION_NAME + " " + VERSION
+  val NAME_VERSION_AND_DATE = APPLICATION_NAME + " v. " + VERSION + ", released " + RELEASE_DATE
 
   val ABOUT = "<html>" +
           "<p><center><b>" + NAME_VERSION_AND_DATE + "</b></center></p>" +

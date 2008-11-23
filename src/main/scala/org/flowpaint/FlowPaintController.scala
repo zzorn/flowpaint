@@ -286,13 +286,11 @@ object FlowPaintController {
   }
 
   def reportIssue() {
-    util.InternetUtils.openUrlInBrowser( "http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user",
-            "issue report page")
+    util.InternetUtils.openUrlInBrowser( FlowPaint.BUG_REPORT_URL, "issue report page")
   }
 
   def requestFeature() {
-    util.InternetUtils.openUrlInBrowser( "http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user",
-            "feature request page")
+    util.InternetUtils.openUrlInBrowser( FlowPaint.FEATURE_REQUEST_URL, "feature request page")
   }
 
   def goToHomePage() {

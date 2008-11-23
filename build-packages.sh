@@ -5,6 +5,7 @@
 
 # Application specific variables:
 version=`cat VERSION`
+revision=`svnversion -n`
 releaseDate=`date +"%d %B %Y"`
 userReadableName=Flowpaint
 appName=flowpaint
@@ -20,9 +21,19 @@ jnlpFileLocation=src/main/webstart/FlowPaint.jnlp
 issueReleasePrefix=Release-
 keystoreFile=FlowPaintKeystore
 keystoreUser=zzorn
+applicationPropertiesFile=src/main/resources/application.properties
+homepage=www.flowpaint.org
+bugReportUrl=http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user
+featureRequestUrl=http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user
+oneLineDescription="FlowPaint aims to be an intuitive and powerful next generation paint program."
+credits="Programmed by Hans H&auml;ggstr&ouml;m ( zzorn @ iki.fi )"
+license="GPL v2"
+
+
+
 
 echo "##### $userReadableName package creation script"
-echo "##### Creating release packages for $userReadableName version $version"
+echo "##### Creating release packages for $userReadableName version $version, subversion revision $revision, release date $releaseDate"
 echo "##### This script creates binary, source, and webstart packages for a release"
 echo "##### It doesn't deploy them, but requires the passwords to the keystore used to sign the webstart files."
 
@@ -43,6 +54,18 @@ stty echo
 echo ""
 
 
+###########################################################################
+echo "#### Updating application.properties"
+./set-property.py -f $applicationPropertiesFile -p "version" -v $version
+./set-property.py -f $applicationPropertiesFile -p "repositoryVersion" -v $revision
+./set-property.py -f $applicationPropertiesFile -p "releaseDate" -v $releaseDate
+./set-property.py -f $applicationPropertiesFile -p "homepage" -v $homepage
+./set-property.py -f $applicationPropertiesFile -p "bugReportUrl" -v $bugReportUrl
+./set-property.py -f $applicationPropertiesFile -p "featureRequestUrl" -v $featureRequestUrl
+./set-property.py -f $applicationPropertiesFile -p "applicationName" -v $userReadableName
+./set-property.py -f $applicationPropertiesFile -p "oneLineDescription" -v $oneLineDescription
+./set-property.py -f $applicationPropertiesFile -p "credits" -v $credits
+./set-property.py -f $applicationPropertiesFile -p "license" -v $license
 
 ###########################################################################
 echo "#### Compiling"

@@ -2,7 +2,6 @@
 # Google code issue system to changelist.txt generator.
 # Programmed 2008-11 by Hans Haggstrom (zzorn at iki.fi)
 # Public domain, adapt and use as you want.
-# Prints the generated changelist to stdout, pipe it to the file you want
 
 import csv, getopt, os, sys, datetime, time
 from distutils import version
@@ -39,8 +38,6 @@ def main():
     RELESE_PREFIX = 'Release' 
     QUIET = False
 
-    output = None
-    verbose = False
     for o, a in opts:
         if o in ("-h", "--help"):
             usage()

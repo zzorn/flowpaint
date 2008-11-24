@@ -189,4 +189,14 @@
     </plugins>
   </reporting>
 
+
+  <!-- Configure the version control system used. -->
+  <scm>
+      <connection>scm:svn:https://flowpaint.googlecode.com/svn/trunk</connection>
+      <developerConnection>scm:svn:https://flowpaint.googlecode.com/svn/trunk
+      </developerConnection>
+      <url>http://flowpaint.googlecode.com/svn/trunk/</url>
+  </scm>
+
+
 </project>

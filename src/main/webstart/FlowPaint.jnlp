@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-      codebase="http://flowpaint.nfshost.com/webstart/"
-      href="FlowPaint.jnlp">
+      codebase="http://flowpaint.googlecode.com/svn/webstart/stable/"
+      href="flowpaint.jnlp">
   <information>
-    <title>FlowPaint</title>
-    <vendor>FlowPaint Project</vendor>
+    <title>Flowpaint</title>
+    <vendor>Flowpaint Project</vendor>
     <homepage href="http://www.flowpaint.org"/>
 
-    <description>FlowPaint</description>
+    <description>Flowpaint</description>
     <description kind="short">Intuitive and powerful next generation paint program</description>
     <!--
         <icon href="icon.gif"/>
@@ -20,7 +20,7 @@
   </security>
   <resources>
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+"/>
-    <jar href="flowpaint-executable.jar"/>
+    <jar href="flowpaint.jar"/>
     <!--
         <jar href="apresource.jar"/>
         <jar href="lib/j2da.jar"/>

@@ -28,6 +28,22 @@ object FlowPaint {
     case e: IOException => System.err.println( "Failed to load properties (using defaults): " + e.toString() )
   }
 
+  def loadIcon( name : String ) : ImageIcon = {
+    try
+    {
+      val classloader = FlowPaint.getClass().getClassLoader()
+      return new ImageIcon( classloader.getResource( "images/"+name ));
+    }
+    catch
+    {
+      case e: Exception => System.err.println( "Failed to load icon '"+name+"': " + e.toString() )
+    }
+    return null
+  }
+
+  val APPLICATION_ICON = loadIcon( "logo-swirl.png" )
+
+
   val APPLICATION_NAME = properties.getProperty("applicationName", "Flowpaint")
   val VERSION = properties.getProperty("version", "N/A")
   val REPOSITORY_VERSION = properties.getProperty("repositoryVersion", "N/A")
@@ -38,6 +54,7 @@ object FlowPaint {
   val LICENSE = properties.getProperty("license", "GPL v2")
   val BUG_REPORT_URL = properties.getProperty("bugReportUrl", "http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user")
   val FEATURE_REQUEST_URL = properties.getProperty("featureRequestUrl", "http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user")
+
 
 
   val HOMEPAGE_URL = "http://" + HOMEPAGE_PRETTY

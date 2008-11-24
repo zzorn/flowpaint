@@ -98,9 +98,7 @@ object FlowPaintController {
     val grey = 0.35f
     val blackGradient = new MultiGradient(
       makeGradientPoint(0.0f, grey, grey, grey, 0.0f),
-//      makeGradientPoint(0.1f, grey, grey, grey, 0.05f),
       makeGradientPoint(0.5f, grey, grey, grey, 0.6f),
-//      makeGradientPoint(0.9f, grey, grey, grey, 0.05f),
       makeGradientPoint(1.0f, grey, grey, grey, 0.0f) )
 
     val inkGradient = new MultiGradient(
@@ -238,11 +236,6 @@ object FlowPaintController {
 
     penManager.pen.addListener(penInput)
 
-/* The JPen library already forwards mouse events.
-    paintPanel.addMouseMotionListener( penInput )
-    paintPanel.addMouseListener( penInput )
-*/
-
     FlowPaintUi.init()
 
 
@@ -294,7 +287,7 @@ object FlowPaintController {
     val optionPane = new javax.swing.JOptionPane()
     optionPane.setMessage(FlowPaint.ABOUT);
     optionPane.setMessageType(javax.swing.JOptionPane.PLAIN_MESSAGE);
-    //   optionPane.setIcon()
+    optionPane.setIcon( FlowPaint.APPLICATION_ICON )
     val dialog = optionPane.createDialog(FlowPaintUi.frame, FlowPaint.NAME_AND_VERSION);
     dialog.setVisible(true);
   }

@@ -41,7 +41,7 @@ object FlowPaint {
     return null
   }
 
-  val APPLICATION_ICON = loadIcon( "logo-swirl.png" )
+  val APPLICATION_ICON = loadIcon( "logo-swirl-transparent.png" )
 
 
   val APPLICATION_NAME = properties.getProperty("applicationName", "Flowpaint")

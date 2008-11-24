@@ -15,13 +15,6 @@ class NoiseInk(gradient: Gradient,
               resultMapper: (Float) => Float ) extends Ink {
 
 
-/*
-  def this(gradient: Gradient,
-              noiseScale: (Float, Float)) {
-    this ( gradient, noiseScale,13351L, "time", (a:Float) => a )
-  }
-*/
-
   var alphaWithDistance= 1f
 
   def this(gradient: Gradient,

@@ -203,14 +203,6 @@ object FlowPaintController {
     addBrush(new GradientInk(purplePenGradient, 0.7f), 20,0, 1f)
     addBrush(new GradientInk(lampBlackPenGradient, 0.7f ), 20,0, 1f)
 
-/*
-    addBrush(new NoiseInk(sepiaPenGradient, (77f, 2f)), 30,0)
-    addBrush(new NoiseInk(maroonPenGradient, (77f, 2f)), 30,0)
-    addBrush(new NoiseInk(ocraPenGradient, (77f, 2f)), 30,0)
-    addBrush(new NoiseInk(sapGreenPenGradient, (77f, 2f)), 30,0)
-    addBrush(new NoiseInk(purplePenGradient, (77f, 2f)), 30,0)
-*/
-
     addBrush(new NoiseInk(woodGradient, (15f, 2.1f), 0.2f), 30,0, 0.9f)
     addBrush(new NoiseInk(fireGradient, (30f, 1f), 0.35f), 18,0, 1f)
     addBrush(new NoiseInk(sunflowerGradient, (15f, 2f), 0.2f), 20,0.2f, 1)

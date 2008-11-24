@@ -42,7 +42,7 @@ object QuickSave {
    */
   def findFreeFileName( baseName : String, suffix : String ) : File = {
 
-    for ( i <- 1 to 999 ) {
+    for ( i <- 1 to 9999 ) {
 
       val name =  baseName + util.StringUtils.zeroPadInteger( i, 3 ) + suffix
 

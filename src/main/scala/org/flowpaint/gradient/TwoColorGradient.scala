@@ -6,6 +6,8 @@ import util.DataSample
  * 
  * 
  * @author Hans Haggstrom
+ *
+ * @deprecated Use MultiGradient instead, it's more general, but probably about as fast.
  */
 
 class TwoColorGradient(zero : DataSample, one : DataSample) extends Gradient {

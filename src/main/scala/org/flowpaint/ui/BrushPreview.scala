@@ -41,9 +41,6 @@ class BrushPreview(val brush: Brush) extends JPanel {
 
 
       // Run the input point through the filters in the stroke
-      /*
-            stroke.filterAndAdd( dataSample )
-      */
       // TODO: Change to use functions instead of anonymous one method classes
       stroke.brush.filterStrokePoint(dataSample, new StrokeListener() {
         def addStrokePoint(pointData: DataSample) {

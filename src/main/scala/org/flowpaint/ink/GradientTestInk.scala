@@ -43,12 +43,6 @@ class GradientTestInk extends Ink {
     val blue = blueParam
     val green = stripes * 0.5f + 0.25f
 
-/*
-    val red = getInterpolatedProperty("red",0)
-    val green = getInterpolatedProperty("green",0)
-    val blue = getInterpolatedProperty("blue",0)
-*/
-
     val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2
 
     val r = (255 * red).toInt

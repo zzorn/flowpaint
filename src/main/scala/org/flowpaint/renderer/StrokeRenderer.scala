@@ -112,19 +112,6 @@ object StrokeRenderer {
 
 
   /**
-   * @return true if this point is to the left of the specified line, seen along the direction of the line,
-   *                             false if it is on the line or to the right of the line.
-   */
-  /*
-    def leftOf(line: Line): Boolean =
-      {
-        // TODO: Implement, so that we can have non-symmetrical brushes
-        false
-      }
-  */
-
-
-  /**
    *      Simple helper class to hold a coordinate pair.
    */
   private case class Point(var x: Float, var y: Float)

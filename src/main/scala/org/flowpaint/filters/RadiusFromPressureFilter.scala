@@ -13,8 +13,9 @@ class RadiusFromPressureFilter(maxRadius : Float, pressureEffect : Float) extend
   protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) = {
 
     val pressure = pointData.getProperty( "pressure", 0.5f )
+    val maxRadius2 = pointData.getProperty( "maxRadius", 10 )
 
-    val radius = util.MathUtils.interpolate( pressureEffect, maxRadius, pressure * maxRadius )
+    val radius = util.MathUtils.interpolate( pressureEffect, maxRadius2, pressure * maxRadius2 )
 
     pointData.setProperty( "radius", radius )
 

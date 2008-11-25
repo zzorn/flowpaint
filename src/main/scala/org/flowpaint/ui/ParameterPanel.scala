@@ -1,5 +1,6 @@
 package org.flowpaint.ui
 
+import java.awt.GridLayout
 import javax.swing.JPanel
 
 /**
@@ -7,9 +8,20 @@ import javax.swing.JPanel
  * 
  * @author Hans Haggstrom
  */
-class ParameterPanel extends JPanel {
+class ParameterPanel {
 
-  
+  val ui = new JPanel(new GridLayout() )
 
+  def clear() {
+    ui.removeAll()
+    
+  }
+
+  def addParameterUi( parameterUi:ParameterUi ) {
+    ui.add( parameterUi )
+
+    ui.repaint()
+    parameterUi.repaint()
+  }
 
 }

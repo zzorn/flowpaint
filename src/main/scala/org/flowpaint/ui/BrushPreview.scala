@@ -14,7 +14,7 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
-
+// TODO: Extract preview from brush selection button
 class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit  ) extends JPanel {
   def updateStroke() {
 

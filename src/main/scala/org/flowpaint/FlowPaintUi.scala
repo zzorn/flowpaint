@@ -6,7 +6,7 @@ import java.awt.{Dimension, BorderLayout}
 import javax.swing._
 import javax.swing.plaf.ColorUIResource
 import java.awt.event.KeyEvent
-import ui.BrushSelectionUi
+import ui.{ParameterPanel, BrushSelectionUi}
 
 /**
  *
@@ -22,6 +22,7 @@ object FlowPaintUi {
 
   var status: JLabel = null
 
+  var brushParameterPanel = new ParameterPanel()
 
   def init()
     {
@@ -57,7 +58,11 @@ object FlowPaintUi {
 
     mainPanel.add(createMainView(), BorderLayout.CENTER)
 
-    mainPanel.add(new BrushSelectionUi( FlowPaintController.availableBrushes ), BorderLayout.EAST)
+    val brushPanel = new JPanel(new BorderLayout())
+    brushPanel.add(new BrushSelectionUi( FlowPaintController.availableBrushes ), BorderLayout.EAST)
+    brushPanel.add(brushParameterPanel.ui, BorderLayout.CENTER)
+    mainPanel.add(brushPanel, BorderLayout.EAST)
+    
 
     status = new JLabel(" ")
     mainPanel.add(status, BorderLayout.SOUTH)

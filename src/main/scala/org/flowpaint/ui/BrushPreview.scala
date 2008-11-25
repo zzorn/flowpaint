@@ -15,7 +15,7 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class BrushPreview(val brush: Brush) extends JPanel {
+class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit  ) extends JPanel {
   def updateStroke() {
 
     stroke.clear()
@@ -28,17 +28,10 @@ class BrushPreview(val brush: Brush) extends JPanel {
     def generatePoint(i: Int) {
       val f: Float = (1f * i) / (1f * STEPS)
 
-      // TODO: Use nicer smoother curves later
-
-      val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
-
       val dataSample = new DataSample()
       dataSample.setProperty("index", i.toFloat)
-      dataSample.setProperty("x", w * f)
-      dataSample.setProperty("y", h * f)
-      dataSample.setProperty("pressure", pressure) //1f - Math.abs((1f - f * 2))
-      dataSample.setProperty("time", f * 0.5f)
 
+      strokePointCalculator( f, w, h, dataSample )
 
       // Run the input point through the filters in the stroke
       // TODO: Change to use functions instead of anonymous one method classes

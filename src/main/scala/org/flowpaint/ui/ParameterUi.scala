@@ -1,6 +1,7 @@
 package org.flowpaint.ui
 
 import _root_.org.flowpaint.util.DataSample
+import java.awt.BorderLayout
 import javax.swing.JPanel
 
 /**
@@ -11,6 +12,8 @@ import javax.swing.JPanel
  * @author Hans Haggstrom
  */
 abstract class ParameterUi( editedData : DataSample ) extends JPanel {
+
+  setLayout( new BorderLayout() )
 
 
   // TODO: Add various layout functionality here, maybe hints on what proportions and size this component

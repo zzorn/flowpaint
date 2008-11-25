@@ -22,10 +22,13 @@ class SliderUi( editedData : DataSample,
 
   // TODO: Reuse BrushPreview
 
+
+
   abstract sealed class Orientation
   case object Vertical extends Orientation ()
   case object Horizontal extends Orientation ()
 
+  var relativePosition = 0.5f
 
   var orientation : Orientation = Vertical
 
@@ -46,7 +49,25 @@ class SliderUi( editedData : DataSample,
     dataSample.setProperty("time", f * 0.5f)
   }
 
-  val preview = new BrushPreview(previewBrush, brushPreviewStrokeGenerator )
+
+  val preview = new BrushPreview(previewBrush, brushPreviewStrokeGenerator ) {
+
+    override def paintComponents(p1: Graphics): Unit = {
+      super.paintComponent(p1)
+
+      val r = relativePosition
+      val w = getWidth().toFloat
+      val h = getHeight().toFloat
+      val x1 = if (orientation==Vertical)  0f else r * w
+      val x2 = if (orientation==Vertical)  w else r *w
+      val y1 = if (orientation==Vertical)  h * r else 0f
+      val y2 = if (orientation==Vertical)  h * r else h
+
+      p1.setColor(java.awt.Color.BLACK)
+      p1.drawLine( x1.toInt, y1.toInt, x2.toInt, y2.toInt  )
+    }
+
+  }
 
   add( preview, BorderLayout.CENTER )
 

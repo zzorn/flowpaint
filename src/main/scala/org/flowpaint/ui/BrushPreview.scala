@@ -16,6 +16,10 @@ import util.DataSample
  */
 // TODO: Extract preview from brush selection button
 class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit  ) extends JPanel {
+
+  /**
+   * Call this if the preview stroke should be re-rendered.
+   */
   def updateStroke() {
 
     stroke.clear()
@@ -69,13 +73,14 @@ class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float,
 
   addComponentListener(new ComponentListener() {
     def componentMoved(e: java.awt.event.ComponentEvent) {}
-
     def componentShown(e: java.awt.event.ComponentEvent) {}
-
     def componentHidden(e: java.awt.event.ComponentEvent) {}
-
     def componentResized(e: java.awt.event.ComponentEvent) {updateStroke()}
   })
+
+  // Update the stroke when the brush changes
+  brush.addChangeListener( { b => updateStroke() } )
+
 
   private var mousePressedOnThisButton = false
   private val UNPRESSED_COLOR = new Color(230,230,230)

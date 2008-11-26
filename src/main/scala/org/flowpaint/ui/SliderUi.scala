@@ -14,7 +14,8 @@ class SliderUi( editedData : DataSample,
                 editedParameter : String,
                 startValue : Float,
                 endValue : Float,
-                previewBrush : => Brush ) extends ParameterUi(editedData) {
+                previewBrush : => Brush,
+                changeListener : => Unit ) extends ParameterUi(editedData) {
 
   // TODO: Slider implementation, with a brush used to render the preview
 

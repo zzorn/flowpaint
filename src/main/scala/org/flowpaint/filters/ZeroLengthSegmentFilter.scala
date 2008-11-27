@@ -14,13 +14,33 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
 
   private var oldX = 0f
   private var oldY = 0f
+  private var oldX2 = 0f
+  private var oldY2 = 0f
 
   val FILTER_DISTANCE: Int = 0
 
+  val smoothing = 0.2f
+
   protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) = {
 
+
+/*
+    pointData.setProperty("x",pointData.getProperty("x",oldX2))
+    pointData.setProperty("y",pointData.getProperty("y",oldY2))
+*/
+
+    val newX = util.MathUtils.interpolate(smoothing, pointData.getProperty("x",oldX2), oldX2 )
+    val newY = util.MathUtils.interpolate(smoothing,  pointData.getProperty("y",oldY2), oldY2 )
+/*
     val newX = pointData.getProperty("x",0)
     val newY = pointData.getProperty("y",0)
+*/
+
+    pointData.setProperty("x",newX)
+    pointData.setProperty("y",newY)
+
+    oldX2 = newX
+    oldY2 = newY
 
     if ( util.MathUtils.squaredDistance( oldX, oldY, newX, newY ) <= FILTER_DISTANCE * FILTER_DISTANCE )
       {

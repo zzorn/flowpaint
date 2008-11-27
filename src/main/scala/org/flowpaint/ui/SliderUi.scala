@@ -21,16 +21,20 @@ class SliderUi( editedData : DataSample,
 
   // TODO: Reuse BrushPreview
 
+
+  var relativePosition = 0.5f
+  var orientation : Orientation = Vertical
+
   private val STROKE_1 = new BasicStroke(1)
+  private val preview = new BrushPreview( previewBrush, brushPreviewStrokeGenerator )
+
+  add( preview, BorderLayout.CENTER )
 
 
   abstract sealed class Orientation
   case object Vertical extends Orientation ()
   case object Horizontal extends Orientation ()
 
-  var relativePosition = 0.5f
-
-  var orientation : Orientation = Vertical
 
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, dataSample:DataSample) {
 
@@ -51,30 +55,6 @@ class SliderUi( editedData : DataSample,
 
 
 
-  val preview = new BrushPreview(previewBrush, brushPreviewStrokeGenerator ) {
 
-    override def paintComponents(p1: Graphics): Unit = {
-      super.paintComponent(p1)
-
-      val g2 :Graphics2D = p1.asInstanceOf[Graphics2D]
-
-      val r = relativePosition
-      val w = getWidth().toFloat
-      val h = getHeight().toFloat
-
-      val vertical: Boolean = orientation == Vertical
-      val x1 = if (vertical)  0f else r * w
-      val x2 = if (vertical)  w else r *w
-      val y1 = if (vertical)  h * r else 0f
-      val y2 = if (vertical)  h * r else h
-
-      g2.setColor(java.awt.Color.BLACK)
-      g2.setStroke( STROKE_1)
-      g2.drawLine( x1.toInt, y1.toInt, x2.toInt, y2.toInt  )
-    }
-
-  }
-
-  add( preview, BorderLayout.CENTER )
 
 }

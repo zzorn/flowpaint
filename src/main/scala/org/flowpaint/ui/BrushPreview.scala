@@ -10,17 +10,45 @@ import renderer.SingleRenderSurface
 import util.DataSample
 
 /**
- *
+ * A JComponent that renders a view of the specified stroke points with the specified brush.
  *
  * @author Hans Haggstrom
  */
-// TODO: Extract preview from brush selection button
 class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit  ) extends JPanel {
 
+  if (brush== null) throw new IllegalArgumentException("brush should not be null")
+  if (strokePointCalculator == null) throw new IllegalArgumentException("strokePointCalculator should not be null")
+
+  private val stroke = new Stroke(brush)
+  private val painting = new Painting()
+  private val surface = new SingleRenderSurface(painting)
+  private val paintPanel = new PaintPanel(surface, false)
+
+  setLayout(new java.awt.BorderLayout())
+  setPreferredSize(new Dimension(32, 32))
+  setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1))
+
+  painting.currentLayer.addStroke(stroke)
+
+  add(paintPanel, java.awt.BorderLayout.CENTER)
+
+  update()
+
+  addComponentListener(new ComponentListener() {
+    def componentMoved(e: java.awt.event.ComponentEvent) {}
+    def componentShown(e: java.awt.event.ComponentEvent) {}
+    def componentHidden(e: java.awt.event.ComponentEvent) {}
+    def componentResized(e: java.awt.event.ComponentEvent) {update()}
+  })
+
+  // Update the stroke when the brush changes
+  brush.addChangeListener( { b => update() } )
+
+  
   /**
    * Call this if the preview stroke should be re-rendered.
    */
-  def updateStroke() {
+  def update() {
 
     stroke.clear()
 
@@ -51,73 +79,18 @@ class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float,
     for (i <- 0 to STEPS) {
       generatePoint(i)
     }
-    
-    repaint()
-  }
 
-
-  private val stroke = new Stroke(brush)
-  private val painting = new Painting()
-  private val surface = new SingleRenderSurface(painting)
-  private val paintPanel = new PaintPanel(surface, false)
-
-  setLayout(new java.awt.BorderLayout())
-  setPreferredSize(new Dimension(32, 32))
-  setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1))
-
-  painting.currentLayer.addStroke(stroke)
-
-  add(paintPanel, java.awt.BorderLayout.CENTER)
-
-  updateStroke()
-
-  addComponentListener(new ComponentListener() {
-    def componentMoved(e: java.awt.event.ComponentEvent) {}
-    def componentShown(e: java.awt.event.ComponentEvent) {}
-    def componentHidden(e: java.awt.event.ComponentEvent) {}
-    def componentResized(e: java.awt.event.ComponentEvent) {updateStroke()}
-  })
-
-  // Update the stroke when the brush changes
-  brush.addChangeListener( { b => updateStroke() } )
-
-
-  private var mousePressedOnThisButton = false
-  private val UNPRESSED_COLOR = new Color(230,230,230)
-  private val PRESSED_COLOR=  new Color(250,210,100)
-
-  private def press() {
-    mousePressedOnThisButton = true
-    painting.backgroundColor = PRESSED_COLOR
     surface.updateSurface()
+
     repaint()
   }
 
-  private def unpress() {
-    mousePressedOnThisButton = false
-    painting.backgroundColor = UNPRESSED_COLOR
-    surface.updateSurface()
+  def setBackgroundColor( color :Color ) {
+    painting.backgroundColor = color
+
     repaint()
   }
 
-  unpress()
-  addMouseListener(new MouseAdapter() {
-    override def mousePressed(e: java.awt.event.MouseEvent) {
-      FlowPaintController.currentBrush = brush
-      press()
-    }
-
-    override def mouseReleased(e: java.awt.event.MouseEvent) {
-      if (mousePressedOnThisButton) {
-        unpress()
-      }
-    }
-
-    override def mouseExited(e: java.awt.event.MouseEvent) {
-      unpress()
-    }
-
-  })
 
 
 }

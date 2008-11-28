@@ -31,7 +31,7 @@ case class Brush(ink: Ink, filters: List[StrokeFilter]) {
   def getProperties() = brushProperties
 
   def addProperty(p: BrushProperty) {
-    brushProperties = p :: brushProperties
+    brushProperties = brushProperties ::: List(p)
     defaultValues.setProperty(p.parameter, p.default)
     notifyListeners()
   }

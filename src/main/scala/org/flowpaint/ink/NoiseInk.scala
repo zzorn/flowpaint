@@ -25,37 +25,24 @@ class NoiseInk(gradient: Gradient,
   }
 
 
-  def calculateColor(positionAlongStroke: Float,
-                    positionAcrossStroke: Float,
-                    startData: DataSample,
-                    endData: DataSample): Int = {
+  def calculateColor(pixelData: DataSample)  {
 
+    val positionAlongStroke = pixelData.getProperty( "positionAlongStroke",0  )
+    val positionAcrossStroke = pixelData.getProperty( "positionAcrossStroke",0  )
 
-    def interpolatedProperty(name: String, default: Float): Float = {
-      util.MathUtils.interpolate(
-        positionAlongStroke,
-        startData.getProperty(name, default),
-        endData.getProperty(name, default))
-    }
-
-    val u = interpolatedProperty(propertyName , 1) * noiseScale._1
+    val u = pixelData.getProperty(propertyName , 1) * noiseScale._1
     val v = positionAcrossStroke * noiseScale._2
-    val w = startData.getProperty("randomSeed", 0.5f) * 1000
+    val w = pixelData.getProperty("randomSeed", 0.5f) * 1000
 
     
     val noise : DataSample =  gradient( resultMapper( 0.5f + 0.5f * util.PerlinNoise.perlinNoise(u, v, w) ) )
 
     val noiseAlpha: Float = noise.getProperty("alpha", 1)
-
-
     val distanceFromEdge = 1f - Math.abs(positionAcrossStroke)
     val alphaMul = if( distanceFromEdge >= alphaWithDistance)  1f else distanceFromEdge / alphaWithDistance
+    val alpha = noiseAlpha * alphaMul * pixelData.getProperty ("alpha",1)
 
-    val red = noise.getProperty("red", 0)
-    val green = noise.getProperty("green", 0)
-    val blue= noise.getProperty("blue", 0)
-    val alpha = noiseAlpha * alphaMul
-
-    util.ColorUtils.createRGBAColor( red, green, blue, alpha )
+    pixelData.setValuesFrom( noise )
+    pixelData.setProperty( "alpha", alpha)
   }
 }

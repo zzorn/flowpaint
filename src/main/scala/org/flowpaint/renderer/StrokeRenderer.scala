@@ -29,6 +29,9 @@ object StrokeRenderer {
 
       val length = Math.sqrt(squaredLength).toFloat
 
+      // Used to store pixel specific properties in
+      val pixelData = new DataSample()
+
       // Calculate a bounding box for the stroke segment
       val minX: Float = Math.min(startX - startRadius, endX - endRadius)
       val minY: Float = Math.min(startY - startRadius, endY - endRadius)
@@ -91,9 +94,20 @@ object StrokeRenderer {
                     else
                       -relativeCenterDistance
 
-                    color = brush.ink.calculateColor(
-                      positionAlongStroke, positionAcrossStroke,
-                      startData, endData)
+                    pixelData.clear()
+
+                    pixelData.setValuesFrom( startData )
+                    pixelData.interpolate( positionAlongStroke, endData )
+                    pixelData.setProperty( "positionAlongStroke", positionAlongStroke )
+                    pixelData.setProperty( "positionAcrossStroke", positionAcrossStroke )
+
+                    brush.ink.calculateColor( pixelData )
+
+                    color = util.ColorUtils.createRGBAColor(
+                      pixelData.getProperty("red",0),
+                      pixelData.getProperty("green",0),
+                      pixelData.getProperty("blue",0),
+                      pixelData.getProperty("alpha",0))
                   }
 
               }

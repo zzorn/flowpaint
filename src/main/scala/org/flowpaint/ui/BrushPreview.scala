@@ -28,6 +28,8 @@ class BrushPreview(val brush: Brush,
 
   setLayout(new java.awt.BorderLayout())
   setPreferredSize(new Dimension(32, 32))
+  setMinimumSize(new Dimension(8, 8))
+  setMaximumSize(new Dimension(10000, 10000))
   setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1))
 
   painting.currentLayer.addStroke(stroke)

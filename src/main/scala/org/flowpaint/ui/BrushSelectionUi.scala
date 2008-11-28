@@ -13,7 +13,7 @@ import javax.swing.JPanel
 
 class BrushSelectionUi(brushes : ArrayList[Brush]) extends JPanel{
 
-  setLayout( new java.awt.GridLayout( 0,1 ) )
+  setLayout( new java.awt.GridLayout( 0,5 ) )
 
   brushes.foreach( brush => add( new BrushSelectionButton(brush).ui ) )
 }

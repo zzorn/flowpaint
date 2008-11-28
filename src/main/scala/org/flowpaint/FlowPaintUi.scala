@@ -58,10 +58,10 @@ object FlowPaintUi {
 
     mainPanel.add(createMainView(), BorderLayout.CENTER)
 
-    val brushPanel = new JPanel(new BorderLayout())
-    brushPanel.add(new BrushSelectionUi( FlowPaintController.availableBrushes ), BorderLayout.EAST)
-    brushPanel.add(brushParameterPanel.ui, BorderLayout.CENTER)
-    mainPanel.add(brushPanel, BorderLayout.EAST)
+    val brushSelectionUi = new BrushSelectionUi(FlowPaintController.availableBrushes)
+    val brushParameterUi = brushParameterPanel.ui
+    val sidebar = new JSplitPane(JSplitPane.VERTICAL_SPLIT, brushSelectionUi, brushParameterUi)
+    mainPanel.add(sidebar, BorderLayout.EAST)
     
 
     status = new JLabel(" ")

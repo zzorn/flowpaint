@@ -27,13 +27,14 @@ class SliderUi( editedData : DataSample,
     else (value - startValue) / (endValue - startValue)
   }
 
-  var orientation : Orientation = Vertical
+  var orientation : Orientation = Horizontal
 
   private val STROKE_1 = new BasicStroke(1)
   private val preview = new BrushPreview( previewBrush, brushPreviewStrokeGenerator, paintIndicator )
   private val WHEEL_STEP = 0.01f
 
   preview.setToolTipText( p.name )
+  //preview.setPreferredSize()
 
   add( preview, BorderLayout.CENTER )
 

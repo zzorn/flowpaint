@@ -200,7 +200,7 @@ object FlowPaintController {
       )
 
     def addBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-      val brush = new Brush(ink,
+      val brush = new Brush(List(ink),
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
@@ -215,7 +215,7 @@ object FlowPaintController {
     }
 
     def addColorBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-      val brush = new Brush(ink,
+      val brush = new Brush(List(ink),
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
@@ -335,7 +335,9 @@ object FlowPaintController {
     val optionPane = new javax.swing.JOptionPane()
     optionPane.setMessage(FlowPaint.ABOUT);
     optionPane.setMessageType(javax.swing.JOptionPane.PLAIN_MESSAGE);
+/* Let's wait until we get a proper icon, and fix the layout of the about dialog too.
     optionPane.setIcon(FlowPaint.APPLICATION_ICON)
+*/
     val dialog = optionPane.createDialog(FlowPaintUi.frame, FlowPaint.NAME_AND_VERSION);
     dialog.setVisible(true);
   }

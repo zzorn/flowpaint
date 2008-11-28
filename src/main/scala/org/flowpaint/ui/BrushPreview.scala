@@ -81,7 +81,7 @@ class BrushPreview(val brush: Brush,
 
       // Run the input point through the filters in the stroke
       // TODO: Change to use functions instead of anonymous one method classes
-      stroke.brush.filterStrokePoint(dataSample, new StrokeListener() {
+      stroke.brush.processStrokePoint(dataSample, new StrokeListener() {
         def addStrokePoint(pointData: DataSample) {
           stroke.addPoint(pointData)
         }

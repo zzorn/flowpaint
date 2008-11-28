@@ -101,7 +101,7 @@ object StrokeRenderer {
                     pixelData.setProperty( "positionAlongStroke", positionAlongStroke )
                     pixelData.setProperty( "positionAcrossStroke", positionAcrossStroke )
 
-                    brush.ink.calculateColor( pixelData )
+                    brush.processPixel( pixelData )
 
                     color = util.ColorUtils.createRGBAColor(
                       pixelData.getProperty("red",0),

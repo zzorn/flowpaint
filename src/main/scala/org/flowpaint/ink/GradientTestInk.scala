@@ -20,7 +20,7 @@ class GradientTestInk extends Ink {
   }
 
 
-  def calculateColor(pixelData: DataSample)  {
+  def processPixel(pixelData: DataSample)   {
 
     val positionAlongStroke = pixelData.getProperty( "positionAlongStroke",0  )
     val positionAcrossStroke = pixelData.getProperty( "positionAcrossStroke",0  )

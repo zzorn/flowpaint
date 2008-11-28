@@ -76,7 +76,7 @@ class StrokeTool extends Tool {
 
     currentPointIndex += 1
 
-    stroke.brush.filterStrokePoint( point, new StrokeListener(){
+    stroke.brush.processStrokePoint( point, new StrokeListener(){
 
       def addStrokePoint( pointData : DataSample ) {
         stroke.addPoint( pointData, FlowPaintController.surface )

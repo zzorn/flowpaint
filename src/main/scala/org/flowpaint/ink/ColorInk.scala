@@ -10,7 +10,8 @@ import util.DataSample
  */
 
 class ColorInk( val gradient : Gradient ) extends Ink {
-  def calculateColor(pixelData: DataSample)  {
+
+  def processPixel(pixelData: DataSample) {
 
 
     val hue = pixelData.getProperty( "hue", 0 )

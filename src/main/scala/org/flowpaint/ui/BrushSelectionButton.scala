@@ -20,6 +20,9 @@ class BrushSelectionButton( brush : Brush ) {
   private val UNPRESSED_COLOR = new Color(230,230,230)
   private val PRESSED_COLOR=  new Color(250,210,100)
 
+  ui.setBackground( UNPRESSED_COLOR )
+  ui.repaint()
+
   def createUi() : JComponent = {
 
     val preview = new BrushPreview( brush, brushPreviewStrokeGenerator, null )

@@ -3,7 +3,8 @@ package org.flowpaint.brush
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import filters.{StrokeListener, StrokeFilter}
 import ink.Ink
-import ui.{SliderUi, ParameterUi}
+import ui.{BrushSliderUi, ParameterUi}
+
 import util.DataSample
 
 case class BrushProperty(name: String, parameter: String, default: Float, min: Float, max: Float, editable: Boolean)
@@ -54,7 +55,7 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
     brushProperties.foreach((p: BrushProperty) => {
 
       if (p.editable) callback(
-        new SliderUi(
+        new BrushSliderUi(
           defaultValues,
           p,
           this,

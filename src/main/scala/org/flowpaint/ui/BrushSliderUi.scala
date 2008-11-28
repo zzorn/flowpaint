@@ -5,14 +5,21 @@ import brush.{Brush, BrushProperty}
 import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
 import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
-import renderer.SingleRenderSurface
+import renderer.{SingleRenderSurface, RenderSurface}
+
+abstract sealed class SliderOrientation
+case object VerticalSlider extends SliderOrientation()
+case object HorizontalSlider extends SliderOrientation()
+
+
+
 /**
  * 
  *
  * @author Hans Haggstrom
  */
 // TODO: Refactor to have JComponent as member, not inherit from it
-class SliderUi( editedData : DataSample,
+class BrushSliderUi( editedData : DataSample,
                 p : BrushProperty,
                 previewBrush : => Brush,
                 changeListener : () => Unit ) extends ParameterUi(editedData) {
@@ -27,7 +34,7 @@ class SliderUi( editedData : DataSample,
     else (value - startValue) / (endValue - startValue)
   }
 
-  var orientation : Orientation = Horizontal
+  var orientation : SliderOrientation= HorizontalSlider
 
   private val STROKE_1 = new BasicStroke(1)
   private val preview = new BrushPreview( previewBrush, brushPreviewStrokeGenerator, paintIndicator )
@@ -38,7 +45,7 @@ class SliderUi( editedData : DataSample,
 
   add( preview, BorderLayout.CENTER )
 
-  private def  isVertical: Boolean = orientation == Vertical
+  private def  isVertical: Boolean = orientation == VerticalSlider
 
   private def updatePosition( e : MouseEvent  ) {
     val x = e.getX
@@ -83,6 +90,9 @@ class SliderUi( editedData : DataSample,
    */
   private def paintIndicator(g2: Graphics2D): Unit = {
 
+
+
+
     def line( color : java.awt.Color, x1:Float, y1:Float, x2:Float, y2:Float ) {
       g2.setStroke(STROKE_1)
       g2.setColor( color )
@@ -108,14 +118,11 @@ class SliderUi( editedData : DataSample,
 
 
 
-  abstract sealed class Orientation
-  case object Vertical extends Orientation ()
-  case object Horizontal extends Orientation ()
 
 
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, dataSample:DataSample) {
 
-    if ( orientation == Vertical) {
+    if ( orientation == VerticalSlider) {
       dataSample.setProperty("x", w / 2f)
       dataSample.setProperty("y", h * f)
     }
@@ -135,3 +142,16 @@ class SliderUi( editedData : DataSample,
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -87,8 +87,8 @@ class BrushPreview(val brush: Brush,
 
     }
 
-    generatePoint(-1) // NOTE: Generating one initial point, as some of the filters remove initial points.  Fix filters..
-    for (i <- 0 to STEPS) {
+    //generatePoint(-1) // NOTE: Generating one initial point, as some of the filters remove initial points.  Fix filters..
+    for (i <- 0 to STEPS + 1) {
       generatePoint(i)
     }
 

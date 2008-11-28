@@ -69,11 +69,16 @@ class DataSample {
   def setPropertyWithId(id: Int, value: Float) : Unit = properties.put( id, value )
 
 
+  def removeProperty( name: String ) {
+    val id = StrokePropertyRegister.getId( name )
+    properties.remove( id )
+  }
+
+
   // Use StrokePropertyRegister to allow querying by name instead of id:
   def contains( name : String ): Boolean = containsId( StrokePropertyRegister.getId( name ) )
   def getProperty(name: String, defaultValue: Float): Float = getPropertyWithId( StrokePropertyRegister.getId( name ), defaultValue )
   def setProperty(name: String, value: Float) : Unit= setPropertyWithId(  StrokePropertyRegister.getId( name ), value )
-
 
   override def toString: String = {
 

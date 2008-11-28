@@ -29,8 +29,11 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
     pointData.setProperty("y",pointData.getProperty("y",oldY2))
 */
 
-    val newX = util.MathUtils.interpolate(smoothing, pointData.getProperty("x",oldX2), oldX2 )
-    val newY = util.MathUtils.interpolate(smoothing,  pointData.getProperty("y",oldY2), oldY2 )
+    val index = pointData.getProperty("index", 0f )
+    val smooth = if( index == 0f ) 0f else smoothing
+
+    val newX = util.MathUtils.interpolate(smooth, pointData.getProperty("x",oldX2), oldX2 )
+    val newY = util.MathUtils.interpolate(smooth,  pointData.getProperty("y",oldY2), oldY2 )
 /*
     val newX = pointData.getProperty("x",0)
     val newY = pointData.getProperty("y",0)

@@ -1,7 +1,7 @@
 package org.flowpaint.ui
 
-import _root_.org.flowpaint.brush.Brush
 import _root_.org.flowpaint.util.DataSample
+import brush.{Brush, BrushProperty}
 import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
 import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
@@ -13,12 +13,13 @@ import renderer.SingleRenderSurface
  */
 // TODO: Refactor to have JComponent as member, not inherit from it
 class SliderUi( editedData : DataSample,
-                editedParameter : String,
-                startValue : Float,
-                endValue : Float,
+                p : BrushProperty,
                 previewBrush : => Brush,
                 changeListener : () => Unit ) extends ParameterUi(editedData) {
 
+  val editedParameter = p.parameter
+  val startValue = p.min
+  val endValue = p.max
 
   var relativePosition = {
     val value = editedData.getProperty( editedParameter, 0.5f*(startValue+endValue) )
@@ -31,6 +32,8 @@ class SliderUi( editedData : DataSample,
   private val STROKE_1 = new BasicStroke(1)
   private val preview = new BrushPreview( previewBrush, brushPreviewStrokeGenerator, paintIndicator )
   private val WHEEL_STEP = 0.01f
+
+  preview.setToolTipText( p.name )
 
   add( preview, BorderLayout.CENTER )
 

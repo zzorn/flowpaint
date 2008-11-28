@@ -20,11 +20,14 @@ class GradientInk(gradient:Gradient, alphaPressure:Float)  extends Ink {
       endData.getProperty(name, default))
     }
 
+    val strokeAlpha = getInterpolatedProperty("alpha", 1f)
+
+
     val data : DataSample= gradient( 0.5f + 0.5f * positionAcrossStroke )
 
     val gradientAlpha: Float = data.getProperty("alpha", 1)
     val pressure = getInterpolatedProperty("pressure", 0.5f)
-    val alpha = util.MathUtils.interpolate( alphaPressure, gradientAlpha , gradientAlpha * pressure )
+    val alpha = strokeAlpha  * util.MathUtils.interpolate( alphaPressure, gradientAlpha , gradientAlpha * pressure )
 
     util.ColorUtils.createRGBAColor( data.getProperty("red",0 ),
       data.getProperty("green",0 ),

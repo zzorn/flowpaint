@@ -201,7 +201,31 @@ object FlowPaintController {
 
     def addBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
       val brush = new Brush(ink,
-        List(new ZeroLengthSegmentFilter(), new StrokeAngleTilter(tilt), new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
+        List(
+          new ZeroLengthSegmentFilter(),
+          new StrokeAngleTilter(tilt),
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
+
+      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true ) )
+
+      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true ) )
+
+      availableBrushes.add(brush)
+      brush
+    }
+
+    def addColorBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
+      val brush = new Brush(ink,
+        List(
+          new ZeroLengthSegmentFilter(),
+          new StrokeAngleTilter(tilt),
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
+
+      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true ) )
+      brush.addProperty( BrushProperty( "Hue","hue", 1, 1,0, true ) )
+      brush.addProperty( BrushProperty( "Saturation","saturation", 1, 1,0, true ) )
+      brush.addProperty( BrushProperty( "Brightness","brightness", 1, 1,0, true ) )
+
       availableBrushes.add(brush)
       brush
     }
@@ -215,12 +239,14 @@ object FlowPaintController {
     addBrush(new GradientInk(createSmoothGradient(0.8f, 1f), 1f), 30, 0, 0.5f)
     addBrush(new GradientInk(whiteGradient, 0), 45, 0, 1f)
 
-    addBrush(new GradientInk(sepiaPenGradient, 0.7f), 20, 0, 1f)
-    addBrush(new GradientInk(maroonPenGradient, 0.7f), 20, 0, 1f)
-    addBrush(new GradientInk(ocraPenGradient, 0.7f), 20, 0, 1f)
-    addBrush(new GradientInk(sapGreenPenGradient, 0.7f), 20, 0, 1f)
-    addBrush(new GradientInk(purplePenGradient, 0.7f), 20, 0, 1f)
-    addBrush(new GradientInk(lampBlackPenGradient, 0.7f), 20, 0, 1f)
+    addColorBrush(new GradientInk(sepiaPenGradient, 0.7f), 20, 0, 1f)
+/*
+    addColorBrush(new GradientInk(maroonPenGradient, 0.7f), 20, 0, 1f)
+    addColorBrush(new GradientInk(ocraPenGradient, 0.7f), 20, 0, 1f)
+    addColorBrush(new GradientInk(sapGreenPenGradient, 0.7f), 20, 0, 1f)
+    addColorBrush(new GradientInk(purplePenGradient, 0.7f), 20, 0, 1f)
+    addColorBrush(new GradientInk(lampBlackPenGradient, 0.7f), 20, 0, 1f)
+*/
 
     addBrush(new NoiseInk(woodGradient, (15f, 2.1f), 0.2f), 30, 0, 0.9f)
     addBrush(new NoiseInk(fireGradient, (30f, 1f), 0.35f), 18, 0, 1f)

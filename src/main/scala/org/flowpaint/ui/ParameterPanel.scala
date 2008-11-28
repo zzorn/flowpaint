@@ -10,7 +10,7 @@ import javax.swing.JPanel
  */
 class ParameterPanel {
 
-  val ui = new JPanel(new GridLayout() )
+  val ui = new JPanel(new GridLayout(0, 1) )
 
   def clear() {
     ui.removeAll()

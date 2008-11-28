@@ -6,39 +6,67 @@ import ink.Ink
 import ui.{SliderUi, ParameterUi}
 import util.DataSample
 
+case class BrushProperty(name :String, parameter: String, default: Float, min: Float, max: Float, editable: Boolean)
+
 /**
- * 
+ *
  *
  * @author Hans Haggstrom
  */
-case class Brush( ink : Ink, filters : List[StrokeFilter] ) {
+case class Brush(ink: Ink, filters: List[StrokeFilter]) {
+  private val defaultValues = new DataSample()
+  private var brushProperties: List[BrushProperty] = Nil
+  private val listeners = new HashSet[ChangeListener]()
 
   // Listener support
-  type ChangeListener = (Brush ) => Unit
-  private val listeners = new HashSet[ChangeListener]()
-  def addChangeListener( listener: ChangeListener ) { listeners.add(listener) }
-  def removeChangeListener( listener: ChangeListener ) { listeners.remove(listener) }
-  private def notifyListeners() { listeners foreach {listener => listener( this )} }
+  type ChangeListener = (Brush) => Unit
 
-  def initializeStrokeStart( startPoint : DataSample ){
-    startPoint.setValuesFrom( defaultValues )
+  def addChangeListener(listener: ChangeListener) {listeners.add(listener)}
+
+  def removeChangeListener(listener: ChangeListener) {listeners.remove(listener)}
+
+  private def notifyListeners() {listeners foreach {listener => listener(this)}}
+
+
+  def getProperties() = brushProperties
+
+  def addProperty(p: BrushProperty) {
+    brushProperties = p :: brushProperties
+    defaultValues.setProperty(p.parameter, p.default)
+    notifyListeners()
   }
 
-  def filterStrokePoint(pointData:DataSample,listener: StrokeListener )  {
+  def removeProperty(p: BrushProperty) {
+    brushProperties = brushProperties.remove(_ == p)
+    defaultValues.removeProperty(p.parameter)
+    notifyListeners()
+  }
+
+
+  def initializeStrokeStart(startPoint: DataSample) {
+    startPoint.setValuesFrom(defaultValues)
+  }
+
+  def filterStrokePoint(pointData: DataSample, listener: StrokeListener) {
 
     if (!filters.isEmpty) {
 
-      filters.head.filterStrokePoint( pointData, filters.tail,listener )
+      filters.head.filterStrokePoint(pointData, filters.tail, listener)
     }
   }
 
-  private val defaultValues = new DataSample()
 
-  def createParameterUis( callback : ParameterUi => Unit ) {
+  def createParameterUis(callback: ParameterUi => Unit) {
 
-    // TODO: Create parameter UI:s for all editable parameters.
+    brushProperties.foreach((p: BrushProperty) => {
 
-    callback( new SliderUi( defaultValues, "maxRadius", 1, 50, this, notifyListeners ) )
+      if (p.editable) callback(
+        new SliderUi(
+          defaultValues,
+          p,
+          this,
+          notifyListeners))
+    })
 
   }
 

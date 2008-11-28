@@ -44,8 +44,10 @@ object FlowPaint {
   val APPLICATION_ICON = loadIcon( "logo-swirl-transparent.png" )
 
 
+  val STATUS = properties.getProperty("status", "")
   val APPLICATION_NAME = properties.getProperty("applicationName", "Flowpaint")
   val VERSION = properties.getProperty("version", "N/A")
+  val VERSION_AND_STATUS = VERSION + " " + STATUS
   val REPOSITORY_VERSION = properties.getProperty("repositoryVersion", "N/A")
   val RELEASE_DATE = properties.getProperty("releaseDate", "N/A")
   val HOMEPAGE_PRETTY = properties.getProperty("homepage", "www.flowpaint.org")
@@ -58,8 +60,8 @@ object FlowPaint {
 
 
   val HOMEPAGE_URL = "http://" + HOMEPAGE_PRETTY
-  val NAME_AND_VERSION = APPLICATION_NAME + " " + VERSION
-  val NAME_VERSION_AND_DATE = APPLICATION_NAME + " v. " + VERSION + " (revision "+REPOSITORY_VERSION+"), released " + RELEASE_DATE
+  val NAME_AND_VERSION = APPLICATION_NAME + " " + VERSION_AND_STATUS
+  val NAME_VERSION_AND_DATE = APPLICATION_NAME + " v. " + VERSION_AND_STATUS  + " (revision "+REPOSITORY_VERSION+"), released " + RELEASE_DATE
 
   val ABOUT = "<html>" +
           "<p><center><b>" + NAME_VERSION_AND_DATE + "</b></center></p>" +

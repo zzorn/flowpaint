@@ -22,7 +22,7 @@ class BrushSelectionButton( brush : Brush ) {
 
   def createUi() : JComponent = {
 
-    val preview = new BrushPreview( brush, brushPreviewStrokeGenerator )
+    val preview = new BrushPreview( brush, brushPreviewStrokeGenerator, null )
 
     def press() {
       mousePressedOnThisButton = true

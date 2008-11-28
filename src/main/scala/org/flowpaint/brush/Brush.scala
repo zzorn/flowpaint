@@ -20,6 +20,9 @@ case class Brush( ink : Ink, filters : List[StrokeFilter] ) {
   def removeChangeListener( listener: ChangeListener ) { listeners.remove(listener) }
   private def notifyListeners() { listeners foreach {listener => listener( this )} }
 
+  def initializeStrokeStart( startPoint : DataSample ){
+    startPoint.setValuesFrom( defaultValues )
+  }
 
   def filterStrokePoint(pointData:DataSample,listener: StrokeListener )  {
 

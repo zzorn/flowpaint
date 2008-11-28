@@ -18,12 +18,18 @@ class ParameterPanel {
   }
 
   def addParameterUi( parameterUi:ParameterUi ) {
+
     ui.add( parameterUi )
 
+/*
     ui.invalidate()
+*/
+    ui.validate()
 
     ui.repaint()
+/*
     parameterUi.repaint()
+*/
   }
 
 }

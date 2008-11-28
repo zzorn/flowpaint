@@ -14,7 +14,9 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
-class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit  ) extends JPanel {
+class BrushPreview(val brush: Brush,
+                  val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit ,
+                  val overlayPainter : (Graphics2D) => Unit ) extends JPanel {
 
   if (brush== null) throw new IllegalArgumentException("brush should not be null")
   if (strokePointCalculator == null) throw new IllegalArgumentException("strokePointCalculator should not be null")
@@ -44,7 +46,14 @@ class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float,
   // Update the stroke when the brush changes
   brush.addChangeListener( { b => update() } )
 
+
   
+  override def paintChildren(g: Graphics): Unit = {
+    super.paintChildren( g )
+
+    if (overlayPainter  != null) overlayPainter( g.asInstanceOf[Graphics2D] )
+  }
+
   /**
    * Call this if the preview stroke should be re-rendered.
    */
@@ -57,11 +66,14 @@ class BrushPreview(val brush: Brush, val strokePointCalculator : ( Float, Float,
 
     val STEPS = 10
 
+
     def generatePoint(i: Int) {
       val f: Float = (1f * i) / (1f * STEPS)
 
       val dataSample = new DataSample()
+      brush.initializeStrokeStart( dataSample )
       dataSample.setProperty("index", i.toFloat)
+      dataSample.setProperty("randomSeed", 1231424)
 
       strokePointCalculator( f, w, h, dataSample )
 

@@ -24,6 +24,15 @@ object MathUtils {
   def normalizeAngle(angleRadians: Float): Float = wrapToZeroToOne(angleRadians / (Math.Pi.toFloat * 2f))
 
 
+  def clampToZeroToOne(a: Float): Float = {
+    if (a < 0f)
+      0f
+    else if (a > 1f)
+      1f
+    else
+      a
+  }
+
   def wrapToZeroToOne(a: Float): Float = {
     val v = a % 1f
 

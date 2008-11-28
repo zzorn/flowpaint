@@ -1,5 +1,6 @@
 package org.flowpaint.tools
 
+import _root_.org.flowpaint.brush.Brush
 import filters.StrokeListener
 import model.Stroke
 import util.DataSample
@@ -52,12 +53,14 @@ class StrokeTool extends Tool {
     {
       currentPointIndex = 0
       currentStrokeStartTime = getTime()
-      currentStroke = new Stroke( FlowPaintController.currentBrush )
+      val brush: Brush = FlowPaintController.currentBrush
+      currentStroke = new Stroke( brush )
 
       val initialSample = new DataSample(currentStatus);
 
       initialSample.setProperty( "pressure", 0.5f )
       initialSample.setProperty( "randomSeed", Math.random.toFloat )
+      brush.initializeStrokeStart( initialSample )
 
       addStrokePoint(currentStroke, initialSample )
 

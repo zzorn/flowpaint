@@ -1,7 +1,7 @@
 package org.flowpaint.ui
 
-import java.awt.GridLayout
-import javax.swing.JPanel
+import java.awt.{GridLayout, FlowLayout}
+import javax.swing.{BoxLayout, JPanel}
 
 /**
  * An UI panel for containing several ParameterUI:s.
@@ -10,11 +10,15 @@ import javax.swing.JPanel
  */
 class ParameterPanel {
 
-  val ui = new JPanel(new GridLayout(0, 1) )
+  val ui = new JPanel()
+  ui.setLayout( new FlowLayout() )
+
+
+  clear()
 
   def clear() {
     ui.removeAll()
-    
+    ui.add( javax.swing.Box.createVerticalBox )
   }
 
   def addParameterUi( parameterUi:ParameterUi ) {

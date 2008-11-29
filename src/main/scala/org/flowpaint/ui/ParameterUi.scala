@@ -2,7 +2,7 @@ package org.flowpaint.ui
 
 import _root_.org.flowpaint.util.DataSample
 import java.awt.BorderLayout
-import javax.swing.JPanel
+import javax.swing.{JPanel, JComponent}
 
 /**
  * A trait for ui components that can be used to adjust parameters.
@@ -11,17 +11,15 @@ import javax.swing.JPanel
  *
  * @author Hans Haggstrom
  */
-abstract class ParameterUi( editedData : DataSample ) extends JPanel {
+abstract class ParameterUi( editedData : DataSample )  {
 
-  setLayout( new BorderLayout() )
+  private var ui : JComponent = null
 
+  final def getUi() : JComponent = {
+    if (ui == null) ui = createUi()
+    ui
+  }
 
-  // TODO: Add various layout functionality here, maybe hints on what proportions and size this component
-  // should have.
-
-  // TODO: Also add drag and drop functionality (middle mouse button could be used),
-  // to allow a user to reconfigure a panel with parameter controls.
-  // This means that this component also should know it's host component.
-
+  protected def createUi() : JComponent
   
 }

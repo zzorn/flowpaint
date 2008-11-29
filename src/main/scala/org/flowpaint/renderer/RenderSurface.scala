@@ -30,4 +30,5 @@ trait RenderSurface {
                     maxX: Float, maxY: Float,
                     colorCalculator: (Int, Int) => Int)
 
+
 }

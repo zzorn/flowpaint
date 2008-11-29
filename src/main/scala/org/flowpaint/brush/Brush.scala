@@ -7,7 +7,13 @@ import ui.{BrushSliderUi, ParameterUi}
 
 import util.DataSample
 
-case class BrushProperty(name: String, parameter: String, default: Float, min: Float, max: Float, editable: Boolean)
+case class BrushProperty(name: String,
+                        parameter: String,
+                        default: Float,
+                        min: Float,
+                        max: Float,
+                        editable: Boolean )
+
 
 /**
  * Contains all settings for a certain brush tool.

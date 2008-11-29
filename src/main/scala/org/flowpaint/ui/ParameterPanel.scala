@@ -23,7 +23,7 @@ class ParameterPanel {
 
   def addParameterUi( parameterUi:ParameterUi ) {
 
-    ui.add( parameterUi, "width 100%"  )
+    ui.add( parameterUi.getUi(), "width 100%"  )
 
 /*
     ui.invalidate()

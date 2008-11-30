@@ -88,7 +88,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
                 val originalColor = buffer.getRGB(x, y)
                 color =  util.ColorUtils.mixRGBWithAlpha( color, originalColor )
               }
-
+              
               buffer.setRGB(x, y, color)
             }
 

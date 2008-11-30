@@ -10,7 +10,7 @@ import javax.swing.JComponent
  *
  * @author Hans Haggstrom
  */
-abstract class DataEditor( title :String ) {
+abstract class DataEditor( val title :String ) {
 
   def createEditor( editedData : Data ) : JComponent
 

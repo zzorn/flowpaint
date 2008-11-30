@@ -3,6 +3,7 @@ package org.flowpaint.ui
 import _root_.org.flowpaint.util.DataSample
 import java.awt.BorderLayout
 import javax.swing.{JPanel, JComponent}
+import property.Data
 
 /**
  * A trait for ui components that can be used to adjust parameters.
@@ -11,7 +12,7 @@ import javax.swing.{JPanel, JComponent}
  *
  * @author Hans Haggstrom
  */
-abstract class ParameterUi( editedData : DataSample )  {
+abstract class ParameterUi( editedData : Data )  {
 
   private var ui : JComponent = null
 

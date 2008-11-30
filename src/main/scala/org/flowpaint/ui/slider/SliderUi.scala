@@ -8,6 +8,7 @@ import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 import brush.{Brush, BrushProperty}
 import java.awt.{Graphics2D, BasicStroke}
 import javax.swing.JComponent
+import property.Data
 
 
 abstract sealed class SliderOrientation
@@ -21,20 +22,22 @@ case object HorizontalSlider extends SliderOrientation()
  * @author Hans Haggstrom
  *  */
 // TODO: Switch to editing Data instead, and change Brush to store it's default values in a Data.
-abstract class SliderUi(editedData: DataSample,
-                   p: BrushProperty,
-                   changeListener: () => Unit) extends ParameterUi(editedData ) {
+abstract class SliderUi(editedData: Data,
+                       description : String,
+                       property : String,
+                       min:Float,
+                       max:Float ) extends ParameterUi(editedData ) {
 
-  val editedParameter = p.parameter
-  val startValue = p.min
-  val endValue = p.max
+  val editedParameter = property
+  val startValue = min
+  val endValue = max
   var orientation: SliderOrientation = HorizontalSlider
 
   private val STROKE_1 = new BasicStroke(1)
   private val WHEEL_STEP = 0.01f
 
   var relativePosition = {
-    val value = editedData.getProperty(editedParameter, 0.5f * (startValue + endValue))
+    val value = editedData.getFloatProperty(editedParameter, 0.5f * (startValue + endValue))
     if (startValue == endValue) startValue
     else (value - startValue) / (endValue - startValue)
   }
@@ -80,7 +83,7 @@ abstract class SliderUi(editedData: DataSample,
 
     preview = createBackground(paintIndicator)
 
-    preview.setToolTipText(p.name)
+    preview.setToolTipText(description)
     //preview.setPreferredSize()
 
     preview.addMouseListener(mouseUpdateListener)
@@ -124,8 +127,7 @@ abstract class SliderUi(editedData: DataSample,
 
 
   private def updateBrush() {
-    editedData.setProperty(editedParameter, util.MathUtils.interpolate(relativePosition, startValue, endValue))
-    changeListener()
+    editedData.setFloatProperty(editedParameter, util.MathUtils.interpolate(relativePosition, startValue, endValue))
   }
 
 

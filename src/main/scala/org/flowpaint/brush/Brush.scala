@@ -3,6 +3,7 @@ package org.flowpaint.brush
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import filters.{StrokeListener, StrokeFilter}
 import ink.Ink
+import property.Data
 import ui.{BrushSliderUi, ParameterUi}
 
 import util.DataSample
@@ -22,6 +23,8 @@ case class BrushProperty(name: String,
  */
 case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
+//  private val settings = new Data()
+  
   private val defaultValues = new DataSample()
   private var brushProperties: List[BrushProperty] = Nil
   private var pixelProcessors: List[Ink] = inks

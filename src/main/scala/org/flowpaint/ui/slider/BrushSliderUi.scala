@@ -6,20 +6,22 @@ import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
 import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
 import javax.swing.JComponent
+import property.Data
 import renderer.{SingleRenderSurface, RenderSurface}
 
 
 /**
- * A slider with a brush stroke as a background.
+ *  A slider with a brush stroke as a background.
  *
  * @author Hans Haggstrom
  */
-class BrushSliderUi(editedData: DataSample,
-                   p: BrushProperty,
-                   previewBrush: => Brush,
-                   changeListener: () => Unit) extends SliderUi(editedData, p, changeListener) {
-
-
+class BrushSliderUi(editedData: Data,
+                   description: String,
+                   property: String,
+                   min: Float,
+                   max: Float,
+                   previewBrush: => Brush )
+        extends SliderUi(editedData, description, property, min, max) {
 
   protected def createBackground(indicatorPainter: (Graphics2D) => Unit): JComponent = {
     new BrushPreview(previewBrush, brushPreviewStrokeGenerator, indicatorPainter)

@@ -10,16 +10,16 @@ import util.DataSample
 import util.PerformanceTester.time
 
 /**
- * Recieves pen events, and turns them into data samples, that are sent to the specified sampleListener.
+ *  Recieves pen events, and turns them into data samples, that are sent to the specified sampleListener.
  *
- * Also has capability to listen to mouse input, although it is not currently used.
+ *  Also has capability to listen to mouse input, although it is not currently used.
  *
  * @author Hans Haggstrom
  */
 // NOTE: Commented out code contains stuff for listening to events in one thread,
 // and sending batches of them to swing at once.  This was not needed however, as the swing side seems to be
 // fast enough not to block the event retrieval, and JPen maybe already does something similar.
-class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener with MouseMotionListener with MouseListener  {
+class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener with MouseMotionListener with MouseListener {
   private var xOffs = 0f
   private var yOffs = 0f
   private var xScale = 1f
@@ -115,8 +115,8 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
 
 
   /**
-   *       Used to update the projection that should be applied to pen input
-   *       (mapping from the screen space to the canvas space)
+   *        Used to update the projection that should be applied to pen input
+   *        (mapping from the screen space to the canvas space)
    */
   def onProjectionChanged(xOffs: Float,
                          yOffs: Float,
@@ -151,17 +151,16 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
   }
 
 
+  def handleMouseEvent(e: MouseEvent) {
 
-  def handleMouseEvent( e : MouseEvent ) {
-
-    def updateButton(dataSample : DataSample, property: String, button: Int, downMask: Int) {
+    def updateButton(dataSample: DataSample, property: String, button: Int, downMask: Int) {
 
       def buttonValue(downMask: Int): Float = if ((e.getModifiersEx() & downMask) == downMask) 1f else 0f
 
       if (e.getButton() == button) dataSample.setProperty(property, buttonValue(downMask))
     }
 
-    val dataSample = createDataSample( )
+    val dataSample = createDataSample()
 
     updateButton(dataSample, "leftButton", MouseEvent.BUTTON1, InputEvent.BUTTON1_DOWN_MASK)
     updateButton(dataSample, "rightButton", MouseEvent.BUTTON2, InputEvent.BUTTON2_DOWN_MASK)
@@ -175,17 +174,17 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
 
 
   def mouseReleased(e: MouseEvent): Unit = {
-    handleMouseEvent( e )
+    handleMouseEvent(e)
   }
 
 
   def mousePressed(e: MouseEvent): Unit = {
-    handleMouseEvent( e )
+    handleMouseEvent(e)
   }
 
 
   def mouseDragged(e: MouseEvent): Unit = {
-    handleMouseEvent( e )
+    handleMouseEvent(e)
   }
 
 
@@ -195,41 +194,52 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
   def mouseMoved(e: MouseEvent): Unit = {} // Not used
 
   def penButtonEvent(event: PButtonEvent): Unit = {
+    try {
+      val dataSample = createDataSample()
 
-    val dataSample = createDataSample()
+      val value: Float = if (event.button.value.booleanValue) 1f else 0f
 
-    val value: Float = if (event.button.value.booleanValue) 1f else 0f
+      event.button.getType() match {
+        case PButton.Type.LEFT => dataSample.setProperty("leftButton", value);
+        case PButton.Type.RIGHT => dataSample.setProperty("rightButton", value);
+        case PButton.Type.CENTER => dataSample.setProperty("centerButton", value);
+      }
 
-    event.button.getType() match {
-      case PButton.Type.LEFT => dataSample.setProperty("leftButton", value);
-      case PButton.Type.RIGHT => dataSample.setProperty("rightButton", value);
-      case PButton.Type.CENTER => dataSample.setProperty("centerButton", value);
+      queueSample(dataSample);
     }
-
-    queueSample(dataSample);
+    catch {
+      // Catch any exceptions here, before they go into the jpen library, as it doesn't print the original exception.
+      case e: Throwable => e.printStackTrace()
+    }
   }
-
 
 
   def penLevelEvent(event: PLevelEvent): Unit = {
 
-    val dataSample = createDataSample()
 
-    event.levels.foreach((level: PLevel) =>
-            {
-              val value: Float = level.value.floatValue;
-              level.getType() match
+    try {
+      val dataSample = createDataSample()
+
+      event.levels.foreach((level: PLevel) =>
               {
-                case PLevel.Type.X => setCoordinate(dataSample, value, true)
-                case PLevel.Type.Y => setCoordinate(dataSample, value, false)
-                case PLevel.Type.PRESSURE => dataSample.setProperty("pressure", value);
-                case PLevel.Type.TILT_X => dataSample.setProperty("tiltX", value);
-                case PLevel.Type.TILT_Y => dataSample.setProperty("tiltY", value);
+                val value: Float = level.value.floatValue;
+                level.getType() match
+                {
+                  case PLevel.Type.X => setCoordinate(dataSample, value, true)
+                  case PLevel.Type.Y => setCoordinate(dataSample, value, false)
+                  case PLevel.Type.PRESSURE => dataSample.setProperty("pressure", value);
+                  case PLevel.Type.TILT_X => dataSample.setProperty("tiltX", value);
+                  case PLevel.Type.TILT_Y => dataSample.setProperty("tiltY", value);
+                }
               }
-            }
-      )
+        )
 
-    queueSample(dataSample);
+      queueSample(dataSample);
+    }
+    catch {
+      // Catch any exceptions here, before they go into the jpen library, as it doesn't print the original exception.
+      case e: Throwable => e.printStackTrace()
+    }
   }
 
   def penScrollEvent(p1: PScrollEvent): Unit = {
@@ -249,7 +259,14 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
 
   private def queueSample(sample: DataSample) {
 
-    sampleListener(sample)
+    try {
+      sampleListener(sample)
+    }
+    catch {
+      // Catch any exceptions here, before they go into the jpen library, as it doesn't print the original exception.
+      case e: Throwable => e.printStackTrace()
+    }
+
     /*
         try
         {
@@ -267,7 +284,7 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
     val dataSample = new DataSample()
 
     // Maximal accuracy! :)
-    dataSample.setProperty("time",  System.nanoTime / 1000000000.0f)
+    dataSample.setProperty("time", System.nanoTime / 1000000000.0f)
 
     dataSample
   }

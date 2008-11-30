@@ -22,9 +22,16 @@ class BrushSliderUi(editedData: Data,
                    max: Float,
                    previewBrush: => Brush )
         extends SliderUi(editedData, description, property, min, max) {
+  var background: BrushPreview = null
 
   protected def createBackground(indicatorPainter: (Graphics2D) => Unit): JComponent = {
-    new BrushPreview(previewBrush, brushPreviewStrokeGenerator, indicatorPainter)
+    background = new BrushPreview(previewBrush, brushPreviewStrokeGenerator, indicatorPainter)
+    return background
+  }
+
+
+  protected def updateUi() {
+    if (background != null) background.updateUI()
   }
 
   private def brushPreviewStrokeGenerator(f: Float, w: Float, h: Float, dataSample: DataSample) {

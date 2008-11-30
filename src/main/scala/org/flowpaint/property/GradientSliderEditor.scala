@@ -17,10 +17,9 @@ class GradientSliderEditor(title:String,
 
   def createEditor(editedData: Data): JComponent = {
 
-    new InkSliderUi( editedData, title, property, min, max, previewBrush )
+    val inkslider = new InkSliderUi( editedData, title, property, min, max, inks )
 
-    // TODO: Use the InkSlider...
-    return null
+    inkslider.getUi()
   }
 
 }

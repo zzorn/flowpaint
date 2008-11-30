@@ -19,8 +19,8 @@ class BrushSliderEditor(title :String,
 
   def createEditor(editedData: Data): JComponent = {
 
-    new BrushSliderUi( editedData, title, property, min, max, previewBrush )
-
+    val brushUi = new BrushSliderUi( editedData, title, property, min, max, previewBrush )
+    brushUi.getUi()
   }
   
 }

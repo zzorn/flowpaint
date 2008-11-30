@@ -21,19 +21,22 @@ class InkSliderUi(editedData: Data,
                    inks : List[Ink] )
         extends SliderUi(editedData, description, property, min, max )  {
 
-  
+  private var background : JPanel = null
+
+  protected def updateUi() {
+    background.repaint()
+  }
 
   protected def createBackground(indicatorPainter: (Graphics2D) => Unit): JComponent = {
 
-    new JPanel() {
+    background = new JPanel() {
+      override def paintComponent(g: Graphics) {
 
-      override def paintComponent( g : Graphics ){
-
-        def calculateNormalizedCoordinate( pos: Int, maxPos:Int ) :Float = {
-          if (maxPos <= 1) 0.5f else (1.0f*pos) / (1.0f*(maxPos-1))
+        def calculateNormalizedCoordinate(pos: Int, maxPos: Int): Float = {
+          if (maxPos <= 1) 0.5f else (1.0f * pos) / (1.0f * (maxPos - 1))
         }
 
-        val g2 : Graphics2D = g.asInstanceOf[Graphics2D]
+        val g2: Graphics2D = g.asInstanceOf[Graphics2D]
 
         val sample = new DataSample()
 
@@ -42,30 +45,30 @@ class InkSliderUi(editedData: Data,
         var ny = 0f
         var nx = 0f
         var y = 0
-        while( y < h ) {
+        while (y < h) {
           ny = calculateNormalizedCoordinate(y, h)
 
-          var x  = 0
-          while( x < w ) {
+          var x = 0
+          while (x < w) {
             nx = calculateNormalizedCoordinate(x, w)
 
             sample.clear()
-            sample.setProperty( "screenX", x )
-            sample.setProperty( "screenY", y )
-            sample.setProperty( "normalizedX", nx )
-            sample.setProperty( "normalizedY", ny )
+            sample.setProperty("screenX", x)
+            sample.setProperty("screenY", y)
+            sample.setProperty("normalizedX", nx)
+            sample.setProperty("normalizedY", ny)
 
-            val n = if (isVertical()) ny else nx
-            sample.setProperty( property, util.MathUtils.interpolate( n, min, max ) )
+            val n = if (isVertical) ny else nx
+            sample.setProperty(property, util.MathUtils.interpolate(n, min, max))
 
-            inks.foreach( (ink:Ink)=> {
-              ink.processPixel( sample )
-            } )
+            inks.foreach((ink: Ink) => {
+              ink.processPixel(sample)
+            })
 
             // TODO: Do something **faster**..  Use surface?
-            val color = new Color( sample.getProperty("red", 0 ), sample.getProperty("green", 0 ), sample.getProperty("blue", 0 ) )
-            g2.setColor( color )
-            g2.fillRect( x, y, 1, 1 )
+            val color = new Color(sample.getProperty("red", 0), sample.getProperty("green", 0), sample.getProperty("blue", 0))
+            g2.setColor(color)
+            g2.fillRect(x, y, 1, 1)
 
             x += 1
           }
@@ -78,6 +81,8 @@ class InkSliderUi(editedData: Data,
       }
 
     }
+
+    background
 
 
   }

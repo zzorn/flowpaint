@@ -3,7 +3,7 @@ package org.flowpaint.brush
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import filters.{StrokeListener, StrokeFilter}
 import ink.Ink
-import property.Data
+import property.{DataImpl, Data}
 import ui.{BrushSliderUi, ParameterUi}
 
 import util.DataSample
@@ -23,9 +23,7 @@ case class BrushProperty(name: String,
  */
 case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
-//  private val settings = new Data()
-  
-  private val defaultValues = new DataSample()
+  private val settings = new DataImpl()
   private var brushProperties: List[BrushProperty] = Nil
   private var pixelProcessors: List[Ink] = inks
   private var strokeProcessors: List[StrokeFilter] = filters
@@ -55,7 +53,7 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
   }
 
   def initializeStrokeStart(startPoint: DataSample) {
-    startPoint.setValuesFrom(defaultValues)
+    settings.getFloatProperties( startPoint )
   }
 
 
@@ -65,10 +63,12 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
       if (p.editable) callback(
         new BrushSliderUi(
-          defaultValues,
-          p,
-          this,
-          notifyListeners))
+          settings,
+          p.name,
+          p.parameter,
+          p.min,
+          p.max,
+          this))
     })
 
   }
@@ -87,13 +87,13 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
   def addProperty(p: BrushProperty) {
     brushProperties = brushProperties ::: List(p)
-    defaultValues.setProperty(p.parameter, p.default)
+    settings.setFloatProperty(p.parameter, p.default)
     notifyListeners()
   }
 
   def removeProperty(p: BrushProperty) {
     brushProperties = brushProperties.remove(_ == p)
-    defaultValues.removeProperty(p.parameter)
+    settings.removeFloatProperty(p.parameter)
     notifyListeners()
   }
 

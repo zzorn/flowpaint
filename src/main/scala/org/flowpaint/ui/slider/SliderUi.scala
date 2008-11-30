@@ -42,6 +42,13 @@ abstract class SliderUi(editedData: Data,
     else (value - startValue) / (endValue - startValue)
   }
 
+
+  editedData.addListener( (data:Data, changedProperty :String) => {
+    if (preview != null && (changedProperty  == null || property.equals( changedProperty ))) {
+      updateUi()
+    }
+  })
+
   private var preview :JComponent = null
 
   /**
@@ -50,6 +57,7 @@ abstract class SliderUi(editedData: Data,
    */
   protected def createBackground(indicatorPainter : (Graphics2D) => Unit ) : JComponent
 
+  protected def updateUi()
 
   protected def createUi(): JComponent = {
 
@@ -93,7 +101,7 @@ abstract class SliderUi(editedData: Data,
     preview
   }
 
-  private def isVertical: Boolean = orientation == VerticalSlider
+  def isVertical: Boolean = orientation == VerticalSlider
 
   private def updatePosition(e: MouseEvent) {
     val x = e.getX

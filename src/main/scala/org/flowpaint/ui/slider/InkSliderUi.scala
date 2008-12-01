@@ -1,6 +1,6 @@
 package org.flowpaint.ui.slider
 
-import _root_.org.flowpaint.brush.{Brush, BrushProperty}
+import _root_.org.flowpaint.brush.{Brush}
 import _root_.org.flowpaint.util.DataSample
 import ink.{AlphaTransparencyBackgroundInk, Ink}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}

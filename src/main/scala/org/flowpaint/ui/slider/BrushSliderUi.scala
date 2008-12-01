@@ -1,7 +1,7 @@
 package org.flowpaint.ui
 
 import _root_.org.flowpaint.util.DataSample
-import brush.{Brush, BrushProperty}
+import brush.{Brush}
 import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
 import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}

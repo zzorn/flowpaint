@@ -3,12 +3,14 @@ package org.flowpaint.brush
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import filters.{StrokeListener, StrokeFilter}
 import ink.Ink
-import property.{GradientSliderEditor, DataImpl, Data}
+import javax.swing.JComponent
+import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
 import ui.slider.InkSliderUi
 import ui.{BrushSliderUi, ParameterUi}
 
 import util.DataSample
 
+/*
 case class BrushProperty(name: String,
                         parameter: String,
                         default: Float,
@@ -16,6 +18,7 @@ case class BrushProperty(name: String,
                         max: Float,
                         editable: Boolean,
                         gradient: Boolean)
+*/
 
 
 /**
@@ -23,11 +26,15 @@ case class BrushProperty(name: String,
  *
  * @author Hans Haggstrom
  */
-case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
+case class Brush(inks: List[Ink], filters: List[StrokeFilter], initialEditors : List[DataEditor]) {
   private val settings = new DataImpl()
+/*
   private var brushProperties: List[BrushProperty] = Nil
+*/
   private var pixelProcessors: List[Ink] = inks
   private var strokeProcessors: List[StrokeFilter] = filters
+
+  private var editors : List[DataEditor] = initialEditors
 
   private val listeners = new HashSet[ChangeListener]()
 
@@ -59,21 +66,10 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
   }
 
 
-  def createParameterUis(callback: ParameterUi => Unit) {
+  def createParameterUis(callback: JComponent => Unit) {
 
-    brushProperties.foreach((p: BrushProperty) => {
-
-      if (p.editable) callback(
-        if (p.gradient)
-          new InkSliderUi(settings, p.name, p.parameter, p.min, p.max, inks)
-        else
-          new BrushSliderUi(
-            settings,
-            p.name,
-            p.parameter,
-            p.min,
-            p.max,
-            this))
+    editors.foreach((d: DataEditor) => {
+      callback( d.createEditor( settings ) )
     })
 
   }
@@ -89,19 +85,22 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
   private def notifyListeners() {listeners foreach {listener => listener(this)}}
 
+/*
   // TODO: Some kind of listenable list might be handy.  Could do null-checks and such too..
   // Brush property management
   def getProperties() = brushProperties
+*/
+  def getEditors() = editors
 
-  def addProperty(p: BrushProperty) {
-    brushProperties = brushProperties ::: List(p)
-    settings.setFloatProperty(p.parameter, p.default)
+  def addEditor(e: DataEditor) {
+    editors = editors ::: List(e)
+    // TODO: init settings?      settings.setFloatProperty(p.parameter, p.default)
     notifyListeners()
   }
 
-  def removeProperty(p: BrushProperty) {
-    brushProperties = brushProperties.remove(_ == p)
-    settings.removeFloatProperty(p.parameter)
+  def removeEditor(e: DataEditor) {
+    editors = editors.remove( _ == e )
+    //settings.removeFloatProperty(p.parameter)
     notifyListeners()
   }
 

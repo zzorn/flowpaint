@@ -6,11 +6,12 @@ import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
 import gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
-import ink.{ColorInk, GradientInk, NoiseInk, Ink}
+import ink._
 import input.{InputHandler}
 
 import java.awt.Font
 import model.{Stroke, Painting}
+import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
 import util.DataSample
@@ -204,11 +205,11 @@ object FlowPaintController {
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
-          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)),
+        Nil)
 
-      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false) )
-
-      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true, true ) )
+      brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
+      brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, brush.inks) )
 
       availableBrushes.add(brush)
       brush
@@ -219,13 +220,27 @@ object FlowPaintController {
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
-          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)),
+        Nil)
 
+      val transparencyInks = List( new ColorInk(), new AlphaTransparencyBackgroundInk() )
+      val hueInk = List( new ConstantInk(new DataSample(("alpha",1f),("saturation",1f),("brightness",1f))), new ColorInk() )
+      val satInk= List( new ConstantInk(new DataSample(("alpha",1f))), new ColorInk() )
+      val brInk = List( new ConstantInk(new DataSample(("alpha",1f))), new ColorInk() )
+
+      brush.addEditor( new GradientSliderEditor( "Hue","hue", 0, 1, hueInk) )
+      brush.addEditor( new GradientSliderEditor( "Saturation","saturation", 1, 0, satInk) )
+      brush.addEditor( new GradientSliderEditor( "Brightness","brightness", 1, 0, brInk) )
+      brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, transparencyInks ) )
+      brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
+
+/*
       brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false ) )
       brush.addProperty( BrushProperty( "Hue","hue", 1, 1,0, true, true ) )
       brush.addProperty( BrushProperty( "Saturation","saturation", 1, 1,0, true, true ) )
       brush.addProperty( BrushProperty( "Brightness","brightness", 1, 1,0, true, true ) )
       brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true, true ) )
+*/
 
       availableBrushes.add(brush)
       brush

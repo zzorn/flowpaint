@@ -5,7 +5,7 @@ import _root_.org.flowpaint.util.DataSample
 import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 
 
-import brush.{Brush, BrushProperty}
+import brush.{Brush}
 import java.awt.{Graphics2D, BasicStroke}
 import javax.swing.JComponent
 import property.Data

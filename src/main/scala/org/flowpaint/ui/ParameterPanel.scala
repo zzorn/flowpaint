@@ -1,7 +1,7 @@
 package org.flowpaint.ui
 
 import java.awt.{GridLayout, FlowLayout}
-import javax.swing.{BoxLayout, JPanel}
+import javax.swing.{BoxLayout, JPanel, JComponent}
 import net.miginfocom.swing.MigLayout
 
 /**
@@ -21,9 +21,9 @@ class ParameterPanel {
     ui.removeAll()
   }
 
-  def addParameterUi( parameterUi:ParameterUi ) {
+  def addParameterUi( parameterUi:JComponent) {
 
-    ui.add( parameterUi.getUi(), "width 100%"  )
+    ui.add( parameterUi, "width 100%"  )
 
 /*
     ui.invalidate()

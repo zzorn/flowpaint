@@ -15,6 +15,13 @@ class DataSample {
     setValuesFrom( source )
   }
 
+  def this( values: (String, Float)* ) = {
+    this()
+
+    values.foreach( (v : (String, Float)) => {setProperty(v._1, v._2)})    
+  }
+
+
   private val properties = new TIntFloatHashMap(2)
 
   private val copyValuesProcedure = new TIntFloatProcedure {

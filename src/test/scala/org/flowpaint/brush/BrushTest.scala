@@ -21,9 +21,9 @@ class BrushTest {
 
     assertEquals( Nil, brush.getProperties )
 
-    val p1 = new BrushProperty("Foo", "foo", 0, 0, 1, true)
-    val p2 = new BrushProperty("Bar", "bar", 0, 0, 1, true)
-    val p3 = new BrushProperty("Zar", "zar", 0, 0, 1, true)
+    val p1 = new BrushProperty("Foo", "foo", 0, 0, 1, true, false)
+    val p2 = new BrushProperty("Bar", "bar", 0, 0, 1, true, false)
+    val p3 = new BrushProperty("Zar", "zar", 0, 0, 1, true, false)
     brush.addProperty( p1 )
 
     assertEquals( List(p1), brush.getProperties )

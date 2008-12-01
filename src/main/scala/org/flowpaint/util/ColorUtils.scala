@@ -64,5 +64,20 @@ object ColorUtils {
 
   }
 
+  def mixRGBWithAlpha(topR: Float, topG: Float, topB: Float, topA: Float,
+                     bottomR: Float, bottomG: Float, bottomB: Float, bottomA: Float ): (Float, Float, Float, Float) = {
+
+    // The remaining transparency can be calculated by multiplying the see-through value (inverse alpha)
+    // of the two layers, the resulting see-through amount is how much background is visible anymore.
+    // E.g. if each layer blocks half the visibility, only 25% visiblity is left, hence 75% opaqueness.
+    val a = 1f - (1f - topA) * (1f - bottomA)
+
+    val r = bottomR * (1f - topA) + topR * topA
+    val g = bottomG * (1f - topA) + topG * topA
+    val b = bottomB * (1f - topA) + topB * topA
+
+    return (r, g, b, a)
+  }
+
 
 }

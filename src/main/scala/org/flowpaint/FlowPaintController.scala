@@ -206,26 +206,26 @@ object FlowPaintController {
           new StrokeAngleTilter(tilt),
           new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
 
-      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true ) )
+      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false) )
 
-      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true ) )
+      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true, true ) )
 
       availableBrushes.add(brush)
       brush
     }
 
     def addColorBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-      val brush = new Brush(List(ink),
+      val brush = new Brush(List(new GradientInk(whiteGradient, 0.5f), ink),
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
           new RadiusFromPressureFilter(radius, pressureEffectOnRadius)))
 
-      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true ) )
-      brush.addProperty( BrushProperty( "Hue","hue", 1, 1,0, true ) )
-      brush.addProperty( BrushProperty( "Saturation","saturation", 1, 1,0, true ) )
-      brush.addProperty( BrushProperty( "Brightness","brightness", 1, 1,0, true ) )
-      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true ) )
+      brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false ) )
+      brush.addProperty( BrushProperty( "Hue","hue", 1, 1,0, true, true ) )
+      brush.addProperty( BrushProperty( "Saturation","saturation", 1, 1,0, true, true ) )
+      brush.addProperty( BrushProperty( "Brightness","brightness", 1, 1,0, true, true ) )
+      brush.addProperty( BrushProperty( "Transparency","alpha", 1, 1,0, true, true ) )
 
       availableBrushes.add(brush)
       brush
@@ -240,7 +240,7 @@ object FlowPaintController {
     addBrush(new GradientInk(createSmoothGradient(0.8f, 1f), 1f), 30, 0, 0.5f)
     addBrush(new GradientInk(whiteGradient, 0), 45, 0, 1f)
 
-    addColorBrush(new ColorInk(whiteGradient), 20, 0, 1f)
+    addColorBrush(new ColorInk(), 20, 0, 1f)
 /*
     addColorBrush(new GradientInk(maroonPenGradient, 0.7f), 20, 0, 1f)
     addColorBrush(new GradientInk(ocraPenGradient, 0.7f), 20, 0, 1f)

@@ -3,7 +3,8 @@ package org.flowpaint.brush
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import filters.{StrokeListener, StrokeFilter}
 import ink.Ink
-import property.{DataImpl, Data}
+import property.{GradientSliderEditor, DataImpl, Data}
+import ui.slider.InkSliderUi
 import ui.{BrushSliderUi, ParameterUi}
 
 import util.DataSample
@@ -13,16 +14,16 @@ case class BrushProperty(name: String,
                         default: Float,
                         min: Float,
                         max: Float,
-                        editable: Boolean )
+                        editable: Boolean,
+                        gradient: Boolean)
 
 
 /**
- * Contains all settings for a certain brush tool.
+ *  Contains all settings for a certain brush tool.
  *
  * @author Hans Haggstrom
  */
 case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
-
   private val settings = new DataImpl()
   private var brushProperties: List[BrushProperty] = Nil
   private var pixelProcessors: List[Ink] = inks
@@ -30,10 +31,11 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
   private val listeners = new HashSet[ChangeListener]()
 
+  settings.addListener( (data : Data, prop: String) => notifyListeners() )
 
   /**
-   *  Applies the pixel processors of this brush on the specified pixel data,
-   *  storing the effects of the pixel processors in the same pixel data.
+   *   Applies the pixel processors of this brush on the specified pixel data,
+   *   storing the effects of the pixel processors in the same pixel data.
    */
   def processPixel(pixel: DataSample) {
     pixelProcessors.foreach(_.processPixel(pixel))
@@ -41,8 +43,8 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
 
   /**
-   *  Applies the stroke processors of this brush on the specified stroke point data.
-   *  Calls the listener for each created final stroke point (may be zero also).
+   *   Applies the stroke processors of this brush on the specified stroke point data.
+   *   Calls the listener for each created final stroke point (may be zero also).
    */
   def processStrokePoint(pointData: DataSample, listener: StrokeListener) {
 
@@ -53,7 +55,7 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
   }
 
   def initializeStrokeStart(startPoint: DataSample) {
-    settings.getFloatProperties( startPoint )
+    settings.getFloatProperties(startPoint)
   }
 
 
@@ -62,13 +64,16 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
     brushProperties.foreach((p: BrushProperty) => {
 
       if (p.editable) callback(
-        new BrushSliderUi(
-          settings,
-          p.name,
-          p.parameter,
-          p.min,
-          p.max,
-          this))
+        if (p.gradient)
+          new InkSliderUi(settings, p.name, p.parameter, p.min, p.max, inks)
+        else
+          new BrushSliderUi(
+            settings,
+            p.name,
+            p.parameter,
+            p.min,
+            p.max,
+            this))
     })
 
   }
@@ -77,8 +82,11 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter]) {
 
   // Listener support
   type ChangeListener = (Brush) => Unit
+
   def addChangeListener(listener: ChangeListener) {listeners.add(listener)}
+
   def removeChangeListener(listener: ChangeListener) {listeners.remove(listener)}
+
   private def notifyListeners() {listeners foreach {listener => listener(this)}}
 
   // TODO: Some kind of listenable list might be handy.  Could do null-checks and such too..

@@ -44,7 +44,7 @@ abstract class SliderUi(editedData: Data,
 
 
   editedData.addListener( (data:Data, changedProperty :String) => {
-    if (preview != null && (changedProperty  == null || property.equals( changedProperty ))) {
+    if (preview != null) {
       updateUi()
     }
   })

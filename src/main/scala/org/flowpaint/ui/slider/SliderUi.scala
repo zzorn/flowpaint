@@ -35,7 +35,10 @@ abstract class SliderUi(editedData: Data,
 
   private val STROKE_1 = new BasicStroke(1)
   private val WHEEL_STEP = 0.01f
-  private val indicatorColor: Color = new java.awt.Color( 0.8f,0.8f,0.8f )
+
+  private val darkColor: Color = new java.awt.Color( 0.35f, 0.35f, 0.35f )
+  private val mediumColor: Color = new java.awt.Color( 0.6f, 0.6f, 0.6f)
+  private val lightColor: Color = new java.awt.Color( 0.85f,0.85f,0.85f )
 
   var relativePosition = {
     val value = editedData.getFloatProperty(editedParameter, 0.5f * (startValue + endValue))
@@ -91,27 +94,31 @@ abstract class SliderUi(editedData: Data,
         g2.fillPolygon( xs, ys, 3 )
       }
 
-      val w = preview.getWidth().toFloat
-      val h = preview.getHeight().toFloat
+      def drawTriangles(color1: java.awt.Color, color2: java.awt.Color, x1: Float, y1: Float, x2: Float, y2: Float, d1 : Float, d2 :Float, size :Float ) {
+        triangle( color1, x1, y1, d1, d2, size )
+        triangle( color2, x2, y2, -d1, -d2, size )
+      }
+
+      val w = preview.getWidth()
+      val h = preview.getHeight()
       val size = (Math.min(w, h) / 4).toInt
       val r = relativePosition
       val dx = if (isVertical) 0f else 1f
       val dy = if (isVertical) 1f else 0f
       val x1 = if (isVertical) 0f else r * w
-      val x2 = if (isVertical) w else r * w
+      val x2 = if (isVertical) w - 1f else r * w
       val y1 = if (isVertical) r * h else 0f
-      val y2 = if (isVertical) r * h else h
+      val y2 = if (isVertical) r * h else h - 1f
+      
+      g2.setColor(darkColor)
+      g2.drawRect( 1,1,w-3,h-3 )
 
-/*
-      line(java.awt.Color.BLACK, x1 - dx, y1 - dy, x2 - dx, y2 - dy)
-      line(java.awt.Color.WHITE, x1, y1, x2, y2)
-      line(java.awt.Color.BLACK, x1 + dx, y1 + dy, x2 + dx, y2 + dy)
-*/
+      drawTriangles( darkColor, darkColor, x1, y1, x2, y2, dx, dy, size+1 )
+      drawTriangles( lightColor, lightColor,  x1, y1, x2, y2, dx, dy, size )
+      drawTriangles( mediumColor, mediumColor, x1, y1, x2, y2, dx, dy, size-1 )
 
-      triangle( java.awt.Color.BLACK, x1, y1, dx, dy, size+1 )
-      triangle( java.awt.Color.BLACK, x2, y2, -dx, -dy, size+1 )
-      triangle( indicatorColor, x1, y1, dx, dy, size )
-      triangle( indicatorColor, x2, y2, -dx, -dy, size )
+      g2.setColor(mediumColor)
+      g2.drawRect( 0,0,w-1,h-1 )
     }
 
     preview = createBackground(paintIndicator)

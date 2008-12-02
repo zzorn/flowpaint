@@ -6,7 +6,7 @@ import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 
 
 import brush.{Brush}
-import java.awt.{Graphics2D, BasicStroke, Polygon}
+import java.awt.{Graphics2D, BasicStroke, Polygon, Color}
 import javax.swing.JComponent
 import property.Data
 
@@ -35,6 +35,7 @@ abstract class SliderUi(editedData: Data,
 
   private val STROKE_1 = new BasicStroke(1)
   private val WHEEL_STEP = 0.01f
+  private val indicatorColor: Color = new java.awt.Color( 0.8f,0.8f,0.8f )
 
   var relativePosition = {
     val value = editedData.getFloatProperty(editedParameter, 0.5f * (startValue + endValue))
@@ -74,9 +75,25 @@ abstract class SliderUi(editedData: Data,
 
       }
 
+      def triangle( color: java.awt.Color, x: Float, y: Float, d1 : Float, d2 :Float, size :Float ) {
+        val xs = new Array[Int]( 3 )
+        val ys = new Array[Int]( 3 )
+
+        xs(0) = (x - d1 * size).toInt
+        xs(1) = (x + d2 * size).toInt
+        xs(2) = (x + d1 * size).toInt
+
+        ys(0) = (y - d2 * size).toInt
+        ys(1) = (y + d1 * size).toInt
+        ys(2) = (y + d2 * size).toInt
+
+        g2.setColor(color)
+        g2.fillPolygon( xs, ys, 3 )
+      }
+
       val w = preview.getWidth().toFloat
       val h = preview.getHeight().toFloat
-      val size = Math.min(w, h) / 4
+      val size = (Math.min(w, h) / 4).toInt
       val r = relativePosition
       val dx = if (isVertical) 0f else 1f
       val dy = if (isVertical) 1f else 0f
@@ -85,23 +102,16 @@ abstract class SliderUi(editedData: Data,
       val y1 = if (isVertical) r * h else 0f
       val y2 = if (isVertical) r * h else h
 
+/*
       line(java.awt.Color.BLACK, x1 - dx, y1 - dy, x2 - dx, y2 - dy)
       line(java.awt.Color.WHITE, x1, y1, x2, y2)
       line(java.awt.Color.BLACK, x1 + dx, y1 + dy, x2 + dx, y2 + dy)
+*/
 
-      val xs = new Array[Int]( 3 )
-      val ys = new Array[Int]( 3 )
-
-      xs(0) = (x1 - dx * size).toInt
-      xs(1) = (x1 + dy * size).toInt
-      xs(2) = (x1 + dx * size).toInt
-
-      ys(0) = (y1 - dy * size).toInt
-      ys(1) = (y1 + dx * size).toInt
-      ys(2) = (y1 + dy * size).toInt
-
-      g2.setColor(java.awt.Color.GRAY)
-      g2.fillPolygon( xs, ys, 3 )
+      triangle( java.awt.Color.BLACK, x1, y1, dx, dy, size+1 )
+      triangle( java.awt.Color.BLACK, x2, y2, -dx, -dy, size+1 )
+      triangle( indicatorColor, x1, y1, dx, dy, size )
+      triangle( indicatorColor, x2, y2, -dx, -dy, size )
     }
 
     preview = createBackground(paintIndicator)

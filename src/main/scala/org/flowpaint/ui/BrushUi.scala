@@ -31,7 +31,8 @@ class BrushUi {
 
 
         // Add brush title
-        editorPanel.addUi( new JLabel( brush.name ))
+        val brushTitle: JLabel = new JLabel(brush.name)
+        editorPanel.addUi( brushTitle)
 
         // Add brush preview
         val preview: BrushPreview = new BrushPreview(brush)
@@ -41,6 +42,9 @@ class BrushUi {
 
         // Create the editors for editing this brush
         brush.getEditors().foreach( (d: DataEditor) => {
+/* Takes up space and kind of redundant, so commented out.
+          editorPanel.addUi( new JLabel( d.title ))
+*/
           editorPanel.addUi( d.createEditor( brush.settings )  ) } )
 
       }

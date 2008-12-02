@@ -201,7 +201,7 @@ object FlowPaintController {
           new RadiusFromPressureFilter(radius, pressureEffectOnRadius)),
         Nil)
 
-      brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
+      brush.addEditor( new BrushSliderEditor( "Size","maxRadius", 1, 4*radius, brush ) )
       brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, brush.getPixelProcessors()) )
 
       brush.settings.setFloatProperty( "maxRadius", radius )
@@ -228,7 +228,7 @@ object FlowPaintController {
       brush.addEditor( new GradientSliderEditor( "Saturation","saturation", 1, 0, satInk) )
       brush.addEditor( new GradientSliderEditor( "Brightness","brightness", 1, 0, brInk) )
       brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, transparencyInks ) )
-      brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
+      brush.addEditor( new BrushSliderEditor( "Size","maxRadius", 1, 4*radius, brush ) )
 
       brush.settings.setFloatProperty( "maxRadius", radius )
       brush.settings.setFloatProperty( "hue", 0 )

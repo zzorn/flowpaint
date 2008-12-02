@@ -26,12 +26,12 @@ case class BrushProperty(name: String,
  *
  * @author Hans Haggstrom
  */
-case class Brush(inks: List[Ink], filters: List[StrokeFilter], initialEditors : List[DataEditor]) {
-  private val settings = new DataImpl()
-/*
-  private var brushProperties: List[BrushProperty] = Nil
-*/
+class Brush( val name : String, inks: List[Ink], filters: List[StrokeFilter], initialEditors : List[DataEditor]) {
+
+  val settings = new DataImpl()
+
   private var pixelProcessors: List[Ink] = inks
+
   private var strokeProcessors: List[StrokeFilter] = filters
 
   private var editors : List[DataEditor] = initialEditors
@@ -64,16 +64,6 @@ case class Brush(inks: List[Ink], filters: List[StrokeFilter], initialEditors : 
   def initializeStrokeStart(startPoint: DataSample) {
     settings.getFloatProperties(startPoint)
   }
-
-
-  def createParameterUis(callback: JComponent => Unit) {
-
-    editors.foreach((d: DataEditor) => {
-      callback( d.createEditor( settings ) )
-    })
-
-  }
-
 
 
   // Listener support

@@ -25,7 +25,7 @@ class BrushSelectionButton( brush : Brush ) {
 
   def createUi() : JComponent = {
 
-    val preview = new BrushPreview( brush, brushPreviewStrokeGenerator, null )
+    val preview = new BrushPreview( brush )
 
     def press() {
       mousePressedOnThisButton = true
@@ -65,15 +65,6 @@ class BrushSelectionButton( brush : Brush ) {
   }
 
 
-  def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, dataSample:DataSample) {
-
-    val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
-
-    dataSample.setProperty("x", w * f)
-    dataSample.setProperty("y", h * f)
-    dataSample.setProperty("pressure", pressure)
-    dataSample.setProperty("time", f * 0.5f)
-  }
 
 
 

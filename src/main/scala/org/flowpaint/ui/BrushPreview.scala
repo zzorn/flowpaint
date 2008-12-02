@@ -2,12 +2,27 @@ package org.flowpaint.ui
 
 import brush.Brush
 import filters.StrokeListener
+import ink.Ink
 import java.awt.event.{ComponentListener, MouseAdapter}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.JPanel
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
 import util.DataSample
+
+object BrushPreview {
+  def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, dataSample:DataSample) {
+
+     val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
+
+     dataSample.setProperty("x", w * f)
+     dataSample.setProperty("y", h * f)
+     dataSample.setProperty("pressure", pressure)
+     dataSample.setProperty("time", f * 0.5f)
+   }
+
+}
+
 
 /**
  * A JComponent that renders a view of the specified stroke points with the specified brush.
@@ -17,6 +32,12 @@ import util.DataSample
 class BrushPreview(val brush: Brush,
                   val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit ,
                   val overlayPainter : (Graphics2D) => Unit ) extends JPanel {
+
+
+
+  def this( brush_ : Brush ) {
+    this( brush_, BrushPreview.brushPreviewStrokeGenerator, null )
+  }
 
   if (brush== null) throw new IllegalArgumentException("brush should not be null")
   if (strokePointCalculator == null) throw new IllegalArgumentException("strokePointCalculator should not be null")
@@ -104,6 +125,7 @@ class BrushPreview(val brush: Brush,
 
     repaint()
   }
+
 
 
 

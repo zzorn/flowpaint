@@ -38,14 +38,7 @@ object FlowPaintController {
     if (myCurrentBrush != brush) {
       myCurrentBrush = brush
 
-      FlowPaintUi.brushParameterPanel.clear()
-      if (myCurrentBrush != null) {
-
-        // Create parameter panels for all brush settings
-        myCurrentBrush.createParameterUis( FlowPaintUi.brushParameterPanel.addParameterUi )
-      }
-      
-      FlowPaintUi.brushParameterPanel.ui.repaint()
+      FlowPaintUi.brushUi.setBrush( myCurrentBrush )
     }
 
   }
@@ -200,8 +193,8 @@ object FlowPaintController {
       makeGradientPoint(1.0f, 1, 1, 1, 0f)
       )
 
-    def addBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-      val brush = new Brush(List(ink),
+    def addBrush(name: String,ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
+      val brush = new Brush(name,List(ink),
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
@@ -209,14 +202,14 @@ object FlowPaintController {
         Nil)
 
       brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
-      brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, brush.inks) )
+      brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, brush.getPixelProcessors()) )
 
       availableBrushes.add(brush)
       brush
     }
 
-    def addColorBrush(ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-      val brush = new Brush(List(new GradientInk(whiteGradient, 0.5f), ink),
+    def addColorBrush(name: String,ink: Ink, radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
+      val brush = new Brush(name,List(new GradientInk(whiteGradient, 0.5f), ink),
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
@@ -246,16 +239,16 @@ object FlowPaintController {
       brush
     }
 
-    currentBrush = addBrush(new GradientInk(blackGradient, 1), 2.5f, 0, 0.35f)
-    addBrush(new GradientInk(solidBlackGradient, 0), 1, 0, 0)
-    addBrush(new GradientInk(inkGradient, 0), 2.7f, 0.8f, 1)
-    addBrush(new GradientInk(inkGradient, 0), 8, 0.8f, 1)
-    addBrush(new GradientInk(createSmoothGradient(0.24f, 0.26f), 1f), 23, 0, 0.5f)
-    addBrush(new GradientInk(createSmoothGradient(0.25f, 0), 1f), 70, 0, 0.5f)
-    addBrush(new GradientInk(createSmoothGradient(0.8f, 1f), 1f), 30, 0, 0.5f)
-    addBrush(new GradientInk(whiteGradient, 0), 45, 0, 1f)
+    currentBrush = addBrush("Pencil",new GradientInk(blackGradient, 1), 2.5f, 0, 0.35f)
+    addBrush("Pen",new GradientInk(solidBlackGradient, 0), 1, 0, 0)
+    addBrush("Ink, thin",new GradientInk(inkGradient, 0), 2.7f, 0.8f, 1)
+    addBrush("Ink, thick",new GradientInk(inkGradient, 0), 8, 0.8f, 1)
+    addBrush("Shade, gray",new GradientInk(createSmoothGradient(0.24f, 0.26f), 1f), 23, 0, 0.5f)
+    addBrush("Shade, black",new GradientInk(createSmoothGradient(0.25f, 0), 1f), 70, 0, 0.5f)
+    addBrush("Shade, white",new GradientInk(createSmoothGradient(0.8f, 1f), 1f), 30, 0, 0.5f)
+    addBrush("White",new GradientInk(whiteGradient, 0), 45, 0, 1f)
 
-    addColorBrush(new ColorInk(), 20, 0, 1f)
+    addColorBrush("Color",new ColorInk(), 20, 0, 1f)
 /*
     addColorBrush(new GradientInk(maroonPenGradient, 0.7f), 20, 0, 1f)
     addColorBrush(new GradientInk(ocraPenGradient, 0.7f), 20, 0, 1f)
@@ -264,19 +257,19 @@ object FlowPaintController {
     addColorBrush(new GradientInk(lampBlackPenGradient, 0.7f), 20, 0, 1f)
 */
 
-    addBrush(new NoiseInk(woodGradient, (15f, 2.1f), 0.2f), 30, 0, 0.9f)
-    addBrush(new NoiseInk(fireGradient, (30f, 1f), 0.35f), 18, 0, 1f)
-    addBrush(new NoiseInk(sunflowerGradient, (15f, 2f), 0.2f), 20, 0.2f, 1)
-    addBrush(new NoiseInk(alienGradient, (3f, 0.5f), 0.4f), 10, 0.3f, 1f)
-    addBrush(new NoiseInk(twoColorGradient, (14f, 1.4f), 1f), 40, 0, 1)
-    addBrush(new NoiseInk(marbleGradient, (50f, 1.7f), 0.3f), 40, 0, 0.7f)
+    addBrush("Wood",new NoiseInk(woodGradient, (15f, 2.1f), 0.2f), 30, 0, 0.9f)
+    addBrush("Fire",new NoiseInk(fireGradient, (30f, 1f), 0.35f), 18, 0, 1f)
+    addBrush("Sunflower",new NoiseInk(sunflowerGradient, (15f, 2f), 0.2f), 20, 0.2f, 1)
+    addBrush("Grass",new NoiseInk(alienGradient, (3f, 0.5f), 0.4f), 10, 0.3f, 1f)
+    addBrush("Water",new NoiseInk(twoColorGradient, (14f, 1.4f), 1f), 40, 0, 1)
+    addBrush("Stone",new NoiseInk(marbleGradient, (50f, 1.7f), 0.3f), 40, 0, 0.7f)
 
-    addBrush(new GradientTestInk(0f, 1f), 10, 0, 1)
-    addBrush(new GradientTestInk(0.5f, 1f), 30, 0, 1)
-    addBrush(new GradientTestInk(1f, 1f), 80, 0, 1)
+    addBrush("Brown line",new GradientTestInk(0f, 1f), 10, 0, 1)
+    addBrush("Purple brush",new GradientTestInk(0.5f, 1f), 30, 0, 1)
+    addBrush("Pink delight",new GradientTestInk(1f, 1f), 80, 0, 1)
 
-    addBrush(new NoiseInk(skyCloudGradient, (2f, 0.6f), 0.5f), 30, 0, 1f)
-    addBrush(new NoiseInk(skyCloudGradient, (50f, 1.5f), 0.8f), 50, 0, 0.5f)
+    addBrush("Silver brush",new NoiseInk(skyCloudGradient, (2f, 0.6f), 0.5f), 30, 0, 1f)
+    addBrush("Silver rain",new NoiseInk(skyCloudGradient, (50f, 1.5f), 0.8f), 50, 0, 0.5f)
 
     // State / datamodel info
     currentTool = new StrokeTool()

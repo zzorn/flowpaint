@@ -6,7 +6,7 @@ import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 
 
 import brush.{Brush}
-import java.awt.{Graphics2D, BasicStroke}
+import java.awt.{Graphics2D, BasicStroke, Polygon}
 import javax.swing.JComponent
 import property.Data
 
@@ -76,6 +76,7 @@ abstract class SliderUi(editedData: Data,
 
       val w = preview.getWidth().toFloat
       val h = preview.getHeight().toFloat
+      val size = Math.min(w, h) / 4
       val r = relativePosition
       val dx = if (isVertical) 0f else 1f
       val dy = if (isVertical) 1f else 0f
@@ -87,6 +88,20 @@ abstract class SliderUi(editedData: Data,
       line(java.awt.Color.BLACK, x1 - dx, y1 - dy, x2 - dx, y2 - dy)
       line(java.awt.Color.WHITE, x1, y1, x2, y2)
       line(java.awt.Color.BLACK, x1 + dx, y1 + dy, x2 + dx, y2 + dy)
+
+      val xs = new Array[Int]( 3 )
+      val ys = new Array[Int]( 3 )
+
+      xs(0) = (x1 - dx * size).toInt
+      xs(1) = (x1 + dy * size).toInt
+      xs(2) = (x1 + dx * size).toInt
+
+      ys(0) = (y1 - dy * size).toInt
+      ys(1) = (y1 + dx * size).toInt
+      ys(2) = (y1 + dy * size).toInt
+
+      g2.setColor(java.awt.Color.GRAY)
+      g2.fillPolygon( xs, ys, 3 )
     }
 
     preview = createBackground(paintIndicator)

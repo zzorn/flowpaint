@@ -132,5 +132,14 @@ class Brush( val name : String, inks: List[Ink], filters: List[StrokeFilter], in
   }
 
 
-  
+  override def hashCode = {
+    var code = name.hashCode
+
+    code ^= 133 + settings.hashCode
+    code ^= 123 + pixelProcessors.hashCode
+    code ^= 435 + strokeProcessors.hashCode
+    code ^= 978 + editors.hashCode
+
+    code
+  }
 }

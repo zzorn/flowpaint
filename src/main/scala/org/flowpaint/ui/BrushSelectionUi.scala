@@ -14,21 +14,17 @@ import net.miginfocom.swing.MigLayout
 
 class BrushSelectionUi(brushSet : BrushSet) extends JPanel{
 
-  private val brushPanel = new JPanel( new MigLayout("wrap 5, fillx, insets 0","0[]0[]0","0[]0[]0") )
+  private val brushPanel = new JPanel( new MigLayout("wrap 5, insets 0","0[]0[]0","0[]0[]0") )
 
   private def update() {
     brushPanel.removeAll
 
     brushSet.getBrushes.foreach( brush => brushPanel.add( new BrushSelectionButton(brush).ui ) )
 
-    // Grrr.. update already
-    //invalidate
     revalidate
-    validate
-    repaint()
   }
 
-  setLayout(new MigLayout("wrap 1, insets 0","0[]0[]0","0[]0[]0"))
+  setLayout(new MigLayout("wrap 1, fillx, insets 0","0[]0[]0","0[]0[]0"))
 
   add(new JLabel( brushSet.name ), "width 100%" )
   add( brushPanel, "width 100%" )

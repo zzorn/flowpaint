@@ -105,4 +105,9 @@ class DataSample {
 
     return output + ")"
   }
+
+
+  override def hashCode = {
+    properties.hashCode
+  }
 }

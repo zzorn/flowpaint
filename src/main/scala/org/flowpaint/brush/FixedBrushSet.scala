@@ -43,12 +43,33 @@ class FixedBrushSet(name_ : String, maxSize : Int ) extends BrushSet {
   def getBrushes(): List[Brush] = brushes
 
   /**
-   * Adds the specified brush first in the list of brushes.
+   * Adds the specified brush last in the list of brushes.
    *
-   * If there is any max size for the brush set, excess brushes are removed.
+   * If there is any max size for the brush set, excess brushes are removed first.
    */
   def addBrush( brush : Brush ) {
 
+    if (brushes.size >= maxSize)
+      {
+        brushes = brushes.subseq( 0, maxSize-1 ).toList
+      }
+
+    brushes = brushes ::: List(brush)
+
+    notifyListeners()
+  }
+
+  /**
+   * Adds the specified brush first in the list of brushes, or moves it first if it is already added.
+   *
+   * If there is any max size for the brush set, excess brushes are removed.
+   */
+  def addOrMoveBrushFirst( brush : Brush ) {
+
+    // Reove earlier brushes with same hashcode (= same settigns)
+    val brushHash = brush.hashCode
+    brushes = brushes.remove( (b:Brush)=> b.hashCode == brushHash  )
+    
     brushes = brush :: brushes
 
     if (brushes.size > maxSize)

@@ -84,4 +84,9 @@ final class DataImpl extends Data {
   private def notifyListeners(changedProperty : String) {
     listeners foreach{ (l:DataListener) => l(this, changedProperty)}
   }
+
+
+  override def hashCode = {
+    floatProperties.hashCode ^ stringProperties.hashCode
+  }
 }

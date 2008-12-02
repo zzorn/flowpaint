@@ -56,7 +56,7 @@ object FlowPaintController {
     currentBrushUsageCount = 0
   }
 
-  private val MAX_RECENT_BRUSHES_SIZE = 16
+  private val MAX_RECENT_BRUSHES_SIZE = 20
 
   val availableBrushes = new FixedBrushSet( "Default Brushes" )
   val recentBrushes = new FixedBrushSet( "Recent Brushes", MAX_RECENT_BRUSHES_SIZE )
@@ -67,7 +67,7 @@ object FlowPaintController {
 
     // Add only when the brush is used the second time
     if (currentBrushUsageCount == 2) {
-      recentBrushes.addBrush( brush.createCopy() )
+      recentBrushes.addOrMoveBrushFirst( brush.createCopy() )
     }
   }
 

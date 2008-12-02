@@ -68,6 +68,7 @@ class StrokeTool extends Tool {
       // Add stroke, so that we get a preview of it
       // TODO: add with a proper undoable command later
       FlowPaintController.currentPainting.currentLayer.addStroke(currentStroke)
+
     }
 
   def addStrokePoint(stroke:Stroke, point:DataSample)
@@ -89,6 +90,8 @@ class StrokeTool extends Tool {
 
   def endStroke()
     {
+      FlowPaintController.addRecentBrush( currentStroke.brush )
+
       // Temp:
       //      sketchController.currentPainting.currentLayer.addStroke( stroke )
 

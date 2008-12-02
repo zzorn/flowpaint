@@ -1,6 +1,7 @@
 package org.flowpaint.property
 
 import _root_.org.flowpaint.util.DataSample
+import _root_.scala.collection.mutable.Map
 
 /**
  *  Holds some simple key-value data.  Provides listener support.
@@ -47,4 +48,14 @@ trait Data {
   def removeFloatProperty( name : String )
 
   def removeStringProperty( name : String )
+
+
+  def getStringProperties( target : Map[ String, String ] )
+
+  /**
+   * Sets this Data to the values of the specified source data.  Any previous values are removed first.
+   */
+  def set( sourceData : Data )
+
+
 }

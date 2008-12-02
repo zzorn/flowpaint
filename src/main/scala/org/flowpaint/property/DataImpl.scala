@@ -1,7 +1,7 @@
 package org.flowpaint.property
 
 import _root_.org.flowpaint.util.DataSample
-import _root_.scala.collection.mutable.{HashMap, HashSet}
+import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
 
 /**
  * Default implementation of Data.
@@ -61,12 +61,21 @@ final class DataImpl extends Data {
     notifyListeners(name)
   }
 
+  def getStringProperties( target : Map[ String, String ] ){
+    stringProperties foreach (( entry :(String,String) ) => { target.put(entry._1, entry._2) })
+  }
+
   def clear() {
     floatProperties.clear()
     stringProperties.clear()
     notifyListeners()
   }
 
+  def set( sourceData : Data ){
+    clear()
+    sourceData.getFloatProperties(floatProperties)
+    sourceData.getStringProperties( stringProperties )
+  }
 
   private def notifyListeners() {
     notifyListeners(null)

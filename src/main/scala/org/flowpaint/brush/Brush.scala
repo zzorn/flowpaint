@@ -66,6 +66,17 @@ class Brush( val name : String, inks: List[Ink], filters: List[StrokeFilter], in
   }
 
 
+  /**
+   * Create a copy of this brush, that can be edited without affecting this Brush.
+   * NOTE: Assumes pixel processors and stroke processors and editors are immutable.
+   */
+  def createCopy() : Brush = {
+    val copy = new Brush( name, pixelProcessors, strokeProcessors, editors )
+    copy.settings.set( settings )
+    return copy
+  }
+
+
   // Listener support
   type ChangeListener = (Brush) => Unit
 
@@ -121,4 +132,5 @@ class Brush( val name : String, inks: List[Ink], filters: List[StrokeFilter], in
   }
 
 
+  
 }

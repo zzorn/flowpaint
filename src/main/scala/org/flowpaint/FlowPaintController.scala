@@ -204,6 +204,9 @@ object FlowPaintController {
       brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
       brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, brush.getPixelProcessors()) )
 
+      brush.settings.setFloatProperty( "maxRadius", radius )
+      brush.settings.setFloatProperty( "alpha", 1 )
+
       availableBrushes.add(brush)
       brush
     }
@@ -226,6 +229,12 @@ object FlowPaintController {
       brush.addEditor( new GradientSliderEditor( "Brightness","brightness", 1, 0, brInk) )
       brush.addEditor( new GradientSliderEditor( "Transparency","alpha", 1, 0, transparencyInks ) )
       brush.addEditor( new BrushSliderEditor( "Radius","maxRadius", 1, 4*radius, brush ) )
+
+      brush.settings.setFloatProperty( "maxRadius", radius )
+      brush.settings.setFloatProperty( "hue", 0 )
+      brush.settings.setFloatProperty( "saturation", 1 )
+      brush.settings.setFloatProperty( "brightness", 1 )
+      brush.settings.setFloatProperty( "alpha", 1 )
 
 /*
       brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false ) )

@@ -58,6 +58,7 @@ class StrokeTool extends Tool {
 
       val initialSample = new DataSample(currentStatus);
 
+      // TODO: If a tablet is used, this should be initialized to zero, or there should be a filter that waits until pressure and cordinate input has been received.
       initialSample.setProperty( "pressure", 0.5f )
       initialSample.setProperty( "randomSeed", Math.random.toFloat )
       brush.initializeStrokeStart( initialSample )

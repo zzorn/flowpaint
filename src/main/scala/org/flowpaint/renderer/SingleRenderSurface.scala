@@ -3,9 +3,10 @@ package org.flowpaint.renderer
 
 import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Color}
+import util.DataSample
 
 /**
- *         A RenderSurface implementation that uses a single surface to render on, the same size as the screen
+ *          A RenderSurface implementation that uses a single surface to render on, the same size as the screen
  *
  * @author Hans Haggstrom
  */
@@ -13,13 +14,14 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
   var width = 0
   var height = 0
   var buffer: BufferedImage = null
+  private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
 
 
   def clear() {
     clearToColor(java.awt.Color.WHITE)
   }
 
-  def clearToColor( color : Color ) {
+  def clearToColor(color: Color) {
     if (buffer != null) {
       val graphics = buffer.getGraphics
       graphics.setColor(color)
@@ -56,7 +58,19 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
   }
 
 
-  private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
+  def putPixel(x: Int, y: Int, sample: DataSample) {
+
+    if (buffer != null) {
+
+      val color = util.ColorUtils.createRGBAColor(
+        sample.getProperty("red", 0),
+        sample.getProperty("green", 0),
+        sample.getProperty("blue", 0),
+        sample.getProperty("alpha", 0))
+
+      buffer.setRGB(x, y, color)
+    }
+  }
 
   def provideContent(minX: Float, minY: Float,
                     maxX: Float, maxY: Float,
@@ -73,10 +87,10 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
         // NOTE: While should be a bit faster than a for comprehension.
         var y = sY
-        while ( y <= eY ) {
+        while (y <= eY) {
 
           var x = sX
-          while ( x <= eX ) {
+          while (x <= eX) {
 
             var color: Int = colorCalculator(x, y)
 
@@ -86,9 +100,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
               if (alpha < 1) {
                 val originalColor = buffer.getRGB(x, y)
-                color =  util.ColorUtils.mixRGBWithAlpha( color, originalColor )
+                color = util.ColorUtils.mixRGBWithAlpha(color, originalColor)
               }
-              
+
               buffer.setRGB(x, y, color)
             }
 

@@ -2,6 +2,7 @@ package org.flowpaint.renderer
 
 
 import java.awt.{Graphics2D, Color}
+import util.DataSample
 
 /**
  *  Represents a surface that can be rendered to.
@@ -25,6 +26,12 @@ trait RenderSurface {
   def setViewPortSize(aWidth: Int, aHeight: Int)
 
   def render( context : Graphics2D  )
+
+  def width() : Int
+
+  def height() : Int
+
+  def putPixel( x : Int, y : Int, sample : DataSample )
 
   def provideContent(minX: Float, minY: Float,
                     maxX: Float, maxY: Float,

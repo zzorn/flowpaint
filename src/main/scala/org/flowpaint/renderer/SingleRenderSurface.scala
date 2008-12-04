@@ -60,7 +60,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
   def putPixel(x: Int, y: Int, sample: DataSample) {
 
-    if (buffer != null) {
+    if (buffer != null &&
+            x >= 0 && y >= 0 &&
+            x < width && y < height) {
 
       val color = util.ColorUtils.createRGBAColor(
         sample.getProperty("red", 0),

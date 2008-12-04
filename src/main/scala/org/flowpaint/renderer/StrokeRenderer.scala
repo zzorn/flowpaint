@@ -42,7 +42,7 @@ object StrokeRenderer {
     pixelData.setProperty("alpha",0.5f)
 
     triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, surface.putPixel, pixelData )
-//    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, surface.putPixel, pixelData )
+    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, surface.putPixel, pixelData )
 
 
 /*

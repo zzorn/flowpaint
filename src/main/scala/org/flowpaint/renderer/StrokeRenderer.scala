@@ -38,11 +38,13 @@ object StrokeRenderer {
     val x11 = endX + endDeltaX
     val y11 = endY + endDeltaY
 
-    val pixelData = new DataSample()
-    pixelData.setProperty("alpha",0.5f)
+    val color1= new DataSample(("alpha",0.3f))
+/*
+    val color2= new DataSample(("alpha",0.6f))
+*/
 
-    triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, surface.putPixel, pixelData )
-    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, surface.putPixel, pixelData )
+    triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, surface.putPixel, color1 )
+    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, surface.putPixel, color1 )
 
 
 /*

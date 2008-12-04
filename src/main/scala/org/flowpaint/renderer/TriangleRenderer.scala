@@ -10,6 +10,8 @@ import util.DataSample
 class TriangleRenderer {
   type PixelCallback = (Int, Int, DataSample) => Unit
 
+  val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
+
   def renderTriangle(viewWidth: Int, viewHeight: Int,
                     xi0: Float, yi0: Float, xi1: Float, yi1: Float, xi2: Float, yi2: Float,
                     pixelCallback: PixelCallback, data: DataSample) {
@@ -73,27 +75,36 @@ class TriangleRenderer {
     var dt : Int= 0
     if (y1 < y0) {dt = y0; y0 = y1; y1 = dt;  dt = x0; x0 = x1; x1 = dt} // Swap point 0 and 1
     if (y2 < y1) {dt = y1; y1 = y2; y2 = dt;  dt = x1; x1 = x2; x2 = dt} // Swap point 1 and 2
-    if (y2 < y0) {dt = y0; y0 = y2; y2 = dt;  dt = x0; x0 = x2; x2 = dt} // Swap point 0 and 2
+    if (y1 < y0) {dt = y0; y0 = y1; y1 = dt;  dt = x0; x0 = x1; x1 = dt} // Swap point 0 and 1 again
 
     // Calculate slope coefficients
-    def calculateCoefficient(dx: Int, dy: Int): Float = if (dy == 0) 0f else dx.toFloat / dy.toFloat
-    val d0 : Float = calculateCoefficient(x1 - x0, y1 - y0)
-    val d1 : Float = calculateCoefficient(x2 - x1, y2 - y1)
-    val d2 : Float = calculateCoefficient(x0 - x2, y0 - y2)
+    def calculateCoefficient(dx: Int, dy: Int): Float = if (dy == 0) 0f else (dx.toFloat) / (dy.toFloat)
+    val d01 : Float = calculateCoefficient(x0 - x1, y0 - y1)
+    val d12 : Float = calculateCoefficient(x1 - x2, y1 - y2)
+    val d02 : Float = calculateCoefficient(x0 - x2, y0 - y2)
+
+/*
+    def checkGradient( d : Float, y : Int, x:Int, targetY:Int, expectedX:Int) {
+      val calculatedX: Float = d * (targetY - y) + x
+      if ( calculatedX == expectedX ) println ("gradient ok") else println ("Gradient fail: calculatedX = " + calculatedX + ", expected x: " + expectedX)
+    }
+    checkGradient(d01, y0, x0, y1, x1)
+    checkGradient(d02, y0, x0, y2, x2)
+    checkGradient(d12, y1, x1, y2, x2)
+*/
+
 
     // Render the upper and lower part of the triangle (above and below the middle y point)
-/*
-    rasterizeTrapetzoid(y0, y1, x0, y0, d2, x0, y0, d0)
-    rasterizeTrapetzoid(y1, y2, x0, y0, d2, x1, y1, d1)
-*/
+
+    rasterizeTrapetzoid(y0, y1, x0, y0, d02, x0, y0, d01)
+    rasterizeTrapetzoid(y1, y2, x0, y0, d02, x1, y1, d12)
+
 
 /*
-    println("d0: " + d0 +", d1: " +d1+", d2: " +d2)
+    pixelCallback( xi0.toInt, yi0.toInt, RED_COLOR  )
+    pixelCallback( xi1.toInt, yi1.toInt, RED_COLOR  )
+    pixelCallback( xi2.toInt, yi2.toInt, RED_COLOR  )
 */
-
-    pixelCallback( xi0.toInt, yi0.toInt, data )
-    pixelCallback( xi1.toInt, yi1.toInt, data )
-    pixelCallback( xi2.toInt, yi2.toInt, data )
   }
 
 

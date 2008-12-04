@@ -306,6 +306,12 @@ object FlowPaintController {
     addBrush("Silver brush", new NoiseInk(skyCloudGradient, (2f, 0.6f), 0.5f), 30, 0, 1f)
     addBrush("Silver rain", new NoiseInk(skyCloudGradient, (50f, 1.5f), 0.8f), 50, 0, 0.5f)
 
+    // DEBUG
+    addBrush("Dual Debug brush", new DebugInk(1,1), 80, 0, 1)
+    addBrush("Along Debug brush", new DebugInk(1, 0), 80, 0, 1)
+    addBrush("Across Debug brush", new DebugInk(0, 1), 80, 0, 1)
+    addBrush("Solid Debug brush", new DebugInk(0, 0), 40, 0, 1)
+
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()

@@ -25,10 +25,12 @@ object StrokeRenderer {
                        brush: Brush, surface: RenderSurface) {
 
     // Calculate corner points
+
     val startDeltaX = Math.cos(startAngle).toFloat * startRadius
     val startDeltaY = Math.sin(startAngle).toFloat * startRadius
     val endDeltaX = Math.cos(endAngle).toFloat * endRadius
     val endDeltaY = Math.sin(endAngle).toFloat * endRadius
+
     val x00 = startX - startDeltaX
     val y00 = startY - startDeltaY
     val x01 = startX + startDeltaX
@@ -38,13 +40,32 @@ object StrokeRenderer {
     val x11 = endX + endDeltaX
     val y11 = endY + endDeltaY
 
-    val color1= new DataSample(("alpha",0.3f))
-/*
-    val color2= new DataSample(("alpha",0.6f))
-*/
+    // Prepare data for corners
 
-    triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, surface.putPixel, color1 )
-    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, surface.putPixel, color1 )
+    val s00 = new DataSample( startData )
+    val s01 = new DataSample( startData )
+    val s10 = new DataSample( endData )
+    val s11 = new DataSample( endData )
+
+    s00.setProperty( "positionAcrossStroke", -1 )
+    s01.setProperty( "positionAcrossStroke", 1 )
+    s10.setProperty( "positionAcrossStroke", -1 )
+    s11.setProperty( "positionAcrossStroke", 1 )
+
+    s00.setProperty( "positionAlongStroke", 0 )
+    s01.setProperty( "positionAlongStroke", 0 )
+    s10.setProperty( "positionAlongStroke", 1 )
+    s11.setProperty( "positionAlongStroke", 1 )
+
+    // Render triangles to surface, applying the pixel processing pipeline for each pixel
+
+    def pixelCallback(x : Int, y:Int, pixelData : DataSample ) {
+      brush.processPixel( pixelData )
+      surface.putPixel( x, y, pixelData )
+    }
+
+    triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback )
+    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, s10, s11, s01, pixelCallback )
 
 
 /*

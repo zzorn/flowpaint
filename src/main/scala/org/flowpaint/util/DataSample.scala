@@ -1,6 +1,6 @@
 package org.flowpaint.util
 
-import gnu.trove.{TIntFloatHashMap, TIntFloatProcedure}
+import gnu.trove.{TFloatFunction, TIntFloatHashMap, TIntFloatProcedure}
 
 /**
  *  A datapoint along a stroke.  Can have one or more Float properties, indexed with Int id:s.
@@ -79,6 +79,70 @@ class DataSample {
   def removeProperty( name: String ) {
     val id = StrokePropertyRegister.getId( name )
     properties.remove( id )
+  }
+
+  /**
+   * Divide all values in this data sample with the specified number.
+   */
+  def /= ( divisor : Float ) {
+
+    if (divisor == 0 ) throw new IllegalArgumentException( "Can not divide with zero")
+
+    properties.transformValues( new TFloatFunction() {
+      def execute (v : Float) : Float = {
+        v / divisor
+      }
+    })
+  }
+
+  /**
+   * Multiply all values in this data sample with the specified number.
+   */
+  def *= ( multiplicand : Float ) {
+
+    properties.transformValues( new TFloatFunction() {
+      def execute (v : Float) : Float = {
+        v * multiplicand
+      }
+    })
+  }
+
+  /**
+   * Add values of other DataSample to the values of this one.
+   */
+  def += ( other : DataSample ) {
+    if (other == null ) throw new IllegalArgumentException( "Can not add null")
+
+    other.properties.forEachEntry( new  TIntFloatProcedure (){
+      def execute(id : Int, otherValue: Float): Boolean = {
+
+        val myValue = getPropertyWithId( id, 0 )
+
+        properties.put( id, myValue + otherValue )
+
+        return true
+      }
+
+    })
+  }
+
+  /**
+   * Subtract values of other DataSample from the values of this one.
+   */
+  def -= ( other : DataSample ) {
+    if (other == null ) throw new IllegalArgumentException( "Can not subtract null")
+
+    other.properties.forEachEntry( new  TIntFloatProcedure (){
+      def execute(id : Int, otherValue: Float): Boolean = {
+
+        val myValue = getPropertyWithId( id, 0 )
+
+        properties.put( id, myValue - otherValue )
+
+        return true
+      }
+
+    })
   }
 
 

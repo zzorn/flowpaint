@@ -4,6 +4,7 @@ package org.flowpaint.renderer
 import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Color}
 import util.DataSample
+import util.PropertyRegister
 
 /**
  *          A RenderSurface implementation that uses a single surface to render on, the same size as the screen
@@ -64,13 +65,23 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
             x >= 0 && y >= 0 &&
             x < width && y < height) {
 
-      val color = util.ColorUtils.createRGBAColor(
-        sample.getProperty("red", 0),
-        sample.getProperty("green", 0),
-        sample.getProperty("blue", 0),
-        sample.getProperty("alpha", 0))
+      val alpha: Float = sample.getProperty(PropertyRegister.ALPHA, 0)
 
-      buffer.setRGB(x, y, color)
+      if (alpha > 0) {
+
+        var color = util.ColorUtils.createRGBAColor(
+          sample.getProperty(PropertyRegister.RED, 0),
+          sample.getProperty(PropertyRegister.GREEN, 0),
+          sample.getProperty(PropertyRegister.BLUE, 0),
+          alpha)
+
+        if (alpha < 1) {
+          val originalColor = buffer.getRGB(x, y)
+          color = util.ColorUtils.mixRGBWithAlpha(color, originalColor)
+        }
+
+        buffer.setRGB(x, y, color)
+      }
     }
   }
 
@@ -95,7 +106,6 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
           while (x <= eX) {
 
             var color: Int = colorCalculator(x, y)
-
 
             val alpha = util.ColorUtils.getAlpha(color)
             if (alpha > 0) {

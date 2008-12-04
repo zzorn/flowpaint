@@ -9,10 +9,38 @@ import scala.collection.{mutable, immutable}
  * @author Hans Haggstrom
  */
 // TODO: Add synchronization, as this is accessed from the pen listeners
-object StrokePropertyRegister {
+object PropertyRegister {
 
   private val idToName = new HashMap[Int, String]()
   private val nameToId = new HashMap[String, Int]()
+
+  // Common constants
+  val RED = getId("red")
+  val GREEN = getId("green")
+  val BLUE = getId("blue")
+  val ALPHA = getId("alpha")
+  val X = getId("x")
+  val Y = getId("y")
+  val SCREEN_X = getId("screenX")
+  val SCREEN_Y = getId("screenY")
+  val ANGLE = getId("angle")
+  val SATURATION = getId("saturation")
+  val HUE = getId("hue")
+  val BRIGHTNESS = getId("brightness")
+  val VALUE = getId("value")
+  val PRESSURE = getId("pressure")
+  val POSTION_ALONG_STROKE = getId("positionAlongStroke")
+  val POSITION_ACROSS_STROKE = getId("positionAcrossStroke")
+  val RANDOM_SEED= getId("randomSeed")
+  val INDEX = getId("index")
+  val TIME = getId("time")
+  val LEFT_BUTTON = getId("leftButton")
+  val RIGHT_BUTTON = getId("rightButton")
+  val CENTER_BUTTON = getId("centerButton")
+  val TILT_X = getId("tiltX")
+  val TILT_Y = getId("tiltY")
+  val RADIUS = getId("radius")
+  val MAX_RADIUS = getId("maxRadius")
 
   /**
    * @param name the name to get or create an id for.

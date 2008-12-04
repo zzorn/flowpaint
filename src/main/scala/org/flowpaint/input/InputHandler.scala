@@ -8,6 +8,7 @@ import jpen._
 import jpen.event.PenListener
 import util.DataSample
 import util.PerformanceTester.time
+import util.PropertyRegister
 
 /**
  *  Recieves pen events, and turns them into data samples, that are sent to the specified sampleListener.
@@ -140,10 +141,10 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
     */
     if (xAxis) {
 
-      dataSample.setProperty("x", value * xScale + xOffs)
+      dataSample.setProperty(PropertyRegister.X, value * xScale + xOffs)
     }
     else {
-      dataSample.setProperty("y", value * yScale + yOffs)
+      dataSample.setProperty(PropertyRegister.Y, value * yScale + yOffs)
     }
 
     /*
@@ -153,18 +154,18 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
 
   def handleMouseEvent(e: MouseEvent) {
 
-    def updateButton(dataSample: DataSample, property: String, button: Int, downMask: Int) {
+    def updateButton(dataSample: DataSample, propertyId: Int, button: Int, downMask: Int) {
 
       def buttonValue(downMask: Int): Float = if ((e.getModifiersEx() & downMask) == downMask) 1f else 0f
 
-      if (e.getButton() == button) dataSample.setProperty(property, buttonValue(downMask))
+      if (e.getButton() == button) dataSample.setProperty(propertyId, buttonValue(downMask))
     }
 
     val dataSample = createDataSample()
 
-    updateButton(dataSample, "leftButton", MouseEvent.BUTTON1, InputEvent.BUTTON1_DOWN_MASK)
-    updateButton(dataSample, "rightButton", MouseEvent.BUTTON2, InputEvent.BUTTON2_DOWN_MASK)
-    updateButton(dataSample, "centerButton", MouseEvent.BUTTON3, InputEvent.BUTTON3_DOWN_MASK)
+    updateButton(dataSample, PropertyRegister.LEFT_BUTTON, MouseEvent.BUTTON1, InputEvent.BUTTON1_DOWN_MASK)
+    updateButton(dataSample, PropertyRegister.RIGHT_BUTTON, MouseEvent.BUTTON2, InputEvent.BUTTON2_DOWN_MASK)
+    updateButton(dataSample, PropertyRegister.CENTER_BUTTON, MouseEvent.BUTTON3, InputEvent.BUTTON3_DOWN_MASK)
 
     setCoordinate(dataSample, e.getX.toFloat, true)
     setCoordinate(dataSample, e.getY.toFloat, false)
@@ -200,9 +201,9 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
       val value: Float = if (event.button.value.booleanValue) 1f else 0f
 
       event.button.getType() match {
-        case PButton.Type.LEFT => dataSample.setProperty("leftButton", value);
-        case PButton.Type.RIGHT => dataSample.setProperty("rightButton", value);
-        case PButton.Type.CENTER => dataSample.setProperty("centerButton", value);
+        case PButton.Type.LEFT => dataSample.setProperty(PropertyRegister.LEFT_BUTTON, value);
+        case PButton.Type.RIGHT => dataSample.setProperty(PropertyRegister.RIGHT_BUTTON, value);
+        case PButton.Type.CENTER => dataSample.setProperty(PropertyRegister.CENTER_BUTTON, value);
       }
 
       queueSample(dataSample);
@@ -227,9 +228,9 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
                 {
                   case PLevel.Type.X => setCoordinate(dataSample, value, true)
                   case PLevel.Type.Y => setCoordinate(dataSample, value, false)
-                  case PLevel.Type.PRESSURE => dataSample.setProperty("pressure", value);
-                  case PLevel.Type.TILT_X => dataSample.setProperty("tiltX", value);
-                  case PLevel.Type.TILT_Y => dataSample.setProperty("tiltY", value);
+                  case PLevel.Type.PRESSURE => dataSample.setProperty(PropertyRegister.PRESSURE, value);
+                  case PLevel.Type.TILT_X => dataSample.setProperty(PropertyRegister.TILT_X, value);
+                  case PLevel.Type.TILT_Y => dataSample.setProperty(PropertyRegister.TILT_Y, value);
                 }
               }
         )
@@ -284,7 +285,7 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
     val dataSample = new DataSample()
 
     // Maximal accuracy! :)
-    dataSample.setProperty("time", System.nanoTime / 1000000000.0f)
+    dataSample.setProperty(PropertyRegister.TIME, System.nanoTime / 1000000000.0f)
 
     dataSample
   }

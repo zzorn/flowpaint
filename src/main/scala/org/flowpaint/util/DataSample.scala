@@ -4,7 +4,7 @@ import gnu.trove.{TFloatFunction, TIntFloatHashMap, TIntFloatProcedure}
 
 /**
  *  A datapoint along a stroke.  Can have one or more Float properties, indexed with Int id:s.
- *  Use StrokePropertyRegister to get or create the id of a given property name.
+ *  Use PropertyRegister to get or create the id of a given property name.
  *
  * @author Hans Haggstrom
  */
@@ -22,14 +22,40 @@ class DataSample {
   }
 
 
+   private class InterpolateProcedure() extends TIntFloatProcedure {
+     def setAmount(interpolationAmount : Float) {
+       amount = interpolationAmount
+       oneMinusAmount = 1f - amount
+     }
+
+     private var amount : Float = 0
+     private var oneMinusAmount : Float = 1
+
+      def execute(id: Int, value: Float): Boolean = {
+        if (properties.contains( id )) {
+          properties.put( id, oneMinusAmount * properties.get(id) + amount * value )
+        }
+        else {
+          properties.put( id, value )
+        }
+
+        true
+      }
+    }
+
   private val properties = new TIntFloatHashMap(2)
 
+  // OPTIMIZE: These use one some space both for each data sample.  
+  // But they can't be static as we work with data samples from several threads.. Could they be made thread local?
+  private val interpolateProcedure = new InterpolateProcedure()
   private val copyValuesProcedure = new TIntFloatProcedure {
     def execute(id: Int, value: Float): Boolean = {
-      setPropertyWithId(id, value)
+      setProperty(id, value)
       true
     }
   }
+
+
 
   def setValuesFrom( otherSample : DataSample ) {
     otherSample.properties.forEachEntry( copyValuesProcedure)
@@ -47,43 +73,42 @@ class DataSample {
    * If a value is in only one of the samples, that value is used directly.
    */
   def interpolate( amount : Float, target: DataSample ) {
-
-    val interpolateValuesProcedure = new TIntFloatProcedure {
-      def execute(id: Int, value: Float): Boolean = {
-        if (properties.contains( id )) {
-          properties.put( id, MathUtils.interpolate(amount, properties.get(id), value) )
-        }
-        else {
-          properties.put( id, value )
-        }
-
-        true
-      }
-    }
-
-
-    target.properties.forEachEntry( interpolateValuesProcedure )
+    interpolateProcedure.setAmount( amount )
+    target.properties.forEachEntry( interpolateProcedure )
   }
 
-  def containsId( id : Int ): Boolean = properties.contains(id)
+  /**
+   * Clears this sample, sets it to start, and interpolates it towards the target by the specified amount, 0 = start value, 1 = target value.
+   * If a value is in only one of the samples, that value is used directly.
+   */
+  def interpolate( amount : Float, start: DataSample , target: DataSample ) {
+    clear()
+    setValuesFrom( start )
+    interpolate(amount, target)
+  }
 
-  def getPropertyWithId(id: Int, defaultValue: Float): Float =
+  def contains( id : Int ): Boolean = properties.contains(id)
+
+  def getProperty(id: Int, defaultValue: Float): Float =
     if (properties.contains(id))
       properties.get(id)
     else
       defaultValue
 
-  def setPropertyWithId(id: Int, value: Float) : Unit = properties.put( id, value )
+  def setProperty(id: Int, value: Float) : Unit = properties.put( id, value )
 
 
   def removeProperty( name: String ) {
-    val id = StrokePropertyRegister.getId( name )
+    val id = PropertyRegister.getId( name )
     properties.remove( id )
   }
 
-  /**
+/* The implementation of these might be broken in some way.  If they are needed later, unit test them properly.
+  */
+/**
    * Divide all values in this data sample with the specified number.
    */
+/*
   def /= ( divisor : Float ) {
 
     if (divisor == 0 ) throw new IllegalArgumentException( "Can not divide with zero")
@@ -95,9 +120,11 @@ class DataSample {
     })
   }
 
-  /**
+  */
+/**
    * Multiply all values in this data sample with the specified number.
    */
+/*
   def *= ( multiplicand : Float ) {
 
     properties.transformValues( new TFloatFunction() {
@@ -107,9 +134,11 @@ class DataSample {
     })
   }
 
-  /**
+  */
+/**
    * Add values of other DataSample to the values of this one.
    */
+/*
   def += ( other : DataSample ) {
     if (other == null ) throw new IllegalArgumentException( "Can not add null")
 
@@ -126,9 +155,11 @@ class DataSample {
     })
   }
 
-  /**
+  */
+/**
    * Subtract values of other DataSample from the values of this one.
    */
+/*
   def -= ( other : DataSample ) {
     if (other == null ) throw new IllegalArgumentException( "Can not subtract null")
 
@@ -144,12 +175,13 @@ class DataSample {
 
     })
   }
+*/
 
 
-  // Use StrokePropertyRegister to allow querying by name instead of id:
-  def contains( name : String ): Boolean = containsId( StrokePropertyRegister.getId( name ) )
-  def getProperty(name: String, defaultValue: Float): Float = getPropertyWithId( StrokePropertyRegister.getId( name ), defaultValue )
-  def setProperty(name: String, value: Float) : Unit= setPropertyWithId(  StrokePropertyRegister.getId( name ), value )
+  // Use PropertyRegister to allow querying by name instead of id:
+  def contains( name : String ): Boolean = contains( PropertyRegister.getId( name ) )
+  def getProperty(name: String, defaultValue: Float): Float = getProperty( PropertyRegister.getId( name ), defaultValue )
+  def setProperty(name: String, value: Float) : Unit= setProperty(  PropertyRegister.getId( name ), value )
 
   override def toString: String = {
 
@@ -158,7 +190,7 @@ class DataSample {
     properties.forEachEntry( new  TIntFloatProcedure (){
       def execute(id : Int, value: Float): Boolean = {
 
-        val name = StrokePropertyRegister.getName( id )
+        val name = PropertyRegister.getName( id )
 
         output += " "+name+" "+value + " "
 

@@ -12,12 +12,7 @@ class TriangleRenderer {
 
     val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
 
-  private val sd01 = new DataSample()
-  private val sd02 = new DataSample()
-  private val sd12 = new DataSample()
-
   private val pixelSample = new DataSample()
-  private val sampleStep = new DataSample()
   private val aSample = new DataSample()
   private val bSample = new DataSample()
 
@@ -30,44 +25,35 @@ class TriangleRenderer {
     /**
      *    Renders a part of a scanline
      */
-    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: DataSample, sampleStep: DataSample, endSample: DataSample) {
+    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: DataSample, endSample: DataSample) {
 
       // Clip top and bottom and off screen
-      if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0) {
+      if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0 && endX_ > x_) {
 
         // Clip left side
         var x = if (x_ < 0) 0 else x_
 
-        pixelSample.clear()
-        if (x_ < 0) {
-          // Add delta to sample
-          pixelSample.setValuesFrom( sampleStep )
-          pixelSample *= ( -x_ )
-          pixelSample += startSample
-        }
-        else {
-          pixelSample.setValuesFrom( startSample )
-        }
-
         // Clip right side
         val endX = if (endX_ > viewWidth) viewWidth else endX_
 
+        // Precalculate one over length of line
+        val divisor = 1f / (endX_ - x_).toFloat
+
         // Render scanline
         while (x < endX) {
-          pixelSample.clear
-          pixelSample.setValuesFrom( startSample )
-          pixelSample.interpolate( ((x - x_).toFloat / (endX_ - x_).toFloat ),  endSample )
+          val positionAlongLine: Float = (x - x_).toFloat * divisor
+
+          pixelSample.interpolate( positionAlongLine,  startSample, endSample )
 
           pixelCallback(x, scanline, pixelSample)
           x += 1
-          pixelSample += sampleStep
         }
       }
     }
 
     def rasterizeTrapetzoid(startY: Int, endY: Int,
-                           aX: Int, aY: Int, aD: Float, aS: DataSample, aSDelta: DataSample, aDeltaFactor: Float,
-                           bX: Int, bY: Int, bD: Float, bS: DataSample, bSDelta: DataSample, bDeltaFactor: Float) {
+                           aX: Int, aY: Int, aD: Float, aS: DataSample, aS2: DataSample, aDeltaFactor: Float,
+                           bX: Int, bY: Int, bD: Float, bS: DataSample, bS2: DataSample, bDeltaFactor: Float) {
 
       var y = 0f
       var aXCoord: Int = 0
@@ -85,31 +71,14 @@ class TriangleRenderer {
         bXCoord = (bX + (linesFromBStart * bD)).toInt
 
         if (aXCoord != bXCoord) {
-          aSample.clear
-          aSample.setValuesFrom(aSDelta)
-          aSample *= (linesFromAStart * aDeltaFactor)
-          aSample += aS
-
-          bSample.clear
-          bSample.setValuesFrom(bSDelta)
-          bSample *= (linesFromBStart * bDeltaFactor)
-          bSample += bS
-
-          sampleStep.clear
+          aSample.interpolate( linesFromAStart * aDeltaFactor, aS, aS2 )
+          bSample.interpolate( linesFromBStart * bDeltaFactor, bS, bS2 )
 
           if (aXCoord < bXCoord) {
-            sampleStep.setValuesFrom(bSample)
-            sampleStep -= aSample
-            sampleStep /= (bXCoord - aXCoord)
-
-            fillLine(scanline, aXCoord, bXCoord, aSample, sampleStep, bSample);
+            fillLine(scanline, aXCoord, bXCoord, aSample, bSample);
           }
           else {
-            sampleStep.setValuesFrom(aSample)
-            sampleStep -= bSample
-            sampleStep /= (aXCoord - bXCoord)
-
-            fillLine(scanline, bXCoord, aXCoord, bSample, sampleStep, aSample);
+            fillLine(scanline, bXCoord, aXCoord, bSample, aSample);
           }
         }
 
@@ -175,6 +144,7 @@ class TriangleRenderer {
 */
 
 
+/*
     def calculateSampleDelta(s: DataSample, sa: DataSample, sb: DataSample, multiplicand: Float) {
       s.clear()
       s.setValuesFrom(sb)
@@ -184,10 +154,11 @@ class TriangleRenderer {
     calculateSampleDelta(sd01, s0, s1, oneOverSteps0to1)
     calculateSampleDelta(sd02, s0, s2, oneOverSteps0to2)
     calculateSampleDelta(sd12, s1, s2, oneOverSteps1to2)
+*/
 
     // Render the upper and lower part of the triangle (above and below the middle y point)
-    rasterizeTrapetzoid(y0, y1, x0, y0, d02, s0, sd02, oneOverSteps0to2, x0, y0, d01, s0, sd01, oneOverSteps0to1)
-    rasterizeTrapetzoid(y1, y2, x0, y0, d02, s0, sd02, oneOverSteps0to2, x1, y1, d12, s1, sd12, oneOverSteps1to2)
+    rasterizeTrapetzoid(y0, y1, x0, y0, d02, s0,s2, oneOverSteps0to2, x0, y0, d01, s0, s1, oneOverSteps0to1)
+    rasterizeTrapetzoid(y1, y2, x0, y0, d02, s0, s2, oneOverSteps0to2, x1, y1, d12, s1, s2, oneOverSteps1to2)
 
 
 /*

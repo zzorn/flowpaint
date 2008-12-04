@@ -2,7 +2,7 @@ package org.flowpaint.brush
 
 import ink.Ink
 import util.DataSample
-
+import util.PropertyRegister
 /**
  *   Just a simple test brush.
  *
@@ -22,8 +22,8 @@ class GradientTestInk extends Ink {
 
   def processPixel(pixelData: DataSample)   {
 
-    val positionAlongStroke = pixelData.getProperty( "positionAlongStroke",0  )
-    val positionAcrossStroke = pixelData.getProperty( "positionAcrossStroke",0  )
+    val positionAlongStroke = pixelData.getProperty( PropertyRegister.POSTION_ALONG_STROKE,0  )
+    val positionAcrossStroke = pixelData.getProperty( PropertyRegister.POSITION_ACROSS_STROKE,0  )
 
 
     val time: Float = pixelData.getProperty("time", 0)
@@ -36,12 +36,12 @@ class GradientTestInk extends Ink {
     val red = stripes + 0.5f
     val blue = blueParam
     val green = stripes * 0.5f + 0.25f
-    val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2 * pixelData.getProperty("alpha", 1)
+    val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2 * pixelData.getProperty(PropertyRegister.ALPHA, 1)
 
-    pixelData.setProperty( "red", red )
-    pixelData.setProperty( "green", green)
-    pixelData.setProperty( "blue", blue)
-    pixelData.setProperty( "alpha", alpha)
+    pixelData.setProperty( PropertyRegister.RED, red )
+    pixelData.setProperty( PropertyRegister.GREEN, green)
+    pixelData.setProperty( PropertyRegister.BLUE, blue)
+    pixelData.setProperty( PropertyRegister.ALPHA, alpha)
 
   }
 }

@@ -5,6 +5,8 @@ import filters.StrokeListener
 import model.Stroke
 import util.DataSample
 
+import util.PropertyRegister
+
 /**
  *
  *
@@ -24,9 +26,9 @@ class StrokeTool extends Tool {
 
     currentStatus.setValuesFrom(event)
 
-    if (event.contains("leftButton")) {
+    if (event.contains(PropertyRegister.LEFT_BUTTON)) {
 
-      val pressed = event.getProperty("leftButton", 0) > 0.5f
+      val pressed = event.getProperty(PropertyRegister.LEFT_BUTTON, 0) > 0.5f
 
       if (pressed != isStrokeActive )
         {
@@ -59,8 +61,8 @@ class StrokeTool extends Tool {
       val initialSample = new DataSample(currentStatus);
 
       // TODO: If a tablet is used, this should be initialized to zero, or there should be a filter that waits until pressure and cordinate input has been received.
-      initialSample.setProperty( "pressure", 0.5f )
-      initialSample.setProperty( "randomSeed", Math.random.toFloat )
+      initialSample.setProperty( PropertyRegister.PRESSURE, 0.5f )
+      initialSample.setProperty( PropertyRegister.RANDOM_SEED, Math.random.toFloat )
       brush.initializeStrokeStart( initialSample )
 
       addStrokePoint(currentStroke, initialSample )
@@ -73,8 +75,8 @@ class StrokeTool extends Tool {
 
   def addStrokePoint(stroke:Stroke, point:DataSample)
   {
-    point.setProperty("index", currentPointIndex)
-    point.setProperty("time", (getTime() - currentStrokeStartTime).toFloat / 1000f)
+    point.setProperty(PropertyRegister.INDEX, currentPointIndex)
+    point.setProperty(PropertyRegister.TIME, (getTime() - currentStrokeStartTime).toFloat / 1000f)
 
     currentPointIndex += 1
 

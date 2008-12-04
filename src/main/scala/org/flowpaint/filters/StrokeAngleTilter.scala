@@ -5,6 +5,8 @@ import util.DataSample
 import util.MathUtils
 import Math.abs
 
+import util.PropertyRegister
+
 /**
  *   Tilts the angle of a stroke to be perpendicular to its direction
  *
@@ -24,10 +26,10 @@ class StrokeAngleTilter( tilt:Float ) extends StrokeFilter {
 
   protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) {
 
-    val first = pointData.getProperty("index", 2) < 1
+    val first = pointData.getProperty(PropertyRegister.INDEX, 2) < 1
 
-    val newX = pointData.getProperty("x", previousX)
-    val newY = pointData.getProperty("y", previousY)
+    val newX = pointData.getProperty(PropertyRegister.X, previousX)
+    val newY = pointData.getProperty(PropertyRegister.Y, previousY)
 
     val xDiff = previousX - newX
     val yDiff = previousY - newY
@@ -50,7 +52,7 @@ class StrokeAngleTilter( tilt:Float ) extends StrokeFilter {
 /*
     pointData.setProperty("angle", angle )
 */
-    pointData.setProperty("angle", smoothedAngle * 2f * Math.Pi.toFloat )
+    pointData.setProperty(PropertyRegister.ANGLE, smoothedAngle * 2f * Math.Pi.toFloat )
 
     if ( first ){
       // Only store the first point, don't send it forward yet
@@ -60,7 +62,7 @@ class StrokeAngleTilter( tilt:Float ) extends StrokeFilter {
     else {
       if (firstPoint != null){
         // Forward the stored first point, using the current angle
-        firstPoint.setProperty("angle", smoothedAngle * 2f * Math.Pi.toFloat )
+        firstPoint.setProperty(PropertyRegister.ANGLE, smoothedAngle * 2f * Math.Pi.toFloat )
         resultCallback(firstPoint)
         firstPoint = null
       }

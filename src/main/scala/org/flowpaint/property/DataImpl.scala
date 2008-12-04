@@ -2,6 +2,7 @@ package org.flowpaint.property
 
 import _root_.org.flowpaint.util.DataSample
 import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
+import util.PropertyRegister
 
 /**
  * Default implementation of Data.
@@ -23,10 +24,15 @@ final class DataImpl extends Data {
   }
 
   def getFloatProperty(name: String, default: Float): Float = floatProperties.getProperty( name, default )
+  def getFloatProperty(id: Int, default: Float): Float = floatProperties.getProperty( id, default )
 
   def setFloatProperty(name: String, value: Float) = {
     floatProperties.setProperty(name, value)
     notifyListeners(name)
+  }
+  def setFloatProperty(id: Int, value: Float) = {
+    floatProperties.setProperty(id, value)
+    notifyListeners(PropertyRegister.getName(id))
   }
 
   def setStringProperty(name: String, value: String) = {

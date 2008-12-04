@@ -15,6 +15,7 @@ import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
 import util.DataSample
+import util.PropertyRegister
 
 /**
  *         Provides common methods of the application for various tools etc.
@@ -88,10 +89,10 @@ object FlowPaintController {
     def sampleFromColor(r: Float, g: Float, b: Float, a: Float): DataSample = {
 
       val data = new DataSample()
-      data.setProperty("red", r)
-      data.setProperty("green", g)
-      data.setProperty("blue", b)
-      data.setProperty("alpha", a)
+      data.setProperty(PropertyRegister.RED, r)
+      data.setProperty(PropertyRegister.GREEN, g)
+      data.setProperty(PropertyRegister.BLUE, b)
+      data.setProperty(PropertyRegister.ALPHA, a)
       data
     }
     val twoColorGradient = new TwoColorGradient(sampleFromColor(0, 0, 0.5f, 1), sampleFromColor(0, 0.5f, 1, 0.1f))
@@ -230,8 +231,8 @@ object FlowPaintController {
       brush.addEditor(new BrushSliderEditor("Size", "maxRadius", 1, 4 * radius, brush))
       brush.addEditor(new GradientSliderEditor("Transparency", "alpha", 1, 0, brush.getPixelProcessors()))
 
-      brush.settings.setFloatProperty("maxRadius", radius)
-      brush.settings.setFloatProperty("alpha", 1)
+      brush.settings.setFloatProperty(PropertyRegister.MAX_RADIUS, radius)
+      brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1)
 
       availableBrushes.addBrush(brush)
       brush
@@ -256,11 +257,11 @@ object FlowPaintController {
       brush.addEditor(new GradientSliderEditor("Transparency", "alpha", 1, 0, transparencyInks))
       brush.addEditor(new BrushSliderEditor("Size", "maxRadius", 1, 4 * radius, brush))
 
-      brush.settings.setFloatProperty("maxRadius", radius)
-      brush.settings.setFloatProperty("hue", 0)
-      brush.settings.setFloatProperty("saturation", 1)
-      brush.settings.setFloatProperty("brightness", 1)
-      brush.settings.setFloatProperty("alpha", 1)
+      brush.settings.setFloatProperty(PropertyRegister.MAX_RADIUS, radius)
+      brush.settings.setFloatProperty(PropertyRegister.HUE, 0)
+      brush.settings.setFloatProperty(PropertyRegister.SATURATION, 1)
+      brush.settings.setFloatProperty(PropertyRegister.BRIGHTNESS, 1)
+      brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1)
 
       /*
             brush.addProperty( BrushProperty( "Radius","maxRadius", radius, 1, 5*radius, true, false ) )

@@ -1,6 +1,7 @@
 package org.flowpaint.filters
 
 import util.DataSample
+import util.PropertyRegister
 
 /**
  * Removes segments with zero length, and merges their properties with subsequent points
@@ -29,18 +30,18 @@ class ZeroLengthSegmentFilter extends StrokeFilter {
     pointData.setProperty("y",pointData.getProperty("y",oldY2))
 */
 
-    val index = pointData.getProperty("index", 0f )
+    val index = pointData.getProperty(PropertyRegister.INDEX, 0f )
     val smooth = if( index == 0f ) 0f else smoothing
 
-    val newX = util.MathUtils.interpolate(smooth, pointData.getProperty("x",oldX2), oldX2 )
-    val newY = util.MathUtils.interpolate(smooth,  pointData.getProperty("y",oldY2), oldY2 )
+    val newX = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.X,oldX2), oldX2 )
+    val newY = util.MathUtils.interpolate(smooth,  pointData.getProperty(PropertyRegister.Y,oldY2), oldY2 )
 /*
     val newX = pointData.getProperty("x",0)
     val newY = pointData.getProperty("y",0)
 */
 
-    pointData.setProperty("x",newX)
-    pointData.setProperty("y",newY)
+    pointData.setProperty(PropertyRegister.X,newX)
+    pointData.setProperty(PropertyRegister.Y,newY)
 
     oldX2 = newX
     oldY2 = newY

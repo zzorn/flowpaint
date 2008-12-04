@@ -71,9 +71,9 @@ class TriangleRenderer {
 
     // Sort points according to y coordinate so that y0 <= y1 <= y2
     var dt : Int= 0
-    if (y1 < y0) {dt = y0; y0 = y1; y1 = dt; dt = x0; x0 = x1; x1 = dt} // Swap point 0 and 1
-    if (y2 < y1) {dt = y1; y1 = y2; y2 = dt; dt = x1; x1 = x2; x2 = dt} // Swap point 1 and 2
-    if (y2 < y0) {dt = y0; y0 = y2; y2 = dt; dt = x0; x0 = x2; x2 = dt} // Swap point 0 and 2
+    if (y1 < y0) {dt = y0; y0 = y1; y1 = dt;  dt = x0; x0 = x1; x1 = dt} // Swap point 0 and 1
+    if (y2 < y1) {dt = y1; y1 = y2; y2 = dt;  dt = x1; x1 = x2; x2 = dt} // Swap point 1 and 2
+    if (y2 < y0) {dt = y0; y0 = y2; y2 = dt;  dt = x0; x0 = x2; x2 = dt} // Swap point 0 and 2
 
     // Calculate slope coefficients
     def calculateCoefficient(dx: Int, dy: Int): Float = if (dy == 0) 0f else dx.toFloat / dy.toFloat
@@ -82,12 +82,18 @@ class TriangleRenderer {
     val d2 : Float = calculateCoefficient(x0 - x2, y0 - y2)
 
     // Render the upper and lower part of the triangle (above and below the middle y point)
+/*
     rasterizeTrapetzoid(y0, y1, x0, y0, d2, x0, y0, d0)
     rasterizeTrapetzoid(y1, y2, x0, y0, d2, x1, y1, d1)
+*/
 
 /*
     println("d0: " + d0 +", d1: " +d1+", d2: " +d2)
 */
+
+    pixelCallback( xi0.toInt, yi0.toInt, data )
+    pixelCallback( xi1.toInt, yi1.toInt, data )
+    pixelCallback( xi2.toInt, yi2.toInt, data )
   }
 
 

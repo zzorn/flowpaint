@@ -30,7 +30,7 @@ class TriangleRenderer {
     /**
      *    Renders a part of a scanline
      */
-    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: DataSample, sampleStep: DataSample) {
+    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: DataSample, sampleStep: DataSample, endSample: DataSample) {
 
       // Clip top and bottom and off screen
       if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0) {
@@ -54,6 +54,10 @@ class TriangleRenderer {
 
         // Render scanline
         while (x < endX) {
+          pixelSample.clear
+          pixelSample.setValuesFrom( startSample )
+          pixelSample.interpolate( ((x - x_).toFloat / (endX_ - x_).toFloat ),  endSample )
+
           pixelCallback(x, scanline, pixelSample)
           x += 1
           pixelSample += sampleStep
@@ -98,14 +102,14 @@ class TriangleRenderer {
             sampleStep -= aSample
             sampleStep /= (bXCoord - aXCoord)
 
-            fillLine(scanline, aXCoord, bXCoord, aSample, sampleStep);
+            fillLine(scanline, aXCoord, bXCoord, aSample, sampleStep, bSample);
           }
           else {
             sampleStep.setValuesFrom(aSample)
             sampleStep -= bSample
             sampleStep /= (aXCoord - bXCoord)
 
-            fillLine(scanline, bXCoord, aXCoord, bSample, sampleStep);
+            fillLine(scanline, bXCoord, aXCoord, bSample, sampleStep, aSample);
           }
         }
 
@@ -186,9 +190,11 @@ class TriangleRenderer {
     rasterizeTrapetzoid(y1, y2, x0, y0, d02, s0, sd02, oneOverSteps0to2, x1, y1, d12, s1, sd12, oneOverSteps1to2)
 
 
+/*
     pixelCallback( xi0.toInt, yi0.toInt, RED_COLOR  )
     pixelCallback( xi1.toInt, yi1.toInt, RED_COLOR  )
     pixelCallback( xi2.toInt, yi2.toInt, RED_COLOR  )
+*/
   }
 
 

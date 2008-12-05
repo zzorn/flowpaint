@@ -33,6 +33,7 @@ class BrushPreview(val brush: Brush,
                   val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit ,
                   val overlayPainter : (Graphics2D) => Unit ) extends JPanel {
 
+  val SIZE = 32
 
 
   def this( brush_ : Brush ) {
@@ -48,7 +49,7 @@ class BrushPreview(val brush: Brush,
   private val paintPanel = new PaintPanel(surface, false)
 
   setLayout(new java.awt.BorderLayout())
-  setPreferredSize(new Dimension(32, 32))
+  setPreferredSize(new Dimension(SIZE, SIZE))
   setMinimumSize(new Dimension(8, 8))
   setMaximumSize(new Dimension(10000, 10000))
   setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1))

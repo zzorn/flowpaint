@@ -1,6 +1,7 @@
 package org.flowpaint
 
 
+import brush.BrushSet
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Dimension, BorderLayout}
 import javax.swing._
@@ -24,6 +25,7 @@ object FlowPaintUi {
 
   val brushUi = new BrushUi()
 
+  val SIDEBAR_WIDTH: Int = 192
 
   def init()
     {
@@ -59,15 +61,13 @@ object FlowPaintUi {
 
     mainPanel.add(createMainView(), BorderLayout.CENTER)
 
-    val brushSelectionUi = new BrushSelectionUi(FlowPaintController.availableBrushes)
-    val recentBrushesUi = new BrushSelectionUi(FlowPaintController.recentBrushes)
     val brushParameterUi = brushUi.ui
     val sidebar = new JPanel( new MigLayout( "wrap 1, fillx, insets 0","[grow]","0[]4[]0" ))
-    sidebar.setPreferredSize( new Dimension( 160,5000 )  )
-    sidebar.add( brushSelectionUi,"width 100%"  )
-    sidebar.add( recentBrushesUi,"width 100%"  )
+    sidebar.setPreferredSize( new Dimension( SIDEBAR_WIDTH,5000 )  )
+    FlowPaintController.brushSets foreach ( (brushSet : BrushSet) =>
+            sidebar.add( new BrushSelectionUi(brushSet),"width 100%"  ))
+
     sidebar.add( brushParameterUi,"width 100%"  )
-//    val sidebar = new JSplitPane(JSplitPane.VERTICAL_SPLIT, brushSelectionUi, brushParameterUi)
     mainPanel.add(sidebar, BorderLayout.EAST)
     
 

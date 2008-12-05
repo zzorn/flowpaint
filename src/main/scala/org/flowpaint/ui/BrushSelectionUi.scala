@@ -14,7 +14,7 @@ import net.miginfocom.swing.MigLayout
 
 class BrushSelectionUi(brushSet : BrushSet) extends JPanel{
 
-  private val brushPanel = new JPanel( new MigLayout("wrap 5, insets 0","0[]0[]0","0[]0[]0") )
+  private val brushPanel = new JPanel( new MigLayout("wrap 6, insets 0","0[]0[]0","0[]0[]0") )
 
   private def update() {
     brushPanel.removeAll

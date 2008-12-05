@@ -55,7 +55,7 @@ class StrokeTool extends Tool {
     {
       currentPointIndex = 0
       currentStrokeStartTime = getTime()
-      val brush: Brush = FlowPaintController.currentBrush
+      val brush: Brush = FlowPaintController.currentBrush.createCopy
       currentStroke = new Stroke( brush )
 
       val initialSample = new DataSample(currentStatus);

@@ -3,8 +3,8 @@ package org.flowpaint.renderer
 import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
-import util.{DataSample, RectangleInt}
 import util.MathUtils.squaredDistance
+import util.{DataSample, RectangleInt, PropertyRegister}
 
 /**
  *     Renders a stroke segment.
@@ -47,15 +47,15 @@ object StrokeRenderer {
     val s10 = new DataSample( endData )
     val s11 = new DataSample( endData )
 
-    s00.setProperty( "positionAcrossStroke", -1 )
-    s01.setProperty( "positionAcrossStroke", 1 )
-    s10.setProperty( "positionAcrossStroke", -1 )
-    s11.setProperty( "positionAcrossStroke", 1 )
+    s00.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
+    s01.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
+    s10.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
+    s11.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
 
-    s00.setProperty( "positionAlongStroke", 0 )
-    s01.setProperty( "positionAlongStroke", 0 )
-    s10.setProperty( "positionAlongStroke", 1 )
-    s11.setProperty( "positionAlongStroke", 1 )
+    s00.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
+    s01.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
+    s10.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
+    s11.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
 
     // Render triangles to surface, applying the pixel processing pipeline for each pixel
 

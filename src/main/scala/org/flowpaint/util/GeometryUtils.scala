@@ -29,7 +29,7 @@ object GeometryUtils {
    * @param bx1 Second line end x.
    * @param by1 Second line end y.
    *
-   * @return True if the two lines intersects.
+   * @return True if the two line segments intersects, false if not.
    */
   def isLineIntersectingLine(ax0: Float, ay0: Float, ax1: Float, ay1: Float,
                             bx0: Float, by0: Float, bx1: Float, by1: Float): Boolean =
@@ -61,7 +61,7 @@ object GeometryUtils {
   def sameSide(x0: Float, y0: Float, x1: Float, y1: Float,
               px0: Float, py0: Float, px1: Float, py1: Float): Int =
     {
-      val sameSide = 0
+      var sameSide = 0
 
       val dx = x1 - x0
       val dy = y1 - y0
@@ -89,6 +89,49 @@ object GeometryUtils {
 
       return sameSide;
     }
+
+
+  /**
+   *      Simple helper class to hold a coordinate pair.
+   */
+  case class Point(var x: Float, var y: Float)
+
+  /**
+   * @param intersectionOut the point to store the intersection point between the lines to.
+   * @return true if an intersection was found, false if the lines are parallel
+   *            (can be either no intersection, or a line intersection)
+   */
+  def calculateIntersectionPoint(x1: Float, y1: Float,
+                       x2: Float, y2: Float,
+                       x3: Float, y3: Float,
+                       x4: Float, y4: Float,
+                       intersectionOut: Point): Boolean = {
+
+    // TODO: Inline to optimize?  Could also pre-calculate the values for one of the lines, as one of them is in the same place
+    def det(a: Float, b: Float, c: Float, d: Float): Float =
+      {
+        a * d - b * c;
+      }
+
+
+    val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
+
+    if (det3 == 0)
+      false // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
+    else {
+      val det1: Float = det(x1, y1, x2, y2)
+      val det2: Float = det(x3, y3, x4, y4)
+
+      val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
+      val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
+
+      intersectionOut.x = x
+      intersectionOut.y = y
+
+      true
+    }
+
+  }
 
 
 }

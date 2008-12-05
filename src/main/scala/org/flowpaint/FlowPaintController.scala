@@ -4,7 +4,7 @@ package org.flowpaint
 import _root_.scala.collection.jcl.ArrayList
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
-import filters.{RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
+import filters.{StrokeEdgeCalculatorFilter, RadiusFromPressureFilter, ZeroLengthSegmentFilter, StrokeFilter}
 import gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
 import ink._
 import input.{InputHandler}
@@ -229,7 +229,8 @@ object FlowPaintController {
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
-          new RadiusFromPressureFilter(radius, 0)),
+          new RadiusFromPressureFilter(radius, 0),
+          new StrokeEdgeCalculatorFilter() ),
         Nil)
 
       brush.addEditor(new GradientSliderEditor("Transparency", "alpha", 1, 0, brush.getPixelProcessors()))
@@ -247,7 +248,8 @@ object FlowPaintController {
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
-          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)),
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius),
+          new StrokeEdgeCalculatorFilter() ),
         Nil)
 
       brush.addEditor(new BrushSliderEditor("Size", "maxRadius", 1, 4 * radius, brush))
@@ -266,7 +268,8 @@ object FlowPaintController {
         List(
           new ZeroLengthSegmentFilter(),
           new StrokeAngleTilter(tilt),
-          new RadiusFromPressureFilter(radius, pressureEffectOnRadius)),
+          new RadiusFromPressureFilter(radius, pressureEffectOnRadius),
+          new StrokeEdgeCalculatorFilter() ),
         Nil)
 
       val transparencyInks = List(new ColorInk(), new AlphaTransparencyBackgroundInk())

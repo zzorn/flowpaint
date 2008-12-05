@@ -20,7 +20,7 @@ class StrokeAngleTilter( tilt:Float ) extends StrokeFilter {
   private val HALF_Pi = (0.5 * Math.Pi).toFloat
 
   private var previousAngle = 0f
-  private val smooth = 0.8f
+  private val smooth = 0.0f
 
   private var firstPoint :DataSample = null
 

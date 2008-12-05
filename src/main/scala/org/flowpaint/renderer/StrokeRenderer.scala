@@ -19,10 +19,23 @@ object StrokeRenderer {
   /**
    *     Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
-  def drawStrokeSegment(startX: Float, startY: Float, startAngle: Float, startRadius: Float,
-                       endX: Float, endY: Float, endAngle: Float, endRadius: Float,
-                       startData: DataSample, endData: DataSample,
-                       brush: Brush, surface: RenderSurface) {
+  def drawStrokeSegment(startData: DataSample, endData: DataSample, brush: Brush, surface: RenderSurface) {
+
+
+    val startX = startData.getProperty("x", 0)
+    val startY = startData.getProperty("y", 0)
+    val endX = endData.getProperty("x", 0)
+    val endY = endData.getProperty("y", 0)
+
+/*
+    val DEFAULT_RADIUS = 10f
+    val startAngle = startData.getProperty("angle", 0) / */
+/* Math.Pi.toFloat * 2
+    val startRadius = startData.getProperty("radius", DEFAULT_RADIUS)
+    val endAngle = endData.getProperty("angle", 0) */
+/* Math.Pi.toFloat * 2
+    val endRadius = endData.getProperty("radius", DEFAULT_RADIUS)
+
 
     // Calculate corner points
 
@@ -30,7 +43,9 @@ object StrokeRenderer {
     val startDeltaY = Math.sin(startAngle).toFloat * startRadius
     val endDeltaX = Math.cos(endAngle).toFloat * endRadius
     val endDeltaY = Math.sin(endAngle).toFloat * endRadius
+*/
 
+/*
     val x00 = startX - startDeltaX
     val y00 = startY - startDeltaY
     val x01 = startX + startDeltaX
@@ -39,6 +54,16 @@ object StrokeRenderer {
     val y10 = endY - endDeltaY
     val x11 = endX + endDeltaX
     val y11 = endY + endDeltaY
+*/
+
+    val x00 = startData.getProperty(PropertyRegister.LEFT_EDGE_X, startX)
+    val y00 = startData.getProperty(PropertyRegister.LEFT_EDGE_Y, startY)
+    val x01 = startData.getProperty(PropertyRegister.RIGHT_EDGE_X, startX)
+    val y01 = startData.getProperty(PropertyRegister.RIGHT_EDGE_Y, startY)
+    val x10 = endData.getProperty(PropertyRegister.LEFT_EDGE_X, endX)
+    val y10 = endData.getProperty(PropertyRegister.LEFT_EDGE_Y, endY)
+    val x11 = endData.getProperty(PropertyRegister.RIGHT_EDGE_X, endX)
+    val y11 = endData.getProperty(PropertyRegister.RIGHT_EDGE_Y, endY)
 
     // Prepare data for corners
 
@@ -175,47 +200,6 @@ object StrokeRenderer {
   }
 
 
-  /**
-   *      Simple helper class to hold a coordinate pair.
-   */
-  private case class Point(var x: Float, var y: Float)
-
-  /**
-   * @param intersectionOut the point to store the intersection point between the lines to.
-   * @return true if an intersection was found, false if the lines are parallel
-   *            (can be either no intersection, or a line intersection)
-   */
-  private def intersect(x1: Float, y1: Float,
-                       x2: Float, y2: Float,
-                       x3: Float, y3: Float,
-                       x4: Float, y4: Float,
-                       intersectionOut: Point): Boolean = {
-
-    // TODO: Inline to optimize?  Could also pre-calculate the values for one of the lines, as one of them is in the same place
-    def det(a: Float, b: Float, c: Float, d: Float): Float =
-      {
-        a * d - b * c;
-      }
-
-
-    val det3: Float = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
-
-    if (det3 == 0)
-      false // Parallel lines TODO: This is an assumption, as there would be a divide by zero otherwise
-    else {
-      val det1: Float = det(x1, y1, x2, y2)
-      val det2: Float = det(x3, y3, x4, y4)
-
-      val x = det(det1, x1 - x2, det2, x3 - x4) / det3;
-      val y = det(det1, y1 - y2, det2, y3 - y4) / det3;
-
-      intersectionOut.x = x
-      intersectionOut.y = y
-
-      true
-    }
-
-  }
 
 
 }

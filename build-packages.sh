@@ -159,9 +159,11 @@ cp $jnlpFileLocation $webstartDirName/$appName.jnlp
 cp $compiledJar $webstartDirName/$appName.jar
 
 echo "#### Packaging native libraries"
-jar cf $webstartDirName/jpen-native-linux.jar nativelibs/libjpen-2.so
-jar cf $webstartDirName/jpen-native-osx.jar nativelibs/jpen-2.jnilib
-jar cf $webstartDirName/jpen-native-win32.jar nativelibs/jpen-2.dll
+cd nativelibs
+jar cf ../$webstartDirName/jpen-native-linux.jar *.so
+jar cf ../$webstartDirName/jpen-native-osx.jar jpen-2.jnilib
+jar cf ../$webstartDirName/jpen-native-win32.jar jpen-2.dll
+cd ..
 
 echo "#### Signing Jar:s"
 jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/$appName.jar $keystoreUser

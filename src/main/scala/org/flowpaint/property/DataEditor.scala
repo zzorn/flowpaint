@@ -1,6 +1,7 @@
 package org.flowpaint.property
 
 import _root_.org.flowpaint.util.DataSample
+import brush.Brush
 import javax.swing.JComponent
 
 /**
@@ -12,7 +13,7 @@ import javax.swing.JComponent
  */
 abstract class DataEditor( val title :String ) {
 
-  def createEditor( editedData : Data ) : JComponent
+  def createEditor( editedData : Data, brush : Brush ) : JComponent
 
 }
 

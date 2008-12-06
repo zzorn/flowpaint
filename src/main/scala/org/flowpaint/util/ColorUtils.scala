@@ -95,8 +95,8 @@ object ColorUtils {
 
 
   /**
-   *     Convert a Hue Saturation Lightness color to Red Green Blue color space.
-   *     Algorithm based on the one in wikipedia ( http://en.wikipedia.org/wiki/HSL_color_space )
+   *      Convert a Hue Saturation Lightness color to Red Green Blue color space.
+   *      Algorithm based on the one in wikipedia ( http://en.wikipedia.org/wiki/HSL_color_space )
    */
   def HSLtoRGB(hue: Float, saturation: Float, lightness: Float): (Float, Float, Float) = {
 
@@ -115,7 +115,7 @@ object ColorUtils {
     else {
       // Arbitrary color
 
-      def hueToColor(p: Float, q: Float, t: Float) : Float = {
+      def hueToColor(p: Float, q: Float, t: Float): Float = {
         var th = t
         if (th < 0) th += 1
         if (th > 1) th -= 1
@@ -134,4 +134,34 @@ object ColorUtils {
       (r, g, b)
     }
   }
+
+
+  def RGBtoHSL(r: Float, g: Float, b: Float): (Float, Float, Float) = {
+    var max = Math.max(Math.max(r, g), b)
+    var min = Math.min(Math.min(r, g), b)
+    var l = (max + min) / 2f;
+    var h = 0f
+    var s = 0f
+
+    if (max == min) {
+      // Greyscale
+      h = 0
+      s = 0
+    }
+    else {
+      var d = max - min;
+      s = if (l > 0.5f) d / (2f - max - min) else d / (max + min)
+
+      h = if (max == r) (g - b) / d + (if (g < b) 6f else 0f)
+        else if (max == g) (b - r) / d + 2f
+        else if (max == b) (r - g) / d + 4f
+        else throw new IllegalStateException("Max color component doesn't match any of the color components - changed by max implementation?")
+
+      h /= 6f;
+    }
+
+    return (h, s, l)
+  }
+
+
 }

@@ -45,7 +45,7 @@ class BrushUi {
 /* Takes up space and kind of redundant, so commented out.
           editorPanel.addUi( new JLabel( d.title ))
 */
-          editorPanel.addUi( d.createEditor( brush.settings )  ) } )
+          editorPanel.addUi( d.createEditor( brush.settings, brush )  ) } )
 
       }
 

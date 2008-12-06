@@ -13,13 +13,12 @@ import ui.BrushSliderUi
 class BrushSliderEditor(title :String,
                        property : String,
                        min:Float,
-                       max:Float,
-                       previewBrush: Brush )
+                       max:Float )
         extends DataEditor( title  ) {
 
-  def createEditor(editedData: Data): JComponent = {
+  def createEditor(editedData: Data, brush : Brush): JComponent = {
 
-    val brushUi = new BrushSliderUi( editedData, title, property, min, max, previewBrush )
+    val brushUi = new BrushSliderUi( editedData, title, property, min, max, brush )
     brushUi.getUi()
   }
   

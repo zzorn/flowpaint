@@ -15,6 +15,13 @@ object MathUtils {
     xDiff * xDiff + yDiff * yDiff
   }
 
+  def distance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
+    val xDiff = x2 - x1
+    val yDiff = y2 - y1
+    Math.sqrt( xDiff * xDiff + yDiff * yDiff ).toFloat
+  }
+
+
 
   def normalizeAngle(angleRadians: Double): Float = normalizeAngle(angleRadians.toFloat)
 

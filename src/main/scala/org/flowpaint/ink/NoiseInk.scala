@@ -13,17 +13,16 @@ import util.PropertyRegister
 
 class NoiseInk(gradient: Gradient,
               noiseScale: (Float, Float),
+              alphaWithDistance : Float,
               propertyName : String,
-              resultMapper: (Float) => Float ) extends Ink {
+              octaves : Int) extends Ink {
 
 
-  var alphaWithDistance= 1f
 
   def this(gradient: Gradient,
               noiseScale: (Float, Float),
               alphaWithDistance : Float) {
-    this ( gradient, noiseScale, "time", (a:Float) => a )
-    this.alphaWithDistance = alphaWithDistance
+    this ( gradient, noiseScale, 1, "time", 1 )
   }
 
 
@@ -32,12 +31,26 @@ class NoiseInk(gradient: Gradient,
     val positionAlongStroke = pixelData.getProperty( PropertyRegister.POSTION_ALONG_STROKE,0  )
     val positionAcrossStroke = pixelData.getProperty( PropertyRegister.POSITION_ACROSS_STROKE,0  )
 
-    val u = pixelData.getProperty(propertyName , 1) * noiseScale._1
-    val v = positionAcrossStroke * noiseScale._2
-    val w = pixelData.getProperty(PropertyRegister.RANDOM_SEED, 0.5f) * 1000
+    var u = pixelData.getProperty(propertyName , 1) * noiseScale._1
+    var v = positionAcrossStroke * noiseScale._2
+    var w = pixelData.getProperty(PropertyRegister.RANDOM_SEED, 0.5f) * 1000
 
+    // Construct the noise from multiple samples (perlin turbulence)
+    var n = 0f
+    var i = 0
+    var scale = 1f
+    var amplitude = 1f
+    while (i < octaves) {
+      n += util.PerlinNoise.perlinNoise(u * scale, v * scale, w) * amplitude
+      scale *= 2f
+      amplitude *= 0.5f
+      u += 213.1234f
+      v += 98054.564f
+      w += 345.98745f
+      i += 1
+    }
     
-    val noise : DataSample =  gradient( resultMapper( 0.5f + 0.5f * util.PerlinNoise.perlinNoise(u, v, w) ) )
+    val noise : DataSample =  gradient( 0.5f + 0.5f * n )
 
     val noiseAlpha: Float = noise.getProperty(PropertyRegister.ALPHA, 1)
     val distanceFromEdge = 1f - Math.abs(positionAcrossStroke)

@@ -48,6 +48,10 @@ object PropertyRegister {
   val TILT_Y = getId("tiltY")
   val RADIUS = getId("radius")
   val MAX_RADIUS = getId("maxRadius")
+  val PREVIOUS_SEGMENT_LENGTH = getId("previousSegmentLength")
+  val DISTANCE= getId("distance")
+
+
 
   /**
    * @param name the name to get or create an id for.

@@ -25,7 +25,7 @@ appProperties=src/main/resources/application.properties
 homepage=www.flowpaint.org
 bugReportUrl=http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user
 featureRequestUrl=http://code.google.com/p/flowpaint/issues/entry?template=Feature%20request%20from%20user
-oneLineDescription="FlowPaint aims to be an intuitive and powerful next generation paint program."
+oneLineDescription=`cat short-description.txt`
 credits="Programmed by Hans H&auml;ggstr&ouml;m ( zzorn @ iki.fi )"
 license="GPL v2"
 

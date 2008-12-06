@@ -69,7 +69,7 @@ def main():
         APP_NAME = GOOGLE_CODE_PROJECT_ID
 
     # Download issues from google code in csv format
-    url = 'http://code.google.com/p/'+GOOGLE_CODE_PROJECT_ID+'/issues/csv?can=1'
+    url = 'http://code.google.com/p/'+GOOGLE_CODE_PROJECT_ID+'/issues/csv?can=1&sort=priority'
     wgetOpts = ' -q '
     if not QUIET:
         print 'Downloading google code project issue list from ' + url
@@ -126,6 +126,12 @@ def main():
     # Output the releases
 
     def compareVersion( a, b ):
+        # Handle missing version info (LooseVersion doesn't)
+        if (a == ''):
+            return -1
+        if (b == ''):
+            return 1
+    
         av = version.LooseVersion(a )
         bv = version.LooseVersion(b )
         return cmp( bv, av )

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-      codebase="http://flowpaint.googlecode.com/svn/webstart/stable/"
+      codebase="http://flowpaint.googlecode.com/svn/webstart/unstable/"
       href="flowpaint.jnlp">
   <information>
     <title>Flowpaint</title>
@@ -21,26 +21,19 @@
   <resources>
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
     <jar href="flowpaint.jar"/>
-    <!--
-        <jar href="apresource.jar"/>
-        <jar href="lib/j2da.jar"/>
-        <jar href="lib/net.jar"/>
-        <jar href="lib/gagetimer.jar"/>
-    -->
   </resources>
 
   <resources os="Windows">
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
-    <nativelib href="jpen-native-win32.jar"/>
+    <nativelib href="native-win32.jar"/>
     <!--
         <jar href="lib/jogl-win32.jar"/>
         <nativelib href="lib/jogl-win32-native.jar"/>
-        <nativelib href="lib/gagetimer-native.jar"/>
     -->
   </resources>
   <resources os="Linux">
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
-    <nativelib href="jpen-native-linux.jar"/>
+    <nativelib href="native-linux.jar"/>
     <!--
         <jar href="lib/jogl-linux.jar"/>
         <nativelib href="lib/jogl-linux-native.jar"/>
@@ -48,7 +41,7 @@
   </resources>
   <resources os="Mac OS">
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
-    <nativelib href="jpen-native-osx.jar"/>
+    <nativelib href="native-osx.jar"/>
     <!--
         <jar href="lib/jogl-macos.jar"/>
         <nativelib href="lib/jogl-macos-native.jar"/>

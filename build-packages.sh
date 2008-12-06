@@ -160,16 +160,16 @@ cp $compiledJar $webstartDirName/$appName.jar
 
 echo "#### Packaging native libraries"
 cd nativelibs
-jar cf ../$webstartDirName/jpen-native-linux.jar *.so
-jar cf ../$webstartDirName/jpen-native-osx.jar jpen-2.jnilib
-jar cf ../$webstartDirName/jpen-native-win32.jar jpen-2.dll
+jar cf ../$webstartDirName/native-linux.jar *.so
+jar cf ../$webstartDirName/native-osx.jar *.jnilib
+jar cf ../$webstartDirName/native-win32.jar *.dll
 cd ..
 
 echo "#### Signing Jar:s"
 jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/$appName.jar $keystoreUser
-jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/jpen-native-linux.jar $keystoreUser
-jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/jpen-native-osx.jar $keystoreUser
-jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/jpen-native-win32.jar $keystoreUser
+jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/native-linux.jar $keystoreUser
+jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/native-osx.jar $keystoreUser
+jarsigner -storepass $storepass -keypass $keypass -keystore $keystoreFile $webstartDirName/native-win32.jar $keystoreUser
 
 echo "### Zipping webstart package up (for easier transport to the target server)"
 # Don't include the directory in the webstart package, as webstart is deployed by replacing the current content

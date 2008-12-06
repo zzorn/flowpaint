@@ -30,7 +30,7 @@ object PropertyRegister {
   val ANGLE = getId("angle")
   val SATURATION = getId("saturation")
   val HUE = getId("hue")
-  val BRIGHTNESS = getId("brightness")
+  val LIGHTNESS = getId("lightness")
   val VALUE = getId("value")
   val PRESSURE = getId("pressure")
   val POSTION_ALONG_STROKE = getId("positionAlongStroke")

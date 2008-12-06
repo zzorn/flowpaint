@@ -262,7 +262,7 @@ object FlowPaintController {
       brush
     }
 
-    def addColorBrush(set : FixedBrushSet, name: String, ink: Ink, hue:Float, saturation:Float, brightness:Float,
+    def addColorBrush(set : FixedBrushSet, name: String, ink: Ink, hue:Float, saturation:Float, lightness:Float,
                      radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
       val brush = new Brush(name, List(new GradientInk(whiteGradient, 0.5f), ink),
         List(
@@ -273,20 +273,20 @@ object FlowPaintController {
         Nil)
 
       val transparencyInks = List(new ColorInk(), new AlphaTransparencyBackgroundInk())
-      val hueInk = List(new ConstantInk(new DataSample(("alpha", 1f), ("saturation", 1f), ("brightness", 1f))), new ColorInk())
+      val hueInk = List(new ConstantInk(new DataSample(("alpha", 1f), ("saturation", 1f), ("lightness", 0.5f))), new ColorInk())
       val satInk = List(new ConstantInk(new DataSample(("alpha", 1f))), new ColorInk())
-      val brInk = List(new ConstantInk(new DataSample(("alpha", 1f))), new ColorInk())
+      val liInk = List(new ConstantInk(new DataSample(("alpha", 1f))), new ColorInk())
 
       brush.addEditor(new GradientSliderEditor("Hue", "hue", 0, 1, hueInk))
       brush.addEditor(new GradientSliderEditor("Saturation", "saturation", 1, 0, satInk))
-      brush.addEditor(new GradientSliderEditor("Brightness", "brightness", 1, 0, brInk))
+      brush.addEditor(new GradientSliderEditor("Lightness", "lightness", 1, 0, liInk))
       brush.addEditor(new GradientSliderEditor("Transparency", "alpha", 1, 0, transparencyInks))
       brush.addEditor(new BrushSliderEditor("Size", "maxRadius", 1, 4 * radius, brush))
 
       brush.settings.setFloatProperty(PropertyRegister.MAX_RADIUS, radius)
       brush.settings.setFloatProperty(PropertyRegister.HUE, hue / 360f)
       brush.settings.setFloatProperty(PropertyRegister.SATURATION, saturation)
-      brush.settings.setFloatProperty(PropertyRegister.BRIGHTNESS, brightness)
+      brush.settings.setFloatProperty(PropertyRegister.LIGHTNESS, lightness)
       brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1)
 
       set.addBrush(brush)
@@ -310,11 +310,12 @@ object FlowPaintController {
     addBrush(sketching,"White", new GradientInk(whiteGradient, 0), 45, 0, 1f)
 
     val painting = addBrushSet( "Painting" )
-    addColorBrush(painting, "Maroon", new ColorInk(), 0f, 1f, 0.5f, 20, 0, 1f)
-    addColorBrush(painting, "Saffron", new ColorInk(), 45f, 0.80f, 0.96f, 20, 0, 1f)
-    addColorBrush(painting, "Sap Green", new ColorInk(), 100f, 0.4f, 0.5f, 20, 0, 1f)
-    addColorBrush(painting, "Cobalt Blue", new ColorInk(), 215f, 1f, 0.67f, 20, 0, 1f)
-    addColorBrush(painting, "Sepia", new ColorInk(), 0.3f, 0.82f, 0.44f, 20, 0, 1f)
+    addColorBrush(painting, "Brown", new ColorInk(), 120f, 0.5f, 0.35f, 20, 0, 1f)
+    addColorBrush(painting, "Red", new ColorInk(), 0f, 1f, 0.25f, 20, 0, 1f)
+    addColorBrush(painting, "Yellow", new ColorInk(), 45f, 0.80f, 0.45f, 20, 0, 1f)
+    addColorBrush(painting, "Green", new ColorInk(), 100f, 0.7f, 0.5f, 20, 0, 1f)
+    addColorBrush(painting, "Blue", new ColorInk(), 215f, 1f, 0.37f, 20, 0, 1f)
+    addColorBrush(painting, "Grey", new ColorInk(), 240f, 0.05f, 0.36f, 20, 0, 1f)
     /*
         addColorBrush(new GradientInk(maroonPenGradient, 0.7f), 20, 0, 1f)
         addColorBrush(new GradientInk(ocraPenGradient, 0.7f), 20, 0, 1f)
@@ -338,12 +339,14 @@ object FlowPaintController {
     addBrush(noiseBrushes, "Silver brush", new NoiseInk(skyCloudGradient, (2f, 0.6f), 0.5f), 30, 0, 1f)
     addBrush(noiseBrushes, "Silver rain", new NoiseInk(skyCloudGradient, (50f, 1.5f), 0.8f), 50, 0, 0.5f)
 
+/*
     // DEBUG
     val debugBrushes = addBrushSet( "Debuging Brushes" )
     addBrush(debugBrushes, "Dual Debug brush", new DebugInk(1,1), 80, 0, 1)
     addBrush(debugBrushes, "Along Debug brush", new DebugInk(1, 0), 80, 0, 1)
     addBrush(debugBrushes, "Across Debug brush", new DebugInk(0, 1), 80, 0, 1)
     addBrush(debugBrushes, "Solid Debug brush", new DebugInk(0, 0), 40, 0, 1)
+*/
 
 
     // Recent brushes set

@@ -13,7 +13,6 @@ import renderer.RenderSurface
  */
 class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JPanel {
   val THIN_CROSSHAIR_CURSOR = createThinCrosshairCursor()
-  private val ONE_PIXEL_STROKE = new BasicStroke(1)
 
   addComponentListener(new ComponentListener {
     def componentMoved(e: ComponentEvent) = {}
@@ -43,7 +42,7 @@ class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JP
     val cut = 3
     val image = new BufferedImage(size + 2, size + 2, BufferedImage.TYPE_INT_ARGB)
     val g : Graphics2D = image.getGraphics.asInstanceOf[Graphics2D]
-    g.setStroke( ONE_PIXEL_STROKE )
+    g.setStroke( new BasicStroke(1) )
 
     g.setColor(Color.WHITE)
     g.drawLine(mid, 0, mid, mid - cut)

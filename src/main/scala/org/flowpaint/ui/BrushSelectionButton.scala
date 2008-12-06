@@ -27,6 +27,8 @@ class BrushSelectionButton( brush : Brush ) {
 
     val preview = new BrushPreview( brush )
 
+    preview.setToolTipText( brush.name )
+
     def press() {
       mousePressedOnThisButton = true
       preview.setBackgroundColor( PRESSED_COLOR )

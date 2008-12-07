@@ -11,7 +11,7 @@ import util.{DataSample, RectangleInt, PropertyRegister}
  *
  * @author Hans Haggstrom
  */
-object StrokeRenderer {
+class StrokeRenderer {
   private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
 
   private val triangleRenderer = new TriangleRenderer()

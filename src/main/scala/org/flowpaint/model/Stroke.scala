@@ -74,7 +74,8 @@ case class Stroke(brush: Brush) extends PictureProvider {
 
   private def renderStrokeSegment(startPoint: DataSample, endPoint: DataSample, surface: RenderSurface) {
 
-    StrokeRenderer.drawStrokeSegment( startPoint, endPoint, brush, surface)
+    val renderer = new StrokeRenderer() 
+    renderer.drawStrokeSegment( startPoint, endPoint, brush, surface)
 
   }
 }

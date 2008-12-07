@@ -2,6 +2,7 @@ package org.flowpaint.tools
 
 import _root_.org.flowpaint.brush.Brush
 import filters.StrokeListener
+import javax.swing.SwingUtilities
 import model.Stroke
 import util.DataSample
 
@@ -14,7 +15,6 @@ import util.PropertyRegister
  */
 
 class StrokeTool extends Tool {
-
   val currentStatus: DataSample = new DataSample()
 
   var currentStroke: Stroke = null
@@ -30,7 +30,7 @@ class StrokeTool extends Tool {
 
       val pressed = event.getProperty(PropertyRegister.LEFT_BUTTON, 0) > 0.5f
 
-      if (pressed != isStrokeActive )
+      if (pressed != isStrokeActive)
         {
           if (pressed)
             {
@@ -43,12 +43,11 @@ class StrokeTool extends Tool {
         }
     }
 
-    if (isStrokeActive )
+    if (isStrokeActive)
       {
         addStrokePoint(currentStroke, event)
       }
   }
-
 
 
   def startStroke()
@@ -56,16 +55,17 @@ class StrokeTool extends Tool {
       currentPointIndex = 0
       currentStrokeStartTime = getTime()
       val brush: Brush = FlowPaintController.currentBrush.createCopy
-      currentStroke = new Stroke( brush )
+      currentStroke = new Stroke(brush)
 
       val initialSample = new DataSample(currentStatus);
 
-      // TODO: If a tablet is used, this should be initialized to zero, or there should be a filter that waits until pressure and cordinate input has been received.
-      initialSample.setProperty( PropertyRegister.PRESSURE, 0.5f )
-      initialSample.setProperty( PropertyRegister.RANDOM_SEED, Math.random.toFloat )
-      brush.initializeStrokeStart( initialSample )
+      // TODO: If a tablet is used, this should be initialized to zero,
+      // or there should be a filter that waits until pressure and cordinate input has been received.
+      initialSample.setProperty(PropertyRegister.PRESSURE, 0.5f)
+      initialSample.setProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
+      brush.initializeStrokeStart(initialSample)
 
-      addStrokePoint(currentStroke, initialSample )
+      addStrokePoint(currentStroke, initialSample)
 
       // Add stroke, so that we get a preview of it
       // TODO: add with a proper undoable command later
@@ -73,31 +73,35 @@ class StrokeTool extends Tool {
 
     }
 
-  def addStrokePoint(stroke:Stroke, point:DataSample)
-  {
-    point.setProperty(PropertyRegister.INDEX, currentPointIndex)
-    point.setProperty(PropertyRegister.TIME, (getTime() - currentStrokeStartTime).toFloat / 1000f)
+  def addStrokePoint(stroke: Stroke, point: DataSample)
+    {
+      point.setProperty(PropertyRegister.INDEX, currentPointIndex)
+      point.setProperty(PropertyRegister.TIME, (getTime() - currentStrokeStartTime).toFloat / 1000f)
 
-    currentPointIndex += 1
+      currentPointIndex += 1
 
-    stroke.brush.processStrokePoint( point, new StrokeListener(){
+      stroke.brush.processStrokePoint(point, new StrokeListener() {
+        def addStrokePoint(pointData: DataSample) {
+          stroke.addPoint(pointData, FlowPaintController.surface)
+        }
 
-      def addStrokePoint( pointData : DataSample ) {
-        stroke.addPoint( pointData, FlowPaintController.surface )
-      }
+      })
 
-    })
-  }
+
+    }
 
 
   def endStroke()
     {
-      FlowPaintController.addRecentBrush( currentStroke.brush )
+
+      val brush: Brush = currentStroke.brush
+      FlowPaintController.addRecentBrush(brush)
+
 
       // Temp:
       //      sketchController.currentPainting.currentLayer.addStroke( stroke )
 
-      // TODO: Add command handling system, to allow undo?
+      // TODO: Add command handling system, to allow undo
       /*
               sketchController.getCommandStack().invoke( new AbstractCommand( "Stroke", true )
               {

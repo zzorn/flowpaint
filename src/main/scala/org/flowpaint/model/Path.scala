@@ -1,4 +1,5 @@
 package org.flowpaint.model
+import brush.Brush
 import property.Data
 
 /**
@@ -7,7 +8,7 @@ import property.Data
  * 
  * @author Hans Haggstrom
  */
-class Path {
+class Path(brush : Brush) {
 
   val commonProperties = new Data
 

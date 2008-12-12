@@ -1,29 +1,35 @@
 package org.flowpaint.filters
 
+import property.Data
 import util.DataSample
 
 
 import util.PropertyRegister
 
 /**
- * 
+ *
  *
  * @author Hans Haggstrom
  */
 
-class RadiusFromPressureFilter(maxRadius : Float, pressureEffect : Float) extends StrokeFilter {
+class RadiusFromPressureFilter() extends PathProcessor {
+  
+    def processPathPoint(pointData: Data, callback: (Data) => Unit) = {
+      
+        val maxRadius = settings.getFloatProperty("maxRadius", 30)
+        val pressureEffect = settings.getFloatProperty("pressureEffect", 1)
 
-  protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) = {
+        // NOTE: Workaround for the bug of not registering tablet pressure for first point
+        val defaultPressure = if (firstPoint) 0f else 0.5f
 
-    val pressure = pointData.getProperty( PropertyRegister.PRESSURE, 0.5f )
-    val maxRadius2 = pointData.getProperty( PropertyRegister.MAX_RADIUS, 10 )
+        val pressure = pointData.getFloatProperty(PropertyRegister.PRESSURE, defaultPressure)
+        val maxRadius2 = pointData.getFloatProperty(PropertyRegister.MAX_RADIUS, 10)
 
-    val radius = util.MathUtils.interpolate( pressureEffect, maxRadius2, pressure * maxRadius2 )
+        val radius = util.MathUtils.interpolate(pressureEffect, maxRadius2, pressure * maxRadius2)
 
-    pointData.setProperty( PropertyRegister.RADIUS, radius )
+        pointData.setFloatProperty(PropertyRegister.RADIUS, radius)
 
-    resultCallback(pointData)
-  }
-
+        callback(pointData)
+    }
 
 }

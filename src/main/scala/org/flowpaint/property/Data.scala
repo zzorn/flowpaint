@@ -58,4 +58,9 @@ trait Data {
   def set( sourceData : Data )
 
 
+    /**
+     * Sets this Data to the values of the specified source data.  Any previous values are not removed.
+     */
+    def setValuesFrom( sourceData : Data )
+
 }

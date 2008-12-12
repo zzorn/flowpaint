@@ -1,85 +1,87 @@
 package org.flowpaint.filters
 
+import property.Data
 import util.DataSample
 import util.PropertyRegister
 
 /**
- * Removes segments with zero length, and merges their properties with subsequent points
+ *  Removes segments with zero length, and merges their properties with subsequent points
  *
  * @author Hans Haggstrom
  */
-class ZeroLengthSegmentFilter extends StrokeFilter {
+class ZeroLengthSegmentFilter extends PathProcessor {
+    private var previousData = new Data()
+    private var temp = new Data()
 
-  private var previousData = new DataSample()
-  private var temp = new DataSample()
+    private var oldX = 0f
+    private var oldY = 0f
+    private var oldX2 = 0f
+    private var oldY2 = 0f
 
-  private var oldX = 0f
-  private var oldY = 0f
-  private var oldX2 = 0f
-  private var oldY2 = 0f
+    override protected def onInit() = {
 
-  val FILTER_DISTANCE: Int = 0
+        previousData.clear
+        temp.clear
 
-  val smoothing = 0.2f
+        oldX = 0f
+        oldY = 0f
+        oldX2 = 0f
+        oldY2 = 0f
+    }
 
-  protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit) = {
+    def processPathPoint(pointData: Data, resultCallback: (Data) => Unit) {
+        val smoothing = settings.getFloatProperty("smoothing", 0.2f)
+        val FILTER_DISTANCE = settings.getFloatProperty("filterDistance", 0f)
 
+        val smooth = if (firstPoint) 0f else smoothing
 
-/*
-    pointData.setProperty("x",pointData.getProperty("x",oldX2))
-    pointData.setProperty("y",pointData.getProperty("y",oldY2))
-*/
+        val newX = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.X, oldX2), oldX2)
+        val newY = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.Y, oldY2), oldY2)
+        /*
+            val newX = pointData.getProperty("x",0)
+            val newY = pointData.getProperty("y",0)
+        */
 
-    val index = pointData.getProperty(PropertyRegister.INDEX, 0f )
-    val smooth = if( index == 0f ) 0f else smoothing
+        pointData.setFloatProperty(PropertyRegister.X, newX)
+        pointData.setFloatProperty(PropertyRegister.Y, newY)
 
-    val newX = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.X,oldX2), oldX2 )
-    val newY = util.MathUtils.interpolate(smooth,  pointData.getProperty(PropertyRegister.Y,oldY2), oldY2 )
-/*
-    val newX = pointData.getProperty("x",0)
-    val newY = pointData.getProperty("y",0)
-*/
+        oldX2 = newX
+        oldY2 = newY
 
-    pointData.setProperty(PropertyRegister.X,newX)
-    pointData.setProperty(PropertyRegister.Y,newY)
+        if (util.MathUtils.squaredDistance(oldX, oldY, newX, newY) <= FILTER_DISTANCE * FILTER_DISTANCE)
+            {
+                previousData.setValuesFrom(pointData)
 
-    oldX2 = newX
-    oldY2 = newY
+                // Discard (do not process) the point
+            }
+        else {
 
-    if ( util.MathUtils.squaredDistance( oldX, oldY, newX, newY ) <= FILTER_DISTANCE * FILTER_DISTANCE )
-      {
-        previousData.setValuesFrom( pointData )
+            oldX = newX
+            oldY = newY
 
-        // Discard (do not process) the point
-      }
-    else {
+            // Overwrite values with latest ones
+            previousData.setValuesFrom(pointData)
 
-      oldX = newX
-      oldY = newY
+            /*
+                  temp.clear
+                  temp.setValuesFrom(pointData)
+            */
 
-      // Overwrite values with latest ones
-      previousData.setValuesFrom( pointData )
+            // Copy all values to the newest point, to also catch any old ones that were set for discarded points
+            // and not reset with the latest point data.
+            pointData.setValuesFrom(previousData)
 
-/*
-      temp.clear
-      temp.setValuesFrom(pointData)
-*/
+            /*
+                  // Clear the old temp data, but retain the most recent
+            //      previousData.clear
+                  previousData.setValuesFrom( temp )
+            */
 
-      // Copy all values to the newest point, to also catch any old ones that were set for discarded points
-      // and not reset with the latest point data.
-      pointData.setValuesFrom( previousData )
+            // Process normally
+            resultCallback(pointData)
+        }
 
-/*
-      // Clear the old temp data, but retain the most recent
-//      previousData.clear
-      previousData.setValuesFrom( temp )
-*/
-
-      // Process normally
-      resultCallback(pointData)
     }
 
 
-
-  }
 }

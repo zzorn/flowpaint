@@ -1,35 +1,45 @@
 package org.flowpaint.filters
+
+import property.Data
 import util.{DataSample, PropertyRegister, MathUtils}
 
 /**
- * Calculates the distance along the line, as well as the length of the previous stroke.
- * 
+ *  Calculates the distance along the line, as well as the length of the previous stroke.
+ *
  * @author Hans Haggstrom
  */
 // TODO: Add velocity calculation too
-class DistanceCalculatorFilter extends StrokeFilter {
+class DistanceCalculatorFilter extends PathProcessor {
 
-  var previousX = 0f
-  var previousY = 0f
-  var previousDistance = 0f
+    var previousX = 0f
+    var previousY = 0f
+    var previousDistance = 0f
 
-  protected def filterStrokePoint(pointData: DataSample, resultCallback: (DataSample) => Unit)  {
+    override protected def onInit() = {
 
-    val firstPoint = pointData.getProperty(PropertyRegister.INDEX, 2 ) < 0.5f
-    val x = pointData.getProperty(PropertyRegister.X, 0 )
-    val y = pointData.getProperty(PropertyRegister.Y, 0 )
+        previousX = 0f
+        previousY = 0f
+        previousDistance = 0f
+    }
 
-    if (firstPoint) previousDistance = 0
+    def processPathPoint(pointData: Data, callback: (Data) => Unit) = {
 
-    val previousSegmentLength = if (firstPoint) 0f else MathUtils.distance( previousX, previousY, x, y )
 
-    pointData.setProperty( PropertyRegister.PREVIOUS_SEGMENT_LENGTH, previousSegmentLength )
-    pointData.setProperty( PropertyRegister.DISTANCE, previousDistance + previousSegmentLength )
+        val x = pointData.getFloatProperty(PropertyRegister.X, 0)
+        val y = pointData.getFloatProperty(PropertyRegister.Y, 0)
 
-    previousX = x
-    previousY = y
-    previousDistance += previousSegmentLength
+        if (firstPoint) previousDistance = 0
 
-    resultCallback( pointData )
-  }
+        val previousSegmentLength = if (firstPoint) 0f else MathUtils.distance(previousX, previousY, x, y)
+
+        pointData.setFloatProperty(PropertyRegister.PREVIOUS_SEGMENT_LENGTH, previousSegmentLength)
+        pointData.setFloatProperty(PropertyRegister.DISTANCE, previousDistance + previousSegmentLength)
+
+        previousX = x
+        previousY = y
+        previousDistance += previousSegmentLength
+
+        callback(pointData)
+    }
+
 }

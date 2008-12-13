@@ -1,5 +1,6 @@
 package org.flowpaint.renderer
 
+import _root_.org.flowpaint.property.Data
 import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
@@ -19,13 +20,13 @@ class StrokeRenderer {
   /**
    *     Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
-  def drawStrokeSegment(startData: DataSample, endData: DataSample, brush: Brush, surface: RenderSurface) {
+  def drawStrokeSegment(startData: Data, endData: Data, brush: Brush, surface: RenderSurface) {
 
 
-    val startX = startData.getProperty("x", 0)
-    val startY = startData.getProperty("y", 0)
-    val endX = endData.getProperty("x", 0)
-    val endY = endData.getProperty("y", 0)
+    val startX = startData.getFloatProperty(PropertyRegister.X, 0)
+    val startY = startData.getFloatProperty(PropertyRegister.Y, 0)
+    val endX = endData.getFloatProperty(PropertyRegister.X, 0)
+    val endY = endData.getFloatProperty(PropertyRegister.Y, 0)
 
 /*
     val DEFAULT_RADIUS = 10f
@@ -56,14 +57,14 @@ class StrokeRenderer {
     val y11 = endY + endDeltaY
 */
 
-    val x00 = startData.getProperty(PropertyRegister.LEFT_EDGE_X, startX)
-    val y00 = startData.getProperty(PropertyRegister.LEFT_EDGE_Y, startY)
-    val x01 = startData.getProperty(PropertyRegister.RIGHT_EDGE_X, startX)
-    val y01 = startData.getProperty(PropertyRegister.RIGHT_EDGE_Y, startY)
-    val x10 = endData.getProperty(PropertyRegister.LEFT_EDGE_X, endX)
-    val y10 = endData.getProperty(PropertyRegister.LEFT_EDGE_Y, endY)
-    val x11 = endData.getProperty(PropertyRegister.RIGHT_EDGE_X, endX)
-    val y11 = endData.getProperty(PropertyRegister.RIGHT_EDGE_Y, endY)
+    val x00 = startData.getFloatProperty(PropertyRegister.LEFT_EDGE_X, startX)
+    val y00 = startData.getFloatProperty(PropertyRegister.LEFT_EDGE_Y, startY)
+    val x01 = startData.getFloatProperty(PropertyRegister.RIGHT_EDGE_X, startX)
+    val y01 = startData.getFloatProperty(PropertyRegister.RIGHT_EDGE_Y, startY)
+    val x10 = endData.getFloatProperty(PropertyRegister.LEFT_EDGE_X, endX)
+    val y10 = endData.getFloatProperty(PropertyRegister.LEFT_EDGE_Y, endY)
+    val x11 = endData.getFloatProperty(PropertyRegister.RIGHT_EDGE_X, endX)
+    val y11 = endData.getFloatProperty(PropertyRegister.RIGHT_EDGE_Y, endY)
 
     // Prepare data for corners
 

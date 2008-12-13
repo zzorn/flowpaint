@@ -1,4 +1,7 @@
 package org.flowpaint.model
+
+import _root_.org.flowpaint.renderer.{StrokeRenderer, RenderSurface}
+import _root_.org.flowpaint.util.DataSample
 import brush.Brush
 import property.Data
 
@@ -33,5 +36,40 @@ class Path(brush : Brush) {
 
 
 
+  private def renderPath(surface: RenderSurface) {
+    val segmentStartData: Data = new Data()
+    val segmentEndData: Data = new Data()
+
+    var segmentStart : PathPoint= startPoint
+    var segmentEnd : PathPoint= if (startPoint != null)startPoint.next else null
+
+    if (segmentStart != null) {
+
+      segmentEndData.setValuesFrom( segmentStart.data )
+
+      while( segmentEnd != null ) {
+        // Remember the variable values along the line even if they are only present
+        // in the points when they have changed from the previous value.
+        segmentStartData.setValuesFrom( segmentStart.data )
+        segmentEndData.setValuesFrom( segmentEnd.data )
+
+        renderStrokeSegment(segmentStartData, segmentEndData, surface)
+
+        segmentStart = segmentEnd
+        segmentEnd = segmentEnd.next
+      }
+    }
+
+
+
+
+  }
+
+  private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface) {
+
+    val renderer = new StrokeRenderer()
+    renderer.drawStrokeSegment( startPoint, endPoint, brush, surface)
+
+  }
 }
 

@@ -25,6 +25,10 @@ trait Data {
 
   def setFloatProperty(name: String, value: Float)
 
+  def getFloatProperty(id : Int, default: Float): Float
+
+  def setFloatProperty(id : Int, value: Float)
+
   def getStringProperty(name: String, default: String): String
 
   def setStringProperty(name: String, value: String)

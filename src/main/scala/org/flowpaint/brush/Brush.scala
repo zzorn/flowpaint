@@ -1,7 +1,7 @@
 package org.flowpaint.brush
 
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
-import filters.{StrokeListener, StrokeFilter}
+import filters.{StrokeListener, PathProcessorMetadata, StrokeFilter, PathProcessor}
 import ink.Ink
 import javax.swing.JComponent
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
@@ -26,13 +26,13 @@ case class BrushProperty(name: String,
  *
  * @author Hans Haggstrom
  */
-class Brush( val name : String, inks: List[Ink], filters: List[StrokeFilter], initialEditors : List[DataEditor]) {
+class Brush( val name : String, inks: List[Ink], filters: List[PathProcessorMetadata], initialEditors : List[DataEditor]) {
 
   val settings = new DataImpl()
 
   private var pixelProcessors: List[Ink] = inks
 
-  private var strokeProcessors: List[StrokeFilter] = filters
+  private var strokeProcessors: List[PathProcessorMetadata] = filters
 
   private var editors : List[DataEditor] = initialEditors
 

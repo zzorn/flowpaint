@@ -1,5 +1,6 @@
 package org.flowpaint.filters
-import property.Data
+
+import _root_.org.flowpaint.property.{DataImpl, Data}
 
 /**
  * 
@@ -9,7 +10,7 @@ import property.Data
 // TODO: Add UI widgets
 class PathProcessorMetadata( processorType : Class[ _ <: PathProcessor] ) {
 
-  val settings = new Data()
+  val settings = new DataImpl()
 
   def createPathProcessor() : PathProcessor = {
     val processor : PathProcessor = processorType.newInstance

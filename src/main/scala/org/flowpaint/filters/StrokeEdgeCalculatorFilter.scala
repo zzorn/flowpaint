@@ -33,7 +33,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         // Determine angle and radius
         val DEFAULT_RADIUS = 10f
-        val angle = pointData.getFloatProperty(PropertyRegister.ANGLE, 0)
+        val angle = pointData.getFloatProperty(PropertyRegister.ANGLE, 0f)
         val radius = pointData.getFloatProperty(PropertyRegister.RADIUS, DEFAULT_RADIUS)
 
         // Calculate corner points
@@ -48,12 +48,12 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         // Check if either edge crosses the previous one.  In that case, use the previous endpoint
         // Do not apply for the first point
-        if (!firstSample && util.GeometryUtils.isLineIntersectingLine(x, y, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
+        if (!firstPoint && util.GeometryUtils.isLineIntersectingLine(x, y, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
             {
                 leftX = previousLeftX
                 leftY = previousLeftY
             }
-        if (!firstSample && util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
+        if (!firstPoint && util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
             {
                 rightX = previousRightX
                 rightY = previousRightY

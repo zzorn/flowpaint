@@ -9,62 +9,40 @@ import scala.collection.jcl.ArrayList
 import util.{DataSample, RectangleInt}
 
 /**
- *     A brush stroke on some layer.
+ *      A brush stroke on some layer.
  *
  * @author Hans Haggstrom
  */
 case class Stroke(brush: Brush) extends PictureProvider {
 
-  private var paths : List[Path] = Nil
+    private var paths: List[Path] = Nil
+
+    def addPath(brush: Brush): Path = {
+        val path = new Path(brush)
+
+        addPath(path)
+
+        path
+    }
+
+    def addPath(path: Path) {
+        paths = paths ::: List(path)
+    }
+
+    /**
+     *  Removes all stroke points from this stroke.
+     */
+    def clear() {
+        paths = Nil
+    }
 
 
-/*
-  private val points: ArrayList[DataSample] = new ArrayList[DataSample]()
+    def updateSurface(surface: RenderSurface) = {
+
+        paths foreach (_.renderPath(surface))
 
 
-  */
-/**
-   *   Adds a stroke point.  Doesn't update the picture.
-   */
-/*
-  def addPoint(data: DataSample) {
-    points.add(data)
-  }
-*/
-
-  def addPath( path : Path  ) {
-    paths = paths ::: path
-  }
-
-  /**
-   * Removes all stroke points from this stroke.
-   */
-  def clear() {
-    paths = Nil
-  }
-/*
-
-  */
-/**
-   *   Adds a stroke point and updates the render surface with the latest stroke segment
-   */
-/*
-  def addPoint(data: DataSample, surface: RenderSurface) {
-
-    addPoint(data)
-
-    renderStroke(surface, false)
-
-  }
-*/
-
-
-  def updateSurface(surface: RenderSurface) = {
-
-    paths foreach ( _.renderPath(surface) )
-
-
-  }
+    }
 
 
 }

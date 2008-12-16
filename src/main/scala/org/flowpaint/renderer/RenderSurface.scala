@@ -9,6 +9,7 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
+// TODO: Add transformation / world area that the surface covers
 trait RenderSurface {
 
   val pictureProvider: PictureProvider

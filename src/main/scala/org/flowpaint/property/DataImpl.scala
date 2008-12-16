@@ -14,6 +14,12 @@ final class DataImpl extends Data {
     private val stringProperties = new HashMap[String, String]()
     private val listeners = new HashSet[Data#DataListener]
 
+    def this( initialValues : Data ) {
+      this()
+
+      set( initialValues )
+    }
+
     def addListener(listener: (Data, String) => Unit) {
         listeners.addEntry(listener)
     }

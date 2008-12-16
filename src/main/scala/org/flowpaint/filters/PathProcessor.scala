@@ -2,7 +2,7 @@ package org.flowpaint.filters
 
 import model.Path
 import property.Data
-import util.DataSample
+import util.{DataSample, Processor}
 
 /**
  *
@@ -10,18 +10,22 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-trait PathProcessor {
-    val settings: Data = new Data
+trait PathProcessor extends Processor {
 
     var firstPoint = true
 
-    def init(settings_ : Data) {
-        settings.set(settings_)
-        firstPoint = true
-        onInit()
+    override def init(initialSettings : Data) {
+      super.init(initialSettings)
+      firstPoint = true
     }
 
-    protected def onInit() {}
+
+
+    def processPath(path : Path, callback: (Data) => Unit) {
+        processPathPoint(pathPointData, callback)
+        firstPoint = false
+    }
+
 
     def handlePathPoint(pathPointData: Data, callback: (Data) => Unit) {
         processPathPoint(pathPointData, callback)

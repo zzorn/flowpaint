@@ -6,7 +6,8 @@ import ink.Ink
 import java.awt.event.{ComponentListener, MouseAdapter}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.JPanel
-import model.{Stroke, Painting}
+import model.{Stroke, Painting, Path}
+import property.DataImpl
 import renderer.SingleRenderSurface
 import util.DataSample
 
@@ -94,15 +95,16 @@ class BrushPreview(val brush: Brush,
     def generatePoint(i: Int) {
       val f: Float = (1f * i) / (1f * STEPS)
 
-      val dataSample = new DataSample()
+      val dataSample = new DataImpl()
       brush.initializeStrokeStart( dataSample )
-      dataSample.setProperty("index", i.toFloat)
-      dataSample.setProperty("randomSeed", 1231424)
+      dataSample.setFloatProperty("index", i.toFloat)
+      dataSample.setFloatProperty("randomSeed", 1231424)
 
       strokePointCalculator( f, w, h, dataSample )
 
       // Run the input point through the filters in the stroke
       // TODO: Change to use functions instead of anonymous one method classes
+      stroke.addPath(  )
       stroke.brush.processStrokePoint(dataSample, new StrokeListener() {
         def addStrokePoint(pointData: DataSample) {
           stroke.addPoint(pointData)

@@ -1,22 +1,12 @@
 package org.flowpaint.filters
 
 import _root_.org.flowpaint.property.{DataImpl, Data}
+import util.ProcessorMetadata
 
 /**
- * 
- * 
+ * Metadata that can be used to specify and create instances of path processors.
+ *
  * @author Hans Haggstrom
  */
-// TODO: Add UI widgets
-class PathProcessorMetadata( processorType : Class[ _ <: PathProcessor] ) {
-
-  val settings = new DataImpl()
-
-  def createPathProcessor() : PathProcessor = {
-    val processor : PathProcessor = processorType.newInstance
-    processor.init(settings)
-    processor
-  }
-
-
-}
+class PathProcessorMetadata( processorType : Class[ _ <: PathProcessor], initialSettings : Data )
+        extends ProcessorMetadata[PathProcessor]( processorType, initialSettings )

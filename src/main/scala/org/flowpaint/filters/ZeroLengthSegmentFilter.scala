@@ -1,6 +1,6 @@
 package org.flowpaint.filters
 
-import property.Data
+import property.{DataImpl, Data}
 import util.DataSample
 import util.PropertyRegister
 
@@ -10,8 +10,8 @@ import util.PropertyRegister
  * @author Hans Haggstrom
  */
 class ZeroLengthSegmentFilter extends PathProcessor {
-    private var previousData = new Data()
-    private var temp = new Data()
+    private var previousData = new DataImpl()
+    private var temp = new DataImpl()
 
     private var oldX = 0f
     private var oldY = 0f
@@ -35,8 +35,8 @@ class ZeroLengthSegmentFilter extends PathProcessor {
 
         val smooth = if (firstPoint) 0f else smoothing
 
-        val newX = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.X, oldX2), oldX2)
-        val newY = util.MathUtils.interpolate(smooth, pointData.getProperty(PropertyRegister.Y, oldY2), oldY2)
+        val newX = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.X, oldX2), oldX2)
+        val newY = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.Y, oldY2), oldY2)
         /*
             val newX = pointData.getProperty("x",0)
             val newY = pointData.getProperty("y",0)

@@ -3,11 +3,13 @@ package org.flowpaint.util.geospatial
 /**
  * An area at a specific location, at a specific resolution.  Can contain extracted geometry.
  * Can listen to changes in the descriptions, and be updated when the descriptions change.
- * Updating can be done as a job in a worker queue (what's the Actor pattern for that in Scala?)
+ * Updating can be done as a job in a worker queue (what's the Actor pattern for that in Scala?).
+ *
+ * Also contains fields for continuous parameters. Different fields can be at different resolutions.
  * 
  * @author Hans Haggstrom
  */
-trait GeometryTile {
+trait Tile {
 
     /**
      * The bounding area of this tile.
@@ -20,7 +22,7 @@ trait GeometryTile {
     def minVisibleScale : Scale
 
     /**
-     * Adds the specified shape to this tile.
+     * Adds the specified shape to this tile, and renders it with its pixel shaders to the available fields.
      */
     def addShape( shape : Shape )
 

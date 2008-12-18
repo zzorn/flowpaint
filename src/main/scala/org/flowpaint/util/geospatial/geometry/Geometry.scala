@@ -1,6 +1,6 @@
 package org.flowpaint.util.geospatial
 /**
- * Geometry data, possibly packed in some way.
+ * Generates shapes on request for some tile with an area and min resolution.
  * 
  * Can be instantiated at some resolution and area in a tile.
  *
@@ -16,7 +16,14 @@ package org.flowpaint.util.geospatial
 // CHECK: Do revisions have to be global?  In the paint program we could keep a global list, but for spatial servers we could keep local changes only, to minimize bottlenecks.
 trait Geometry {
 
-    def addChange( change : GeometryChange )
-  
+  /**
+   * Applies this generator on the specified tile at the specified time in history.
+   * Gets passed in the id:s of all parents of itself, or Nil if it is the root Geometry. 
+   */
+  def instantiate( targetTile : Tile,
+                 time : Time,
+                 parentIds : List[Geospatial.ID],
+                 changes : List[GeometryChange] )
+
 
 }

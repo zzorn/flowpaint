@@ -9,5 +9,5 @@ import property.Data
  * 
  * @author Hans Haggstrom
  */
-// TODO: The location could be retrieved from within the data?
+// TODO: The location could be retrieved from within the data?  Allows more uniform manipulation of it..
 case class Corner( location : Vector2, data : Data )

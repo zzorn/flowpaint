@@ -14,11 +14,33 @@ package org.flowpaint.util.geospatial
  * @author Hans Haggstrom
  */
 // CHECK: Do revisions have to be global?  In the paint program we could keep a global list, but for spatial servers we could keep local changes only, to minimize bottlenecks.
+// TODO: Make it possible to pass Geometries or references to them as parameters to other Geometries, to enable modular, extensible construction of geometries
+// TODO: Add a reference to named (library) objects to Data, so that it can contain references to (parametrizable) Geometries, Pixel Renderers, etc.. 
 trait Geometry {
 
   /**
-   * Applies this generator on the specified tile at the specified time in history.
-   * Gets passed in the id:s of all parents of itself, or Nil if it is the root Geometry. 
+   * The bounding area for this Geometry.
+   */
+  def bounds : Bounds
+
+  /**
+   * The largest object size created by this Geometry (or larger).
+   */
+  def maxScale : Scale
+
+  /**
+   * The earliest existence of this Geometry.
+   */
+  def earliestExistence : Time
+
+  /**
+   * The last existence of this Geometry (can be infinite to indicate it exist up to present time).
+   */
+  def lastExistence : Time
+
+  /**
+   *  Applies this generator on the specified tile at the specified time in history.
+   * Gets passed in the id:s of all parents of itself, or Nil if it is the root Geometry.
    */
   def instantiate( targetTile : Tile,
                  time : Time,

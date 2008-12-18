@@ -6,6 +6,7 @@ package org.flowpaint.util.geospatial
  *
  * @author Hans Haggstrom
  */
+// OPTIMIZE: Might apply a quad or BSP tree or similar structure internally to speed up tests if it contains many children
 class CompositeGeometry() extends Geometry {
 
   val children = new ListenableList[Geometry]()

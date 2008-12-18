@@ -10,6 +10,11 @@ trait Shape {
 
   // TODO: Maybe add intersection detection function
 
+  /**
+   * Render this shape to the fields of a tile using the pixel processors in this shape.
+   */
+  def render( tile : Tile )
+
 }
 
 

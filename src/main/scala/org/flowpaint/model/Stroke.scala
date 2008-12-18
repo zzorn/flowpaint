@@ -5,7 +5,6 @@ import brush.Brush
 import filters.StrokeListener
 import renderer.{PictureProvider, RenderSurface}
 import renderer.StrokeRenderer
-import scala.collection.jcl.ArrayList
 import util.{DataSample, RectangleInt}
 
 /**

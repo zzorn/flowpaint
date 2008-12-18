@@ -23,5 +23,12 @@ trait GeometryTile {
      * Adds the specified shape to this tile.
      */
     def addShape( shape : Shape )
-  
+
+    /**
+     * Removes the specified shape from this tile.
+     */
+    def removeShape( shapeId : Long )
+
 }
+
+

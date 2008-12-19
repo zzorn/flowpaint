@@ -16,6 +16,5 @@ object Geospatial {
      */
     type Unit = Float
 
-    type ID = Long
 
 }

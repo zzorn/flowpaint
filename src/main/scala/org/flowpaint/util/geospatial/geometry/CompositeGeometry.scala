@@ -22,9 +22,11 @@ class CompositeGeometry() extends Geometry {
 
     // TODO: Add bounding check and bounding storage and listener support to the trait / superclass, as it is common for most / all.
 
+    // TODO: Also apply changes to the Geometry
+
     // TODO: Store the ID:s of the childs when they are added in a mapping, so that if we modify the
     // composite geometry and remove some children the ID:s of other children do not change.
-    val childId : long = 0
+    val childId : Long = 0
 
     children foreach ( _.instantiate( targetTile, time, childId :: parentIds ) )    
 

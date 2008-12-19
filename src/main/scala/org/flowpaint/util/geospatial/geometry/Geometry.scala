@@ -40,12 +40,11 @@ trait Geometry {
 
   /**
    *  Applies this generator on the specified tile at the specified time in history.
-   * Gets passed in the id:s of all parents of itself, or Nil if it is the root Geometry.
+   * Gets the changes to itself and its children as input too.
    */
   def instantiate( targetTile : Tile,
                  time : Time,
-                 parentIds : List[Geospatial.ID],
-                 changes : List[GeometryChange] )
+                 changes : ChangeSet )
 
 
 }

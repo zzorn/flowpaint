@@ -13,6 +13,11 @@ trait Shape {
    */
   def settings : Data
 
+    /**
+     * The ID of the Geometry that generated this Shape. Can be used to make changes to the Shape through editing the Geometry.
+     */
+  def id : GeometryId
+
   // TODO: Add the pixel processors to use for this shape, and maybe common settings / data
 
   // TODO: Maybe add intersection detection function

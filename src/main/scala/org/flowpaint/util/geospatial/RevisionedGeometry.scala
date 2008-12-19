@@ -14,4 +14,10 @@ package org.flowpaint.util.geospatial
 // Changes should ideally be stored as close to the changed object as possible, but what to do when its duplicated?
 
 // TODO: What about a global list of all changes though?
-trait RevisionedGeometry 
+trait RevisionedGeometry extends Geometry {
+
+
+
+}
+
+

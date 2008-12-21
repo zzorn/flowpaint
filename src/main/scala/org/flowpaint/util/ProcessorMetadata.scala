@@ -19,6 +19,7 @@ trait Processor {
 }
 
 
+
 /**
  *  Common functionality of pixel and path processor metadata.
  *

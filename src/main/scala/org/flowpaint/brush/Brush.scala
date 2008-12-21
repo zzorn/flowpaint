@@ -1,6 +1,7 @@
 package org.flowpaint.brush
 
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
+import _root_.scala.xml.Node
 import filters.{StrokeListener, PathProcessorMetadata, StrokeFilter, PathProcessor}
 import ink.{PixelProcessorMetadata, Ink}
 import javax.swing.JComponent
@@ -21,19 +22,40 @@ case class BrushProperty(name: String,
 
 
 /**
+ * Contains deserialization code for brushes.
+ */
+object Brush {
+    def fromXML(node : Node) : Brush = {
+
+      val name = (node \ "@name").text
+      val settings = Data.fromXML( (node \ "settings").first )
+      val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "pixelProcessor") map PixelProcessorMetadata.fromXML
+      val pathProcessorMetadatas = (node \ "pathProcessors" \ "pathProcessor") map PathProcessorMetadata.fromXML
+
+      val brush = new Brush(name, settings, pixelProcessorMetadatas.toList, pathProcessorMetadatas.toList, Nil )
+
+      brush
+    }
+}
+
+
+/**
  *   Contains all settings for a certain brush tool.
  *
  * @author Hans Haggstrom
  */
 class Brush(val name: String,
+            initialSettings : Data,
            pixelProcessorMetadatas: List[PixelProcessorMetadata],
            pathProcessorMetadatas: List[PathProcessorMetadata],
            initialEditors: List[DataEditor]) {
   
-    val settings = new DataImpl()
+    val settings = new DataImpl( initialSettings )
     val pixelProcessors = new ListenableList[PixelProcessorMetadata](pixelProcessorMetadatas, notifyListenersOnChildListChange)
     val strokeProcessors = new ListenableList[PathProcessorMetadata](pathProcessorMetadatas, notifyListenersOnChildListChange)
     val editors = new ListenableList[DataEditor](initialEditors, notifyListenersOnChildListChange)
+
+    private val listeners = new HashSet[ChangeListener]()
 
 
     type ChangeListener = (Brush) => Unit
@@ -42,7 +64,6 @@ class Brush(val name: String,
 
     private def notifyListeners() {listeners foreach {listener => listener(this)}}
 
-    private val listeners = new HashSet[ChangeListener]()
 
 
     settings.addListener((data: Data, prop: String) => notifyListeners())
@@ -97,11 +118,7 @@ class Brush(val name: String,
      *  Create a copy of this brush, that can be edited without affecting this Brush.
      *  NOTE: Assumes pixel processors and stroke processors and editors are immutable.
      */
-    def createCopy(): Brush = {
-        val copy = new Brush(name, pixelProcessors.elements, strokeProcessors.elements, editors.elements)
-        copy.settings.set(settings)
-        return copy
-    }
+    def createCopy(): Brush = new Brush(name, settings, pixelProcessors.elements, strokeProcessors.elements, editors.elements)
 
 
     override def hashCode = {

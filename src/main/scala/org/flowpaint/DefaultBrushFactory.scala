@@ -23,12 +23,14 @@ object DefaultBrushFactory {
 
   def createDefaultBrushes() : (List[BrushSet], Brush) = {
 
-    val brushes : Elem = ResourceLoader.loadXml( "default-brushes.xml", "default brushes", <flowpaint/> )
+    // Read from xml
 
-    // TODO: Read from xml
+    val defaultFlowpaintData : Elem = ResourceLoader.loadXml( "default-brushes.xml", "default brushes", <flowpaint/> )
 
-    var brushSets :List[BrushSet] = Nil
-    var currentBrush :Brush = null
+    val brushes : List[Brush] = ((defaultFlowpaintData \ "brush") map Brush.fromXML).toList
+
+    var brushSets :List[BrushSet] = List(new FixedBrushSet( "Default Brushes", 32, brushes ))
+    var currentBrush :Brush = brushes.head
 
 
 /*

@@ -7,12 +7,14 @@ import java.util.Properties
 import javax.swing._
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
-import util.{DataSample, ResourceLoader}
+import util.{DataSample, LibraryImpl, ResourceLoader}
 /**
  *  Main entrypoint for FlowPaint.
  */
 object FlowPaint {
 
+    val library = new LibraryImpl()
+  
 
   // Get often changing and potentially changing data from property file
   // (things like version numbers and build numbers)

@@ -60,7 +60,7 @@ class Path(brush: Brush) extends Renderable {
 
     private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface) {
 
-        def processPixel( pixelData : DataSample ) {
+        def processPixel( pixelData : Data ) {
           pixelProcessors foreach (_.processPixel(pixelData ))
         }
 

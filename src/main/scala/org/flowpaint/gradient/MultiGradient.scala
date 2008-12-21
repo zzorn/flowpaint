@@ -1,10 +1,12 @@
 package org.flowpaint.gradient
 
+import _root_.org.flowpaint.property.{Data, DataImpl}
 import java.awt.Color
 import java.util.ArrayList
+
 import util.DataSample
 
-case class GradientPoint(var position: Float, data: DataSample) extends Comparable[GradientPoint] {
+case class GradientPoint(var position: Float, data: Data) extends Comparable[GradientPoint] {
   def compareTo(p1: GradientPoint): Int =
     if (position < p1.position) -1
     else if (position > p1.position) 1
@@ -26,10 +28,10 @@ class MultiGradient extends Gradient {
   }
 
   private val myPoints = new ArrayList[GradientPoint]()
-  private val tempSearchPoint = new GradientPoint(0, new DataSample())
+  private val tempSearchPoint = new GradientPoint(0, new DataImpl())
 
 
-  protected def gradientValue(zeroToOne: Float): DataSample = {
+  protected def gradientValue(zeroToOne: Float): Data = {
 
     def searchForValueIndex(value: Float): Int =
       {
@@ -37,7 +39,7 @@ class MultiGradient extends Gradient {
         return java.util.Collections.binarySearch(myPoints, tempSearchPoint);
       }
 
-    val output = new DataSample()
+    val output = new DataImpl()
 
     val pointsSize = myPoints.size()
 

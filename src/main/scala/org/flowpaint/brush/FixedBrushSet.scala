@@ -10,19 +10,17 @@ import _root_.scala.collection.jcl.HashSet
  *
  * @author Hans Haggstrom
  */
-class FixedBrushSet(name_ : String, maxSize : Int ) extends BrushSet {
+class FixedBrushSet(name_ : String, maxSize : Int, initialBrushes : List[Brush] ) extends BrushSet {
 
-  private var brushes : List[Brush] = Nil
+  private var brushes : List[Brush] = initialBrushes.subseq(0, maxSize).toList
   private val listeners : HashSet[()=>Unit] = new HashSet()
 
-  def this( name_ : String, maxSize : Int , initialBrushes : List[Brush] ) {
-    this(name_, maxSize)
-    brushes = initialBrushes
+  def this( name_ : String, maxSize : Int  ) {
+    this(name_, maxSize, Nil)
   }
 
   def this( name_ : String, initialBrushes : List[Brush] ) {
-    this(name_, Math.MAX_INT)
-    brushes = initialBrushes
+    this(name_, Math.MAX_INT, initialBrushes)
   }
 
   def this( name_ : String ) {

@@ -1,5 +1,6 @@
 package org.flowpaint.ink
 
+import _root_.org.flowpaint.property.Data
 import gradient.Gradient
 import util.DataSample
 
@@ -11,53 +12,48 @@ import util.PropertyRegister
  * @author Hans Haggstrom
  */
 
-class NoiseInk(gradient: Gradient,
-              noiseScale: (Float, Float),
-              alphaWithDistance : Float,
-              propertyName : String,
-              octaves : Int) extends Ink {
+class NoiseInk extends Ink{
+    def processPixel(pixelData: Data) {
+
+        val gradient: Gradient = settings.getReference[Gradient]("gradient", GradientInk.defaultGradient, FlowPaint.library)
+        val noiseScaleAcross = settings.getFloatProperty("noiseScaleAcross", 1)
+        val noiseScaleAlong = settings.getFloatProperty("noiseScaleAlong", 1)
+        val alphaWithDistance = settings.getFloatProperty("alphaWithDistance", 1)
+        val propertyName = settings.getStringProperty("propertyName", "time")
+        val octaves = settings.getFloatProperty("octaves", 1).toInt
 
 
 
-  def this(gradient: Gradient,
-              noiseScale: (Float, Float),
-              alphaWithDistance : Float) {
-    this ( gradient, noiseScale, 1, "time", 1 )
-  }
+        val positionAlongStroke = pixelData.getFloatProperty(PropertyRegister.POSTION_ALONG_STROKE, 0)
+        val positionAcrossStroke = pixelData.getFloatProperty(PropertyRegister.POSITION_ACROSS_STROKE, 0)
 
+        var u = pixelData.getFloatProperty(propertyName, 1) * noiseScaleAlong
+        var v = positionAcrossStroke * noiseScaleAcross
+        var w = pixelData.getFloatProperty(PropertyRegister.RANDOM_SEED, 0.5f) * 1000
 
-  def processPixel(pixelData: DataSample)   {
+        // Construct the noise from multiple samples (perlin turbulence)
+        var n = 0f
+        var i = 0
+        var scale = 1f
+        var amplitude = 1f
+        while (i < octaves) {
+            n += util.PerlinNoise.perlinNoise(u * scale, v * scale, w) * amplitude
+            scale *= 2f
+            amplitude *= 0.5f
+            u += 213.1234f
+            v += 98054.564f
+            w += 345.98745f
+            i += 1
+        }
 
-    val positionAlongStroke = pixelData.getProperty( PropertyRegister.POSTION_ALONG_STROKE,0  )
-    val positionAcrossStroke = pixelData.getProperty( PropertyRegister.POSITION_ACROSS_STROKE,0  )
+        val noise: Data = gradient(0.5f + 0.5f * n)
 
-    var u = pixelData.getProperty(propertyName , 1) * noiseScale._1
-    var v = positionAcrossStroke * noiseScale._2
-    var w = pixelData.getProperty(PropertyRegister.RANDOM_SEED, 0.5f) * 1000
+        val noiseAlpha: Float = noise.getFloatProperty(PropertyRegister.ALPHA, 1)
+        val distanceFromEdge = 1f - Math.abs(positionAcrossStroke)
+        val alphaMul = if (distanceFromEdge >= alphaWithDistance) 1f else distanceFromEdge / alphaWithDistance
+        val alpha = noiseAlpha * alphaMul * pixelData.getFloatProperty(PropertyRegister.ALPHA, 1)
 
-    // Construct the noise from multiple samples (perlin turbulence)
-    var n = 0f
-    var i = 0
-    var scale = 1f
-    var amplitude = 1f
-    while (i < octaves) {
-      n += util.PerlinNoise.perlinNoise(u * scale, v * scale, w) * amplitude
-      scale *= 2f
-      amplitude *= 0.5f
-      u += 213.1234f
-      v += 98054.564f
-      w += 345.98745f
-      i += 1
+        pixelData.setValuesFrom(noise)
+        pixelData.setFloatProperty(PropertyRegister.ALPHA, alpha)
     }
-    
-    val noise : DataSample =  gradient( 0.5f + 0.5f * n )
-
-    val noiseAlpha: Float = noise.getProperty(PropertyRegister.ALPHA, 1)
-    val distanceFromEdge = 1f - Math.abs(positionAcrossStroke)
-    val alphaMul = if( distanceFromEdge >= alphaWithDistance)  1f else distanceFromEdge / alphaWithDistance
-    val alpha = noiseAlpha * alphaMul * pixelData.getProperty (PropertyRegister.ALPHA,1)
-
-    pixelData.setValuesFrom( noise )
-    pixelData.setProperty( PropertyRegister.ALPHA, alpha)
-  }
 }

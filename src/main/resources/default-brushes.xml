@@ -23,7 +23,7 @@
     </pathProcessors>
 
     <pixelProcessors>
-      <pixelProcessor type ="GradientInk">
+      <pixelProcessor type ="org.flowpaint.ink.GradientInk">
         <num name="alpha">0</num>
         <ref name="gradient"  type="Gradient">greyBlack</ref>
       </pixelProcessor>

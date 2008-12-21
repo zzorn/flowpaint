@@ -1,16 +1,14 @@
 package org.flowpaint.property
 
-import _root_.org.flowpaint.util.DataSample
 import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
-import util.PropertyRegister
-
+import util.{DataSample, PropertyRegister, Library}
 /**
  *  Default implementation of Data.
  *
  * @author Hans Haggstrom
  */
 final class DataImpl extends Data {
-    private val floatProperties = new DataSample()
+    protected val floatProperties = new DataSample()
     private val stringProperties = new HashMap[String, String]()
     private val listeners = new HashSet[Data#DataListener]
 
@@ -90,10 +88,26 @@ final class DataImpl extends Data {
     }
 
 
+    def getReference[T]( name : String, default  : T, library : Library ) : T = {
+
+        stringProperties.get(name) match {
+            case None => default
+            case Some(ref) => library.getTome( ref, default )
+        }
+    }
+
+    def setReference( name : String, reference : String ) {
+        stringProperties.put(name, reference)
+
+        notifyListeners(name)
+    }
+
+
     def setValuesFrom(sourceData: Data) = {
         sourceData.getFloatProperties(floatProperties)
         sourceData.getStringProperties(stringProperties)
 
+      notifyListeners()
     }
 
     private def notifyListeners() {
@@ -108,4 +122,18 @@ final class DataImpl extends Data {
     override def hashCode = {
         floatProperties.hashCode ^ stringProperties.hashCode
     }
+
+  def interpolate( amount : Float, start: Data , target: Data ) {
+    clear()
+    setValuesFrom( start )
+    interpolate(amount, target)
+  }
+
+
+    def interpolate( amount : Float, target: Data ) {
+      floatProperties.interpolate(amount, (target.asInstanceOf[DataImpl]).floatProperties)
+
+      // TODO: Interpolate string properties?
+    }
+
 }

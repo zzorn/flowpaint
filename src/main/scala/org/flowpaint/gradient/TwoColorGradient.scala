@@ -1,5 +1,7 @@
 package org.flowpaint.gradient
 
+
+import _root_.org.flowpaint.property.{Data, DataImpl}
 import util.DataSample
 
 /**
@@ -10,10 +12,10 @@ import util.DataSample
  * @deprecated Use MultiGradient instead, it's more general, but probably about as fast.
  */
 
-class TwoColorGradient(zero : DataSample, one : DataSample) extends Gradient {
+class TwoColorGradient(zero : Data, one : Data) extends Gradient {
 
-  protected def gradientValue(zeroToOne: Float): DataSample = {
-    val sample = new DataSample()
+  protected def gradientValue(zeroToOne: Float): Data = {
+    val sample = new DataImpl()
 
     sample.setValuesFrom( zero )
     sample.interpolate( zeroToOne, one )

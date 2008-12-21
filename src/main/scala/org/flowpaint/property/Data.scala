@@ -1,70 +1,121 @@
 package org.flowpaint.property
 
-import _root_.org.flowpaint.util.DataSample
 import _root_.scala.collection.mutable.Map
+import _root_.scala.xml.Node
+import util.{DataSample, PropertyRegister, Library}
+/**
+ *  Contains deserialization.
+ */
+object Data {
+    def fromXML(node: Node): Data = {
+
+        val data = new DataImpl()
+
+        val nums = node \ "num"
+        val texts = node \ "text"
+        val refs = node \ "ref"
+
+        nums foreach ((n: Node) => {
+
+            val name = (n \ "@name").text
+            val value = n.text.toFloat
+
+            data.setFloatProperty(name, value)
+        })
+
+        texts foreach ((n: Node) => {
+
+            val name = (n \ "@name").text
+            val value = n.text
+
+            data.setStringProperty(name, value)
+        })
+
+        data
+    }
+
+}
+
 
 /**
- *  Holds some simple key-value data.  Provides listener support.
+ *   Holds some simple key-value data.  Provides listener support.
  *
  * @author Hans Haggstrom
  */
 trait Data {
 
-  /**
-   *  A listener that takes the changed Data object and the name of the changed parameter as parameters.
-   *  If the parameter is null, the whole data may have changed.
-   */
-  type DataListener = (Data, String) => Unit
-  
-  def addListener(listener: DataListener)
+    /**
+     *   A listener that takes the changed Data object and the name of the changed parameter as parameters.
+     *   If the parameter is null, the whole data may have changed.
+     */
+    type DataListener = (Data, String) => Unit
 
-  def removeListener(listener: DataListener)
+    def addListener(listener: DataListener)
 
-
-  def getFloatProperty(name: String, default: Float): Float
-
-  def setFloatProperty(name: String, value: Float)
-
-  def getFloatProperty(id : Int, default: Float): Float
-
-  def setFloatProperty(id : Int, value: Float)
-
-  def getStringProperty(name: String, default: String): String
-
-  def setStringProperty(name: String, value: String)
-
-  /**
-   *  Copies the float properties of this Data to the specified sample.
-   */
-  def getFloatProperties(target: DataSample)
-
-  /**
-   *  Copies the float properties of the specified sample to this Data.
-   */
-  def setFloatProperties(values: DataSample)
+    def removeListener(listener: DataListener)
 
 
-  /**
-   * Removes all properties.
-   */
-  def clear()
+    def getFloatProperty(name: String, default: Float): Float
 
-  def removeFloatProperty( name : String )
+    def setFloatProperty(name: String, value: Float)
 
-  def removeStringProperty( name : String )
+    def getFloatProperty(id: Int, default: Float): Float
 
+    def setFloatProperty(id: Int, value: Float)
 
-  def getStringProperties( target : Map[ String, String ] )
+    def getStringProperty(name: String, default: String): String
 
-  /**
-   * Sets this Data to the values of the specified source data.  Any previous values are removed first.
-   */
-  def set( sourceData : Data )
+    def setStringProperty(name: String, value: String)
+
+    def getReference[T]( name : String, default  : T, library : Library ) : T
+
+    def setReference( name : String, reference : String )
 
 
     /**
-     * Sets this Data to the values of the specified source data.  Any previous values are not removed.
+     *   Copies the float properties of this Data to the specified sample.
      */
-    def setValuesFrom( sourceData : Data )
+    def getFloatProperties(target: DataSample)
+
+    /**
+     *   Copies the float properties of the specified sample to this Data.
+     */
+    def setFloatProperties(values: DataSample)
+
+
+    /**
+     *  Removes all properties.
+     */
+    def clear()
+
+    def removeFloatProperty(name: String)
+
+    def removeStringProperty(name: String)
+
+
+    def getStringProperties(target: Map[String, String])
+
+    /**
+     *  Sets this Data to the values of the specified source data.  Any previous values are removed first.
+     */
+    def set(sourceData: Data)
+
+
+    /**
+     *  Sets this Data to the values of the specified source data.  Any previous values are not removed.
+     */
+    def setValuesFrom(sourceData: Data)
+
+    /**
+     * Interpolate this Data towards the specified target value, by the specified amount, 0 = no change, 1 = become target.
+     * If a value is in only one of the samples, that value is used directly.
+     */
+    def interpolate( amount : Float, target: Data )
+
+  /**
+   * Clears this sample, sets it to start, and interpolates it towards the target by the specified amount, 0 = start value, 1 = target value.
+   * If a value is in only one of the samples, that value is used directly.
+   */
+  def interpolate( amount : Float, start: Data , target: Data )
 
 }

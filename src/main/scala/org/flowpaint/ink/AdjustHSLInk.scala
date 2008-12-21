@@ -1,4 +1,5 @@
 package org.flowpaint.ink
+import _root_.org.flowpaint.property.Data
 import util.{DataSample, PropertyRegister, MathUtils}
 
 /**
@@ -8,19 +9,19 @@ import util.{DataSample, PropertyRegister, MathUtils}
  */
 
 class AdjustHSLInk extends Ink {
-  def processPixel(pixelData: DataSample) = {
+  def processPixel(pixelData: Data) = {
 
     // Get adjustments
-    val hueD = pixelData.getProperty( PropertyRegister.HUE_DELTA, 0 )
-    val saturationD = pixelData.getProperty( PropertyRegister.SATURATION_DELTA, 0 )
-    val lightnessD = pixelData.getProperty( PropertyRegister.LIGHTNESS_DELTA, 0 )
+    val hueD = pixelData.getFloatProperty( PropertyRegister.HUE_DELTA, 0 )
+    val saturationD = pixelData.getFloatProperty( PropertyRegister.SATURATION_DELTA, 0 )
+    val lightnessD = pixelData.getFloatProperty( PropertyRegister.LIGHTNESS_DELTA, 0 )
 
     if ( hueD != 0 || saturationD != 0 || lightnessD != 0 ) {
 
       // Get current color
-      val r = pixelData.getProperty(PropertyRegister.RED,0.5f)
-      val g = pixelData.getProperty(PropertyRegister.GREEN,0.5f)
-      val b = pixelData.getProperty(PropertyRegister.BLUE,0.5f)
+      val r = pixelData.getFloatProperty(PropertyRegister.RED,0.5f)
+      val g = pixelData.getFloatProperty(PropertyRegister.GREEN,0.5f)
+      val b = pixelData.getFloatProperty(PropertyRegister.BLUE,0.5f)
 
       // Convert current color to hsl space
       var (h, s, l)= util.ColorUtils.RGBtoHSL( r, g, b )
@@ -34,9 +35,9 @@ class AdjustHSLInk extends Ink {
       val (r2, g2, b2)= util.ColorUtils.HSLtoRGB( h, s, l)
 
       // Store adjusted color
-      pixelData.setProperty( PropertyRegister.RED, r2 )
-      pixelData.setProperty( PropertyRegister.GREEN, g2)
-      pixelData.setProperty( PropertyRegister.BLUE, b2 )
+      pixelData.setFloatProperty( PropertyRegister.RED, r2 )
+      pixelData.setFloatProperty( PropertyRegister.GREEN, g2)
+      pixelData.setFloatProperty( PropertyRegister.BLUE, b2 )
     }
 
   }

@@ -1,6 +1,7 @@
 package org.flowpaint.renderer
 
 
+import _root_.org.flowpaint.property.Data
 import java.awt.{Graphics2D, Color}
 import util.DataSample
 
@@ -32,7 +33,7 @@ trait RenderSurface {
 
   def height() : Int
 
-  def putPixel( x : Int, y : Int, sample : DataSample )
+  def putPixel( x : Int, y : Int, sample : Data )
 
   def provideContent(minX: Float, minY: Float,
                     maxX: Float, maxY: Float,

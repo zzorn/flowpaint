@@ -1,24 +1,27 @@
 package org.flowpaint.ink
 
+import _root_.org.flowpaint.property.Data
 import util.DataSample
 
 /**
- * Used for debugging stroke rendering.
- * 
+ *  Used for debugging stroke rendering.
+ *
  * @author Hans Haggstrom
  */
-class DebugInk( alongFactor : Float, acrossFactor : Float ) extends Ink {
+class DebugInk() extends Ink {
+    def processPixel(pixelData: Data) = {
 
-  def processPixel(pixelData: DataSample) = {
+        val alongFactor = settings.getFloatProperty("alongFactor", 1)
+        val acrossFactor = settings.getFloatProperty("acrossFactor", 1)
 
-    val positionAlongStroke = pixelData.getProperty( "positionAlongStroke",0  )
-    val positionAcrossStroke = pixelData.getProperty( "positionAcrossStroke",0  )
+        val positionAlongStroke = pixelData.getFloatProperty("positionAlongStroke", 0)
+        val positionAcrossStroke = pixelData.getFloatProperty("positionAcrossStroke", 0)
 
-    pixelData.setProperty( "red", positionAlongStroke * alongFactor)
-    pixelData.setProperty( "green", 0f )
-    pixelData.setProperty( "blue", (0.5f + 0.5f * positionAcrossStroke) * acrossFactor)
-    pixelData.setProperty( "alpha", 1 )
+        pixelData.setFloatProperty("red", positionAlongStroke * alongFactor)
+        pixelData.setFloatProperty("green", 0f)
+        pixelData.setFloatProperty("blue", (0.5f + 0.5f * positionAcrossStroke) * acrossFactor)
+        pixelData.setFloatProperty("alpha", 1)
 
 
-  }
+    }
 }

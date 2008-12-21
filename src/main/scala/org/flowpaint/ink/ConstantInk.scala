@@ -1,4 +1,5 @@
 package org.flowpaint.ink
+import _root_.org.flowpaint.property.Data
 import util.DataSample
 
 /**
@@ -6,12 +7,11 @@ import util.DataSample
  * 
  * @author Hans Haggstrom
  */
-class ConstantInk(values : DataSample)  extends Ink {
+class ConstantInk()  extends Ink {
 
+  def processPixel(pixelData: Data) {
 
-  def processPixel(pixelData: DataSample) {
-
-    pixelData.setValuesFrom( values )
+    pixelData.setValuesFrom( settings )
 
   }
 }

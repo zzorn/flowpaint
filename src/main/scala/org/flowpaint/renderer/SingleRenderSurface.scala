@@ -1,6 +1,7 @@
 package org.flowpaint.renderer
 
 
+import _root_.org.flowpaint.property.Data
 import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Color}
 import util.DataSample
@@ -59,20 +60,20 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
   }
 
 
-  def putPixel(x: Int, y: Int, sample: DataSample) {
+  def putPixel(x: Int, y: Int, sample: Data) {
 
     if (buffer != null &&
             x >= 0 && y >= 0 &&
             x < width && y < height) {
 
-      val alpha: Float = sample.getProperty(PropertyRegister.ALPHA, 0)
+      val alpha: Float = sample.getFloatProperty(PropertyRegister.ALPHA, 0)
 
       if (alpha > 0) {
 
         var color = util.ColorUtils.createRGBAColor(
-          sample.getProperty(PropertyRegister.RED, 0),
-          sample.getProperty(PropertyRegister.GREEN, 0),
-          sample.getProperty(PropertyRegister.BLUE, 0),
+          sample.getFloatProperty(PropertyRegister.RED, 0),
+          sample.getFloatProperty(PropertyRegister.GREEN, 0),
+          sample.getFloatProperty(PropertyRegister.BLUE, 0),
           alpha)
 
         if (alpha < 1) {

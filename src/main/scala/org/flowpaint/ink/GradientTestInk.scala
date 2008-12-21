@@ -1,5 +1,6 @@
 package org.flowpaint.brush
 
+import _root_.org.flowpaint.property.Data
 import ink.Ink
 import util.DataSample
 import util.PropertyRegister
@@ -20,13 +21,13 @@ class GradientTestInk extends Ink {
   }
 
 
-  def processPixel(pixelData: DataSample)   {
+  def processPixel(pixelData: Data)   {
 
-    val positionAlongStroke = pixelData.getProperty( PropertyRegister.POSTION_ALONG_STROKE,0  )
-    val positionAcrossStroke = pixelData.getProperty( PropertyRegister.POSITION_ACROSS_STROKE,0  )
+    val positionAlongStroke = pixelData.getFloatProperty( PropertyRegister.POSTION_ALONG_STROKE,0  )
+    val positionAcrossStroke = pixelData.getFloatProperty( PropertyRegister.POSITION_ACROSS_STROKE,0  )
 
 
-    val time: Float = pixelData.getProperty("time", 0)
+    val time: Float = pixelData.getFloatProperty("time", 0)
 
     //val dots = noise.noise2( time*0.1f, positionAcrossStroke*5 )
     val noise = 0.5f+0.5f*util.PerlinNoise.perlinNoise( time*60f, positionAcrossStroke*2.3f, 1.1f )
@@ -36,12 +37,12 @@ class GradientTestInk extends Ink {
     val red = stripes + 0.5f
     val blue = blueParam
     val green = stripes * 0.5f + 0.25f
-    val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2 * pixelData.getProperty(PropertyRegister.ALPHA, 1)
+    val alpha = (1f - Math.abs(positionAcrossStroke)) * dots2 * pixelData.getFloatProperty(PropertyRegister.ALPHA, 1)
 
-    pixelData.setProperty( PropertyRegister.RED, red )
-    pixelData.setProperty( PropertyRegister.GREEN, green)
-    pixelData.setProperty( PropertyRegister.BLUE, blue)
-    pixelData.setProperty( PropertyRegister.ALPHA, alpha)
+    pixelData.setFloatProperty( PropertyRegister.RED, red )
+    pixelData.setFloatProperty( PropertyRegister.GREEN, green)
+    pixelData.setFloatProperty( PropertyRegister.BLUE, blue)
+    pixelData.setFloatProperty( PropertyRegister.ALPHA, alpha)
 
   }
 }

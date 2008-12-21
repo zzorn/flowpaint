@@ -15,9 +15,7 @@ import model.{Stroke, Painting}
 import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
-import util.DataSample
-import util.PropertyRegister
-
+import util.{DataSample, LibraryImpl, PropertyRegister}
 /**
  *         Provides common methods of the application for various tools etc.
  *
@@ -25,6 +23,7 @@ import util.PropertyRegister
  */
 // TODO: Extract the default brush setup code..
 object FlowPaintController {
+
 
   // State / datamodel info
   var currentTool: Tool = null
@@ -62,7 +61,7 @@ object FlowPaintController {
 
   var brushSets :List[BrushSet] = Nil
 
-  val recentBrushes = new FixedBrushSet( "Recent Brushes", MAX_RECENT_BRUSHES_SIZE )
+  val recentBrushes = new FixedBrushSet( "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil )
 
   private var currentBrushUsageCount = 0;
   def addRecentBrush(brush: Brush) {

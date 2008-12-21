@@ -1,5 +1,6 @@
 package org.flowpaint.renderer
 
+import property.{DataImpl, Data}
 import util.DataSample
 
 /**
@@ -8,13 +9,15 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 class TriangleRenderer {
-  type PixelCallback = (Int, Int, DataSample) => Unit
+  type PixelCallback = (Int, Int, Data) => Unit
 
     val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
 
   private val pixelSample = new DataSample()
   private val aSample = new DataSample()
   private val bSample = new DataSample()
+
+    private val tempData = new DataImpl()
 
   def renderTriangle(viewWidth: Int, viewHeight: Int,
                     xi0: Float, yi0: Float, xi1: Float, yi1: Float, xi2: Float, yi2: Float,
@@ -45,7 +48,10 @@ class TriangleRenderer {
 
           pixelSample.interpolate( positionAlongLine,  startSample, endSample )
 
-          pixelCallback(x, scanline, pixelSample)
+          tempData.clear
+          tempData.setFloatProperties(pixelSample)
+
+          pixelCallback(x, scanline, tempData)
           x += 1
         }
       }

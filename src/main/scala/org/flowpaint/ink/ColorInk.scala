@@ -1,5 +1,6 @@
 package org.flowpaint.ink
 
+import _root_.org.flowpaint.property.Data
 import gradient.Gradient
 import util.DataSample
 import util.PropertyRegister
@@ -12,22 +13,22 @@ import util.PropertyRegister
  */
 class ColorInk() extends Ink {
 
-  def processPixel(pixelData: DataSample) {
+  def processPixel(pixelData: Data) {
 
 
-    val hue = pixelData.getProperty( PropertyRegister.HUE, 0 )
-    val saturation = pixelData.getProperty( PropertyRegister.SATURATION, 0 )
-    val brightness = pixelData.getProperty( PropertyRegister.LIGHTNESS, 0 )
+    val hue = pixelData.getFloatProperty( PropertyRegister.HUE, 0 )
+    val saturation = pixelData.getFloatProperty( PropertyRegister.SATURATION, 0 )
+    val brightness = pixelData.getFloatProperty( PropertyRegister.LIGHTNESS, 0 )
 
     val (red, green, blue )= util.ColorUtils.HSLtoRGB( hue, saturation, brightness )
 
-    val r = pixelData.getProperty(PropertyRegister.RED,1) * red
-    val g = pixelData.getProperty(PropertyRegister.GREEN,1) * green
-    val b = pixelData.getProperty(PropertyRegister.BLUE,1) * blue
+    val r = pixelData.getFloatProperty(PropertyRegister.RED,1) * red
+    val g = pixelData.getFloatProperty(PropertyRegister.GREEN,1) * green
+    val b = pixelData.getFloatProperty(PropertyRegister.BLUE,1) * blue
 
-    pixelData.setProperty( PropertyRegister.RED, r )
-    pixelData.setProperty( PropertyRegister.GREEN, g)
-    pixelData.setProperty( PropertyRegister.BLUE, b )
+    pixelData.setFloatProperty( PropertyRegister.RED, r )
+    pixelData.setFloatProperty( PropertyRegister.GREEN, g)
+    pixelData.setFloatProperty( PropertyRegister.BLUE, b )
   }
 
 

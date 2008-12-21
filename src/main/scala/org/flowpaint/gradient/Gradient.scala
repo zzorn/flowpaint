@@ -1,6 +1,7 @@
 package org.flowpaint.gradient
 
 import _root_.org.flowpaint.property.Data
+import _root_.scala.xml.Elem
 import util.{DataSample, AbstractTome, Tome}
 /**
  * 
@@ -29,4 +30,5 @@ trait Gradient extends Tome {
    */
   protected def gradientValue( zeroToOne : Float ) : Data
 
+  
 }

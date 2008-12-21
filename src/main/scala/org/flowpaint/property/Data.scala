@@ -1,7 +1,7 @@
 package org.flowpaint.property
 
 import _root_.scala.collection.mutable.Map
-import _root_.scala.xml.Node
+import _root_.scala.xml.{Elem, Node}
 import util.{DataSample, Tome, PropertyRegister, Library}
 /**
  *  Contains deserialization.
@@ -118,4 +118,5 @@ trait Data {
    */
   def interpolate( amount : Float, start: Data , target: Data )
 
+  def toXML() : List[Elem]
 }

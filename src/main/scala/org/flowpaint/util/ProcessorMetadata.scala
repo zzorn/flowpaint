@@ -1,6 +1,7 @@
 package org.flowpaint.util
 
 
+import _root_.scala.xml.Elem
 import property.{Data, DataImpl}
 
 /**
@@ -39,6 +40,7 @@ abstract class ProcessorMetadata[T <: Processor](processorType: Class[_ <: T], i
         processor
     }
 
+    def toXML() : Elem = <processor type={processorType.toString}>{settings.toXML()}</processor>
 
 }
 

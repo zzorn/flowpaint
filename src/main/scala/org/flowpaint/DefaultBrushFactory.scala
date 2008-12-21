@@ -27,14 +27,10 @@ object DefaultBrushFactory {
 
     val defaultFlowpaintData : Elem = ResourceLoader.loadXml( "default-brushes.xml", "default brushes", <flowpaint/> )
 
-    val brushes : List[Brush] = ((defaultFlowpaintData \ "brush") map Brush.fromXML).toList
-    val gradients : List[Gradient] = ((defaultFlowpaintData \ "gradient") map MultiGradient.fromXML).toList
+    FlowPaint.library.fromXML( defaultFlowpaintData )
 
-    gradients foreach FlowPaint.library.putTome
-    brushes foreach FlowPaint.library.putTome
-
-    var brushSets :List[BrushSet] = List(new FixedBrushSet( "Default Brushes", 32, brushes ))
-    var currentBrush :Brush = brushes.head
+    var brushSets :List[BrushSet] = List(new FixedBrushSet( "Default Brushes", 32, Nil ))
+    var currentBrush :Brush = FlowPaint.library.getTome("Pencil", null)
 
 
 /*

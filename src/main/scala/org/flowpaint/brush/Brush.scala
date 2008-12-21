@@ -28,8 +28,8 @@ object Brush {
 
       val name = (node \ "@name").text
       val settings = Data.fromXML( (node \ "settings").first )
-      val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "pixelProcessor") map PixelProcessorMetadata.fromXML
-      val pathProcessorMetadatas = (node \ "pathProcessors" \ "pathProcessor") map PathProcessorMetadata.fromXML
+      val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "processor") map PixelProcessorMetadata.fromXML
+      val pathProcessorMetadatas = (node \ "pathProcessors" \ "processor") map PathProcessorMetadata.fromXML
 
       val brush = new Brush(name, settings, pixelProcessorMetadatas.toList, pathProcessorMetadatas.toList, Nil )
 
@@ -132,4 +132,12 @@ class Brush(val identifier: String,
 
         code
     }
+
+
+    def toXML() = <brush name={identifier} description={name}>
+                    <settings>{settings.toXML()}</settings>
+                    <pathProcessors>{strokeProcessors.elements foreach (_.toXML()) }</pathProcessors>
+                    <pixelProcessors>{pixelProcessors.elements foreach (_.toXML()) }</pixelProcessors>
+                    <editors>{editors.elements foreach (_.toXML()) }</editors>
+                  </brush>
 }

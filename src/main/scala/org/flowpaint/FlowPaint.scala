@@ -1,5 +1,7 @@
 package org.flowpaint
 
+import _root_.org.flowpaint.brush.Brush
+import _root_.org.flowpaint.gradient.MultiGradient
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Dimension, BorderLayout}
 import java.io.{IOException, Reader}
@@ -7,13 +9,14 @@ import java.util.Properties
 import javax.swing._
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
-import util.{DataSample, LibraryImpl, ResourceLoader}
+import util.{TomeLoader, DataSample, LibraryImpl, ResourceLoader}
 /**
  *  Main entrypoint for FlowPaint.
  */
 object FlowPaint {
 
-    val library = new LibraryImpl()
+    val library = new LibraryImpl( TomeLoader( "brush", Brush.fromXML ),
+                                   TomeLoader( "gradient", MultiGradient.fromXML ) )
   
 
   // Get often changing and potentially changing data from property file

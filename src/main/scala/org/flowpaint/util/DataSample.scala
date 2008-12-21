@@ -1,5 +1,6 @@
 package org.flowpaint.util
 
+import _root_.scala.xml.Elem
 import gnu.trove.{TFloatFunction, TIntFloatHashMap, TIntFloatProcedure}
 
 /**
@@ -206,4 +207,28 @@ class DataSample {
   override def hashCode = {
     properties.hashCode
   }
+
+
+  def toTupleList() : List[Tuple2[String,Float]] = {
+      var elements : List[Tuple2[String,Float]] = Nil
+
+           properties.forEachEntry( new  TIntFloatProcedure (){
+             def execute(id : Int, value: Float): Boolean = {
+
+               val name = PropertyRegister.getName( id )
+
+               elements = (name, value) :: elements
+
+               return true
+             }
+
+           })
+
+    elements
+  }
+
+    def toXML() : List[Elem] = {
+        toTupleList() map ( (e : (String,Float )) => <text name={e._1}>{e._2}</text>  )
+    }
+
 }

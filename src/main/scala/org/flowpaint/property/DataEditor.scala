@@ -15,6 +15,7 @@ abstract class DataEditor( val title :String ) {
 
   def createEditor( editedData : Data, brush : Brush ) : JComponent
 
+  def toXML() = null
 }
 
 

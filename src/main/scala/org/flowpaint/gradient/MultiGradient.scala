@@ -1,18 +1,21 @@
 package org.flowpaint.gradient
 
 import _root_.org.flowpaint.property.{Data, DataImpl}
-import _root_.scala.xml.Node
+import _root_.scala.xml.{Elem, Node}
 import java.awt.Color
 import java.util.ArrayList
+
 
 import util.DataSample
 
 case class GradientPoint(var position: Float, data: Data) extends Comparable[GradientPoint] {
-    def compareTo(p1: GradientPoint): Int =
+    def compareTo(p1: GradientPoint): Int = {
         if (position < p1.position) -1
         else if (position > p1.position) 1
         else 0
+    }
 
+    def toXML() : Elem = { <gradientPoint position={position.toString}>{data.toXML()}</gradientPoint> }
 }
 
 object MultiGradient {
@@ -144,6 +147,8 @@ class MultiGradient(val identifier: String) extends Gradient {
             myPoints.remove(point);
         }
 
+
+    def toXML() : Elem = <gradient>{scala.collection.jcl.Conversions.convertList( myPoints) foreach ( _.toXML() ) }</gradient>
 }
 
 

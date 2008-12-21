@@ -27,31 +27,31 @@
 
     <pathProcessors>
 
-      <pathProcessor type ="org.flowpaint.filters.ZeroLengthSegmentFilter">
-      </pathProcessor>
+      <processor type ="org.flowpaint.filters.ZeroLengthSegmentFilter">
+      </processor>
 
-      <pathProcessor type ="org.flowpaint.filters.DistanceCalculatorFilter">
-      </pathProcessor>
+      <processor type ="org.flowpaint.filters.DistanceCalculatorFilter">
+      </processor>
 
-      <pathProcessor type ="org.flowpaint.brush.StrokeAngleTilter">
+      <processor type ="org.flowpaint.brush.StrokeAngleTilter">
         <num name="tilt">0.5</num>
-      </pathProcessor>
+      </processor>
 
-      <pathProcessor type ="org.flowpaint.filters.RadiusFromPressureFilter">
+      <processor type ="org.flowpaint.filters.RadiusFromPressureFilter">
         <num name="maxRadius">30</num>
         <num name="pressureEffect">1</num>
-      </pathProcessor>
+      </processor>
 
-      <pathProcessor type ="org.flowpaint.filters.StrokeEdgeCalculatorFilter">
-      </pathProcessor>
+      <processor type ="org.flowpaint.filters.StrokeEdgeCalculatorFilter">
+      </processor>
 
     </pathProcessors>
 
     <pixelProcessors>
-      <pixelProcessor type ="org.flowpaint.ink.GradientInk">
+      <processor type ="org.flowpaint.ink.GradientInk">
         <num name="alphaPressure">1</num>
         <ref name="gradient"  type="Gradient">greyBlack</ref>
-      </pixelProcessor>
+      </processor>
     </pixelProcessors>
 
     <editors>

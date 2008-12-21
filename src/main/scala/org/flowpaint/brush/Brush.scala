@@ -8,8 +8,7 @@ import javax.swing.JComponent
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
 import ui.slider.InkSliderUi
 import ui.{BrushSliderUi, ParameterUi}
-import util.{DataSample, ListenableList}
-
+import util.{DataSample, ListenableList, Tome}
 /*
 case class BrushProperty(name: String,
                         parameter: String,
@@ -44,11 +43,11 @@ object Brush {
  *
  * @author Hans Haggstrom
  */
-class Brush(val name: String,
+class Brush(val identifier: String,
             initialSettings : Data,
            pixelProcessorMetadatas: List[PixelProcessorMetadata],
            pathProcessorMetadatas: List[PathProcessorMetadata],
-           initialEditors: List[DataEditor]) {
+           initialEditors: List[DataEditor]) extends Tome {
   
     val settings = new DataImpl( initialSettings )
     val pixelProcessors = new ListenableList[PixelProcessorMetadata](pixelProcessorMetadatas, notifyListenersOnChildListChange)
@@ -67,6 +66,8 @@ class Brush(val name: String,
 
 
     settings.addListener((data: Data, prop: String) => notifyListeners())
+
+    def name = identifier
 
     def createPixelProcessors() : List[Ink] = {
         pixelProcessors.elements.map( _.createProcessor() )
@@ -118,11 +119,11 @@ class Brush(val name: String,
      *  Create a copy of this brush, that can be edited without affecting this Brush.
      *  NOTE: Assumes pixel processors and stroke processors and editors are immutable.
      */
-    def createCopy(): Brush = new Brush(name, settings, pixelProcessors.elements, strokeProcessors.elements, editors.elements)
+    def createCopy(): Brush = new Brush(identifier, settings, pixelProcessors.elements, strokeProcessors.elements, editors.elements)
 
 
     override def hashCode = {
-        var code = name.hashCode
+        var code = identifier.hashCode
 
         code ^= 133 + settings.hashCode
         code ^= 234 + pixelProcessors.hashCode

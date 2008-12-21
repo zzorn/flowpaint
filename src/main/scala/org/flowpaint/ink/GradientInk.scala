@@ -6,7 +6,7 @@ import util.DataSample
 import util.PropertyRegister
 
 object GradientInk {
-    val defaultGradient = new MultiGradient()
+    val defaultGradient = new MultiGradient("defaultGradient")
 }
 
 /**

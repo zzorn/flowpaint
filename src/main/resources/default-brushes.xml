@@ -5,11 +5,13 @@
       <num name="red">0</num>
       <num name="green">0</num>
       <num name="blue">0</num>
+      <num name="alpha">1</num>
     </gradientPoint>
     <gradientPoint position="1">
       <num name="red">0.5</num>
       <num name="green">0.5</num>
       <num name="blue">0.5</num>
+      <num name="alpha">1</num>
     </gradientPoint>
   </gradient>
 
@@ -17,14 +19,37 @@
   <brush name ="Pencil" description ="A simple pencil" >
     <settings>
 
+      <num name="maxRadius">40</num>
+      <num name="alpha">1</num>
+
+
     </settings>
 
     <pathProcessors>
+
+      <pathProcessor type ="org.flowpaint.filters.ZeroLengthSegmentFilter">
+      </pathProcessor>
+
+      <pathProcessor type ="org.flowpaint.filters.DistanceCalculatorFilter">
+      </pathProcessor>
+
+      <pathProcessor type ="org.flowpaint.brush.StrokeAngleTilter">
+        <num name="tilt">0.5</num>
+      </pathProcessor>
+
+      <pathProcessor type ="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num name="maxRadius">30</num>
+        <num name="pressureEffect">1</num>
+      </pathProcessor>
+
+      <pathProcessor type ="org.flowpaint.filters.StrokeEdgeCalculatorFilter">
+      </pathProcessor>
+
     </pathProcessors>
 
     <pixelProcessors>
       <pixelProcessor type ="org.flowpaint.ink.GradientInk">
-        <num name="alpha">0</num>
+        <num name="alphaPressure">1</num>
         <ref name="gradient"  type="Gradient">greyBlack</ref>
       </pixelProcessor>
     </pixelProcessors>

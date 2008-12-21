@@ -6,7 +6,7 @@ import _root_.org.flowpaint.filters._
 
 import _root_.org.flowpaint.ink._
 
-import _root_.org.flowpaint.gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
+import _root_.org.flowpaint.gradient.{MultiGradient, Gradient,  GradientPoint}
 
 
 
@@ -28,6 +28,10 @@ object DefaultBrushFactory {
     val defaultFlowpaintData : Elem = ResourceLoader.loadXml( "default-brushes.xml", "default brushes", <flowpaint/> )
 
     val brushes : List[Brush] = ((defaultFlowpaintData \ "brush") map Brush.fromXML).toList
+    val gradients : List[Gradient] = ((defaultFlowpaintData \ "gradient") map MultiGradient.fromXML).toList
+
+    gradients foreach FlowPaint.library.putTome
+    brushes foreach FlowPaint.library.putTome
 
     var brushSets :List[BrushSet] = List(new FixedBrushSet( "Default Brushes", 32, brushes ))
     var currentBrush :Brush = brushes.head

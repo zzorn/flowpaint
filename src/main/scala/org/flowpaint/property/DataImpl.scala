@@ -1,7 +1,7 @@
 package org.flowpaint.property
 
 import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
-import util.{DataSample, PropertyRegister, Library}
+import util.{DataSample, Tome, PropertyRegister, Library}
 /**
  *  Default implementation of Data.
  *
@@ -88,9 +88,9 @@ final class DataImpl extends Data {
     }
 
 
-    def getReference[T]( name : String, default  : T, library : Library ) : T = {
+    def getReference[T  <: Tome ]( identifier : String, default  : T, library : Library ) : T = {
 
-        stringProperties.get(name) match {
+        stringProperties.get(identifier) match {
             case None => default
             case Some(ref) => library.getTome( ref, default )
         }

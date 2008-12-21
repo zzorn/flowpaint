@@ -5,7 +5,7 @@ import _root_.scala.collection.jcl.ArrayList
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters._
-import gradient.{MultiGradient, Gradient, TwoColorGradient, GradientPoint}
+import gradient.{MultiGradient, Gradient,  GradientPoint}
 import ink._
 import input.{InputHandler}
 

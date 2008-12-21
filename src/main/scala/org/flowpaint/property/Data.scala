@@ -2,7 +2,7 @@ package org.flowpaint.property
 
 import _root_.scala.collection.mutable.Map
 import _root_.scala.xml.Node
-import util.{DataSample, PropertyRegister, Library}
+import util.{DataSample, Tome, PropertyRegister, Library}
 /**
  *  Contains deserialization.
  */
@@ -67,7 +67,7 @@ trait Data {
 
     def setStringProperty(name: String, value: String)
 
-    def getReference[T]( name : String, default  : T, library : Library ) : T
+    def getReference[T  <: Tome ]( name : String, default  : T, library : Library ) : T
 
     def setReference( name : String, reference : String )
 

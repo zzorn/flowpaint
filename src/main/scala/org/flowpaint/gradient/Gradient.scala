@@ -1,15 +1,14 @@
 package org.flowpaint.gradient
 
 import _root_.org.flowpaint.property.Data
-import util.DataSample
-
+import util.{DataSample, AbstractTome, Tome}
 /**
  * 
  * 
  * @author Hans Haggstrom
  */
 
-trait Gradient  {
+trait Gradient extends Tome {
 
   /**
    * Map a floating point value between 0 and 1 to a DataSample, representing a color or other channel values for a picture

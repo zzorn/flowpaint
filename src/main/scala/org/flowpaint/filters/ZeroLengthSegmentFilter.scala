@@ -29,7 +29,10 @@ class ZeroLengthSegmentFilter extends PathProcessor {
         oldY2 = 0f
     }
 
-    def processPathPoint(pointData: Data, resultCallback: (Data) => Unit) {
+
+    protected def processPathPoint(pointData: Data) : List[Data] =  {
+        var result : List[Data] = Nil
+
         val smoothing = settings.getFloatProperty("smoothing", 0.2f)
         val FILTER_DISTANCE = settings.getFloatProperty("filterDistance", 0f)
 
@@ -78,9 +81,10 @@ class ZeroLengthSegmentFilter extends PathProcessor {
             */
 
             // Process normally
-            resultCallback(pointData)
+            result = List(pointData)
         }
 
+      return result
     }
 
 

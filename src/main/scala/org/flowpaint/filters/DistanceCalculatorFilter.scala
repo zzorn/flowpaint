@@ -22,7 +22,8 @@ class DistanceCalculatorFilter extends PathProcessor {
         previousDistance = 0f
     }
 
-    def processPathPoint(pointData: Data, callback: (Data) => Unit) = {
+
+    protected def processPathPoint(pointData: Data) : List[Data] = {
 
 
         val x = pointData.getFloatProperty(PropertyRegister.X, 0)
@@ -39,7 +40,9 @@ class DistanceCalculatorFilter extends PathProcessor {
         previousY = y
         previousDistance += previousSegmentLength
 
-        callback(pointData)
+        List(pointData)
     }
 
 }
+
+

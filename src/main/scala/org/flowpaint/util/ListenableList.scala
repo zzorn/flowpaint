@@ -17,8 +17,8 @@ class ListenableList[T](initialList: List[T], additionListener: (ListenableList[
      */
     def this(initialList: List[T], changeListener: (ListenableList[T]) => Unit) {
         this (initialList,
-            (added: T) => changeListener(this),
-            (removed: T) => changeListener(this))
+            (list : ListenableList[T], added: T) => {changeListener(list)},
+            (list : ListenableList[T], removed: T) => {changeListener(list)})
     }
 
     /**

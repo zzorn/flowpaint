@@ -19,20 +19,24 @@ trait PathProcessor extends Processor {
       firstPoint = true
     }
 
+    def handlePath(pathPointsData: List[Data]) : List[Data] = {
+      // NOTE: This can probably be done shorter with some nice list method.
+      var result : List[Data] = Nil
+      pathPointsData.elements.foreach  ((d : Data) => result = result ::: handlePathPoint( d ))
+        
 
-
-    def processPath(path : Path, callback: (Data) => Unit) {
-        processPathPoint(pathPointData, callback)
-        firstPoint = false
+      return result
     }
 
-
-    def handlePathPoint(pathPointData: Data, callback: (Data) => Unit) {
-        processPathPoint(pathPointData, callback)
+    def handlePathPoint(pathPointData: Data) : List[Data] = {
+        val result = processPathPoint(pathPointData)
         firstPoint = false
+        return result
     }
 
-    protected def processPathPoint(pathPointData: Data, callback: (Data) => Unit)
+    protected def processPathPoint(pathPointData: Data ) : List[Data]
 
 
 }
+
+

@@ -11,8 +11,8 @@ import _root_.org.flowpaint.gradient.{MultiGradient, Gradient, TwoColorGradient,
 
 
 import _root_.org.flowpaint.property.{BrushSliderEditor, GradientSliderEditor}
-import _root_.org.flowpaint.util.{DataSample, PropertyRegister}
-
+import _root_.scala.xml.Elem
+import util.{DataSample, ResourceLoader, PropertyRegister}
 /**
  * Specifies all the default brushes.
  *
@@ -23,10 +23,15 @@ object DefaultBrushFactory {
 
   def createDefaultBrushes() : (List[BrushSet], Brush) = {
 
+    val brushes : Elem = ResourceLoader.loadXml( "default-brushes.xml", "default brushes", <flowpaint/> )
+
+    // TODO: Read from xml
+
     var brushSets :List[BrushSet] = Nil
     var currentBrush :Brush = null
 
 
+/*
     def sampleFromColor(r: Float, g: Float, b: Float, a: Float): DataSample = {
 
       val data = new DataSample()
@@ -381,6 +386,7 @@ object DefaultBrushFactory {
     addBrush(noiseBrushes, "Silver rain", new NoiseInk(skyCloudGradient, (0.04f, 1.5f), 0.8f,"distance",2), 50, 0, 0.5f, true)
     addBrush(noiseBrushes, "Perlin Turbulence", new NoiseInk(whiteBlackGradient, (0.05f, 1.5f), 0.5f, "distance",4), 40, 0, 1f, true)
 
+*/
 /*
     // DEBUG
     val debugBrushes = addBrushSet( "Debuging Brushes" )
@@ -389,7 +395,9 @@ object DefaultBrushFactory {
     addBrush(debugBrushes, "Across Debug brush", new DebugInk(0, 1), 80, 0, 1)
     addBrush(debugBrushes, "Solid Debug brush", new DebugInk(0, 0), 40, 0, 1)
 */
+/*
 
+*/
 
     return (brushSets, currentBrush )
   }

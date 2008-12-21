@@ -7,19 +7,19 @@ import java.awt.event.{ComponentListener, MouseAdapter}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.JPanel
 import model.{Stroke, Painting, Path}
-import property.DataImpl
+import property.{Data, DataImpl}
 import renderer.SingleRenderSurface
 import util.DataSample
 
 object BrushPreview {
-  def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, dataSample:DataSample) {
+  def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, data:Data) {
 
      val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
 
-     dataSample.setProperty("x", w * f)
-     dataSample.setProperty("y", h * f)
-     dataSample.setProperty("pressure", pressure)
-     dataSample.setProperty("time", f * 0.5f)
+     data.setFloatProperty("x", w * f)
+     data.setFloatProperty("y", h * f)
+     data.setFloatProperty("pressure", pressure)
+     data.setFloatProperty("time", f * 0.5f)
    }
 
 }
@@ -31,7 +31,7 @@ object BrushPreview {
  * @author Hans Haggstrom
  */
 class BrushPreview(val brush: Brush,
-                  val strokePointCalculator : ( Float, Float, Float, DataSample ) => Unit ,
+                  val strokePointCalculator : ( Float, Float, Float, Data ) => Unit ,
                   val overlayPainter : (Graphics2D) => Unit ) extends JPanel {
 
   val SIZE = 32
@@ -91,25 +91,19 @@ class BrushPreview(val brush: Brush,
 
     val STEPS = 10
 
+    val path : Path = stroke.addPath( brush )
 
     def generatePoint(i: Int) {
       val f: Float = (1f * i) / (1f * STEPS)
 
+
       val dataSample = new DataImpl()
-      brush.initializeStrokeStart( dataSample )
       dataSample.setFloatProperty("index", i.toFloat)
       dataSample.setFloatProperty("randomSeed", 1231424)
 
       strokePointCalculator( f, w, h, dataSample )
 
-      // Run the input point through the filters in the stroke
-      // TODO: Change to use functions instead of anonymous one method classes
-      stroke.addPath(  )
-      stroke.brush.processStrokePoint(dataSample, new StrokeListener() {
-        def addStrokePoint(pointData: DataSample) {
-          stroke.addPoint(pointData)
-        }
-      })
+      path.addPoint( dataSample )
 
     }
 

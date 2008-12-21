@@ -29,7 +29,8 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousRightY = 0f
     }
 
-    def processPathPoint(pointData: Data, resultCallback: (Data) => Unit) = {
+
+    protected def processPathPoint(pointData: Data) : List[Data] =  {
 
         // Determine angle and radius
         val DEFAULT_RADIUS = 10f
@@ -73,7 +74,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousRightY = rightY
 
         // Continue processing the stroke point
-        resultCallback(pointData)
+        List(pointData)
     }
 
 }

@@ -34,8 +34,8 @@ class BoundsTest {
     }
 
     def intersectTester(expected: Boolean,
-                       x1: Vector2.Unit, y1: Vector2.Unit, x2: Vector2.Unit, y2: Vector2.Unit,
-                       x3: Vector2.Unit, y3: Vector2.Unit, x4: Vector2.Unit, y4: Vector2.Unit) {
+                       x1: Double, y1: Double, x2: Double, y2: Double,
+                       x3: Double, y3: Double, x4: Double, y4: Double) {
 
         val r1 = RectangularBounds(Vector2(x1, y1), Vector2(x2, y2))
         val r2 = RectangularBounds(Vector2(x3, y3), Vector2(x4, y4))

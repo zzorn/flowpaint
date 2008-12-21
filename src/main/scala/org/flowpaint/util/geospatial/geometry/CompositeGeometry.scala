@@ -12,7 +12,8 @@ class CompositeGeometry() extends Geometry {
   val children = new ListenableList[Geometry]()
 
 
-  def instantiate(targetTile: Tile, time: Time, parentIds: List[Geospatial.ID]) {
+/*
+    def instantiate(targetTile: Tile, time: Time, changes: ChangeSet)  {
 
     // TODO: First check the bounding box, earliest time, and largest size.
     // The bounding box and other values could be variable, and this geometry could listen (or be notified by)
@@ -28,9 +29,10 @@ class CompositeGeometry() extends Geometry {
     // composite geometry and remove some children the ID:s of other children do not change.
     val childId : Long = 0
 
-    children foreach ( _.instantiate( targetTile, time, childId :: parentIds ) )    
+    children.elements.foreach ( _.instantiate( targetTile, time, changes.getChangeSetForChild( childId, time ) ) )
 
   }
+*/
 
 
 }

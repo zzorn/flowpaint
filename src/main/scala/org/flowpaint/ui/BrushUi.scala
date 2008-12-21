@@ -41,7 +41,7 @@ class BrushUi {
         editorPanel.addUi( preview)
 
         // Create the editors for editing this brush
-        brush.getEditors().foreach( (d: DataEditor) => {
+        brush.editors.elements.foreach( (d: DataEditor) => {
 /* Takes up space and kind of redundant, so commented out.
           editorPanel.addUi( new JLabel( d.title ))
 */

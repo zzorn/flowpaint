@@ -68,10 +68,15 @@ class StrokeRenderer {
 
     // Prepare data for corners
 
-    val s00 = new DataSample( startData )
-    val s01 = new DataSample( startData )
-    val s10 = new DataSample( endData )
-    val s11 = new DataSample( endData )
+    val s00 = new DataSample( )
+    val s01 = new DataSample( )
+    val s10 = new DataSample( )
+    val s11 = new DataSample( )
+
+      startData.getFloatProperties( s00 )
+      startData.getFloatProperties( s01 )
+      endData.getFloatProperties( s10 )
+      endData.getFloatProperties( s11 )
 
     s00.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
     s01.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )

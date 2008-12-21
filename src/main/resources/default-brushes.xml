@@ -1,0 +1,43 @@
+<flowpaint version="1.0">
+
+  <gradient name ="greyBlack">
+    <gradientPoint position="0">
+      <num name="red">0</num>
+      <num name="green">0</num>
+      <num name="blue">0</num>
+    </gradientPoint>
+    <gradientPoint position="1">
+      <num name="red">0.5</num>
+      <num name="green">0.5</num>
+      <num name="blue">0.5</num>
+    </gradientPoint>
+  </gradient>
+
+
+  <brush name ="Pencil" description ="A simple pencil" >
+    <settings>
+
+    </settings>
+
+    <pathProcessors>
+    </pathProcessors>
+
+    <pixelProcessors>
+      <pixelProcessor type ="GradientInk">
+        <num name="alpha">0</num>
+        <ref name="gradient"  type="Gradient">greyBlack</ref>
+      </pixelProcessor>
+    </pixelProcessors>
+
+    <editors>
+
+    </editors>
+  </brush>
+
+
+  <brushset name="Sketching">
+    <ref type="Brush">Pencil</ref>
+  </brushset>
+
+
+</flowpaint>

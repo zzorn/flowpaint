@@ -34,20 +34,20 @@ class BrushSliderUi(editedData: Data,
     if (background != null) background.updateUI()
   }
 
-  private def brushPreviewStrokeGenerator(f: Float, w: Float, h: Float, dataSample: DataSample) {
+  private def brushPreviewStrokeGenerator(f: Float, w: Float, h: Float, dataSample: Data) {
 
     if (orientation == VerticalSlider) {
-      dataSample.setProperty("x", w / 2f)
-      dataSample.setProperty("y", h * f)
+      dataSample.setFloatProperty("x", w / 2f)
+      dataSample.setFloatProperty("y", h * f)
     }
     else {
-      dataSample.setProperty("x", w * f)
-      dataSample.setProperty("y", h / 2f)
+      dataSample.setFloatProperty("x", w * f)
+      dataSample.setFloatProperty("y", h / 2f)
     }
 
-    dataSample.setProperty("pressure", 0.5f)
-    dataSample.setProperty("time", f * 0.5f)
-    dataSample.setProperty(editedParameter, util.MathUtils.interpolate(f, startValue, endValue))
+    dataSample.setFloatProperty("pressure", 0.5f)
+    dataSample.setFloatProperty("time", f * 0.5f)
+    dataSample.setFloatProperty(editedParameter, util.MathUtils.interpolate(f, startValue, endValue))
 
   }
 

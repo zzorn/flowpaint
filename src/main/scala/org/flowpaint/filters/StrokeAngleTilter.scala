@@ -1,7 +1,7 @@
 package org.flowpaint.brush
 
 import filters.{StrokeFilter, PathProcessor}
-import property.Data
+import property.{DataImpl, Data}
 import util.DataSample
 import util.MathUtils
 import Math.abs
@@ -31,7 +31,10 @@ class StrokeAngleTilter() extends PathProcessor {
         firstPointData = null
     }
 
-    protected def processPathPoint(pointData: Data, callback: (Data) => Unit) {
+
+    protected def processPathPoint(pointData: Data) : List[Data] =  {
+
+        var result : List[Data] = Nil
 
         val smooth = settings.getFloatProperty("smooth", 0f)
         val tilt = settings.getFloatProperty("tilt", 0f)
@@ -46,7 +49,7 @@ class StrokeAngleTilter() extends PathProcessor {
 
         val normalizedAngle = util.MathUtils.normalizeAngle(angle)
 
-        val smoothing = if (first || firstPoint != null) 0f else smooth
+        val smoothing = if (firstPoint || firstPointData != null) 0f else smooth
         val smoothedAngle = util.MathUtils.wrappedInterpolate(smoothing, normalizedAngle, previousAngle)
         previousAngle = smoothedAngle
 
@@ -63,22 +66,26 @@ class StrokeAngleTilter() extends PathProcessor {
 
         pointData.setFloatProperty(PropertyRegister.ANGLE, smoothedAngle * 2f * Math.Pi.toFloat)
 
+
         if (firstPoint) {
             // Only store the first point, don't send it forward yet
-            firstPointData = new Data()
+            firstPointData = new DataImpl()
             firstPointData.setValuesFrom(pointData)
         }
         else {
             if (firstPointData != null) {
                 // Forward the stored first point, using the current angle
                 firstPointData.setFloatProperty(PropertyRegister.ANGLE, smoothedAngle * 2f * Math.Pi.toFloat)
-                callback(firstPoint)
+                result = List(firstPointData)
                 firstPointData = null
             }
 
-            callback(pointData)
+            result = result ::: List(pointData)
         }
+
+      return result
     }
+
 
 
 }

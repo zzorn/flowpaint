@@ -3,8 +3,9 @@ package org.flowpaint.model
 import _root_.org.flowpaint.renderer.{StrokeRenderer, RenderSurface}
 import _root_.org.flowpaint.util.DataSample
 import brush.Brush
-import property.Data
-
+import filters.{StrokeListener, PathProcessor}
+import ink.Ink
+import property.{DataImpl, Data}
 /**
  *  A path is a sequence of samples, forming a path on a 2D surface.  The Path can be connected to other paths.
  *  A path can be iterated in both directions, and it can be tested for overlap with a rectangular area.
@@ -12,62 +13,61 @@ import property.Data
  * @author Hans Haggstrom
  */
 class Path(brush: Brush) extends Renderable {
-    val commonProperties = new Data
 
-    private var startPoint: PathPoint = null
-    private var endPoint: PathPoint = null
+    val commonProperties = new DataImpl( brush.settings )
 
-    def start = startPoint
+    private val pixelProcessors : List[Ink] = brush.createPixelProcessors()
+    private val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
 
-    def end = endPoint
+    private var path: List[Data] = Nil
 
-    def addPoint(p: PathPoint) {
+    def addPoint(data : Data) {
 
-        p.previous = endPoint
-        p.next = null
-        p.path = this
+        // OPTIMIZE, can probably be done shorter with some list methods
+        var points = List( data )
+        pathProcessors.elements foreach ((p : PathProcessor) => points = p.handlePath( points ))
+        
 
-        if (endPoint != null) endPoint.next = p
-
-        endPoint = p
-
-        if (startPoint == null) startPoint = p
+       path = path ::: points
     }
 
 
     def render(surface: RenderSurface) {
 
-        val segmentStartData: Data = new Data()
-        val segmentEndData: Data = new Data()
+        if (path.isEmpty || path.tail.isEmpty ) return
 
-        var segmentStart: PathPoint = startPoint
-        var segmentEnd: PathPoint = if (startPoint != null) startPoint.next else null
+        val segmentStartData: Data = new DataImpl(commonProperties)
+        val segmentEndData: Data = new DataImpl( commonProperties )
+        segmentEndData.setValuesFrom( path.head )
 
-        if (segmentStart != null) {
+        var remainingPath = path.tail
+        var previous = path.head
 
-            segmentEndData.setValuesFrom(segmentStart.data)
+        while ( !remainingPath.isEmpty ) {
+            val next = remainingPath.head
 
-            while (segmentEnd != null) {
-                // Remember the variable values along the line even if they are only present
-                // in the points when they have changed from the previous value.
-                segmentStartData.setValuesFrom(segmentStart.data)
-                segmentEndData.setValuesFrom(segmentEnd.data)
+            // Remember the variable values along the line even if they are only present
+            // in the points when they have changed from the previous value.
+            segmentStartData.setValuesFrom(previous)
+            segmentEndData.setValuesFrom(next)
 
-                renderStrokeSegment(segmentStartData, segmentEndData, surface)
+            renderStrokeSegment(segmentStartData, segmentEndData, surface)
 
-                segmentStart = segmentEnd
-                segmentEnd = segmentEnd.next
-            }
+            previous = next
+            remainingPath = remainingPath.tail
         }
-
-
     }
 
     private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface) {
 
+        def processPixel( pixelData : DataSample ) {
+          pixelProcessors foreach (_.processPixel(pixelData ))
+        }
+
         val renderer = new StrokeRenderer()
-        renderer.drawStrokeSegment(startPoint, endPoint, brush, surface)
+        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface)
 
     }
+
 }
 

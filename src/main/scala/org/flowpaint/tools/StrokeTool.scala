@@ -4,6 +4,7 @@ import _root_.org.flowpaint.brush.Brush
 import filters.StrokeListener
 import javax.swing.SwingUtilities
 import model.Stroke
+import property.DataImpl
 import util.DataSample
 
 import util.PropertyRegister
@@ -63,7 +64,9 @@ class StrokeTool extends Tool {
       // or there should be a filter that waits until pressure and cordinate input has been received.
       initialSample.setProperty(PropertyRegister.PRESSURE, 0.5f)
       initialSample.setProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
+/*
       brush.initializeStrokeStart(initialSample)
+*/
 
       addStrokePoint(currentStroke, initialSample)
 
@@ -80,13 +83,9 @@ class StrokeTool extends Tool {
 
       currentPointIndex += 1
 
-      stroke.brush.processStrokePoint(point, new StrokeListener() {
-        def addStrokePoint(pointData: DataSample) {
-          stroke.addPoint(pointData, FlowPaintController.surface)
-        }
-
-      })
-
+      val inputData: DataImpl = new DataImpl()
+      inputData.setFloatProperties( point )
+      stroke.addInputPoint( inputData )
 
     }
 

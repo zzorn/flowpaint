@@ -11,12 +11,12 @@ trait Shape {
   /**
    * Common settings for this Shape.
    */
-  def settings : Data
+  def settings : Data = null
 
     /**
      * The ID of the Geometry that generated this Shape. Can be used to make changes to the Shape through editing the Geometry.
      */
-  def id : GeometryId
+  def id : GeometryId = null
 
   // TODO: Add the pixel processors to use for this shape, and maybe common settings / data
 
@@ -25,7 +25,7 @@ trait Shape {
   /**
    * Render this shape to the fields of a tile using the pixel processors in this shape.
    */
-  def render( tile : Tile )
+  def render( tile : Tile ) = null
 
 }
 

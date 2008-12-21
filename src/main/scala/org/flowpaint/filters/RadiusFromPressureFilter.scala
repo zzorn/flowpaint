@@ -13,8 +13,7 @@ import util.PropertyRegister
  */
 
 class RadiusFromPressureFilter() extends PathProcessor {
-  
-    def processPathPoint(pointData: Data, callback: (Data) => Unit) = {
+    protected def processPathPoint(pointData: Data) : List[Data] = {
       
         val maxRadius = settings.getFloatProperty("maxRadius", 30)
         val pressureEffect = settings.getFloatProperty("pressureEffect", 1)
@@ -29,7 +28,7 @@ class RadiusFromPressureFilter() extends PathProcessor {
 
         pointData.setFloatProperty(PropertyRegister.RADIUS, radius)
 
-        callback(pointData)
+        List(pointData)
     }
 
 }

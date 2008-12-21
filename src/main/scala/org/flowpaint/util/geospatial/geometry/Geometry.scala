@@ -21,22 +21,22 @@ trait Geometry {
   /**
    * The bounding area for this Geometry.
    */
-  def bounds : Bounds
+  def bounds : Bounds = null
 
   /**
    * The largest object size created by this Geometry (or larger).
    */
-  def maxScale : Scale
+  def maxScale : Scale= null
 
   /**
    * The earliest existence of this Geometry.
    */
-  def earliestExistence : Time
+  def earliestExistence : Time= null
 
   /**
    * The last existence of this Geometry (can be infinite to indicate it exist up to present time).
    */
-  def lastExistence : Time
+  def lastExistence : Time= null
 
   /**
    *  Applies this generator on the specified tile at the specified time in history.
@@ -44,7 +44,7 @@ trait Geometry {
    */
   def instantiate( targetTile : Tile,
                  time : Time,
-                 changes : ChangeSet )
+                 changes : ChangeSet )= null
 
 
 }

@@ -2,13 +2,12 @@ package org.flowpaint
 
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Dimension, BorderLayout}
-import java.io.IOException
+import java.io.{IOException, Reader}
 import java.util.Properties
 import javax.swing._
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
-import util.DataSample
-
+import util.{DataSample, ResourceLoader}
 /**
  *  Main entrypoint for FlowPaint.
  */
@@ -17,29 +16,9 @@ object FlowPaint {
 
   // Get often changing and potentially changing data from property file
   // (things like version numbers and build numbers)
-  val properties  = new Properties()
-  try
-  {
-    val classloader = FlowPaint.getClass().getClassLoader()
-    properties.load( classloader.getResourceAsStream( "application.properties"  ))
-  }
-  catch
-  {
-    case e: IOException => System.err.println( "Failed to load properties (using defaults): " + e.toString() )
-  }
+  val properties  =  ResourceLoader.loadProperties("application.properties")
 
-  def loadIcon( name : String ) : ImageIcon = {
-    try
-    {
-      val classloader = FlowPaint.getClass().getClassLoader()
-      return new ImageIcon( classloader.getResource( "images/"+name ));
-    }
-    catch
-    {
-      case e: Exception => System.err.println( "Failed to load icon '"+name+"': " + e.toString() )
-    }
-    return null
-  }
+  def loadIcon( name : String ) : ImageIcon = ResourceLoader.loadIcon("images/"+name)
 
   val APPLICATION_ICON = loadIcon( "logo-swirl-transparent.png" )
 

@@ -3,6 +3,7 @@ package org.flowpaint.model
 
 import brush.Brush
 import filters.StrokeListener
+import property.Data
 import renderer.{PictureProvider, RenderSurface}
 import renderer.StrokeRenderer
 import util.{DataSample, RectangleInt}
@@ -15,6 +16,18 @@ import util.{DataSample, RectangleInt}
 case class Stroke(brush: Brush) extends PictureProvider {
 
     private var paths: List[Path] = Nil
+
+    def addInputPoint( pointData : Data ) {
+
+      if (paths isEmpty){
+        // TODO: Create the initial paths
+        // IDEA: We could have separate filters that check if a new path should be started (for each filtered path point added)
+        // Also run them once for the first stroke input
+        addPath( brush )
+      }
+
+      paths foreach ( _.addPoint( pointData ) )
+    }
 
     def addPath(brush: Brush): Path = {
         val path = new Path(brush)
@@ -38,7 +51,7 @@ case class Stroke(brush: Brush) extends PictureProvider {
 
     def updateSurface(surface: RenderSurface) = {
 
-        paths foreach (_.renderPath(surface))
+        paths foreach (_.render(surface))
 
 
     }

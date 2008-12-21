@@ -23,25 +23,39 @@ class Path(brush: Brush) extends Renderable {
 
     def addPoint(data : Data) {
 
+      addPoint(data, null)
+    }
+
+
+    def addPoint(data : Data, surface: RenderSurface) {
+
         // OPTIMIZE, can probably be done shorter with some list methods
         var points = List( data )
         pathProcessors.elements foreach ((p : PathProcessor) => points = p.handlePath( points ))
-        
+
+
+        val pointsToRender = if (path.isEmpty) points else path.last :: points
 
        path = path ::: points
+
+        if (surface != null && !points.isEmpty) renderPoints(surface, pointsToRender)
     }
 
 
     def render(surface: RenderSurface) {
+      renderPoints(surface, path)
+    }
 
-        if (path.isEmpty || path.tail.isEmpty ) return
+    def renderPoints(surface: RenderSurface, points: List[Data]) {
+
+        if (points.isEmpty || points.tail.isEmpty ) return
 
         val segmentStartData: Data = new DataImpl(commonProperties)
         val segmentEndData: Data = new DataImpl( commonProperties )
-        segmentEndData.setValuesFrom( path.head )
+        segmentEndData.setValuesFrom( points.head )
 
-        var remainingPath = path.tail
-        var previous = path.head
+        var remainingPath = points.tail
+        var previous = points.head
 
         while ( !remainingPath.isEmpty ) {
             val next = remainingPath.head

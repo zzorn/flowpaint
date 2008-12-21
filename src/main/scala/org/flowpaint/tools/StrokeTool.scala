@@ -1,10 +1,10 @@
 package org.flowpaint.tools
 
 import _root_.org.flowpaint.brush.Brush
+import _root_.org.flowpaint.property.{Data, DataImpl}
 import filters.StrokeListener
 import javax.swing.SwingUtilities
 import model.Stroke
-import property.DataImpl
 import util.DataSample
 
 import util.PropertyRegister
@@ -16,7 +16,7 @@ import util.PropertyRegister
  */
 
 class StrokeTool extends Tool {
-    val currentStatus: DataSample = new DataSample()
+    val currentStatus: Data = new DataImpl()
 
     var currentStroke: Stroke = null
     var currentPointIndex = 0
@@ -25,7 +25,7 @@ class StrokeTool extends Tool {
 
     def onEvent(event: DataSample) = {
 
-        currentStatus.setValuesFrom(event)
+        currentStatus.setFloatProperties(event)
 
         if (event.contains(PropertyRegister.LEFT_BUTTON)) {
 
@@ -46,7 +46,10 @@ class StrokeTool extends Tool {
 
         if (isStrokeActive)
             {
-                addStrokePoint(currentStroke, event)
+                val data = new DataImpl()
+              data.setFloatProperties( event )
+
+                addStrokePoint(currentStroke, data)
             }
     }
 
@@ -61,12 +64,12 @@ class StrokeTool extends Tool {
             val brush: Brush = FlowPaintController.currentBrush.createCopy
             currentStroke = new Stroke(brush)
 
-            val initialSample = new DataSample(currentStatus);
+            val initialSample = new DataImpl(currentStatus);
 
             // TODO: If a tablet is used, this should be initialized to zero,
             // or there should be a filter that waits until pressure and cordinate input has been received.
-            initialSample.setProperty(PropertyRegister.PRESSURE, 0.5f)
-            initialSample.setProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
+            initialSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
+            initialSample.setFloatProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
             /*
                   brush.initializeStrokeStart(initialSample)
             */
@@ -79,17 +82,15 @@ class StrokeTool extends Tool {
 
         }
 
-    def addStrokePoint(stroke: Stroke, point: DataSample)
+    def addStrokePoint(stroke: Stroke, point: Data)
         {
             if (stroke != null) {
-                point.setProperty(PropertyRegister.INDEX, currentPointIndex)
-                point.setProperty(PropertyRegister.TIME, (getTime() - currentStrokeStartTime).toFloat / 1000f)
+                point.setFloatProperty(PropertyRegister.INDEX, currentPointIndex)
+                point.setFloatProperty(PropertyRegister.TIME, (getTime() - currentStrokeStartTime).toFloat / 1000f)
 
                 currentPointIndex += 1
 
-                val inputData: DataImpl = new DataImpl()
-                inputData.setFloatProperties(point)
-                stroke.addInputPoint(inputData)
+                stroke.addInputPoint(point, FlowPaintController.surface )
 
             }
         }

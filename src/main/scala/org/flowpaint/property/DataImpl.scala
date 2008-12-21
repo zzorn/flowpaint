@@ -136,4 +136,6 @@ final class DataImpl extends Data {
       // TODO: Interpolate string properties?
     }
 
+
+    override def toString = "DataImpl( float properties: "+floatProperties+", string properties: "+stringProperties+")"
 }

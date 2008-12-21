@@ -17,7 +17,7 @@ case class Stroke(brush: Brush) extends PictureProvider {
 
     private var paths: List[Path] = Nil
 
-    def addInputPoint( pointData : Data ) {
+    def addInputPoint( pointData : Data, surface: RenderSurface ) {
 
       if (paths isEmpty){
         // TODO: Create the initial paths
@@ -26,7 +26,7 @@ case class Stroke(brush: Brush) extends PictureProvider {
         addPath( brush )
       }
 
-      paths foreach ( _.addPoint( pointData ) )
+      paths foreach ( _.addPoint( pointData, surface ) )
     }
 
     def addPath(brush: Brush): Path = {

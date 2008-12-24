@@ -12,6 +12,7 @@ import brush.Brush
  */
 class ListenableList[T](initialList: List[T], additionListener: (ListenableList[T], T) => Unit, removalListener: (ListenableList[T], T) => Unit) {
 
+
     /**
      *   Creates a list with a single listener that is notified when elements are added or removed.
      */

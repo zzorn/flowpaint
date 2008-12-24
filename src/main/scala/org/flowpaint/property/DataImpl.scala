@@ -18,6 +18,20 @@ final class DataImpl extends Data {
       set( initialValues )
     }
 
+    def this( initialFloatValues : (String, Float)* ) {
+        this()
+
+        initialFloatValues foreach ( (e:(String,Float)) => setFloatProperty( e._1, e._2 ) )
+    }
+
+    def this( initialFloatValues : List[(String, Float)] ) {
+        this()
+
+        initialFloatValues foreach ( (e:(String,Float)) => setFloatProperty( e._1, e._2 ) )
+    }
+
+
+
     def addListener(listener: (Data, String) => Unit) {
         listeners.addEntry(listener)
     }

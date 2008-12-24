@@ -1,12 +1,11 @@
 package org.flowpaint.ui.slider
 
 import _root_.org.flowpaint.brush.{Brush}
-import ink.{AlphaTransparencyBackgroundInk, Ink}
+import _root_.org.flowpaint.ink.{PixelProcessorMetadata, AlphaTransparencyBackgroundInk, Ink}
+import util.{DataSample, ListenableList, PropertyRegister}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.{JPanel, JComponent}
 import property.{DataImpl, Data}
-import util.{DataSample, PropertyRegister}
-
 /**
  *
  *
@@ -18,7 +17,7 @@ class InkSliderUi(editedData: Data,
                  property: String,
                  min: Float,
                  max: Float,
-                 inks: List[Ink])
+                 pixelPrcessorMetadatas: ListenableList[PixelProcessorMetadata])
         extends SliderUi(editedData, description, property, min, max) {
     private var background: JPanel = null
 
@@ -46,6 +45,9 @@ class InkSliderUi(editedData: Data,
                 var ny = 0f
                 var nx = 0f
                 var y = 0
+
+                val pixelPrcessors = pixelPrcessorMetadatas.elements map (_.createProcessor())
+
                 while (y < h) {
                     ny = calculateNormalizedCoordinate(y, h)
 
@@ -68,7 +70,7 @@ class InkSliderUi(editedData: Data,
                         val n = if (isVertical) ny else nx
                         sample.setFloatProperty(property, util.MathUtils.interpolate(n, min, max))
 
-                        inks.foreach((ink: Ink) => {
+                        pixelPrcessors.foreach((ink: Ink) => {
                             ink.processPixel(sample)
                         })
 

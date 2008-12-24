@@ -64,15 +64,13 @@ class StrokeTool extends Tool {
             val brush: Brush = FlowPaintController.currentBrush.createCopy
             currentStroke = new Stroke(brush)
 
-            val initialSample = new DataImpl(currentStatus);
+            val initialSample = new DataImpl(brush.settings );
+            initialSample.setValuesFrom( currentStatus )
 
             // TODO: If a tablet is used, this should be initialized to zero,
             // or there should be a filter that waits until pressure and cordinate input has been received.
             initialSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
             initialSample.setFloatProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
-            /*
-                  brush.initializeStrokeStart(initialSample)
-            */
 
             addStrokePoint(currentStroke, initialSample)
 

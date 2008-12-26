@@ -54,6 +54,10 @@ class MultiGradient(val identifier: String) extends Gradient {
 
     protected def gradientValue(zeroToOne: Float): Data = {
 
+/*
+        println("Gradient point "+zeroToOne+" requested for " + identifier)
+*/
+
         def searchForValueIndex(value: Float): Int =
             {
                 tempSearchPoint.position = value

@@ -52,7 +52,6 @@ class LibraryImpl(initialLoaders : TomeLoader* ) extends Library {
     }
 
     def getTome[T <: Tome](identifier: String, default: T): T = {
-        println("gettin id"+identifier+" with result "+tomes.get(identifier))
         tomes.get(identifier) match {
             case None => default
             case Some(v) => v.asInstanceOf[T]
@@ -60,7 +59,6 @@ class LibraryImpl(initialLoaders : TomeLoader* ) extends Library {
     }
 
     def putTome(tome: Tome) {
-      println("putting tome "+tome+" with id "+tome.identifier)
         tomes.put(tome.identifier, tome)
 
     }

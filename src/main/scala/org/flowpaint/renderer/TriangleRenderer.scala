@@ -11,24 +11,24 @@ import util.DataSample
 class TriangleRenderer {
   type PixelCallback = (Int, Int, Data) => Unit
 
-    val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
+//    val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
 
-  private val pixelSample = new DataSample()
-  private val aSample = new DataSample()
-  private val bSample = new DataSample()
+  private val pixelSample = new DataImpl()
+  private val aSample = new DataImpl()
+  private val bSample = new DataImpl()
 
-    private val tempData = new DataImpl()
+  private val tempData = new DataImpl()
 
   def renderTriangle(viewWidth: Int, viewHeight: Int,
                     xi0: Float, yi0: Float, xi1: Float, yi1: Float, xi2: Float, yi2: Float,
-                    dataSample0: DataSample, dataSample1: DataSample, dataSample2: DataSample,
+                    dataSample0: Data, dataSample1: Data, dataSample2: Data,
                     pixelCallback: PixelCallback) {
 
 
     /**
      *    Renders a part of a scanline
      */
-    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: DataSample, endSample: DataSample) {
+    def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: Data, endSample: Data) {
 
       // Clip top and bottom and off screen
       if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0 && endX_ > x_) {
@@ -48,18 +48,15 @@ class TriangleRenderer {
 
           pixelSample.interpolate( positionAlongLine,  startSample, endSample )
 
-          tempData.clear
-          tempData.setFloatProperties(pixelSample)
-
-          pixelCallback(x, scanline, tempData)
+          pixelCallback(x, scanline, pixelSample)
           x += 1
         }
       }
     }
 
     def rasterizeTrapetzoid(startY: Int, endY: Int,
-                           aX: Int, aY: Int, aD: Float, aS: DataSample, aS2: DataSample, aDeltaFactor: Float,
-                           bX: Int, bY: Int, bD: Float, bS: DataSample, bS2: DataSample, bDeltaFactor: Float) {
+                           aX: Int, aY: Int, aD: Float, aS: Data, aS2: Data, aDeltaFactor: Float,
+                           bX: Int, bY: Int, bD: Float, bS: Data, bS2: Data, bDeltaFactor: Float) {
 
       var y = 0f
       var aXCoord: Int = 0
@@ -108,7 +105,7 @@ class TriangleRenderer {
 
     // Sort points according to y coordinate so that y0 <= y1 <= y2
     var tempI: Int = 0
-    var tempS: DataSample = null
+    var tempS: Data = null
     if (y1 < y0) {
       // Swap point 0 and 1
       tempI = y0;y0 = y1;y1 = tempI;

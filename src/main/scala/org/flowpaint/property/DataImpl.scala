@@ -1,4 +1,6 @@
+
 package org.flowpaint.property
+
 
 import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
 import util.{DataSample, Tome, PropertyRegister, Library}
@@ -145,9 +147,15 @@ final class DataImpl extends Data {
 
 
     def interpolate( amount : Float, target: Data ) {
-      floatProperties.interpolate(amount, (target.asInstanceOf[DataImpl]).floatProperties)
 
-      // TODO: Interpolate string properties?
+      // Use the string properties of the stronger Data
+      if (amount > 0.5f) {
+        stringProperties.clear
+        target.getStringProperties( stringProperties )
+      }
+
+      // Interpolae float properties normally
+      floatProperties.interpolate(amount, (target.asInstanceOf[DataImpl]).floatProperties)
     }
 
 

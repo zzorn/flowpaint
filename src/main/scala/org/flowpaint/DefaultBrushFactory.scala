@@ -11,7 +11,7 @@ import _root_.org.flowpaint.gradient.{MultiGradient, Gradient, GradientPoint}
 
 
 import _root_.org.flowpaint.property.{BrushSliderEditor, GradientSliderEditor, Data, DataImpl}
-import _root_.scala.xml.Elem
+import _root_.scala.xml.{Elem, XML, Node}
 import util.{DataSample, ListenableList, ResourceLoader, PropertyRegister}
 
 /**
@@ -457,9 +457,10 @@ object DefaultBrushFactory {
             addBrush(sketching,"Shade, black", createInkMetadata2 (classOf[GradientInk], ("alphaPressure", 1)), 70, 0, 0.5f, false, "smoothBlack")
             addBrush(sketching,"Shade, white", createInkMetadata2 (classOf[GradientInk], ("alphaPressure", 1)), 30, 0, 0.5f, false, "smoothWhite")
             addBrush(sketching,"White", createInkMetadata2 (classOf[GradientInk], ("alphaPressure", 0)), 45, 0, 1f, false, "white")
+//            addBrush(sketching,"Spray", createInkMetadata2 (classOf[NoiseInk], ("alphaPressure", 0), ("noiseScaleAcross", 10),  ("noiseScaleAlong",10),("alphaWithDistance", 1f), ("octaves", 3)), 26, 0, 0.5f, false, "spray")
 /*
-            addBrush2(sketching, "Spray", List(createInkMetadata2 (classOf[NoiseInk],("noiseScaleAcross", 10),  ("noiseScaleAlong",10),("alphaWithDistance", 1f), ("octaves", 3))(sprayGradient , (10f, 10f), 1f, "distance",3),new AlphaFromPressureInk(1), new ColorInk()),0,0.5f,0, 26, 0, 0.5f)
-            addBrush2(sketching, "Dots", List(createInkMetadata2 (classOf[NoiseInk], ("alphaPressure", 1))(dotGradient, (0.05f, 3.7f), 1f, "distance",3),new AlphaFromPressureInk(1), new ColorInk()),0,0,0.3f, 55, 0, 0f)
+            addBrush2(sketching, "Spray", List(createInkMetadata2 (classOf[NoiseInk],("noiseScaleAcross", 10),  ("noiseScaleAlong",10),("alphaWithDistance", 1f), ("octaves", 3))(sprayGradient , (10f, 10f), 1f, "distance",3),new AlphaFromPressureInk(1), new ColorInk()),0,0.5f,0, 26, 0, 0.5f, "spray")
+            addBrush2(sketching, "Dots", List(createInkMetadata2 (classOf[NoiseInk], ("alphaPressure", 1),("noiseScaleAcross", 3.7f),  ("noiseScaleAlong",0.05f), ("octaves", 3), "distance"),new AlphaFromPressureInk(1), new ColorInk()),0,0,0.3f, 55, 0, 0f, "dots")
 */
 
  /*           val painting = addBrushSet( "Painting" )
@@ -494,6 +495,12 @@ object DefaultBrushFactory {
             addBrush(debugBrushes, "Across Debug brush", new DebugInk(0, 1), 80, 0, 1)
             addBrush(debugBrushes, "Solid Debug brush", new DebugInk(0, 0), 40, 0, 1)
         */
+
+
+        val xml =  FlowPaint.library.toXML
+
+        val FLOWPAINT_FORMAT_VERSION = "1-beta"
+        XML.save( "flowpaint-library-out.xml",  <flowpaint version={FLOWPAINT_FORMAT_VERSION}>{xml}</flowpaint> )       
 
         return (brushSets, currentBrush)
     }

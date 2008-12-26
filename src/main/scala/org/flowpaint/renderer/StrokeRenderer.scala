@@ -1,9 +1,9 @@
 package org.flowpaint.renderer
 
-import _root_.org.flowpaint.property.Data
 import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
+import property.{DataImpl, Data}
 import util.MathUtils.squaredDistance
 import util.{DataSample, RectangleInt, PropertyRegister}
 
@@ -68,25 +68,20 @@ class StrokeRenderer {
 
     // Prepare data for corners
 
-    val s00 = new DataSample( )
-    val s01 = new DataSample( )
-    val s10 = new DataSample( )
-    val s11 = new DataSample( )
+    val s00 = new DataImpl( startData )
+    val s01 = new DataImpl( startData )
+    val s10 = new DataImpl( endData )
+    val s11 = new DataImpl( endData )
 
-      startData.getFloatProperties( s00 )
-      startData.getFloatProperties( s01 )
-      endData.getFloatProperties( s10 )
-      endData.getFloatProperties( s11 )
+    s00.setFloatProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
+    s01.setFloatProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
+    s10.setFloatProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
+    s11.setFloatProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
 
-    s00.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
-    s01.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
-    s10.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, -1 )
-    s11.setProperty( PropertyRegister.POSITION_ACROSS_STROKE, 1 )
-
-    s00.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
-    s01.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
-    s10.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
-    s11.setProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
+    s00.setFloatProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
+    s01.setFloatProperty( PropertyRegister.POSTION_ALONG_STROKE, 0 )
+    s10.setFloatProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
+    s11.setFloatProperty( PropertyRegister.POSTION_ALONG_STROKE, 1 )
 
     // Render triangles to surface, applying the pixel processing pipeline for each pixel
 

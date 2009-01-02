@@ -1,4 +1,5 @@
 <flowpaint version="1-beta">
+
   <brush description="Crayon" id="Crayon">
     <settings>
       <num id="saturationDelta">0.0</num>
@@ -6,7 +7,6 @@
       <num id="alpha">1.0</num>
       <num id="lightnessDelta">0.0</num>
       <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.charcoal</text>
     </settings>
     <pathProcessors>
       <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
@@ -25,11 +25,13 @@
         <num id="noiseScaleAlong">3.0</num>
         <num id="alphaWithDistance">0.8</num>
         <num id="octaves">3.0</num>
+        <text id="gradient">default.gradients.charcoal</text>
       </processor>
       <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
     </pixelProcessors>
     <editors></editors>
   </brush>
+
   <brush description="Dots" id="Dots">
     <settings>
       <num id="alpha">1.0</num>

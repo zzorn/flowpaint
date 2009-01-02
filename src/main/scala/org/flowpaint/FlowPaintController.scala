@@ -2,6 +2,7 @@ package org.flowpaint
 
 
 import _root_.scala.collection.jcl.ArrayList
+import _root_.scala.xml.Elem
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters._
@@ -15,7 +16,7 @@ import model.{Stroke, Painting}
 import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
-import util.{DataSample, LibraryImpl, PropertyRegister}
+import util.{DataSample, LibraryImpl, ResourceLoader, PropertyRegister}
 /**
  *         Provides common methods of the application for various tools etc.
  *
@@ -89,9 +90,7 @@ object FlowPaintController {
   def start() {
 
     // Create default brush sets
-    var (sets, current) = DefaultBrushFactory.createDefaultBrushes
-    brushSets = sets
-    currentBrush = current
+    loadDefaults
 
     // Recent brushes set
     brushSets = brushSets ::: List( recentBrushes )
@@ -123,6 +122,18 @@ object FlowPaintController {
     FlowPaintUi.frame.show
   }
 
+
+  def loadDefaults() {
+
+    val defaultFlowpaintData: Elem = ResourceLoader.loadXml("default-brushes.xml", "default FlowPaint settings", <flowpaint/>)
+
+    FlowPaint.library.fromXML(defaultFlowpaintData)
+
+    brushSets = FlowPaint.library.getTomes( classOf[BrushSet] )
+    currentBrush = if (!brushSets.isEmpty && !brushSets(0).getBrushes().isEmpty) brushSets(0).getBrushes()(0) else null
+
+    if (FlowPaintUi.frame != null) FlowPaintUi.frame.validate
+  }
 
   def quit() {
     System.exit(0)

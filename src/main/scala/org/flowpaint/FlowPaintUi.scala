@@ -97,6 +97,9 @@ object FlowPaintUi {
     addToolButton(toolbar, "Quick Save and Clear Picture", KeyEvent.VK_A, FlowPaintController.quickSaveAndClearPicture)
     addToolButton(toolbar, "Clear Picture", KeyEvent.VK_C, FlowPaintController.clearPicture)
 
+    // DEBUG
+    addToolButton(toolbar, "Reload Defaults", KeyEvent.VK_R, FlowPaintController.loadDefaults)
+
     toolbar
   }
 

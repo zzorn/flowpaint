@@ -69,7 +69,7 @@ class StrokeTool extends Tool {
 
             // TODO: If a tablet is used, this should be initialized to zero,
             // or there should be a filter that waits until pressure and cordinate input has been received.
-            initialSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
+            //initialSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
             initialSample.setFloatProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
 
             addStrokePoint(currentStroke, initialSample)

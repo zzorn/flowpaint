@@ -17,18 +17,32 @@ object Data {
 
         nums foreach ((n: Node) => {
 
-            val name = (n \ "@name").text
-            val value = n.text.toFloat
+            val id = (n \ "@id").text
 
-            data.setFloatProperty(name, value)
+            try {
+              val value = n.text.toFloat
+  
+              data.setFloatProperty(id, value)
+            }
+            catch {
+              case e : Exception => // Catch number format exceptions and skip those properties
+            }
         })
 
         texts foreach ((n: Node) => {
 
-            val name = (n \ "@name").text
+            val id = (n \ "@id").text
             val value = n.text
 
-            data.setStringProperty(name, value)
+            data.setStringProperty(id, value)
+        })
+
+        refs foreach ((n: Node) => {
+
+            val id = (n \ "@id").text
+            val value = n.text
+
+            data.setReference(id, value)
         })
 
         data

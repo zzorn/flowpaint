@@ -2,6 +2,9 @@ package org.flowpaint.brush
 
 
 import _root_.scala.collection.jcl.HashSet
+import _root_.scala.xml.Elem
+import util.Tome
+
 
 /**
  * A BrushSet backed up by a collection.
@@ -10,21 +13,23 @@ import _root_.scala.collection.jcl.HashSet
  *
  * @author Hans Haggstrom
  */
-class FixedBrushSet(name_ : String, maxSize : Int, initialBrushes : List[Brush] ) extends BrushSet {
+class FixedBrushSet(id : String, name_ : String, maxSize : Int, initialBrushes : List[Brush] ) extends BrushSet  {
+
+  def identifier: String = id
 
   private var brushes : List[Brush] = initialBrushes.subseq(0, maxSize).toList
   private val listeners : HashSet[()=>Unit] = new HashSet()
 
-  def this( name_ : String, maxSize : Int  ) {
-    this(name_, maxSize, Nil)
+  def this( id : String, name_ : String, maxSize : Int  ) {
+    this(id, name_, maxSize, Nil)
   }
 
-  def this( name_ : String, initialBrushes : List[Brush] ) {
-    this(name_, Math.MAX_INT, initialBrushes)
+  def this( id : String, name_ : String, initialBrushes : List[Brush] ) {
+    this(id, name_, Math.MAX_INT, initialBrushes)
   }
 
-  def this( name_ : String ) {
-    this(name_, Math.MAX_INT)
+  def this( id : String, name_ : String ) {
+    this(id, name_, Math.MAX_INT)
   }
 
 
@@ -78,5 +83,11 @@ class FixedBrushSet(name_ : String, maxSize : Int, initialBrushes : List[Brush] 
     notifyListeners()
   }
 
+  def toXML(): Elem = {
+
+      def brushToRef( brush :Brush ) = <brushref>{brush.identifier}</brushref>
+
+      return <brushset id={id} name={name}> {brushes map brushToRef} </brushset>
+  }
 
 }

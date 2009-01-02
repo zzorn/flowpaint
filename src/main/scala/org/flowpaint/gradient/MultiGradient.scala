@@ -21,7 +21,7 @@ case class GradientPoint(var position: Float, data: Data) extends Comparable[Gra
 object MultiGradient {
     def fromXML(node: Node): Gradient = {
 
-        val identifier = (node \ "@name").text
+        val identifier = (node \ "@id").text
 
         val gradient = new MultiGradient(identifier)
 
@@ -42,6 +42,9 @@ object MultiGradient {
  * @author Hans Haggstrom
  */
 class MultiGradient(val identifier: String) extends Gradient {
+
+    if (identifier == null || identifier.trim() == "") throw new IllegalArgumentException( "The identifier should not be null or whitespace")
+
     def this(identifier: String, points: GradientPoint*) {
         this (identifier)
 
@@ -152,7 +155,7 @@ class MultiGradient(val identifier: String) extends Gradient {
         }
 
 
-    def toXML() : Elem = <gradient>{scala.collection.jcl.Conversions.convertList( myPoints) foreach ( _.toXML() ) }</gradient>
+    def toXML() : Elem = <gradient id={identifier}>{scala.collection.jcl.Conversions.convertList( myPoints) map ( _.toXML() ) }</gradient>
 }
 
 

@@ -20,7 +20,7 @@ class StrokeRenderer {
   /**
    *     Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
-  def drawStrokeSegment(startData: Data, endData: Data, pixelProcessingFunction: (Data) => Unit, surface: RenderSurface) {
+  def drawStrokeSegment(commonData : Data, startData: Data, endData: Data, pixelProcessingFunction: (Data) => Unit, surface: RenderSurface) {
 
 
     val startX = startData.getFloatProperty(PropertyRegister.X, 0)
@@ -85,9 +85,13 @@ class StrokeRenderer {
 
     // Render triangles to surface, applying the pixel processing pipeline for each pixel
 
+    val tempPixelData = new DataImpl()
+
     def pixelCallback(x : Int, y:Int, pixelData : Data ) {
-      pixelProcessingFunction( pixelData )
-      surface.putPixel( x, y, pixelData )
+      tempPixelData.set( commonData )
+      tempPixelData.setValuesFrom( pixelData )
+      pixelProcessingFunction( tempPixelData )
+      surface.putPixel( x, y, tempPixelData )
     }
 
     triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback )

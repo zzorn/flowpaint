@@ -15,12 +15,12 @@ import util.PropertyRegister
 class NoiseInk extends Ink{
     def processPixel(pixelData: Data) {
 
-        val gradient: Gradient = settings.getReference[Gradient]("gradient", GradientInk.defaultGradient, FlowPaint.library)
-        val noiseScaleAcross = settings.getFloatProperty("noiseScaleAcross", 1)
-        val noiseScaleAlong = settings.getFloatProperty("noiseScaleAlong", 1)
-        val alphaWithDistance = settings.getFloatProperty("alphaWithDistance", 1)
-        val propertyName = settings.getStringProperty("propertyName", "time")
-        val octaves = settings.getFloatProperty("octaves", 1).toInt
+        val gradient: Gradient = pixelData.getReference[Gradient]("gradient", GradientInk.defaultGradient, FlowPaint.library)
+        val noiseScaleAcross = pixelData.getFloatProperty("noiseScaleAcross", 1)
+        val noiseScaleAlong = pixelData.getFloatProperty("noiseScaleAlong", 1)
+        val alphaWithDistance = pixelData.getFloatProperty("alphaWithDistance", 1)
+        val propertyName = pixelData.getStringProperty("propertyName", "time")
+        val octaves = pixelData.getFloatProperty("octaves", 1).toInt
 
 
 

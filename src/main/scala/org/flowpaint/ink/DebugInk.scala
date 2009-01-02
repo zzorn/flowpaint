@@ -11,8 +11,8 @@ import util.DataSample
 class DebugInk() extends Ink {
     def processPixel(pixelData: Data) = {
 
-        val alongFactor = settings.getFloatProperty("alongFactor", 1)
-        val acrossFactor = settings.getFloatProperty("acrossFactor", 1)
+        val alongFactor = getFloatProperty("alongFactor", 1)
+        val acrossFactor = getFloatProperty("acrossFactor", 1)
 
         val positionAlongStroke = pixelData.getFloatProperty("positionAlongStroke", 0)
         val positionAcrossStroke = pixelData.getFloatProperty("positionAcrossStroke", 0)

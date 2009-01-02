@@ -1,68 +1,1408 @@
-<flowpaint version="1.0">
-
-  <gradient name ="greyBlack">
-    <gradientPoint position="0">
-      <num name="red">0</num>
-      <num name="green">0</num>
-      <num name="blue">0</num>
-      <num name="alpha">1</num>
+<flowpaint version="1-beta">
+  <brush description="Crayon" id="Crayon">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">20.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.charcoal</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.NoiseInk">
+        <num id="noiseScaleAcross">0.3</num>
+        <num id="noiseScaleAlong">3.0</num>
+        <num id="alphaWithDistance">0.8</num>
+        <num id="octaves">3.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Dots" id="Dots">
+    <settings>
+      <num id="alpha">1.0</num>
+      <num id="maxRadius">55.0</num>
+      <num id="lightness">0.3</num>
+      <num id="hue">0.0</num>
+      <num id="saturation">0.0</num>
+      <text id="gradient">default.gradients.dots</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.0</num>
+        <num id="maxRadius">55.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.NoiseInk">
+        <num id="noiseScaleAcross">3.7</num>
+        <num id="noiseScaleAlong">0.05</num>
+        <num id="alphaWithDistance">1.0</num>
+        <num id="octaves">3.0</num>
+        <text id="propertyName">distance</text>
+      </processor>
+      <processor type="org.flowpaint.filters.AlphaFromPressureInk">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.ColorInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Ink, thick" id="Ink, thick">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">8.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.ink</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.8</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Ink, thin" id="Ink, thin">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">2.7</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.ink</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.8</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Pencil" id="Pencil">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">2.5</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.black</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.35</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Rake" id="Rake">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">17.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.rake</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Shade, black" id="Shade, black">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">70.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.smoothBlack</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.5</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Shade, gray" id="Shade, gray">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">23.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.smoothGrey</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.5</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Shade, white" id="Shade, white">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">30.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.smoothWhite</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.5</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="Spray" id="Spray">
+    <settings>
+      <num id="alpha">1.0</num>
+      <num id="maxRadius">26.0</num>
+      <num id="lightness">0.0</num>
+      <num id="hue">0.0</num>
+      <num id="saturation">0.5</num>
+      <text id="gradient">default.gradients.spray</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">0.5</num>
+        <num id="maxRadius">26.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.NoiseInk">
+        <num id="noiseScaleAcross">100.0</num>
+        <num id="noiseScaleAlong">100.0</num>
+        <num id="alphaWithDistance">1.0</num>
+        <num id="octaves">3.0</num>
+        <text id="propertyName">distance</text>
+      </processor>
+      <processor type="org.flowpaint.filters.AlphaFromPressureInk">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.ColorInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brush description="White" id="White">
+    <settings>
+      <num id="saturationDelta">0.0</num>
+      <num id="maxRadius">45.0</num>
+      <num id="alpha">1.0</num>
+      <num id="lightnessDelta">0.0</num>
+      <num id="hueDelta">0.0</num>
+      <text id="gradient">default.gradients.white</text>
+    </settings>
+    <pathProcessors>
+      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
+      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
+      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">1.0</num>
+      </processor>
+      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+    </pathProcessors>
+    <pixelProcessors>
+      <processor type="org.flowpaint.ink.GradientInk">
+        <num id="alphaPressure">0.0</num>
+      </processor>
+      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+    </pixelProcessors>
+    <editors></editors>
+  </brush>
+  <brushset name="Sketching" id="Sketching">
+    <brushref>Pencil</brushref>
+    <brushref>Ink, thin</brushref>
+    <brushref>Ink, thick</brushref>
+    <brushref>Crayon</brushref>
+    <brushref>Rake</brushref>
+    <brushref>Shade, gray</brushref>
+    <brushref>Shade, black</brushref>
+    <brushref>Shade, white</brushref>
+    <brushref>White</brushref>
+    <brushref>Spray</brushref>
+    <brushref>Dots</brushref>
+  </brushset>
+  <gradient id="default.gradients.black">
+    <gradientPoint position="0.0">
+      <num id="red">0.35</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.35</num>
+      <num id="green">0.35</num>
     </gradientPoint>
-    <gradientPoint position="1">
-      <num name="red">0.5</num>
-      <num name="green">0.5</num>
-      <num name="blue">0.5</num>
-      <num name="alpha">1</num>
+    <gradientPoint position="0.5">
+      <num id="red">0.35</num>
+      <num id="alpha">0.6</num>
+      <num id="blue">0.35</num>
+      <num id="green">0.35</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.35</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.35</num>
+      <num id="green">0.35</num>
     </gradientPoint>
   </gradient>
-
-
-  <brush name ="Pencil" description ="A simple pencil" >
-    <settings>
-
-      <num name="maxRadius">40</num>
-      <num name="alpha">1</num>
-
-
-    </settings>
-
-    <pathProcessors>
-
-      <processor type ="org.flowpaint.filters.ZeroLengthSegmentFilter">
-      </processor>
-
-      <processor type ="org.flowpaint.filters.DistanceCalculatorFilter">
-      </processor>
-
-      <processor type ="org.flowpaint.brush.StrokeAngleTilter">
-        <num name="tilt">0.5</num>
-      </processor>
-
-      <processor type ="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num name="maxRadius">30</num>
-        <num name="pressureEffect">1</num>
-      </processor>
-
-      <processor type ="org.flowpaint.filters.StrokeEdgeCalculatorFilter">
-      </processor>
-
-    </pathProcessors>
-
-    <pixelProcessors>
-      <processor type ="org.flowpaint.ink.GradientInk">
-        <num name="alphaPressure">1</num>
-        <ref name="gradient"  type="Gradient">greyBlack</ref>
-      </processor>
-    </pixelProcessors>
-
-    <editors>
-
-    </editors>
-  </brush>
-
-
-  <brushset name="Sketching">
-    <ref type="Brush">Pencil</ref>
-  </brushset>
-
-
+  <gradient id="default.gradients.charcoal">
+    <gradientPoint position="0.0">
+      <num id="red">0.4</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.4</num>
+      <num id="green">0.4</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">0.3</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.1</num>
+      <num id="alpha">0.8</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.dot">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.72">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.83">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">1.0</num>
+      <num id="alpha">0.7</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.fire">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.7</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.4</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.2</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.6</num>
+      <num id="alpha">0.8</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.4</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.ink">
+    <gradientPoint position="0.0">
+      <num id="red">0.15</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.2</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">0.8</num>
+      <num id="blue">0.13</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.0</num>
+      <num id="alpha">0.9</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">0.8</num>
+      <num id="blue">0.13</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.1</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.25</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.lampBlack">
+    <gradientPoint position="0.0">
+      <num id="red">0.026999999</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.045</num>
+      <num id="green">0.064</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.028499998</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.09</num>
+      <num id="green">0.072</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.03</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.105000004</num>
+      <num id="green">0.08</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.03</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.120000005</num>
+      <num id="green">0.08</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.03</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.105000004</num>
+      <num id="green">0.08</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.028499998</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.09</num>
+      <num id="green">0.072</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.026999999</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.045</num>
+      <num id="green">0.064</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.leaf">
+    <gradientPoint position="0.0">
+      <num id="red">0.1</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.2</num>
+      <num id="green">0.4</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.3</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.5</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.22</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.2</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.15</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.85">
+      <num id="red">0.05</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.15</num>
+      <num id="green">0.15</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.15</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.maroon">
+    <gradientPoint position="0.0">
+      <num id="red">0.54</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.080000006</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.57</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.120000005</num>
+      <num id="green">0.089999996</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.6</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.14</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.6</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.16000001</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.6</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.14</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.57</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.120000005</num>
+      <num id="green">0.089999996</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.54</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.080000006</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.ocra">
+    <gradientPoint position="0.0">
+      <num id="red">0.80999994</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.56</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.85499996</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.120000005</num>
+      <num id="green">0.63</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.9</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.14</num>
+      <num id="green">0.7</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.9</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.16000001</num>
+      <num id="green">0.7</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.9</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.14</num>
+      <num id="green">0.7</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.85499996</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.120000005</num>
+      <num id="green">0.63</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.80999994</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.56</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.outline">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.15">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.85">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.rake">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.08">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.12">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.28">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.32">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.48">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.52">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.68">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.72">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.88">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.92">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.sapGreen">
+    <gradientPoint position="0.0">
+      <num id="red">0.27</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.030000001</num>
+      <num id="green">0.48000002</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.285</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.54</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.3</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.07</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.3</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.080000006</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.3</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.07</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.285</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.54</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.27</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.030000001</num>
+      <num id="green">0.48000002</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.sepia">
+    <gradientPoint position="0.0">
+      <num id="red">0.35999998</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.030000001</num>
+      <num id="green">0.2</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.38</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.225</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.4</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.07</num>
+      <num id="green">0.25</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.4</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.080000006</num>
+      <num id="green">0.25</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.4</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.07</num>
+      <num id="green">0.25</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.38</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.060000002</num>
+      <num id="green">0.225</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.35999998</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.030000001</num>
+      <num id="green">0.2</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.sky">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.65</num>
+      <num id="green">0.15</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.65</num>
+      <num id="green">0.15</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.65</num>
+      <num id="green">0.15</num>
+    </gradientPoint>
+    <gradientPoint position="0.63">
+      <num id="red">0.3</num>
+      <num id="alpha">0.9</num>
+      <num id="blue">0.9</num>
+      <num id="green">0.5</num>
+    </gradientPoint>
+    <gradientPoint position="0.68">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.6</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.smoothBlack">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.0</num>
+      <num id="alpha">0.075</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">0.0</num>
+      <num id="alpha">0.125</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.0</num>
+      <num id="alpha">0.125</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.0</num>
+      <num id="alpha">0.075</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.smoothGrey">
+    <gradientPoint position="0.0">
+      <num id="red">0.3</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.3</num>
+      <num id="alpha">0.024</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.3</num>
+      <num id="alpha">0.072000004</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.3</num>
+      <num id="alpha">0.096</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">0.3</num>
+      <num id="alpha">0.12</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.3</num>
+      <num id="alpha">0.12</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.3</num>
+      <num id="alpha">0.096</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.3</num>
+      <num id="alpha">0.072000004</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.3</num>
+      <num id="alpha">0.024</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.3</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.smoothWhite">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">1.0</num>
+      <num id="alpha">0.080000006</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">1.0</num>
+      <num id="alpha">0.24000001</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">1.0</num>
+      <num id="alpha">0.32000002</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">1.0</num>
+      <num id="alpha">0.4</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">1.0</num>
+      <num id="alpha">0.4</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">1.0</num>
+      <num id="alpha">0.32000002</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">1.0</num>
+      <num id="alpha">0.24000001</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">1.0</num>
+      <num id="alpha">0.080000006</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.solidBlack">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.spray">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.33">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">1.0</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.45">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.95">
+      <num id="red">1.0</num>
+      <num id="alpha">0.7</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.steel">
+    <gradientPoint position="0.0">
+      <num id="red">0.17999999</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.18</num>
+      <num id="green">0.080000006</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.19</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.36</num>
+      <num id="green">0.089999996</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.2</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.42000002</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.2</num>
+      <num id="alpha">0.45</num>
+      <num id="blue">0.48000002</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.2</num>
+      <num id="alpha">0.3825</num>
+      <num id="blue">0.42000002</num>
+      <num id="green">0.1</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.19</num>
+      <num id="alpha">0.135</num>
+      <num id="blue">0.36</num>
+      <num id="green">0.089999996</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.17999999</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.18</num>
+      <num id="green">0.080000006</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.stone">
+    <gradientPoint position="0.0">
+      <num id="red">0.3</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.8</num>
+      <num id="alpha">0.3</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">0.3</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">0.3</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.6</num>
+      <num id="alpha">0.3</num>
+      <num id="blue">0.6</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.3</num>
+      <num id="alpha">0.5</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.sunflower">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.2</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.9</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.5</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.7</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.white">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">1.0</num>
+      <num id="alpha">0.2</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.4">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.6">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">1.0</num>
+      <num id="alpha">0.2</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.whiteBlack">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.wood">
+    <gradientPoint position="0.0">
+      <num id="red">0.4</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.15</num>
+      <num id="green">0.25</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.5</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.2</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.31">
+      <num id="red">0.7</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.25</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.6</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.2</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+    <gradientPoint position="0.53">
+      <num id="red">0.75</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.5</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.25</num>
+      <num id="green">0.35</num>
+    </gradientPoint>
+    <gradientPoint position="0.82">
+      <num id="red">0.7</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.25</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.5</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.2</num>
+      <num id="green">0.3</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="greyBlack">
+    <gradientPoint position="0.0">
+      <num id="">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="">1.0</num>
+    </gradientPoint>
+  </gradient>
 </flowpaint>

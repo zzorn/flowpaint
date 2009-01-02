@@ -26,11 +26,13 @@ final class DataImpl extends Data {
         initialFloatValues foreach ( (e:(String,Float)) => setFloatProperty( e._1, e._2 ) )
     }
 
+/*
     def this( initialFloatValues : List[(String, Float)] ) {
         this()
 
         initialFloatValues foreach ( (e:(String,Float)) => setFloatProperty( e._1, e._2 ) )
     }
+*/
 
 
 
@@ -161,5 +163,5 @@ final class DataImpl extends Data {
 
     override def toString = "DataImpl( float properties: "+floatProperties+", string properties: "+stringProperties+")"
 
-    def toXML() = floatProperties.toXML().toList ::: ( stringProperties.elements map ( (e : (String, String) ) => <text name={e._1}>{e._2}</text>  ) ).toList
+    def toXML() = floatProperties.toXML().toList ::: ( stringProperties.elements map ( (e : (String, String) ) => <text id={e._1}>{e._2}</text>  ) ).toList
 }

@@ -58,13 +58,31 @@ class LibraryImpl(initialLoaders : TomeLoader* ) extends Library {
         }
     }
 
+    def getTomes[T <: Tome]( tomeType : Class[T]): List[T] = {
+      tomes.values.filter( (t : Tome) =>  tomeType.isAssignableFrom( t.getClass() ) ).toList.asInstanceOf[List[T]]
+    }
+  
+
     def putTome(tome: Tome) {
         tomes.put(tome.identifier, tome)
 
     }
 
     def toXML(): List[Elem] = {
-        (tomes.values map ( _.toXML() )).toList
+      
+      def sortTome(a:Tome,b:Tome):Boolean = {
+        val as = a.getClass().getName()
+        val bs = b.getClass().getName()
+        val typeOrder = as.compareTo( bs )
+
+        if (typeOrder == 0) a.identifier.compareTo(b.identifier) < 0
+        else typeOrder < 0
+      }
+
+      // Sort the tomes, to get a bit more human readable and workable output
+      val tomesSortedByType = tomes.values.toList.sort( sortTome )
+
+      tomesSortedByType map ( _.toXML() )
     }
 
     def fromXML(elementContainingTomes: Elem) {

@@ -13,9 +13,9 @@ class AlphaTransparencyBackgroundInk extends Ink {
 
     def processPixel(pixelData: Data) {
 
-        val v1 = settings.getFloatProperty("lightGridLuminance", 0.3333f)
-        val v2 = settings.getFloatProperty("darkGridLuminance", 0.6666f)
-        val gridSize = settings.getFloatProperty("gridSize", 16)
+        val v1 = getFloatProperty("lightGridLuminance", 0.3333f)
+        val v2 = getFloatProperty("darkGridLuminance", 0.6666f)
+        val gridSize = getFloatProperty("gridSize", 16)
 
         def onBand(c: Float): Boolean = ((c.toInt / gridSize) % 2 == 0)
 

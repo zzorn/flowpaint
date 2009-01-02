@@ -26,7 +26,7 @@ case class BrushProperty(name: String,
 object Brush {
     def fromXML(node : Node) : Brush = {
 
-      val name = (node \ "@name").text
+      val name = (node \ "@id").text
       val settings = Data.fromXML( (node \ "settings").first )
       val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "processor") map PixelProcessorMetadata.fromXML
       val pathProcessorMetadatas = (node \ "pathProcessors" \ "processor") map PathProcessorMetadata.fromXML
@@ -134,10 +134,10 @@ class Brush(val identifier: String,
     }
 
 
-    def toXML() = <brush name={identifier} description={name}>
+    def toXML() = <brush id={identifier} description={name}>
                     <settings>{settings.toXML()}</settings>
-                    <pathProcessors>{strokeProcessors.elements foreach (_.toXML()) }</pathProcessors>
-                    <pixelProcessors>{pixelProcessors.elements foreach (_.toXML()) }</pixelProcessors>
-                    <editors>{editors.elements foreach (_.toXML()) }</editors>
+                    <pathProcessors>{strokeProcessors.elements map (_.toXML()) }</pathProcessors>
+                    <pixelProcessors>{pixelProcessors.elements map (_.toXML()) }</pixelProcessors>
+                    <editors>{editors.elements map (_.toXML()) }</editors>
                   </brush>
 }

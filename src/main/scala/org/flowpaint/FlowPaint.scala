@@ -10,13 +10,16 @@ import javax.swing._
 import model.{Stroke, Painting}
 import renderer.SingleRenderSurface
 import util.{TomeLoader, DataSample, LibraryImpl, ResourceLoader}
+import org.flowpaint.brush.BrushSet
+
 /**
  *  Main entrypoint for FlowPaint.
  */
 object FlowPaint {
 
     val library = new LibraryImpl( TomeLoader( "brush", Brush.fromXML ),
-                                   TomeLoader( "gradient", MultiGradient.fromXML ) )
+                                   TomeLoader( "gradient", MultiGradient.fromXML ),
+                                   TomeLoader( "brushset", BrushSet.fromXML ))
   
 
   // Get often changing and potentially changing data from property file

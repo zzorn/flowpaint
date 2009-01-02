@@ -61,7 +61,7 @@ object FlowPaintController {
 
   var brushSets :List[BrushSet] = Nil
 
-  val recentBrushes = new FixedBrushSet( "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil )
+  val recentBrushes = new FixedBrushSet( "recentBrushes", "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil )
 
   private var currentBrushUsageCount = 0;
   def addRecentBrush(brush: Brush) {

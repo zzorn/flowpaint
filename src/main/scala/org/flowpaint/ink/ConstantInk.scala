@@ -11,7 +11,7 @@ class ConstantInk()  extends Ink {
 
   def processPixel(pixelData: Data) {
 
-    pixelData.setValuesFrom( settings )
+    pixelData.setValuesFrom( getSettings )
 
   }
 }

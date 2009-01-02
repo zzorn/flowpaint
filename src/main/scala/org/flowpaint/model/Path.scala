@@ -50,8 +50,8 @@ class Path(brush: Brush) extends Renderable {
 
         if (points.isEmpty || points.tail.isEmpty ) return
 
-        val segmentStartData: Data = new DataImpl(commonProperties)
-        val segmentEndData: Data = new DataImpl( commonProperties )
+        val segmentStartData: Data = new DataImpl()
+        val segmentEndData: Data = new DataImpl()
         segmentEndData.setValuesFrom( points.head )
 
         var remainingPath = points.tail
@@ -79,7 +79,7 @@ class Path(brush: Brush) extends Renderable {
         }
 
         val renderer = new StrokeRenderer()
-        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface)
+        renderer.drawStrokeSegment(commonProperties, startPoint, endPoint, processPixel, surface)
 
     }
 

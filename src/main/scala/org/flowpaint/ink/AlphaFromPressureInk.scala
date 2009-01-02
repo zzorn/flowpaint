@@ -9,8 +9,12 @@ import util.{DataSample, PropertyRegister}
  * @author Hans Haggstrom
  */
 
-class AlphaFromPressureInk(pressureEffect:Float) extends Ink {
+class AlphaFromPressureInk() extends Ink {
+
   def processPixel(pixelData: Data) = {
+
+    val pressureEffect = getFloatProperty("pressureEffect", pixelData, 1f)
+
     val pressure = pixelData.getFloatProperty( PropertyRegister.PRESSURE, 0.5f )
     val oldAlpha = pixelData.getFloatProperty( PropertyRegister.ALPHA, 1 )
 

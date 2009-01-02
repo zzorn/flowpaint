@@ -8,7 +8,7 @@ import property.{Data, DataImpl}
  *  Common interface for pixel and path processors.
  */
 trait Processor {
-    val settings: Data = new DataImpl()
+    private val settings: Data = new DataImpl()
 
     def init(initialSettings: Data) {
         settings.set(initialSettings)
@@ -16,6 +16,17 @@ trait Processor {
     }
 
     protected def onInit() {}
+
+
+    def getFloatProperty( propertyName : String, data : Data, defaultValue : Float ) : Float = data.getFloatProperty( propertyName, settings.getFloatProperty( propertyName, defaultValue ) )
+    def getFloatProperty( propertyId : Int, data : Data, defaultValue : Float ) : Float = data.getFloatProperty( propertyId, settings.getFloatProperty( propertyId, defaultValue ) )
+    def getStringProperty( propertyName : String, data : Data, defaultValue : String ) : String = data.getStringProperty( propertyName, settings.getStringProperty( propertyName, defaultValue ) )
+
+    def getFloatProperty( propertyName : String, defaultValue : Float ) : Float = settings.getFloatProperty( propertyName, defaultValue )
+    def getFloatProperty( propertyId : Int, defaultValue : Float ) : Float = settings.getFloatProperty( propertyId, defaultValue )
+    def getStringProperty( propertyName : String, defaultValue : String ) : String = settings.getStringProperty( propertyName, defaultValue )
+
+    def getSettings = settings
 
 }
 
@@ -40,7 +51,7 @@ abstract class ProcessorMetadata[T <: Processor](processorType: Class[_ <: T], i
         processor
     }
 
-    def toXML() : Elem = <processor type={processorType.toString}>{settings.toXML()}</processor>
+    def toXML() : Elem = <processor type={processorType.getName}>{settings.toXML()}</processor>
 
 }
 

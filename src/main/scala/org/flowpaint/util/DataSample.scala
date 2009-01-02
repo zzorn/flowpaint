@@ -228,7 +228,7 @@ class DataSample {
   }
 
     def toXML() : List[Elem] = {
-        toTupleList() map ( (e : (String,Float )) => <text name={e._1}>{e._2}</text>  )
+        toTupleList() map ( (e : (String,Float )) => <num id={e._1}>{e._2}</num>  )
     }
 
 }

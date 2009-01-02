@@ -19,7 +19,6 @@ import util.{DataSample, ListenableList, ResourceLoader, PropertyRegister}
  *
  * @author Hans Haggstrom
  */
-// TODO: Move brush descriptions to files..
 object DefaultBrushFactory {
     def createDefaultBrushes(): (List[BrushSet], Brush) = {
 
@@ -29,10 +28,20 @@ object DefaultBrushFactory {
 
         FlowPaint.library.fromXML(defaultFlowpaintData)
 
+        var brushSets: List[BrushSet] = FlowPaint.library.getTomes( classOf[BrushSet] )
+        val currentBrush : Brush = if (!brushSets.isEmpty && !brushSets(0).getBrushes().isEmpty) brushSets(0).getBrushes()(0) else null
+
+      /*
+            var currentBrush: Brush = FlowPaint.library.getTome("Pencil", null)
+      */
+
+
+/*
         var brushSets: List[BrushSet] = List(new FixedBrushSet("Default Brushes", 32, Nil))
-        var currentBrush: Brush = FlowPaint.library.getTome("Pencil", null)
+*/
 
 
+/*
         def sampleFromColor(r: Float, g: Float, b: Float, a: Float): Data = {
 
             val data = new DataImpl()
@@ -46,6 +55,7 @@ object DefaultBrushFactory {
         def addGradient(g : Gradient) {
           FlowPaint.library.putTome(g)
         }
+
 
         def makeGradientPoint(position: Float, r: Float, g: Float, b: Float, a: Float): GradientPoint = {
 
@@ -295,6 +305,8 @@ object DefaultBrushFactory {
             brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1f)
 
             set.addBrush(brush)
+            FlowPaint.library.putTome(brush)
+
             brush
         }
 
@@ -327,6 +339,7 @@ object DefaultBrushFactory {
             brush.settings.setReference("gradient", "default.gradients."+gradient)
 
             set.addBrush(brush)
+            FlowPaint.library.putTome(brush)
             brush
         }
 
@@ -337,7 +350,7 @@ object DefaultBrushFactory {
           settings.setFloatProperty( "alphaPressure", 0.5f )
           settings.setStringProperty( "gradient", "default.gradients.white" )
 
-            val brush = new Brush(name, new DataImpl(), List(createInkMetadata(classOf[GradientInk], settings), ink),
+            val brush = new Brush(name, settings, List(createInkMetadata(classOf[GradientInk],new DataImpl() ), ink),
                 List(
                     createFilterMetadata(classOf[ZeroLengthSegmentFilter]),
                     createFilterMetadata(classOf[DistanceCalculatorFilter]),
@@ -380,12 +393,16 @@ object DefaultBrushFactory {
             brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1)
 
             set.addBrush(brush)
+            FlowPaint.library.putTome(brush)
             brush
         }
 
-        def addBrush2(set: FixedBrushSet, name: String, inks: List[PixelProcessorMetadata], hue: Float, saturation: Float, lightness: Float,
+        def addBrush2(set: FixedBrushSet, name: String, inks: List[PixelProcessorMetadata], gradient : String, hue: Float, saturation: Float, lightness: Float,
                      radius: Float, tilt: Float, pressureEffectOnRadius: Float): Brush = {
-            val brush = new Brush(name, new DataImpl(), inks,
+
+//          settings.setStringProperty( "gradient", "default.gradients." + gradient )
+
+          val brush = new Brush(name, new DataImpl(), inks,
                 List(
                     createFilterMetadata(classOf[ZeroLengthSegmentFilter]),
                     createFilterMetadata(classOf[DistanceCalculatorFilter]),
@@ -427,7 +444,10 @@ object DefaultBrushFactory {
             brush.settings.setFloatProperty(PropertyRegister.LIGHTNESS, lightness)
             brush.settings.setFloatProperty(PropertyRegister.ALPHA, 1)
 
+            brush.settings.setReference("gradient", "default.gradients."+gradient)
+
             set.addBrush(brush)
+            FlowPaint.library.putTome(brush)
             brush
         }
 
@@ -441,7 +461,8 @@ object DefaultBrushFactory {
 
 
             def addBrushSet( name : String ) : FixedBrushSet = {
-              val set = new FixedBrushSet( name )
+              val set = new FixedBrushSet( name, name )
+              FlowPaint.library.putTome( set )
               brushSets = brushSets ::: List (set)
               set
             }
@@ -458,12 +479,40 @@ object DefaultBrushFactory {
             addBrush(sketching,"Shade, white", createInkMetadata2 (classOf[GradientInk], ("alphaPressure", 1)), 30, 0, 0.5f, false, "smoothWhite")
             addBrush(sketching,"White", createInkMetadata2 (classOf[GradientInk], ("alphaPressure", 0)), 45, 0, 1f, false, "white")
 //            addBrush(sketching,"Spray", createInkMetadata2 (classOf[NoiseInk], ("alphaPressure", 0), ("noiseScaleAcross", 10),  ("noiseScaleAlong",10),("alphaWithDistance", 1f), ("octaves", 3)), 26, 0, 0.5f, false, "spray")
+
+
+            def createNoiseInkMetadata( scaleAcross : Float, scaleAlong : Float, alphaEdges : Float, octaves : Int, propertyName : String ) = {
+
+              val metadata: PixelProcessorMetadata = createInkMetadata2(classOf[NoiseInk],
+                ("noiseScaleAcross", scaleAcross),
+                ("noiseScaleAlong", scaleAlong),
+                ("alphaWithDistance", alphaEdges),
+                ("octaves", octaves))
+              metadata.settings.setStringProperty("propertyName", propertyName)
+
+              metadata
+            }
+
+            addBrush2(sketching, "Spray", List(
+              createNoiseInkMetadata(100,100,1,3,"distance"),
+              new PixelProcessorMetadata( classOf[AlphaFromPressureInk], new DataImpl( ("pressureEffect", 1f) ) ),
+              new PixelProcessorMetadata( classOf[ColorInk], new DataImpl() )),
+              "spray", 0,0.5f,0, 26, 0, 0.5f)
+            addBrush2(sketching, "Dots", List(
+              createNoiseInkMetadata(3.7f,0.05f,1,3,"distance"),
+              new PixelProcessorMetadata( classOf[AlphaFromPressureInk], new DataImpl( ("pressureEffect", 1f) ) ),
+              new PixelProcessorMetadata( classOf[ColorInk], new DataImpl() )),
+              "dots", 0,0,0.3f, 55, 0, 0f)
+
+      */
 /*
             addBrush2(sketching, "Spray", List(createInkMetadata2 (classOf[NoiseInk],("noiseScaleAcross", 10),  ("noiseScaleAlong",10),("alphaWithDistance", 1f), ("octaves", 3))(sprayGradient , (10f, 10f), 1f, "distance",3),new AlphaFromPressureInk(1), new ColorInk()),0,0.5f,0, 26, 0, 0.5f, "spray")
             addBrush2(sketching, "Dots", List(createInkMetadata2 (classOf[NoiseInk], ("alphaPressure", 1),("noiseScaleAcross", 3.7f),  ("noiseScaleAlong",0.05f), ("octaves", 3), "distance"),new AlphaFromPressureInk(1), new ColorInk()),0,0,0.3f, 55, 0, 0f, "dots")
 */
+/*
 
- /*           val painting = addBrushSet( "Painting" )
+ */
+/*           val painting = addBrushSet( "Painting" )
             addColorBrush(painting, "Brown", new ColorInk(), 20f, 0.5f, 0.35f, 20, 0, 1f)
             addColorBrush(painting, "Red", new ColorInk(), 0f, 1f, 0.38f, 20, 0, 1f)
             addColorBrush(painting, "Yellow", new ColorInk(), 45f, 0.80f, 0.45f, 20, 0, 1f)
@@ -487,7 +536,9 @@ object DefaultBrushFactory {
             addBrush(noiseBrushes, "Silver rain", new NoiseInk(skyCloudGradient, (0.04f, 1.5f), 0.8f,"distance",2), 50, 0, 0.5f, true)
             addBrush(noiseBrushes, "Perlin Turbulence", new NoiseInk(whiteBlackGradient, (0.05f, 1.5f), 0.5f, "distance",4), 40, 0, 1f, true)
 */
-        /*
+/*
+        */
+/*
             // DEBUG
             val debugBrushes = addBrushSet( "Debuging Brushes" )
             addBrush(debugBrushes, "Dual Debug brush", new DebugInk(1,1), 80, 0, 1)
@@ -495,12 +546,14 @@ object DefaultBrushFactory {
             addBrush(debugBrushes, "Across Debug brush", new DebugInk(0, 1), 80, 0, 1)
             addBrush(debugBrushes, "Solid Debug brush", new DebugInk(0, 0), 40, 0, 1)
         */
+/*
 
 
         val xml =  FlowPaint.library.toXML
 
         val FLOWPAINT_FORMAT_VERSION = "1-beta"
         XML.save( "flowpaint-library-out.xml",  <flowpaint version={FLOWPAINT_FORMAT_VERSION}>{xml}</flowpaint> )       
+*/
 
         return (brushSets, currentBrush)
     }

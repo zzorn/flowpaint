@@ -36,8 +36,8 @@ class StrokeAngleTilter() extends PathProcessor {
 
         var result : List[Data] = Nil
 
-        val smooth = settings.getFloatProperty("smooth", 0f)
-        val tilt = settings.getFloatProperty("tilt", 0f)
+        val smooth = getFloatProperty("smooth", pointData, 0f)
+        val tilt = getFloatProperty("tilt", pointData, 0f)
 
         val newX = pointData.getFloatProperty(PropertyRegister.X, previousX)
         val newY = pointData.getFloatProperty(PropertyRegister.Y, previousY)

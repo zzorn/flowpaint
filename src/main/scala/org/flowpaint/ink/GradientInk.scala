@@ -19,7 +19,7 @@ class GradientInk() extends Ink {
     def processPixel(pixelData: Data) {
 
         val gradient: Gradient = pixelData.getReference[Gradient]("gradient", GradientInk.defaultGradient, FlowPaint.library)
-        val alphaPressure = settings.getFloatProperty("alphaPressure", 1)
+        val alphaPressure = pixelData.getFloatProperty("alphaPressure", 1)
 
         val positionAlongStroke = pixelData.getFloatProperty(PropertyRegister.POSTION_ALONG_STROKE, 0)
         val positionAcrossStroke = pixelData.getFloatProperty(PropertyRegister.POSITION_ACROSS_STROKE, 0)

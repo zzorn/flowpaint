@@ -3,6 +3,7 @@ package org.flowpaint.brush
 import _root_.org.flowpaint.ink.PixelProcessorMetadata
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection._
+import _root_.scala.collection
 import pixelprocessors.{PixelProcessor, PixelProgram}
 /**
  * 
@@ -37,11 +38,14 @@ object PixelProcessorCompiler {
     pixelProcessors foreach (_.getUsedVariables() foreach (usedVariables += _))
 
     // Create variable mapping
-    var variableToIndexMap = Map[String, Int]
+    val variableToIndexMap = new mutable.HashMap[String, Int]
     var i = 0
-    usedVariables foreach { variableToIndexMap += ( _ -> i) ; i += 1  }
+    usedVariables foreach { s : String => variableToIndexMap += ( s -> i) ; i += 1  }
 
-    // 
+    // TODO: Generate source
+    val source = ""
+
+    ( source, variableToIndexMap )
   }
 
 }

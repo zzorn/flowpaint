@@ -46,7 +46,7 @@ class InkSliderUi(editedData: Data,
                 var nx = 0f
                 var y = 0
 
-                val pixelPrcessors = pixelPrcessorMetadatas.elements map (_.createProcessor())
+                val pixelPrcessors = pixelPrcessorMetadatas.elements map (_.createInstance())
 
                 while (y < h) {
                     ny = calculateNormalizedCoordinate(y, h)

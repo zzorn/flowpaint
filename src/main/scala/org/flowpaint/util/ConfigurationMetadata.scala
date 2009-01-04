@@ -1,13 +1,15 @@
 package org.flowpaint.util
 
 
-import _root_.scala.xml.Elem
+import _root_.scala.xml.{Elem, Node}
 import property.{Data, DataImpl}
 
+
+
 /**
- *  Common interface for pixel and path processors.
+ *  Common interface for some class that needs configuration and xml serialization support.
  */
-trait Processor {
+trait Configuration {
     private val settings: Data = new DataImpl()
 
     def init(initialSettings: Data) {
@@ -38,20 +40,43 @@ trait Processor {
  * @author Hans Haggstrom
  */
 // TODO: Add support for defining UI widgets for modifying the settings
-abstract class ProcessorMetadata[T <: Processor](processorType: Class[_ <: T], initialSettings : Data) {
+class ConfigurationMetadata[T <: Configuration](processorType: Class[_ <: T], initialSettings : Data) {
 
     val settings = new DataImpl( initialSettings )
 
-    def createProcessor(): T = {
+    def createInstance(): T = {
 
-        val processor: T = processorType.newInstance
+        val instance: T = processorType.newInstance
 
-        processor.init(settings)
+        instance.init(settings)
 
-        processor
+        instance
     }
 
-    def toXML() : Elem = <processor type={processorType.getName}>{settings.toXML()}</processor>
+    def toXML() : Elem = <conf type={processorType.getName}>{settings.toXML()}</conf>
+
+}
+
+/**
+ * Deserialization
+ */
+object ConfigurationMetadata {
+
+    def fromXML[T <: Configuration](node : Node, expectedType : Class[T]) : ConfigurationMetadata[T] = {
+
+        val configuraionTypeName = (node \ "@type").text
+        val settings = Data.fromXML( node )
+
+      // Get class based on class name
+      // TODO: Maybe check that the type is one of a set of allowed ones? (whitelist), to increase security.
+      val configurationType = Class.forName(configuraionTypeName)
+
+      if (! expectedType.isAssignableFrom( configurationType ) )
+        throw new IllegalArgumentException( "Configuration should be of type "+expectedType.getName()+", " +
+                "but a type of '"+configurationType+"' was requested " )
+
+      new ConfigurationMetadata[T]( configurationType.asInstanceOf[Class[T]] , settings )
+    }
 
 }
 

@@ -2,7 +2,7 @@ package org.flowpaint.filters
 
 import model.Path
 import property.Data
-import util.{DataSample, Processor}
+import util.{DataSample, Configuration}
 
 /**
  *
@@ -10,7 +10,7 @@ import util.{DataSample, Processor}
  * @author Hans Haggstrom
  */
 
-trait PathProcessor extends Processor {
+trait PathProcessor extends Configuration {
 
     var firstPoint = true
 

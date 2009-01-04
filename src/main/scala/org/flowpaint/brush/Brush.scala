@@ -5,10 +5,13 @@ import _root_.scala.xml.Node
 import filters.{StrokeListener, PathProcessorMetadata, StrokeFilter, PathProcessor}
 import ink.{PixelProcessorMetadata, Ink}
 import javax.swing.JComponent
+import pixelprocessors.PixelProcessor
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
 import ui.slider.InkSliderUi
 import ui.{BrushSliderUi, ParameterUi}
 import util.{DataSample, ListenableList, Tome}
+import org.flowpaint.util.ConfigurationMetadata
+
 /*
 case class BrushProperty(name: String,
                         parameter: String,
@@ -28,8 +31,10 @@ object Brush {
 
       val name = (node \ "@id").text
       val settings = Data.fromXML( (node \ "settings").first )
-      val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "processor") map PixelProcessorMetadata.fromXML
-      val pathProcessorMetadatas = (node \ "pathProcessors" \ "processor") map PathProcessorMetadata.fromXML
+      val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "processor") map
+              {(n : Node) => ConfigurationMetadata.fromXML( n, classOf[Ink] )}
+      val pathProcessorMetadatas = (node \ "pathProcessors" \ "processor") map
+                {(n : Node) => ConfigurationMetadata.fromXML( n, classOf[PathProcessor] )}
 
       val brush = new Brush(name, settings, pixelProcessorMetadatas.toList, pathProcessorMetadatas.toList, Nil )
 
@@ -45,13 +50,13 @@ object Brush {
  */
 class Brush(val identifier: String,
             initialSettings : Data,
-           pixelProcessorMetadatas: List[PixelProcessorMetadata],
-           pathProcessorMetadatas: List[PathProcessorMetadata],
+           pixelProcessorMetadatas: List[ConfigurationMetadata[Ink]],
+           pathProcessorMetadatas: List[ConfigurationMetadata[PathProcessor]],
            initialEditors: List[DataEditor]) extends Tome {
   
     val settings = new DataImpl( initialSettings )
-    val pixelProcessors = new ListenableList[PixelProcessorMetadata](pixelProcessorMetadatas, notifyListenersOnChildListChange)
-    val strokeProcessors = new ListenableList[PathProcessorMetadata](pathProcessorMetadatas, notifyListenersOnChildListChange)
+    val pixelProcessors = new ListenableList[ConfigurationMetadata[Ink]](pixelProcessorMetadatas, notifyListenersOnChildListChange)
+    val strokeProcessors = new ListenableList[ConfigurationMetadata[PathProcessor]](pathProcessorMetadatas, notifyListenersOnChildListChange)
     val editors = new ListenableList[DataEditor](initialEditors, notifyListenersOnChildListChange)
 
     private val listeners = new HashSet[ChangeListener]()
@@ -70,11 +75,11 @@ class Brush(val identifier: String,
     def name = identifier
 
     def createPixelProcessors() : List[Ink] = {
-        pixelProcessors.elements.map( _.createProcessor() )
+        pixelProcessors.elements.map( _.createInstance() )
     }
 
     def createPathProcessors() : List[PathProcessor] = {
-        strokeProcessors.elements.map( _.createProcessor() )
+        strokeProcessors.elements.map( _.createInstance() )
     }
 
 /*

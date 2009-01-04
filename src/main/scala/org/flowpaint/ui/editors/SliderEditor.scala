@@ -30,7 +30,7 @@ abstract class SliderEditor extends EditorWithAxes {
   protected val minSize = 32
 
 
-  def description = axis.description
+  def description = axis.description 
 
   def isVertical: Boolean = orientation == VerticalSlider
 

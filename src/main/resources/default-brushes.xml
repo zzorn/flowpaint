@@ -46,7 +46,7 @@
         <text id="description">Transparency</text>
       </object>
 
-      <object type="org.flowpaint.ui.editors.FadeVolumeEditor">
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
         <num id="red">0.5</num>
         <num id="green">0.5</num>
         <num id="blue">0.5</num>
@@ -193,7 +193,7 @@
     <editors>
 
 
-      <object type="org.flowpaint.ui.editors.FadeVolumeEditor">
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
         <num id="red">0.5</num>
         <num id="green">0.5</num>
         <num id="blue">0.5</num>
@@ -202,8 +202,8 @@
         <text id="saturationParameter">saturation</text>
         <text id="lightnessParameter">lightness</text>
 
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
+        <num id="verticalStartValue">0</num>
+        <num id="verticalEndValue">1</num>
         <text id="verticalEditedParameter">alpha</text>
         <text id="verticalDescription">Transparency</text>
         <num id="horizontalStartValue">1</num>
@@ -213,12 +213,12 @@
       </object>
 
       <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
+        <num id="verticalStartValue">0</num>
+        <num id="verticalEndValue">1</num>
         <text id="verticalEditedParameter">saturation</text>
         <text id="verticalDescription">Saturation</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">0</num>
+        <num id="horizontalStartValue">0</num>
+        <num id="horizontalEndValue">1</num>
         <text id="horizontalEditedParameter">lightness</text>
         <text id="horizontalDescription">Lightness</text>
       </object>

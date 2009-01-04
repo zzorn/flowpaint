@@ -2,6 +2,7 @@ package org.flowpaint.ui.editors
 
 import java.awt.{Graphics2D, Color}
 import util.GraphicsUtils._
+import util.MathUtils._
 import util.{ColorUtils, MathUtils}
 /**
  * A 2D slider editor visualizing the editor with a volume triangle and a fade.
@@ -9,7 +10,7 @@ import util.{ColorUtils, MathUtils}
  * @author Hans Haggstrom
  */
 
-class FadeVolumeEditor extends Slider2DEditor {
+class SizeAlphaEditor extends Slider2DEditor {
 
   var hueProperty : String = null
   var saturationProperty : String = null
@@ -43,24 +44,20 @@ class FadeVolumeEditor extends Slider2DEditor {
     fillRectFunction(g2, 0,0,width, height, (rx :Float, ry : Float) => {
 
       // Triangle pattern
-      val centerDist = Math.abs( 0.5f - ry )
+      val centerDist = Math.abs( 0.5f - ry ) * 1.4f 
       val triangle = MathUtils.clampToZeroToOne( (centerDist - rx * 0.5f) * 100f )
-
-      // Darkness pattern
-      val darkness = (1f - rx* 0.5f)
 
       // Checker pattern
       val cx = ((rx * width).toInt / 16) % 2 == 0
       val cy = ((ry * height).toInt / 16) % 2 == 0
       val c = cx != cy
-      val checker = if ( c ) 0.666f else 0.888f
-
-      val light = MathUtils.interpolate( 0.1f, lig, triangle )
+      val checker = if ( c ) 0.333f else 0.666f
 
       // Alpha fade
-      val t = 1f - Math.cos( ry * Math.Pi / 2 ).toFloat
-      val s = MathUtils.interpolate( t, sat, 0 )
-      val l = MathUtils.interpolate( t, light, checker ) * darkness
+      val t = 1f - Math.cos( (1f - ry) * Math.Pi / 2 ).toFloat
+      val s = lerp( t, sat, 0 )
+      val l0 = lerp( t, lig, lerp( 0.2f, checker, triangle) )
+      val l = lerp( 0.17f, l0, l0 * triangle )
 
       val (r,g,b) = ColorUtils.HSLtoRGB( hue, s, l )
 

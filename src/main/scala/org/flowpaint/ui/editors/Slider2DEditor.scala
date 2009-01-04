@@ -46,12 +46,17 @@ abstract class Slider2DEditor extends EditorWithAxes {
 
     val w = width - borderSize*2
     val h = height - borderSize*2
-    val x = borderSize +  w * horizontalAxis.relativePosition
-    val y = borderSize + h * verticalAxis.relativePosition
+    val (rx, ry) = calculateIndicatorRelativePosition()
+    val x = borderSize +  w * rx
+    val y = borderSize + h * ry
 
     val size = 7
 
     drawDiamondIndicator( g2, blackColor, darkColor, mediumColor, lightColor, size, x, y )
+  }
+
+  protected def calculateIndicatorRelativePosition() : (Float, Float) = {
+    (horizontalAxis.relativePosition, verticalAxis.relativePosition)
   }
 
   protected def updateAxisFromMouseWheelEvent(rotation: Int)  {

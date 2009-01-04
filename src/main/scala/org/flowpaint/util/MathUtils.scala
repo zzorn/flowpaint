@@ -7,6 +7,7 @@ package org.flowpaint.util
  */
 
 object MathUtils {
+  def lerp(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
   def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
 
   def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {

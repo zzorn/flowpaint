@@ -14,7 +14,7 @@ class HueEditor extends SliderEditor {
 
   val NUM_BANDS = 6
 
-  override val minSize = 128 //NUM_BANDS * 24
+  override val minSize = NUM_BANDS * 24
 
   def calculateHue( x : Float, y : Float ) : Float = {
 

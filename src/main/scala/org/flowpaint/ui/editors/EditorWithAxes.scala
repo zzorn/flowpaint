@@ -87,7 +87,7 @@ abstract class EditorWithAxes extends Editor {
       parameter = getStringProperty(id("editedParameter"), null)
       startValue = getFloatProperty(id("startValue"), 0f)
       endValue = getFloatProperty(id("endValue"), 1f)
-      description = getStringProperty(id("description"), "")
+      description = getStringProperty(id("description"), parameter)
 
       updateRelativePosition()
     }

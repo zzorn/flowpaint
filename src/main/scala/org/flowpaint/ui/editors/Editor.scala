@@ -16,8 +16,13 @@ abstract class Editor extends Configuration {
   private var currentUi : JComponent = null
 
   def updateUi( changedData : Data, changedProperty : String ) {
+
+    onEditedDataChanged(changedProperty )
+
     if ( currentUi != null) currentUi.repaint()
   }
+
+  def onEditedDataChanged(changedProperty : String) {}
 
   /**
    * Changes the data that should be edited.

@@ -3,11 +3,11 @@ import java.awt.{Graphics2D, Color}
 import util.{MathUtils}
 import util.GraphicsUtils._
 /**
- * A simple slider editor for editing a size, showing as image a simple triangle that grows to the right.
+ * A simple slider editor, showing as image a simple triangle that grows to the right.
  *
  * @author Hans Haggstrom
  */
-class SizeSliderEditor extends SliderEditor {
+class VolumeSliderEditor extends SliderEditor {
 
   protected def paintBackground(g2: Graphics2D, width: Int, height: Int) {
 
@@ -21,8 +21,7 @@ class SizeSliderEditor extends SliderEditor {
 
     antialiased(g2) {
 
-      val border = 2
-      triangle( g2,  new Color( r, g, b ), 0, height / 2, width, border, width, height - border )
+      triangle( g2,  new Color( r, g, b ), 0, height / 2, width, 0, width, height )
 
     }
   }

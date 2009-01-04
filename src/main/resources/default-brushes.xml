@@ -30,13 +30,13 @@
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors>
-      <object type="org.flowpaint.ui.editors.SizeSliderEditor">
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
         <num id="startValue">0.1</num>
         <num id="endValue">100</num>
         <text id="editedParameter">maxRadius</text>
         <text id="description">Stroke Size</text>
       </object>
-      <object type="org.flowpaint.ui.editors.SizeSliderEditor">
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
         <num id="startValue">0</num>
         <num id="endValue">1</num>
         <num id="red">0.5</num>
@@ -59,6 +59,18 @@
         <text id="horizontalEditedParameter">maxRadius</text>
         <text id="horizontalDescription">Size</text>
       </object>
+
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">saturation</text>
+        <text id="verticalDescription">Saturation</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">0</num>
+        <text id="horizontalEditedParameter">lightness</text>
+        <text id="horizontalDescription">Lightness</text>
+      </object>
+
     </editors>
   </brush>
 
@@ -156,11 +168,11 @@
   </brush>
   <brush description="Pencil" id="Pencil">
     <settings>
-      <num id="saturationDelta">0.0</num>
+      <num id="saturation">0.2</num>
       <num id="maxRadius">2.5</num>
       <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
+      <num id="lightness">0.2</num>
+      <num id="hue">0.2</num>
       <text id="gradient">default.gradients.black</text>
     </settings>
     <pathProcessors>
@@ -175,12 +187,50 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">1.0</num>
+      <object type="org.flowpaint.ink.ColorInk">
       </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
-    <editors></editors>
+    <editors>
+
+
+      <object type="org.flowpaint.ui.editors.FadeVolumeEditor">
+        <num id="red">0.5</num>
+        <num id="green">0.5</num>
+        <num id="blue">0.5</num>
+
+        <text id="hueParameter">hue</text>
+        <text id="saturationParameter">saturation</text>
+        <text id="lightnessParameter">lightness</text>
+
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">alpha</text>
+        <text id="verticalDescription">Transparency</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">10</num>
+        <text id="horizontalEditedParameter">maxRadius</text>
+        <text id="horizontalDescription">Size</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">saturation</text>
+        <text id="verticalDescription">Saturation</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">0</num>
+        <text id="horizontalEditedParameter">lightness</text>
+        <text id="horizontalDescription">Lightness</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.HueEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <text id="editedParameter">hue</text>
+        <text id="description">Hue</text>
+      </object>
+
+    </editors>
   </brush>
   <brush description="Rake" id="Rake">
     <settings>

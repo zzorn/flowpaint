@@ -4,7 +4,7 @@ package org.flowpaint.ui.editors
 
 
 import java.awt.event._
-import java.awt.{Graphics2D, Dimension, Graphics}
+import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.{JPanel, JComponent}
 import java.awt.image.BufferedImage
 import util.{GraphicsUtils, StringUtils, MathUtils}
@@ -15,6 +15,14 @@ import util.{GraphicsUtils, StringUtils, MathUtils}
  */
 
 abstract class EditorWithAxes extends Editor {
+
+  protected val blackColor: Color = new java.awt.Color( 0,0,0)
+  protected val darkColor: Color = new java.awt.Color( 0.25f, 0.25f, 0.25f )
+  protected val mediumColor: Color = new java.awt.Color( 0.75f, 0.75f, 0.75f)
+  protected val lightColor: Color = new java.awt.Color( 1f,1f,1f )
+
+  protected val borderSize = 3
+
   class BackgroundCachingImagePanel(backgroundPainter: (Graphics2D, Int, Int) => Unit,
                                    foregroundPainter: (Graphics2D, Int, Int) => Unit) extends JPanel {
     addComponentListener(new ComponentListener {
@@ -34,8 +42,8 @@ abstract class EditorWithAxes extends Editor {
     private var backgroundBuffer: BufferedImage = null
 
     def repaintBackground() {
-      val w: Int = getWidth
-      val h: Int = getHeight
+      val w: Int = getWidth- borderSize*2
+      val h: Int = getHeight- borderSize*2
 
       if ( w > 0 && h > 0) {
         backgroundBuffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
@@ -52,9 +60,13 @@ abstract class EditorWithAxes extends Editor {
       if (w > 0 && h > 0 ) {
         if (backgroundBuffer == null) repaintBackground
 
-        g2.drawImage(backgroundBuffer, 0, 0, null)
+        g2.drawImage(backgroundBuffer, borderSize, borderSize, null)
+
+        paintBackgroundBorder(g2, w, h)
 
         foregroundPainter(g2, w, h)
+
+        paintForegroundBorder(g2, w, h)
       }
     }
   }
@@ -87,9 +99,11 @@ abstract class EditorWithAxes extends Editor {
     }
 
     def updateRelativePosition() {
-      val value = editedData.getFloatProperty(parameter, 0.5f * (startValue + endValue))
-      relativePosition = if (startValue == endValue) startValue
-      else (value - startValue) / (endValue - startValue)
+      if (parameter != null) {
+        val value = editedData.getFloatProperty(parameter, 0.5f * (startValue + endValue))
+        relativePosition = if (startValue == endValue) startValue
+        else (value - startValue) / (endValue - startValue)
+      }
     }
   }
 
@@ -103,7 +117,8 @@ abstract class EditorWithAxes extends Editor {
   protected def paintIndicator( g2 : Graphics2D, width : Int, height : Int)
   protected def minSize : Int
 
-  private var view : BackgroundCachingImagePanel = null
+  protected var view : BackgroundCachingImagePanel = null
+  private var updateOngoing = false
 
   protected final def createUi(): JComponent = {
 
@@ -116,8 +131,12 @@ abstract class EditorWithAxes extends Editor {
     view.addMouseMotionListener(mouseUpdateListener)
     view.addMouseWheelListener(mouseUpdateListener)
 
+    onEditorCreated()
+
     return view
   }
+
+  def onEditorCreated() {}
 
   private val mouseUpdateListener = new MouseAdapter() {
     override def mousePressed(e: MouseEvent) {updatePosition(e)}
@@ -129,7 +148,8 @@ abstract class EditorWithAxes extends Editor {
     override def mouseWheelMoved(e: MouseWheelEvent) {
       val amount = e.getWheelRotation()
       updateAxisFromMouseWheelEvent(amount)
-      updateBrush()
+
+      updateBrushAndIgnoreChangeEvents()
     }
   }
 
@@ -142,9 +162,53 @@ abstract class EditorWithAxes extends Editor {
 
     updateRelativePosition(rx, ry)
 
-    updateBrush()
+    updateBrushAndIgnoreChangeEvents()
   }
 
+  def updateBrushAndIgnoreChangeEvents() {
+    updateOngoing = true
 
+    updateBrush()
+    
+    updateOngoing = false
+  }
+
+  override def onEditedDataChanged(changedProperty : String) {
+    if (!updateOngoing) updateAxisFromEditedData()
+
+    if ( view != null && (!propertiesThatShouldCauseBackgroundRedraw.isEmpty && changedProperty == null) ||
+      propertiesThatShouldCauseBackgroundRedraw.contains( changedProperty ) )
+      {
+        view.repaintBackground()
+      }
+
+    if (view != null) view.repaint()
+  }
+
+  var propertiesThatShouldCauseBackgroundRedraw : List[String] = Nil
+
+  def updateAxisFromEditedData()
+
+
+
+  protected def paintBackgroundBorder(g2: Graphics2D, width : Int, height: Int): Unit = {
+
+    val w = width
+    val h = height
+
+    g2.setColor(darkColor)
+    g2.drawRect( 2,2,w-5,h-5 )
+  }
+
+  protected def paintForegroundBorder(g2: Graphics2D, width : Int, height: Int): Unit = {
+
+    val w = width
+    val h = height
+
+    g2.setColor(mediumColor)
+    g2.drawRect( 1,1,w-3,h-3 )
+    g2.setColor(mediumColor)
+    g2.drawRect( 0,0,w-1,h-1 )
+  }
 
 }

@@ -120,4 +120,28 @@ object GraphicsUtils {
   }
 
 
+  def drawRhomb( g: Graphics, color : Color, r : Float, x : Float, y : Float ) {
+    triangle( g, color, x-r, y, x, y-r, x+r,y )
+    triangle( g, color, x+r, y, x, y+r, x-r,y )
+  }
+
+  def drawDiamondIndicator( g: Graphics,
+                          borderColor : Color,
+                          darkColor : Color,
+                          mediumColor : Color, 
+                          lightColor : Color,
+                          size : Float,
+                          x : Float, y : Float ) {
+    val g2 = toG2(g)
+
+    g2.setColor(darkColor)
+
+    drawRhomb( g, borderColor, size, x, y )
+    drawRhomb( g, mediumColor, size-1, x, y )
+    drawRhomb( g, darkColor,  size-2, x, y+1 )
+    drawRhomb( g, lightColor, size-2, x, y-1 )
+    drawRhomb( g, mediumColor, size-3, x, y )
+  }
+
+
 }

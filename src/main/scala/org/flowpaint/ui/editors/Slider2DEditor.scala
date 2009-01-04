@@ -23,10 +23,6 @@ abstract class Slider2DEditor extends EditorWithAxes {
   protected val minSize = 128
 
   private val STROKE_1 = new BasicStroke(1)
-  private val blackColor: Color = new java.awt.Color( 0,0,0)
-  private val darkColor: Color = new java.awt.Color( 0.25f, 0.25f, 0.25f )
-  private val mediumColor: Color = new java.awt.Color( 0.75f, 0.75f, 0.75f)
-  private val lightColor: Color = new java.awt.Color( 1f,1f,1f )
 
 
   /**
@@ -48,40 +44,15 @@ abstract class Slider2DEditor extends EditorWithAxes {
    */
   protected def paintIndicator(g2: Graphics2D, width : Int, height: Int): Unit = {
 
+    val w = width - borderSize*2
+    val h = height - borderSize*2
+    val x = borderSize +  w * horizontalAxis.relativePosition
+    val y = borderSize + h * verticalAxis.relativePosition
 
-    def line(color: java.awt.Color, x1: Float, y1: Float, x2: Float, y2: Float) {
-      g2.setStroke(STROKE_1)
-      g2.setColor(color)
-      g2.drawLine(x1.toInt, y1.toInt, x2.toInt, y2.toInt)
-
-    }
-
-    def drawRhomb( color : Color, r : Float, x : Float, y : Float ) {
-      triangle( g2, color, x-r, y, x, y-r, x+r,y )
-      triangle( g2, color, x+r, y, x, y+r, x-r,y )
-    }
-
-    val w = width
-    val h = height
     val size = 7
-    val x = w * horizontalAxis.relativePosition
-    val y = h * verticalAxis.relativePosition
 
-    g2.setColor(darkColor)
-    g2.drawRect( 2,2,w-5,h-5 )
-
-    drawRhomb( darkColor, size+2, x, y )
-    drawRhomb( mediumColor, size, x, y )
-    drawRhomb( darkColor,  size, x, y+2 )
-    drawRhomb( lightColor, size, x, y-2 )
-    drawRhomb( mediumColor, size-2, x, y )
-
-    g2.setColor(mediumColor)
-    g2.drawRect( 1,1,w-3,h-3 )
-    g2.setColor(mediumColor)
-    g2.drawRect( 0,0,w-1,h-1 )
+    drawDiamondIndicator( g2, blackColor, darkColor, mediumColor, lightColor, size, x, y )
   }
-
 
   protected def updateAxisFromMouseWheelEvent(rotation: Int)  {
     horizontalAxis.relativePosition = util.MathUtils.clampToZeroToOne(horizontalAxis.relativePosition + WHEEL_STEP * rotation)
@@ -100,8 +71,10 @@ abstract class Slider2DEditor extends EditorWithAxes {
   }
 
 
-
-
+  def updateAxisFromEditedData() = {
+    verticalAxis.updateRelativePosition
+    horizontalAxis.updateRelativePosition
+  }
 }
 
 

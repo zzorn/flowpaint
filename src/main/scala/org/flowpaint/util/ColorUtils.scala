@@ -127,9 +127,19 @@ object ColorUtils {
 
       val q = if (lightness < 0.5f) (lightness * (1f + saturation)) else (lightness + saturation - lightness * saturation)
       val p = 2 * lightness - q;
-      val r = hueToColor(p, q, hue + 1f / 3f)
-      val g = hueToColor(p, q, hue)
-      val b = hueToColor(p, q, hue - 1f / 3f)
+      var r = hueToColor(p, q, hue + 1f / 3f)
+      var g = hueToColor(p, q, hue)
+      var b = hueToColor(p, q, hue - 1f / 3f)
+
+      // Clamp
+      if (r < 0f) r = 0f
+      else if (r > 1f) r = 1f
+
+      if (g < 0f) g = 0f
+      else if (g > 1f) g = 1f
+
+      if (b < 0f) b = 0f
+      else if (b > 1f) b = 1f
 
       (r, g, b)
     }

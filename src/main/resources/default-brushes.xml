@@ -9,27 +9,57 @@
       <num id="hueDelta">0.0</num>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.NoiseInk">
+      <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">0.3</num>
         <num id="noiseScaleAlong">3.0</num>
         <num id="alphaWithDistance">0.8</num>
         <num id="octaves">3.0</num>
         <text id="gradient">default.gradients.charcoal</text>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
-    <editors></editors>
+    <editors>
+      <object type="org.flowpaint.ui.editors.SizeSliderEditor">
+        <num id="startValue">0.1</num>
+        <num id="endValue">100</num>
+        <text id="editedParameter">maxRadius</text>
+        <text id="description">Stroke Size</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.SizeSliderEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <num id="red">0.5</num>
+        <num id="green">0.5</num>
+        <num id="blue">0.5</num>
+        <text id="editedParameter">alpha</text>
+        <text id="description">Transparency</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.FadeVolumeEditor">
+        <num id="red">0.5</num>
+        <num id="green">0.5</num>
+        <num id="blue">0.5</num>
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">alpha</text>
+        <text id="verticalDescription">Transparency</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">80</num>
+        <text id="horizontalEditedParameter">maxRadius</text>
+        <text id="horizontalDescription">Size</text>
+      </object>
+    </editors>
   </brush>
 
   <brush description="Dots" id="Dots">
@@ -42,29 +72,29 @@
       <text id="gradient">default.gradients.dots</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.0</num>
         <num id="maxRadius">55.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.NoiseInk">
+      <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">3.7</num>
         <num id="noiseScaleAlong">0.05</num>
         <num id="alphaWithDistance">1.0</num>
         <num id="octaves">3.0</num>
         <text id="propertyName">distance</text>
-      </processor>
-      <processor type="org.flowpaint.filters.AlphaFromPressureInk">
+      </object>
+      <object type="org.flowpaint.filters.AlphaFromPressureInk">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.ColorInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.ColorInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -78,21 +108,21 @@
       <text id="gradient">default.gradients.ink</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.8</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -106,21 +136,21 @@
       <text id="gradient">default.gradients.ink</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.8</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -134,21 +164,21 @@
       <text id="gradient">default.gradients.black</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.35</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -162,21 +192,21 @@
       <text id="gradient">default.gradients.rake</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -190,21 +220,21 @@
       <text id="gradient">default.gradients.smoothBlack</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.5</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -218,21 +248,21 @@
       <text id="gradient">default.gradients.smoothGrey</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.5</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -246,21 +276,21 @@
       <text id="gradient">default.gradients.smoothWhite</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.5</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -274,29 +304,29 @@
       <text id="gradient">default.gradients.spray</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.5</num>
         <num id="maxRadius">26.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.NoiseInk">
+      <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">100.0</num>
         <num id="noiseScaleAlong">100.0</num>
         <num id="alphaWithDistance">1.0</num>
         <num id="octaves">3.0</num>
         <text id="propertyName">distance</text>
-      </processor>
-      <processor type="org.flowpaint.filters.AlphaFromPressureInk">
+      </object>
+      <object type="org.flowpaint.filters.AlphaFromPressureInk">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.ColorInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.ColorInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -310,21 +340,21 @@
       <text id="gradient">default.gradients.white</text>
     </settings>
     <pathProcessors>
-      <processor type="org.flowpaint.filters.ZeroLengthSegmentFilter"></processor>
-      <processor type="org.flowpaint.filters.DistanceCalculatorFilter"></processor>
-      <processor type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
         <num id="tilt">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.RadiusFromPressureFilter">
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">1.0</num>
-      </processor>
-      <processor type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></processor>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-      <processor type="org.flowpaint.ink.GradientInk">
+      <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
-      </processor>
-      <processor type="org.flowpaint.ink.AdjustHSLInk"></processor>
+      </object>
+      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
     </pixelProcessors>
     <editors></editors>
   </brush>

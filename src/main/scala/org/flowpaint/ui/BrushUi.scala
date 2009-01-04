@@ -1,5 +1,6 @@
 package org.flowpaint.ui
 import brush.Brush
+import editors.Editor
 import java.awt.{Dimension, Color}
 import javax.swing.{JPanel, JLabel}
 import net.miginfocom.swing.MigLayout
@@ -41,11 +42,19 @@ class BrushUi {
         editorPanel.addUi( preview)
 
         // Create the editors for editing this brush
+        brush.createEditors foreach { (e : Editor) => editorPanel.addUi( e.ui )  }
+
+
+/*
+
         brush.editors.elements.foreach( (d: DataEditor) => {
+*/
 /* Takes up space and kind of redundant, so commented out.
           editorPanel.addUi( new JLabel( d.title ))
 */
+/*
           editorPanel.addUi( d.createEditor( brush.settings, brush )  ) } )
+*/
 
       }
 

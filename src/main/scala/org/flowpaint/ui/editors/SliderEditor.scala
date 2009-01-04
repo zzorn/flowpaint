@@ -3,10 +3,10 @@ package org.flowpaint.ui.editors
 
 import _root_.org.flowpaint.property.Data
 import java.awt._
+import java.awt.event._
+
+import java.awt.image.BufferedImage
 import javax.swing.{JPanel, JComponent}
-import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
-
-
 abstract sealed class SliderOrientation
 case object VerticalSlider extends SliderOrientation()
 case object HorizontalSlider extends SliderOrientation()
@@ -16,73 +16,34 @@ case object HorizontalSlider extends SliderOrientation()
  *
  * @author Hans Haggstrom
  */
-abstract class SliderEditor extends Editor {
+abstract class SliderEditor extends EditorWithAxes {
 
-  var startValue = 0f
-  var endValue = 1f
-  var orientation: SliderOrientation = HorizontalSlider
-  var editedParameter : String = null
+  val axis = new Axis()
 
-  var relativePosition = 0f
-
-  private var background :JComponent = null
+  val orientation : SliderOrientation= HorizontalSlider
 
   private val STROKE_1 = new BasicStroke(1)
   private val WHEEL_STEP = 0.01f
-  private val MIN_SIZE = 32
+  protected val minSize = 32
 
   private val darkColor: Color = new java.awt.Color( 0.25f, 0.25f, 0.25f )
   private val mediumColor: Color = new java.awt.Color( 0.75f, 0.75f, 0.75f)
   private val lightColor: Color = new java.awt.Color( 1f,1f,1f )
 
-  private def calculateRelativePosition() : Float = {
-    val value = editedData.getFloatProperty(editedParameter, 0.5f * (startValue + endValue))
-    if (startValue == endValue) startValue
-    else (value - startValue) / (endValue - startValue)
-  }
 
 
-  /**
-   * Renders a preview background of some sort for the slider component.
-   */
-  protected def paintBackground( g2 : Graphics2D, width : Int, height: Int )
-
-
-  protected def createUi(): JComponent = {
-
-    // Get editor settings
-    editedParameter = getStringProperty( "editedParameter", null )
-    startValue = getFloatProperty( "startValue", 0f )
-    endValue = getFloatProperty( "endValue", 1f )
-    relativePosition = calculateRelativePosition()
-
-    // Create the UI component
-    background = new JPanel() {
-      override def paintComponent(g: Graphics) {
-        val g2: Graphics2D = g.asInstanceOf[Graphics2D]
-
-        val w = getWidth()
-        val h = getHeight()
-
-        paintBackground(g2, w, h)
-        paintIndicator( g2, w, h )
-      }
-    }
-    background.setPreferredSize(new Dimension(MIN_SIZE, MIN_SIZE))
-    background.setToolTipText(getStringProperty( "description", null ))
-    background.addMouseListener(mouseUpdateListener)
-    background.addMouseMotionListener(mouseUpdateListener)
-    background.addMouseWheelListener(mouseUpdateListener)
-
-    return background
-  }
+  def description = axis.description
 
   def isVertical: Boolean = orientation == VerticalSlider
+
+  def initializeAxis() {
+    axis.initialize(null)
+  }
 
   /**
    *  Paint the indicator showing the current position
    */
-  private def paintIndicator(g2: Graphics2D, width : Int, height: Int): Unit = {
+  protected def paintIndicator(g2: Graphics2D, width : Int, height: Int): Unit = {
 
 
     def line(color: java.awt.Color, x1: Float, y1: Float, x2: Float, y2: Float) {
@@ -118,7 +79,7 @@ abstract class SliderEditor extends Editor {
     val w = width
     val h = height
     val size = (Math.min(w, h) / 3).toInt
-    val r = relativePosition
+    val r = axis.relativePosition
     val dx = if (isVertical) 0f else 1f
     val dy = if (isVertical) 1f else 0f
     val x1 = if (isVertical) 0f else r * w
@@ -140,39 +101,22 @@ abstract class SliderEditor extends Editor {
   }
 
 
-  private def updatePosition(e: MouseEvent) {
-    val x = e.getX
-    val y = e.getY
 
-    if (isVertical)
-      relativePosition = (1.0f * y) / (1.0f * background.getHeight())
-    else
-      relativePosition = (1.0f * x) / (1.0f * background.getWidth())
+  protected def updateRelativePosition(relativeX: Float, relativeY: Float) {
 
-    relativePosition = util.MathUtils.clampToZeroToOne(relativePosition)
+    if (isVertical) axis.relativePosition = relativeY
+    else axis.relativePosition = relativeX
 
-    updateBrush()
+    axis.relativePosition = util.MathUtils.clampToZeroToOne(axis.relativePosition)
   }
 
-  private val mouseUpdateListener = new MouseAdapter() {
-    override def mousePressed(e: MouseEvent) {updatePosition(e)}
-
-    override def mouseReleased(e: MouseEvent) {updatePosition(e)}
-
-    override def mouseDragged(e: MouseEvent) {updatePosition(e)}
-
-    override def mouseWheelMoved(e: MouseWheelEvent) {
-      val amount = e.getWheelRotation()
-
-      relativePosition = util.MathUtils.clampToZeroToOne(relativePosition + WHEEL_STEP * amount)
-
-      updateBrush()
-    }
+  protected def updateAxisFromMouseWheelEvent(rotation: Int) {
+    axis.relativePosition = util.MathUtils.clampToZeroToOne(axis.relativePosition + WHEEL_STEP * rotation)
   }
 
 
-  private def updateBrush() {
-    editedData.setFloatProperty(editedParameter, util.MathUtils.interpolate(relativePosition, startValue, endValue))
+  protected def updateBrush() {
+    axis.updateEditedData()
   }
 
 

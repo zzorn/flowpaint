@@ -1,7 +1,7 @@
 package org.flowpaint.gradient
 
-import _root_.org.flowpaint.property.Data
 import _root_.scala.xml.Elem
+import property.{DataImpl, Data}
 import util.{DataSample, AbstractTome, Tome}
 /**
  * 
@@ -22,13 +22,16 @@ trait Gradient extends Tome {
     else if (t > 1f) 1f
     else t
 
-    gradientValue( zeroToOne  )
+    val data = new DataImpl()
+    getValue( zeroToOne, data  )
+
+    data
   }
 
   /**
    * Map a floating point value between 0 and 1 to a DataSample, representing a color or other channel values for a picture
    */
-  protected def gradientValue( zeroToOne : Float ) : Data
+  def getValue( zeroToOne : Float, outputData : Data )
 
   
 }

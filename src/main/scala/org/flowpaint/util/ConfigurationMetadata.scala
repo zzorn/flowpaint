@@ -53,7 +53,7 @@ class ConfigurationMetadata[T <: Configuration](processorType: Class[_ <: T], in
         instance
     }
 
-    def toXML() : Elem = <conf type={processorType.getName}>{settings.toXML()}</conf>
+    def toXML() : Elem = <object type={processorType.getName}>{settings.toXML()}</object>
 
 }
 

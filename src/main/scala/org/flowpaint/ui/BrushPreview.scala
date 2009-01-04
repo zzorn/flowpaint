@@ -93,6 +93,8 @@ class BrushPreview(val brush: Brush,
 
     val path : Path = stroke.addPath( brush )
 
+    path.addPoint( new DataImpl( brush.settings ) )
+
     def generatePoint(i: Int) {
       val f: Float = (1f * i) / (1f * STEPS)
 

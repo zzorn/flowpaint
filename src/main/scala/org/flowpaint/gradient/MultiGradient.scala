@@ -55,7 +55,7 @@ class MultiGradient(val identifier: String) extends Gradient {
     private val tempSearchPoint = new GradientPoint(0, new DataImpl())
 
 
-    protected def gradientValue(zeroToOne: Float): Data = {
+    def getValue( zeroToOne : Float, outputData : Data )  {
 
 /*
         println("Gradient point "+zeroToOne+" requested for " + identifier)
@@ -67,18 +67,16 @@ class MultiGradient(val identifier: String) extends Gradient {
                 return java.util.Collections.binarySearch(myPoints, tempSearchPoint);
             }
 
-        val output = new DataImpl()
-
         val pointsSize = myPoints.size()
 
         if (pointsSize == 0)
             {
-                // No values, return an empty sample
+                // No values
             }
         else if (pointsSize == 1)
             {
                 // Only one point, return its value
-                output.setValuesFrom(myPoints.get(0).data)
+                outputData.setValuesFrom(myPoints.get(0).data)
             }
         else
             {
@@ -86,7 +84,7 @@ class MultiGradient(val identifier: String) extends Gradient {
                 if (pointIndex >= 0)
                     {
                         // Found exact value match, return that point
-                        output.setValuesFrom(myPoints.get(pointIndex).data)
+                        outputData.setValuesFrom(myPoints.get(pointIndex).data)
                     }
                 else
                     {
@@ -97,12 +95,12 @@ class MultiGradient(val identifier: String) extends Gradient {
                         if (insertionPointIndex == pointsSize)
                             {
                                 // Last point is closest
-                                output.setValuesFrom(myPoints.get(pointsSize - 1).data)
+                                outputData.setValuesFrom(myPoints.get(pointsSize - 1).data)
                             }
                         else if (insertionPointIndex == 0)
                             {
                                 // First color is closest
-                                output.setValuesFrom(myPoints.get(0).data)
+                                outputData.setValuesFrom(myPoints.get(0).data)
                             }
                         else
                             {
@@ -113,13 +111,11 @@ class MultiGradient(val identifier: String) extends Gradient {
 
                                 val relativePosition = (zeroToOne - startValue) / (endValue - startValue)
 
-                                output.setValuesFrom(startPoint.data)
-                                output.interpolate(relativePosition, endPoint.data)
+                                outputData.setValuesFrom(startPoint.data)
+                                outputData.interpolate(relativePosition, endPoint.data)
                             }
                     }
             }
-
-        return output
     }
 
     /**

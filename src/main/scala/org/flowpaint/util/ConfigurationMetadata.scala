@@ -55,6 +55,8 @@ class ConfigurationMetadata[T <: Configuration](processorType: Class[_ <: T], in
 
     def toXML() : Elem = <object type={processorType.getName}>{settings.toXML()}</object>
 
+
+  override def hashCode: Int = (13 + processorType.hashCode) ^ settings.hashCode
 }
 
 /**

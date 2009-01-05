@@ -78,6 +78,7 @@ class StrokeTool extends Tool {
             // TODO: add with a proper undoable command later
             FlowPaintController.currentPainting.currentLayer.addStroke(currentStroke)
 
+            FlowPaintController.addRecentBrush( currentStroke.brush )
         }
 
     def addStrokePoint(stroke: Stroke, point: Data)
@@ -98,11 +99,6 @@ class StrokeTool extends Tool {
         {
             // Skip if we dont have a  stroke
             if (currentStroke == null) return
-
-
-            val brush: Brush = currentStroke.brush
-            FlowPaintController.addRecentBrush(brush)
-
 
             // Temp:
             //      sketchController.currentPainting.currentLayer.addStroke( stroke )

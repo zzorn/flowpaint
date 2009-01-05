@@ -75,4 +75,5 @@ class ListenableList[T](initialList: List[T], additionListener: (ListenableList[
     }
 
 
+  override def hashCode: Int = elementList.hashCode
 }

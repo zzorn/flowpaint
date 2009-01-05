@@ -2,8 +2,8 @@ package org.flowpaint.brush
 
 import _root_.scala.collection.jcl.{HashSet, ArrayList}
 import _root_.scala.xml.Node
-import filters.{StrokeListener, PathProcessorMetadata, StrokeFilter, PathProcessor}
-import ink.{PixelProcessorMetadata, Ink}
+import filters.{StrokeListener, StrokeFilter, PathProcessor}
+import ink.Ink
 import javax.swing.JComponent
 import pixelprocessors.PixelProcessor
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}

@@ -117,7 +117,7 @@
   <brush description="Ink, thick" id="Ink, thick">
     <settings>
       <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">8.0</num>
+      <num id="maxRadius">12.0</num>
       <num id="alpha">1.0</num>
       <num id="lightnessDelta">0.0</num>
       <num id="hueDelta">0.0</num>
@@ -176,12 +176,14 @@
   </brush>
   <brush description="Pencil" id="Pencil">
     <settings>
-      <num id="saturation">0.2</num>
-      <num id="maxRadius">2.5</num>
+      <num id="saturation">0.7</num>
+      <num id="maxRadius">6</num>
       <num id="alpha">1.0</num>
-      <num id="lightness">0.2</num>
-      <num id="hue">0.2</num>
+      <num id="lightness">0.5</num>
+      <num id="hue">0.02</num>
       <text id="gradient">default.gradients.black</text>
+      <text id="edgeGradient">default.gradients.white</text>
+      <text id="flowGradient">default.gradients.rake</text>
     </settings>
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
@@ -202,17 +204,63 @@
 
       <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">positionAcrossStroke</text>
-        <text id="gradient">default.gradients.white</text>
-        <text id="alpha">gradientAlpha</text>
+        <text id="gradientProperty">edgeGradient</text>
+        <text id="alpha">edgeAlpha</text>
         <text id="red"></text>
         <text id="green"></text>
         <text id="blue"></text>
       </object>
 
+
+
+      <object type="org.flowpaint.pixelprocessors.Wrap">
+        <text id="value">distance</text>
+        <num id="maxWrap">1</num>
+        <num id="inputScale">0.01</num>
+        <text id="result">flowGradientPosition</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Constant">
+        <num id="grA">1</num>
+        <num id="grR">1</num>
+        <num id="grG">1</num>
+        <num id="grB">1</num>
+      </object>
+
+      <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
+        <text id="gradientPosition">flowGradientPosition</text>
+        <text id="gradientProperty">flowGradient</text>
+        <text id="alpha">grA</text>
+        <text id="red">grR</text>
+        <text id="green">grG</text>
+        <text id="blue">grB</text>
+      </object>
+
+
+
       <object type="org.flowpaint.pixelprocessors.Multiply">
         <text id="factor1">alpha</text>
-        <text id="factor2">gradientAlpha</text>
+        <text id="factor2">edgeAlpha</text>
+        <text id="factor3">grA</text>
         <text id="result">alpha</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Multiply">
+        <text id="factor1">red</text>
+        <text id="factor2">grR</text>
+        <text id="result">red</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Multiply">
+        <text id="factor1">green</text>
+        <text id="factor2">grG</text>
+        <text id="result">green</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Multiply">
+        <text id="factor1">blue</text>
+        <text id="factor2">grB</text>
+        <text id="result">blue</text>
       </object>
 
 <!--
@@ -232,9 +280,15 @@
 
 
       <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
-        <text id="editedParameter">hue</text>
+        <text id="editedParameter">edgeGradient</text>
         <text id="tomeType">org.flowpaint.gradient.Gradient</text>
-        <text id="description">Gradient</text>
+        <text id="description">Edge type</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
+        <text id="editedParameter">flowGradient</text>
+        <text id="tomeType">org.flowpaint.gradient.Gradient</text>
+        <text id="description">Gradient along stroke</text>
       </object>
 
       <object type="org.flowpaint.ui.editors.SizeAlphaEditor">

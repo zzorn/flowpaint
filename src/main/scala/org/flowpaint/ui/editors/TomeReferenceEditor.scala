@@ -1,6 +1,5 @@
 package org.flowpaint.ui.editors
 
-import _root_.scala.swing.event.ActionEvent
 import java.awt.Dimension
 import java.awt.event.ActionListener
 import javax.swing.JComponent

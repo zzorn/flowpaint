@@ -64,6 +64,36 @@ object MathUtils {
       v
   }
 
+  def wrap(a: Float, size : Float): Float = {
+
+    if (size <= 0) return 0
+
+    val v = a % size
+
+    if (v < 0)
+      v + size
+    else
+      v
+  }
+
+/*
+  def wrap(a: Float, start : Float, end : Float): Float = {
+    val min = Math.min(start, end).toFloat
+    val max = Math.max(start, end).toFloat
+
+    val size = max - min
+
+    if (size <= 0) return min
+
+    val v = (a - min) % size
+
+    if (v < 0)
+      v + size + min
+    else
+      v + min
+  }
+*/
+
   /**
    * Converts a function that maps doubles to -1..1 to a function that maps floats or doubles to 0..1 floats.
    */

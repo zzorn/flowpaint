@@ -18,9 +18,9 @@ class ColorInk() extends Ink {
 
     val hue = pixelData.getFloatProperty( PropertyRegister.HUE, 0 )
     val saturation = pixelData.getFloatProperty( PropertyRegister.SATURATION, 0 )
-    val brightness = pixelData.getFloatProperty( PropertyRegister.LIGHTNESS, 0 )
+    val lightness = pixelData.getFloatProperty( PropertyRegister.LIGHTNESS, 0 )
 
-    val (red, green, blue )= util.ColorUtils.HSLtoRGB( hue, saturation, brightness )
+    val (red, green, blue )= util.ColorUtils.HSLtoRGB( hue, saturation, lightness )
 
     val r = pixelData.getFloatProperty(PropertyRegister.RED,1) * red
     val g = pixelData.getFloatProperty(PropertyRegister.GREEN,1) * green

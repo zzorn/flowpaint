@@ -74,6 +74,11 @@ final class DataImpl extends Data {
         target.setValuesFrom(floatProperties)
     }
 
+    def getFloatPropertyNames(): List[String] = floatProperties.getPropertyNames()
+
+    def containsFloatProperty( name : String) : Boolean = floatProperties.contains( name )
+
+
     def setFloatProperties(values: DataSample) {
         floatProperties.setValuesFrom(values)
         notifyListeners()

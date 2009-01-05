@@ -47,7 +47,7 @@ class SizeAlphaEditor extends Slider2DEditor {
       val centerDist = Math.abs( 0.5f - ry ) * 1.4f 
       val triangle = MathUtils.clampToZeroToOne( (centerDist - rx * 0.5f) * 100f )
 
-      // Checker pattern
+      // Checkers pattern
       val cx = ((rx * width).toInt / 16) % 2 == 0
       val cy = ((ry * height).toInt / 16) % 2 == 0
       val c = cx != cy

@@ -165,7 +165,7 @@ object ColorUtils {
       h = if (max == r) (g - b) / d + (if (g < b) 6f else 0f)
         else if (max == g) (b - r) / d + 2f
         else if (max == b) (r - g) / d + 4f
-        else throw new IllegalStateException("Max color component doesn't match any of the color components - changed by max implementation?")
+        else throw new IllegalStateException("Unexpected internal state: Max color component doesn't match any of the color components")
 
       h /= 6f;
     }

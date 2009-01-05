@@ -92,10 +92,16 @@ trait Data {
     def getFloatProperties(target: DataSample)
 
     /**
+     * The names of the float properties available.
+     */
+    def getFloatPropertyNames(): List[String]
+
+    /**
      *   Copies the float properties of the specified sample to this Data.
      */
     def setFloatProperties(values: DataSample)
 
+    def containsFloatProperty( name : String) : Boolean
 
     /**
      *  Removes all properties.

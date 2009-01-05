@@ -1,5 +1,6 @@
 package org.flowpaint.util
 
+import _root_.scala.collection.Map
 import _root_.scala.xml.Elem
 import gnu.trove.{TFloatFunction, TIntFloatHashMap, TIntFloatProcedure}
 
@@ -10,6 +11,8 @@ import gnu.trove.{TFloatFunction, TIntFloatHashMap, TIntFloatProcedure}
  * @author Hans Haggstrom
  */
 class DataSample {
+
+  private val properties = new TIntFloatHashMap(2)
 
   def this( source : DataSample ) = {
     this()
@@ -44,9 +47,7 @@ class DataSample {
       }
     }
 
-  private val properties = new TIntFloatHashMap(2)
-
-  // OPTIMIZE: These use one some space both for each data sample.  
+  // OPTIMIZE: These use one some space both for each data sample.
   // But they can't be static as we work with data samples from several threads.. Could they be made thread local?
   private val interpolateProcedure = new InterpolateProcedure()
   private val copyValuesProcedure = new TIntFloatProcedure {
@@ -57,10 +58,19 @@ class DataSample {
   }
 
 
+  def getPropertyNames : List[String] = {
+    properties.keys().toList map PropertyRegister.getName
+  }
+
+  def getPropertyIds : List[Int] = {
+    properties.keys().toList
+  }
+
 
   def setValuesFrom( otherSample : DataSample ) {
     otherSample.properties.forEachEntry( copyValuesProcedure)
   }
+
 
   /**
    * Removes all current values

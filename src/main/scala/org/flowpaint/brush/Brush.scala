@@ -13,16 +13,6 @@ import ui.{BrushSliderUi, ParameterUi}
 import util.{DataSample, ListenableList, Tome}
 import org.flowpaint.util.ConfigurationMetadata
 
-/*
-case class BrushProperty(name: String,
-                        parameter: String,
-                        default: Float,
-                        min: Float,
-                        max: Float,
-                        editable: Boolean,
-                        gradient: Boolean)
-*/
-
 
 /**
  * Contains deserialization code for brushes.
@@ -91,38 +81,6 @@ class Brush(val identifier: String,
         list
     }
 
-/*
-    */
-/**
-     *    Applies the pixel processors of this brush on the specified pixel data,
-     *    storing the effects of the pixel processors in the same pixel data.
-     */
-/*
-    def processPixel(pixel: DataSample) {
-        pixelProcessors.elements.foreach(_.processPixel(pixel))
-    }
-
-
-    */
-/**
-     *    Applies the stroke processors of this brush on the specified stroke point data.
-     *    Calls the listener for each created final stroke point (may be zero also).
-     */
-/*
-    def processStrokePoint(pointData: DataSample, listener: StrokeListener) {
-
-        if (!strokeProcessors.elements.isEmpty) {
-
-            strokeProcessors.elements.head.filterStrokePoint(pointData, filters.tail, listener)
-        }
-    }
-
-    def initializeStrokeStart(startPoint: DataSample) {
-        settings.getFloatProperties(startPoint)
-    }
-*/
-
-  
     // Listener support
     def addChangeListener(listener: ChangeListener) {listeners.add(listener)}
 

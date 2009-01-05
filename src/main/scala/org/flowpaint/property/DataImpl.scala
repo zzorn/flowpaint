@@ -60,8 +60,16 @@ final class DataImpl extends Data {
     }
 
     def setStringProperty(name: String, value: String) = {
-        stringProperties.put(name, value)
-        notifyListeners(name)
+
+        val oldValue = stringProperties.get( name ) match {
+          case Some( oldValue ) => oldValue
+          case None => null
+        }
+
+        if (oldValue != value) {
+          stringProperties.put(name, value)
+          notifyListeners(name)
+        }
     }
 
     def getStringProperty(name: String, default: String): String = {

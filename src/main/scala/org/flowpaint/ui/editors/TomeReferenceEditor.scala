@@ -5,42 +5,81 @@ import java.awt.event.ActionListener
 import javax.swing.JComponent
 import util.Tome
 
+object NullTome extends Tome {
+  def identifier = ""
+
+  def toXML() = null
+
+
+  override def toString = "None"
+}
+
 /**
  * An editor for selecting a reference to some type of tome.
  * 
  * @author Hans Haggstrom
  */
-
 class TomeReferenceEditor extends Editor {
 
+  private var comboBox : javax.swing.JComboBox = null
+
+  private var updatesEnabled = true
 
   protected def createUi(): JComponent = {
 
-    val comboBox = new javax.swing.JComboBox()
+    comboBox = new javax.swing.JComboBox()
     comboBox.setMinimumSize( new Dimension( 16, 16 ) )
     comboBox.setToolTipText( getStringProperty( "description", null ) )
 
-    getAvailableTomes foreach comboBox.addItem
-    comboBox.setSelectedItem( getCurrentlySelectedTome )
-
     comboBox.addActionListener( new ActionListener() {
-      def actionPerformed(e : java.awt.event.ActionEvent ) : Unit = {
-        val editedParameterName = getStringProperty( "editedParameter", null )
-        if (editedParameterName != null) editedData.setStringProperty( editedParameterName, comboBox.getSelectedItem.asInstanceOf[Tome].identifier )
-      }
+      def actionPerformed(e : java.awt.event.ActionEvent ) : Unit =
+        setReference( comboBox.getSelectedItem.asInstanceOf[Tome] )
     } )
+
+    updateSelectionFromSettings
 
     return comboBox
   }
 
-  def getCurrentlySelectedTome() : Tome = {
+  def updateSelectionFromSettings {
+
+    if (comboBox != null && updatesEnabled) {
+
+      if ( comboBox.getSelectedItem.asInstanceOf[Tome] != getCurrentlySelectedTome ) {
+
+        updatesEnabled = false
+
+        val currentTome = getCurrentlySelectedTome
+
+        comboBox.removeAllItems
+        comboBox.addItem( NullTome )
+        getAvailableTomes foreach comboBox.addItem
+        comboBox.setSelectedItem( currentTome )
+        comboBox.repaint()
+
+        updatesEnabled = true
+      }
+    }
+  }
+
+  def setReference( tome : Tome) {
+
+    val reference = if (tome == null) "" else tome.identifier
+
     val editedParameterName = getStringProperty( "editedParameter", null )
+    if (editedParameterName != null) editedData.setStringProperty( editedParameterName, reference )
+  }
+
+  def getTomePropertyName() : String = getStringProperty( "editedParameter", null )
+
+  def getCurrentlySelectedTome() : Tome = {
+    val editedParameterName = getTomePropertyName
     val currentValue = editedData.getStringProperty( editedParameterName, null )
 
     val tome = FlowPaint.library.getTome( currentValue, null.asInstanceOf[Tome] )
     
     if ( tome != null && referencedTomeType.isAssignableFrom( tome.getClass ) ) tome
-    else null
+    else NullTome
   }
 
   def referencedTomeType() : Class[Tome] = {
@@ -65,4 +104,11 @@ class TomeReferenceEditor extends Editor {
   }
 
 
+  override def onEditedDataChanged(changedProperty: String) {
+
+    if ( updatesEnabled &&
+         ( changedProperty == null ||
+           changedProperty == getTomePropertyName ) )
+      updateSelectionFromSettings
+  }
 }

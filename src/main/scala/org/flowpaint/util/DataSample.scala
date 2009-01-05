@@ -58,11 +58,11 @@ class DataSample {
   }
 
 
-  def getPropertyNames : List[String] = {
+  def getPropertyNames() : List[String] = {
     properties.keys().toList map PropertyRegister.getName
   }
 
-  def getPropertyIds : List[Int] = {
+  def getPropertyIds() : List[Int] = {
     properties.keys().toList
   }
 

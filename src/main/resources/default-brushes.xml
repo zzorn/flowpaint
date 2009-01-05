@@ -20,6 +20,7 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">0.3</num>
         <num id="noiseScaleAlong">3.0</num>
@@ -28,6 +29,7 @@
         <text id="gradient">default.gradients.charcoal</text>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors>
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
@@ -96,6 +98,7 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">3.7</num>
         <num id="noiseScaleAlong">0.05</num>
@@ -107,6 +110,7 @@
         <num id="pressureEffect">1.0</num>
       </object>
       <object type="org.flowpaint.ink.ColorInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -131,10 +135,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -159,10 +165,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -186,12 +194,48 @@
       </object>
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
+
     <pixelProcessors>
-      <object type="org.flowpaint.ink.ColorInk">
+
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
       </object>
+
+      <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
+        <text id="gradientPosition">positionAcrossStroke</text>
+        <text id="gradient">default.gradients.white</text>
+        <text id="alpha">gradientAlpha</text>
+        <text id="red"></text>
+        <text id="green"></text>
+        <text id="blue"></text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Multiply">
+        <text id="factor1">alpha</text>
+        <text id="factor2">gradientAlpha</text>
+        <text id="result">alpha</text>
+      </object>
+
+<!--
+      <object type="org.flowpaint.pixelprocessors.Checkers">
+        <text id="result">red</text>
+        <text id="x">distance</text>
+        <text id="y">positionAcrossStroke</text>
+        <num id="gridSizeY">8</num>
+      </object>
+-->
+
+
+
     </pixelProcessors>
+
     <editors>
 
+
+      <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
+        <text id="editedParameter">hue</text>
+        <text id="tomeType">org.flowpaint.gradient.Gradient</text>
+        <text id="description">Gradient</text>
+      </object>
 
       <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
         <num id="red">0.5</num>
@@ -207,7 +251,7 @@
         <text id="verticalEditedParameter">alpha</text>
         <text id="verticalDescription">Transparency</text>
         <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">10</num>
+        <num id="horizontalEndValue">25</num>
         <text id="horizontalEditedParameter">maxRadius</text>
         <text id="horizontalDescription">Size</text>
       </object>
@@ -253,10 +297,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -281,10 +327,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -309,10 +357,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -337,10 +387,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">1.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -366,6 +418,7 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">100.0</num>
         <num id="noiseScaleAlong">100.0</num>
@@ -377,6 +430,7 @@
         <num id="pressureEffect">1.0</num>
       </object>
       <object type="org.flowpaint.ink.ColorInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>
@@ -401,10 +455,12 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+<!--
       <object type="org.flowpaint.ink.GradientInk">
         <num id="alphaPressure">0.0</num>
       </object>
       <object type="org.flowpaint.ink.AdjustHSLInk"></object>
+-->
     </pixelProcessors>
     <editors></editors>
   </brush>

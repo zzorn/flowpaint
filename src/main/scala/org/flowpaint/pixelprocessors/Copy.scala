@@ -1,5 +1,7 @@
 package org.flowpaint.pixelprocessors
 
+import _root_.org.flowpaint.property.Data
+import pixelprocessor.PixelProcessor
 import _root_.scala.collection.Map
 import util.DataSample
 
@@ -10,7 +12,7 @@ import util.DataSample
  */
 class Copy extends PixelProcessor {
 
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String]) = {
+  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 
     val from = getStringProperty( "from", null )
     val to = getStringProperty( "to", null )

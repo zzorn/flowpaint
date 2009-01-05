@@ -17,13 +17,8 @@ trait Gradient extends Tome {
    */
   final def apply( t : Float ) : Data = {
 
-    // TODO, better NaN check?
-    val zeroToOne  = if (t < 0f || t != t ) 0f
-    else if (t > 1f) 1f
-    else t
-
     val data = new DataImpl()
-    getValue( zeroToOne, data  )
+    getValue( t, data  )
 
     data
   }
@@ -33,5 +28,5 @@ trait Gradient extends Tome {
    */
   def getValue( zeroToOne : Float, outputData : Data )
 
-  
+
 }

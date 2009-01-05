@@ -34,6 +34,7 @@ final class DataImpl extends Data {
     }
 */
 
+    def getFloatProperties() : DataSample = floatProperties
 
 
     def addListener(listener: (Data, String) => Unit) {

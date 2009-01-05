@@ -5,7 +5,7 @@ import _root_.scala.xml.Node
 import filters.{StrokeListener, StrokeFilter, PathProcessor}
 import ink.Ink
 import javax.swing.JComponent
-import pixelprocessors.PixelProcessor
+import pixelprocessor.PixelProcessor
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
 import ui.editors.Editor
 import ui.slider.InkSliderUi
@@ -23,7 +23,7 @@ object Brush {
       val name = (node \ "@id").text
       val settings = Data.fromXML( (node \ "settings").first )
       val pixelProcessorMetadatas = (node \ "pixelProcessors" \ "object") map
-              {(n : Node) => ConfigurationMetadata.fromXML( n, classOf[Ink] )}
+              {(n : Node) => ConfigurationMetadata.fromXML( n, classOf[PixelProcessor] )}
       val pathProcessorMetadatas = (node \ "pathProcessors" \ "object") map
                 {(n : Node) => ConfigurationMetadata.fromXML( n, classOf[PathProcessor] )}
       val editorMetadatas = (node \ "editors" \ "object") map
@@ -43,12 +43,12 @@ object Brush {
  */
 class Brush(val identifier: String,
             initialSettings : Data,
-           pixelProcessorMetadatas: List[ConfigurationMetadata[Ink]],
+           pixelProcessorMetadatas: List[ConfigurationMetadata[PixelProcessor]],
            pathProcessorMetadatas: List[ConfigurationMetadata[PathProcessor]],
            initialEditors: List[ConfigurationMetadata[Editor]]) extends Tome {
   
     val settings = new DataImpl( initialSettings )
-    val pixelProcessors = new ListenableList[ConfigurationMetadata[Ink]](pixelProcessorMetadatas, notifyListenersOnChildListChange)
+    val pixelProcessors = new ListenableList[ConfigurationMetadata[PixelProcessor]](pixelProcessorMetadatas, notifyListenersOnChildListChange)
     val strokeProcessors = new ListenableList[ConfigurationMetadata[PathProcessor]](pathProcessorMetadatas, notifyListenersOnChildListChange)
     val editors = new ListenableList[ConfigurationMetadata[Editor]](initialEditors, notifyListenersOnChildListChange)
 
@@ -67,7 +67,7 @@ class Brush(val identifier: String,
 
     def name = identifier
 
-    def createPixelProcessors() : List[Ink] = {
+    def createPixelProcessors() : List[PixelProcessor] = {
         pixelProcessors.elements.map( _.createInstance() )
     }
 

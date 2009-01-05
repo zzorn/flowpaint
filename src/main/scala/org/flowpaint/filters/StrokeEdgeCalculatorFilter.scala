@@ -38,8 +38,8 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         val radius = pointData.getFloatProperty(PropertyRegister.RADIUS, DEFAULT_RADIUS)
 
         // Calculate corner points
-        val x = pointData.getFloatProperty(PropertyRegister.X, 0)
-        val y = pointData.getFloatProperty(PropertyRegister.Y, 0)
+        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
+        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
         val deltaX = Math.cos(angle).toFloat * radius
         val deltaY = Math.sin(angle).toFloat * radius
         var leftX = x - deltaX

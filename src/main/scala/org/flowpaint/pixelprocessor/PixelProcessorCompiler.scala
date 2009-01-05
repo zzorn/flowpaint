@@ -4,7 +4,10 @@ import _root_.org.flowpaint.ink.PixelProcessorMetadata
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection._
 import _root_.scala.collection
-import pixelprocessors.{PixelProcessor, PixelProgram}
+import _root_.scala.collection.immutable.HashMap
+import pixelprocessor.{PixelProgram}
+import pixelprocessor.{PixelProcessor}
+
 /**
  * 
  * 
@@ -34,8 +37,9 @@ object PixelProcessorCompiler {
                requestedOutputVariables : List[String]) : (String, Map[String,Int]) = {
 
     // Collect variables
+    val emptyMap = new HashMap[String, String]()  
     val usedVariables = new mutable.HashSet[String]()
-    pixelProcessors foreach (_.getUsedVariables() foreach (usedVariables += _))
+    pixelProcessors foreach (_.getUsedVariableNames( emptyMap ) foreach (usedVariables += _))
 
     // Create variable mapping
     val variableToIndexMap = new mutable.HashMap[String, Int]

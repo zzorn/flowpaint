@@ -38,15 +38,15 @@ class ZeroLengthSegmentFilter extends PathProcessor {
 
         val smooth = if (firstPoint) 0f else smoothing
 
-        val newX = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.X, oldX2), oldX2)
-        val newY = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.Y, oldY2), oldY2)
+        val newX = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_X, oldX2), oldX2)
+        val newY = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_Y, oldY2), oldY2)
         /*
             val newX = pointData.getProperty("x",0)
             val newY = pointData.getProperty("y",0)
         */
 
-        pointData.setFloatProperty(PropertyRegister.X, newX)
-        pointData.setFloatProperty(PropertyRegister.Y, newY)
+        pointData.setFloatProperty(PropertyRegister.PATH_X, newX)
+        pointData.setFloatProperty(PropertyRegister.PATH_Y, newY)
 
         oldX2 = newX
         oldY2 = newY

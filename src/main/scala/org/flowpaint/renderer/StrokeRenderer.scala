@@ -23,10 +23,10 @@ class StrokeRenderer {
   def drawStrokeSegment(commonData : Data, startData: Data, endData: Data, pixelProcessingFunction: (Data) => Unit, surface: RenderSurface) {
 
 
-    val startX = startData.getFloatProperty(PropertyRegister.X, 0)
-    val startY = startData.getFloatProperty(PropertyRegister.Y, 0)
-    val endX = endData.getFloatProperty(PropertyRegister.X, 0)
-    val endY = endData.getFloatProperty(PropertyRegister.Y, 0)
+    val startX = startData.getFloatProperty(PropertyRegister.PATH_X, 0)
+    val startY = startData.getFloatProperty(PropertyRegister.PATH_Y, 0)
+    val endX = endData.getFloatProperty(PropertyRegister.PATH_X, 0)
+    val endY = endData.getFloatProperty(PropertyRegister.PATH_Y, 0)
 
 /*
     val DEFAULT_RADIUS = 10f

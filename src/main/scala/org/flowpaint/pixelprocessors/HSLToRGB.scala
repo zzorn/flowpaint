@@ -1,8 +1,11 @@
 package org.flowpaint.pixelprocessors
 
+import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
 import util.{DataSample, MathUtils}
 import util.MathUtils._
+import pixelprocessor.PixelProcessor
+
 /**
  * 
  * 
@@ -11,7 +14,7 @@ import util.MathUtils._
 
 class HSLToRGB  extends PixelProcessor {
 
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String]) = {
+  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 
     val hue = wrapToZeroToOne( getMappedVar ( "hue", 0, variables, variableNameMappings ) )
     val saturation = clampToZeroToOne( getMappedVar ( "saturation", 0, variables, variableNameMappings ) )

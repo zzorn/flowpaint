@@ -2,8 +2,8 @@ package org.flowpaint.pixelprocessors
 
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
-import pixelprocessor.PixelProcessor
 import util.DataSample
+import pixelprocessor.PixelProcessor
 
 /**
  * 
@@ -11,7 +11,7 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Cos extends PixelProcessor {
+class Tan extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
@@ -21,7 +21,7 @@ class Cos extends PixelProcessor {
     val outputScale = getMappedVar( "outputScale", 1f, variables, variableNameMappings )
     val outputOffset = getMappedVar( "outputOffset", 0f, variables, variableNameMappings )
 
-    val result = Math.cos( value * inputScale + inputOffset ).toFloat * outputScale + outputOffset
+    val result = Math.tan( value * inputScale + inputOffset ).toFloat * outputScale + outputOffset
 
     setMappedVar( "result", result, variables, variableNameMappings )
   }

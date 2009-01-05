@@ -9,17 +9,17 @@ import javax.swing.JPanel
 import model.{Stroke, Painting, Path}
 import property.{Data, DataImpl}
 import renderer.SingleRenderSurface
-import util.DataSample
+import util.{DataSample, PropertyRegister}
 
 object BrushPreview {
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, data:Data) {
 
      val pressure = 0.5f + 0.5f*Math.cos( 2*Math.Pi * f + Math.Pi ).toFloat
 
-     data.setFloatProperty("x", w * f)
-     data.setFloatProperty("y", h * f)
-     data.setFloatProperty("pressure", pressure)
-     data.setFloatProperty("time", f * 0.5f)
+     data.setFloatProperty(PropertyRegister.PATH_X, w * f)
+     data.setFloatProperty(PropertyRegister.PATH_Y, h * f)
+     data.setFloatProperty(PropertyRegister.PRESSURE, pressure)
+     data.setFloatProperty(PropertyRegister.TIME, f * 0.5f)
    }
 
 }
@@ -100,8 +100,8 @@ class BrushPreview(val brush: Brush,
 
 
       val dataSample = new DataImpl()
-      dataSample.setFloatProperty("index", i.toFloat)
-      dataSample.setFloatProperty("randomSeed", 1231424)
+      dataSample.setFloatProperty(PropertyRegister.INDEX, i.toFloat)
+      dataSample.setFloatProperty(PropertyRegister.RANDOM_SEED, 1231424)
 
       strokePointCalculator( f, w, h, dataSample )
 

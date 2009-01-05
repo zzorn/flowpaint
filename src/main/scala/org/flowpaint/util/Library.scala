@@ -13,6 +13,8 @@ trait Tome {
     def identifier: String
 
     def toXML(): Elem
+
+    override def toString: String = StringUtils.capitalize( identifier.substring( identifier.lastIndexOf( "." ) + 1 ) )
 }
 
 
@@ -88,6 +90,7 @@ class LibraryImpl(initialLoaders : TomeLoader* ) extends Library {
     def fromXML(elementContainingTomes: Elem) {
         loaders foreach ( _.loadTomes(elementContainingTomes) foreach putTome )
     }
+
 
 
 }

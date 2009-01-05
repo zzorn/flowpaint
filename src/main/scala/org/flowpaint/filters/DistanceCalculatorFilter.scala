@@ -26,8 +26,8 @@ class DistanceCalculatorFilter extends PathProcessor {
     protected def processPathPoint(pointData: Data) : List[Data] = {
 
 
-        val x = pointData.getFloatProperty(PropertyRegister.X, 0)
-        val y = pointData.getFloatProperty(PropertyRegister.Y, 0)
+        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
+        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
 
         if (firstPoint) previousDistance = 0
 

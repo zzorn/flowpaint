@@ -91,6 +91,9 @@ trait Data {
      */
     def getFloatProperties(target: DataSample)
 
+    def getFloatProperties() : DataSample
+
+
     /**
      * The names of the float properties available.
      */

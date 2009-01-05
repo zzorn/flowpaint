@@ -1,7 +1,7 @@
 package org.flowpaint.renderer
 
 import property.{DataImpl, Data}
-import util.DataSample
+import util.{DataSample, PropertyRegister}
 
 /**
  *        Renders a triangle
@@ -47,6 +47,9 @@ class TriangleRenderer {
           val positionAlongLine: Float = (x - x_).toFloat * divisor
 
           pixelSample.interpolate( positionAlongLine,  startSample, endSample )
+
+          pixelSample.setFloatProperty( PropertyRegister.CANVAS_X, x )
+          pixelSample.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
 
           pixelCallback(x, scanline, pixelSample)
           x += 1

@@ -5,6 +5,7 @@ import _root_.org.flowpaint.util.DataSample
 import brush.Brush
 import filters.{StrokeListener, PathProcessor}
 import ink.Ink
+import pixelprocessor.PixelProcessor
 import property.{DataImpl, Data}
 /**
  *  A path is a sequence of samples, forming a path on a 2D surface.  The Path can be connected to other paths.
@@ -16,7 +17,7 @@ class Path(brush: Brush) extends Renderable {
 
     val commonProperties = new DataImpl( brush.settings )
 
-    private val pixelProcessors : List[Ink] = brush.createPixelProcessors()
+    private val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
     private val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
 
     private var path: List[Data] = Nil
@@ -74,8 +75,10 @@ class Path(brush: Brush) extends Renderable {
 
     private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface) {
 
+        val emptyMap = Map[String, String]()
+
         def processPixel( pixelData : Data ) {
-          pixelProcessors foreach (_.processPixel(pixelData ))
+          pixelProcessors foreach (_.processPixel(pixelData.getFloatProperties(), emptyMap, brush.settings ))
         }
 
         val renderer = new StrokeRenderer()

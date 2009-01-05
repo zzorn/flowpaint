@@ -1,6 +1,5 @@
 package org.flowpaint.ui
 
-import _root_.org.flowpaint.util.DataSample
 import brush.{Brush}
 import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
@@ -8,6 +7,7 @@ import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
 import javax.swing.JComponent
 import property.Data
 import renderer.{SingleRenderSurface, RenderSurface}
+import util.{DataSample, PropertyRegister}
 
 
 /**
@@ -37,16 +37,16 @@ class BrushSliderUi(editedData: Data,
   private def brushPreviewStrokeGenerator(f: Float, w: Float, h: Float, dataSample: Data) {
 
     if (orientation == VerticalSlider) {
-      dataSample.setFloatProperty("x", w / 2f)
-      dataSample.setFloatProperty("y", h * f)
+      dataSample.setFloatProperty(PropertyRegister.PATH_X, w / 2f)
+      dataSample.setFloatProperty(PropertyRegister.PATH_Y, h * f)
     }
     else {
-      dataSample.setFloatProperty("x", w * f)
-      dataSample.setFloatProperty("y", h / 2f)
+      dataSample.setFloatProperty(PropertyRegister.PATH_X, w * f)
+      dataSample.setFloatProperty(PropertyRegister.PATH_Y, h / 2f)
     }
 
-    dataSample.setFloatProperty("pressure", 0.5f)
-    dataSample.setFloatProperty("time", f * 0.5f)
+    dataSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
+    dataSample.setFloatProperty(PropertyRegister.TIME, f * 0.5f)
     dataSample.setFloatProperty(editedParameter, util.MathUtils.interpolate(f, startValue, endValue))
 
   }

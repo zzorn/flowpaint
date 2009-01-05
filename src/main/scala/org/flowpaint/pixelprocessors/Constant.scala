@@ -1,7 +1,9 @@
 package org.flowpaint.pixelprocessors
 
+import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
 import util.DataSample
+import pixelprocessor.PixelProcessor
 
 /**
  * 
@@ -11,14 +13,8 @@ import util.DataSample
 
 class Constant extends PixelProcessor {
 
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String]) = {
+  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 
-    val sourceNames = getSettings.getFloatPropertyNames
-
-    sourceNames foreach {name : String => {
-      val value = getFloatProperty( name, 0f )
-
-      setMappedVar( name, value, variables, variableNameMappings )
-    }}
+    setMappedVars( getSettings.getFloatProperties, variables, variableNameMappings )
   }
 }

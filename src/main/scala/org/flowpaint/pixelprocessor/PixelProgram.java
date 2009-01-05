@@ -1,4 +1,4 @@
-package org.flowpaint.pixelprocessors;
+package org.flowpaint.pixelprocessor;
 
 /**
  * Interface for on-the-fly generated PixelProgram:s

@@ -141,10 +141,10 @@ class InputHandler(sampleListener: (DataSample) => Unit) extends PenListener wit
     */
     if (xAxis) {
 
-      dataSample.setProperty(PropertyRegister.X, value * xScale + xOffs)
+      dataSample.setProperty(PropertyRegister.PATH_X, value * xScale + xOffs)
     }
     else {
-      dataSample.setProperty(PropertyRegister.Y, value * yScale + yOffs)
+      dataSample.setProperty(PropertyRegister.PATH_Y, value * yScale + yOffs)
     }
 
     /*

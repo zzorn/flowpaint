@@ -1,8 +1,10 @@
 package org.flowpaint.pixelprocessors
 
+import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
 import util.DataSample
 import util.MathUtils._
+import pixelprocessor.PixelProcessor
 
 
 /**
@@ -13,7 +15,7 @@ import util.MathUtils._
 
 class RBGToHSL extends PixelProcessor {
 
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String]) = {
+  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 
     val red = clampToZeroToOne( getMappedVar ( "red", 0, variables, variableNameMappings ) )
     val green = clampToZeroToOne( getMappedVar ( "green", 0, variables, variableNameMappings ) )

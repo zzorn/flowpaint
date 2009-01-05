@@ -55,7 +55,12 @@ class MultiGradient(val identifier: String) extends Gradient {
     private val tempSearchPoint = new GradientPoint(0, new DataImpl())
 
 
-    def getValue( zeroToOne : Float, outputData : Data )  {
+    def getValue( t : Float, outputData : Data )  {
+
+      // TODO, better NaN check?
+      val zeroToOne  = if (t < 0f || t != t ) 0f
+      else if (t > 1f) 1f
+      else t
 
 /*
         println("Gradient point "+zeroToOne+" requested for " + identifier)

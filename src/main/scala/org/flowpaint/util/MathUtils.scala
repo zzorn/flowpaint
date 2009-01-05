@@ -8,7 +8,21 @@ package org.flowpaint.util
 
 object MathUtils {
   def lerp(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
-  def interpolate(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
+  def interpolate(t: Float, a: Float, b: Float): Float = lerp( t, a, b )
+
+  def interpolate(input: Float, inputStart: Float, inputEnd: Float, outputStart : Float, outputEnd : Float): Float = {
+
+    // Check for special case where start and end positions are the same.  In this case return the average value.
+    if ( inputStart == inputEnd )
+    {
+        return 0.5f * ( outputStart + outputEnd );
+    }
+
+    val relativePosition =  ( input - inputStart ) / ( inputEnd - inputStart );
+
+    outputStart + relativePosition * ( outputEnd - outputStart );
+  }
+
 
   def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {
     val xDiff = x2 - x1

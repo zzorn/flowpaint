@@ -20,7 +20,9 @@ class Painting extends PictureProvider {
 
   def updateSurface(surface: RenderSurface) = {
 
-    surface.clearToColor( backgroundColor )
+    val color = if (backgroundColor == null) java.awt.Color.WHITE else backgroundColor
+
+    surface.clearToColor( color )
     layers.foreach(layer => layer.updateSurface(surface))
 
   }

@@ -2,7 +2,8 @@ package org.flowpaint.renderer
 
 
 import _root_.org.flowpaint.property.Data
-import java.awt.{Graphics2D, Color}
+import java.awt.image.BufferedImage
+import java.awt.{Graphics2D, Graphics, Image, Color}
 import util.DataSample
 
 /**
@@ -27,16 +28,25 @@ trait RenderSurface {
 
   def setViewPortSize(aWidth: Int, aHeight: Int)
 
-  def render( context : Graphics2D  )
+  def renderFullArea( context : Graphics  )
 
-  def width() : Int
+  def renderChangedArea( context : Graphics  )
 
-  def height() : Int
+  def isInitialized : Boolean
+
+  def getImage : Image
+
+  def createBufferedImage : BufferedImage
+
+  def getWidth() : Int
+
+  def getHeight() : Int
 
   def putPixel( x : Int, y : Int, sample : Data )
 
-  def provideContent(minX: Float, minY: Float,
-                    maxX: Float, maxY: Float,
+
+
+  def provideContent(minX: Float, minY: Float, maxX: Float, maxY: Float,
                     colorCalculator: (Int, Int) => Int)
 
 

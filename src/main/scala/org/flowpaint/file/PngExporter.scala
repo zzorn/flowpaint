@@ -1,6 +1,7 @@
 package org.flowpaint.file
 
-import java.awt.image.BufferedImage
+import java.awt.Image
+import java.awt.image.{RenderedImage, BufferedImage}
 import java.io.{File, IOException}
 
 /**
@@ -13,7 +14,7 @@ object PngExporter {
   /**
    * Tries to do the export to the specified file, return null on success, otherwise an error message.
    */
-  def exportPng( image : BufferedImage, file : File) : String = {
+  def exportPng( image : RenderedImage, file : File) : String = {
 
     // Write generated image to a file
     try {

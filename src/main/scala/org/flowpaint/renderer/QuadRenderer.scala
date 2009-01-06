@@ -6,6 +6,7 @@ package org.flowpaint.renderer
  * A scanline based quad renderer, that can interpolate values between corners.
  * 
  * @author Hans Haggstrom
+ * @deprecated the TriangleRenderer is used instead at the moment.
  */
 class QuadRenderer {
 

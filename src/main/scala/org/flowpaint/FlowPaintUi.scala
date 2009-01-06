@@ -45,6 +45,9 @@ object FlowPaintUi {
 
     val frame = new JFrame(FlowPaint.NAME_AND_VERSION)
 
+    // Globally use heavyweight components for all popup menus, as it seems they tend to garble up the main image for some reason.
+    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
     if (FlowPaint.APPLICATION_ICON != null) frame.setIconImage( FlowPaint.APPLICATION_ICON.getImage() )
 
 

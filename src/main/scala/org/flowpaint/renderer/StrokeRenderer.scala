@@ -94,10 +94,10 @@ class StrokeRenderer {
       surface.putPixel( x, y, tempPixelData )
     }
 
-    triangleRenderer.renderTriangle( surface.width, surface.height, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback )
-    triangleRenderer.renderTriangle( surface.width, surface.height, x10, y10, x11, y11, x01, y01, s10, s11, s01, pixelCallback )
+    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback )
+    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x10, y10, x11, y11, x01, y01, s10, s11, s01, pixelCallback )
 
-
+ 
 /*
 
 

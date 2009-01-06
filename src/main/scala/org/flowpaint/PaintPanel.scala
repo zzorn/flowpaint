@@ -12,7 +12,12 @@ import renderer.RenderSurface
  * @author Hans Haggstrom
  */
 class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JPanel {
+
   val THIN_CROSSHAIR_CURSOR = createThinCrosshairCursor()
+
+
+  private var requestPartialRepaint = false
+
 
   addComponentListener(new ComponentListener {
     def componentMoved(e: ComponentEvent) = {}
@@ -32,7 +37,20 @@ class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JP
   }
 
   override def paintComponent(g: Graphics): Unit = {
-    surface.render(g.asInstanceOf[Graphics2D])
+
+    if (requestPartialRepaint) surface.renderChangedArea( g )
+    else surface.renderFullArea( g )
+
+    requestPartialRepaint = false
+  }
+
+
+  /**
+   * Request a repaint that will only repaint the areas of the canvas that changed.
+   */
+  def repaintChanges() {
+    requestPartialRepaint = true
+    repaint()
   }
 
   def createThinCrosshairCursor(): Cursor = {

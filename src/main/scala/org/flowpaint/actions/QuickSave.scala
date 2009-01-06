@@ -24,11 +24,11 @@ object QuickSave {
     if (fileName == null) return "No free filename was found"
 
     // Get the currently visible image
-    val buffer = FlowPaintController.surface.buffer
-    if (buffer == null) return "Image not rendered yet"
+    val image = FlowPaintController.surface.createBufferedImage
+    if (image == null) return "Image not rendered yet"
 
     // Try to export
-    val exportResult = file.PngExporter.exportPng( buffer, fileName )
+    val exportResult = file.PngExporter.exportPng( image, fileName )
 
     // Show message if we succeeded
     if (exportResult == null) FlowPaintUi.showMessage( "Saved current picture to '"+fileName.getAbsolutePath().toString+"'" )

@@ -109,7 +109,7 @@ object FlowPaintController {
     // Input source
     penInput = new InputHandler((sample: DataSample) => {
       currentTool.onEvent(sample)
-      paintPanel.repaint()
+      paintPanel.repaintChanges()
     })
 
     penManager = new jpen.PenManager(paintPanel)

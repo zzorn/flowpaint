@@ -100,7 +100,10 @@ class TomeReferenceEditor extends Editor {
     val tomeType = referencedTomeType()
 
     if (tomeType == null) Nil
-    else FlowPaint.library.getTomes[Tome]( referencedTomeType() )
+    else {
+      val tomes = FlowPaint.library.getTomes[Tome]( referencedTomeType() )
+      tomes sort { (a : Tome, b:Tome) => a.identifier.toString < b.identifier.toString } 
+    }
   }
 
 

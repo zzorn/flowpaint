@@ -4,7 +4,7 @@ package org.flowpaint.renderer
 import _root_.org.flowpaint.property.Data
 import java.awt._
 import java.awt.image.{MemoryImageSource, DirectColorModel, BufferedImage}
-import util.{DataSample, BoundingBox, PropertyRegister}
+import util.{DataSample, BoundingBox, PropertyRegister, MathUtils}
 /**
  *          A RenderSurface implementation that uses a single surface to render on, the same size as the screen
  *
@@ -141,10 +141,10 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
         val imageDataIndex = x + y * width
 
         var color = util.ColorUtils.createRGBAColor(
-          sample.getFloatProperty(PropertyRegister.RED, 0),
-          sample.getFloatProperty(PropertyRegister.GREEN, 0),
-          sample.getFloatProperty(PropertyRegister.BLUE, 0),
-          alpha)
+          MathUtils.clampToZeroToOne( sample.getFloatProperty(PropertyRegister.RED, 0) ),
+          MathUtils.clampToZeroToOne( sample.getFloatProperty(PropertyRegister.GREEN, 0) ),
+          MathUtils.clampToZeroToOne( sample.getFloatProperty(PropertyRegister.BLUE, 0) ),
+          MathUtils.clampToZeroToOne( alpha) )
 
         if (alpha < 1) {
           val originalColor =  imageData( imageDataIndex )

@@ -85,7 +85,15 @@ final class DataImpl extends Data {
 
     def getFloatPropertyNames(): List[String] = floatProperties.getPropertyNames()
 
+    def getStringPropertyNames(): List[String] = stringProperties.keys.toList
+  
+    def getPropertyNames : List[String] = (getFloatPropertyNames ::: getStringPropertyNames).removeDuplicates
+
     def containsFloatProperty( name : String) : Boolean = floatProperties.contains( name )
+
+    def containsStringProperty( name : String ) : Boolean = stringProperties.contains( name )
+
+    def containsProperty( name : String ) : Boolean = containsFloatProperty( name ) || containsStringProperty( name ) 
 
 
     def setFloatProperties(values: DataSample) {

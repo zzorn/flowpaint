@@ -15,14 +15,10 @@ class Signum extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
-    val value = getMappedVar( "value", 0f, variables, variableNameMappings )
-    val inputScale = getMappedVar( "inputScale", 1f, variables, variableNameMappings )
-    val inputOffset = getMappedVar( "inputOffset", 0f, variables, variableNameMappings )
-    val outputScale = getMappedVar( "outputScale", 1f, variables, variableNameMappings )
-    val outputOffset = getMappedVar( "outputOffset", 0f, variables, variableNameMappings )
+    val value = getScaleOffsetVar( "value", 0f, variables, variableNameMappings )
 
-    val result = Math.signum( value * inputScale + inputOffset ).toFloat * outputScale + outputOffset
+    val result = Math.signum( value ).toFloat 
 
-    setMappedVar( "result", result, variables, variableNameMappings )
+    setScaleOffsetVar( "result", result, variables, variableNameMappings )
   }
 }

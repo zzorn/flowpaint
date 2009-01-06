@@ -20,6 +20,23 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
+
+      <object type="org.flowpaint.pixelprocessors.Noise">
+        <text id="noisePosition1">canvasX</text>
+        <text id="noisePosition2">canvasY</text>
+        <num id="noisePosition1Scale">0.01</num>
+        <num id="noisePosition2Scale">0.01</num>
+        <text id="result">value</text>
+      </object>
+
+      
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="red">value</text>
+        <text id="green">value</text>
+        <text id="blue">value</text>
+        <text id="alpha">1</text>
+      </object>
+
 <!--
       <object type="org.flowpaint.ink.NoiseInk">
         <num id="noiseScaleAcross">0.3</num>
@@ -262,6 +279,16 @@
         <text id="factor2">grB</text>
         <text id="result">blue</text>
       </object>
+
+      <object type="org.flowpaint.pixelprocessors.Noise">
+        <text id="noisePosition1">distance</text>
+        <text id="noisePosition2">positionAcrossStroke</text>
+        <num id="noisePosition1Scale">0.05</num>
+        <num id="noisePosition2Scale">1</num>
+        <text id="resultScale">alpha</text>
+        <text id="result">alpha</text>
+      </object>
+
 
 <!--
       <object type="org.flowpaint.pixelprocessors.Checkers">

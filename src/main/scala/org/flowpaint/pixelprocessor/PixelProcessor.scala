@@ -42,6 +42,11 @@ abstract class PixelProcessor extends Configuration {
     }
   }
 
+  protected def hasMappedVar( name : String, variables : DataSample, variableNameMappings : Map[String, String] ) : Boolean = {
+    (getSettings containsProperty name) ||
+      (variables contains getSourceVariable(name, variableNameMappings))
+  }
+
   protected def getMappedVar( name : String, default : Float, variables : DataSample, variableNameMappings : Map[String, String] ) : Float = {
 
     if ( getSettings.containsFloatProperty( name ) ) {
@@ -63,6 +68,17 @@ abstract class PixelProcessor extends Configuration {
     if (s != null && s != "") variables.setProperty( s, value )
   }
 
+  protected def setMappedVarWithoutRedirect( name : String, value : Float, variables : DataSample, variableNameMappings : Map[String, String] )  {
+
+    // Map variable if needed
+    val s = variableNameMappings.get(name) match {
+      case Some(str) => str
+      case None => name
+    }
+
+    if (s != null && s != "") variables.setProperty( s, value )
+  }
+
   protected def setMappedVars( source : DataSample, variables : DataSample, variableNameMappings : Map[String, String] ) {
     val sourceNames = source.getPropertyNames
 
@@ -73,4 +89,24 @@ abstract class PixelProcessor extends Configuration {
     }}
 
   }
+
+
+  protected def scaleOffset( value : Float, prefix : String, variables : DataSample, variableNameMappings : Map[String, String] ) : Float = {
+    val scale = getMappedVar( prefix + "Scale", 1f, variables, variableNameMappings )
+    val offset = getMappedVar( prefix + "Offset", 0f, variables, variableNameMappings )
+
+    value * scale + offset
+  }
+
+
+  protected def getScaleOffsetVar(name : String, default : Float, variables : DataSample, variableNameMappings : Map[String, String] ) : Float = {
+    val value = getMappedVar( name, default, variables, variableNameMappings )
+    scaleOffset( value, name, variables, variableNameMappings )
+  }
+
+  protected def setScaleOffsetVar(name : String, value : Float, variables : DataSample, variableNameMappings : Map[String, String] ) {
+    val scaleOffsetValue = scaleOffset( value, name, variables, variableNameMappings )
+    setMappedVar( name, scaleOffsetValue, variables, variableNameMappings )
+  }
+
 }

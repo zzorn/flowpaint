@@ -37,7 +37,7 @@ class NoiseInk extends Ink{
         var scale = 1f
         var amplitude = 1f
         while (i < octaves) {
-            n += util.PerlinNoise.perlinNoise(u * scale, v * scale, w) * amplitude
+            n += util.PerlinNoise.noise3(u * scale, v * scale, w) * amplitude
             scale *= 2f
             amplitude *= 0.5f
             u += 213.1234f

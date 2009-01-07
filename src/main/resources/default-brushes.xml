@@ -283,6 +283,8 @@
       <object type="org.flowpaint.pixelprocessors.Noise">
         <text id="noisePosition1">distance</text>
         <text id="noisePosition2">positionAcrossStroke</text>
+        <text id="noisePosition1Offset">randomSeed</text>
+        <text id="noisePosition2Offset">randomSeed</text>
         <num id="noisePosition1Scale">0.05</num>
         <num id="noisePosition2Scale">1</num>
         <text id="resultScale">alpha</text>

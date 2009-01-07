@@ -33,7 +33,7 @@ class Noise extends PixelProcessor {
     val noise = inputs match {
       case 0 => 0f
       case 1 => PerlinNoise.noise1( x )
-      case 2 => PerlinNoise.noise3( x, y, 0 ) // TODO: Real 2D noise
+      case 2 => PerlinNoise.noise2( x, y )
       case 3 => PerlinNoise.noise3( x, y, z )
     }
 

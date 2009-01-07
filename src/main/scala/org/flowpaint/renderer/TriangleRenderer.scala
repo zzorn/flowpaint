@@ -11,7 +11,6 @@ import util.{DataSample, PropertyRegister}
 class TriangleRenderer {
   type PixelCallback = (Int, Int, Data) => Unit
 
-//    val RED_COLOR = new DataSample( ("red", 1f), ("alpha", 1f) )
 
   private val pixelSample = new DataImpl()
   private val aSample = new DataImpl()
@@ -139,39 +138,10 @@ class TriangleRenderer {
     val d12: Float = calculateCoefficient(x2 - x1, oneOverSteps1to2)
     val d02: Float = calculateCoefficient(x2 - x0, oneOverSteps0to2)
 
-/*
-    def checkGradient( d : Float, y : Int, x:Int, targetY:Int, expectedX:Int) {
-      val calculatedX: Float = d * (targetY - y) + x
-      if ( calculatedX == expectedX ) println ("gradient ok") else println ("Gradient fail: calculatedX = " + calculatedX + ", expected x: " + expectedX)
-    }
-    checkGradient(d01, y0, x0, y1, x1)
-    checkGradient(d02, y0, x0, y2, x2)
-    checkGradient(d12, y1, x1, y2, x2)
-*/
-
-
-/*
-    def calculateSampleDelta(s: DataSample, sa: DataSample, sb: DataSample, multiplicand: Float) {
-      s.clear()
-      s.setValuesFrom(sb)
-      s -= sa
-      s *= multiplicand
-    }
-    calculateSampleDelta(sd01, s0, s1, oneOverSteps0to1)
-    calculateSampleDelta(sd02, s0, s2, oneOverSteps0to2)
-    calculateSampleDelta(sd12, s1, s2, oneOverSteps1to2)
-*/
-
     // Render the upper and lower part of the triangle (above and below the middle y point)
     rasterizeTrapetzoid(y0, y1, x0, y0, d02, s0,s2, oneOverSteps0to2, x0, y0, d01, s0, s1, oneOverSteps0to1)
     rasterizeTrapetzoid(y1, y2, x0, y0, d02, s0, s2, oneOverSteps0to2, x1, y1, d12, s1, s2, oneOverSteps1to2)
 
-
-/*
-    pixelCallback( xi0.toInt, yi0.toInt, RED_COLOR  )
-    pixelCallback( xi1.toInt, yi1.toInt, RED_COLOR  )
-    pixelCallback( xi2.toInt, yi2.toInt, RED_COLOR  )
-*/
   }
 
 

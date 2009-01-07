@@ -15,18 +15,18 @@ class Checkers extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
-    val valueA = getMappedVar( "valueA", 0.3333f, variables, variableNameMappings )
-    val valueB = getMappedVar( "valueB", 0.6666f, variables, variableNameMappings )
-    val gridSize = getMappedVar( "gridSize", 16f, variables, variableNameMappings )
-    val gridSizeX = getMappedVar( "gridSizeX", gridSize, variables, variableNameMappings )
-    val gridSizeY = getMappedVar( "gridSizeY", gridSize, variables, variableNameMappings )
+    val valueA = getScaleOffsetVar( "valueA", 0.3333f, variables, variableNameMappings )
+    val valueB = getScaleOffsetVar( "valueB", 0.6666f, variables, variableNameMappings )
+    val gridSize = getScaleOffsetVar( "gridSize", 16f, variables, variableNameMappings )
+    val gridSizeX = getScaleOffsetVar( "gridSizeX", gridSize, variables, variableNameMappings )
+    val gridSizeY = getScaleOffsetVar( "gridSizeY", gridSize, variables, variableNameMappings )
 
-    val x = getMappedVar( "canvasX", 0f, variables, variableNameMappings )
-    val y = getMappedVar( "canvasY", 0f, variables, variableNameMappings )
+    val x = getScaleOffsetVar( "canvasX", 0f, variables, variableNameMappings )
+    val y = getScaleOffsetVar( "canvasY", 0f, variables, variableNameMappings )
 
     def onBand(c: Float, size : Float): Boolean = if (size == 0) false else ((c / size).toInt) % 2 == 0
     val value = if (onBand(x, gridSizeX) != onBand(y, gridSizeY)) valueA else valueB
 
-    setMappedVar( "result", value, variables, variableNameMappings )
+    setScaleOffsetVar( "result", value, variables, variableNameMappings )
   }
 }

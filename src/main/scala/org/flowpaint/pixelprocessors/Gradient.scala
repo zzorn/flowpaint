@@ -27,7 +27,7 @@ class Gradient extends PixelProcessor {
 
     if (gradient != null) {
 
-      val gradientPosition = getMappedVar( "gradientPosition", 0.5f, variables, variableNameMappings )
+      val gradientPosition = getScaleOffsetVar( "gradientPosition", 0.5f, variables, variableNameMappings )
 
       temp.clear
       gradient.getValue( gradientPosition, temp )

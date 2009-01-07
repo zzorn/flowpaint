@@ -15,8 +15,6 @@ import property.{DataImpl, Data}
  */
 class Path(brush: Brush) extends Renderable {
 
-    val commonProperties = new DataImpl( brush.settings )
-
     private val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
     private val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
 
@@ -82,7 +80,7 @@ class Path(brush: Brush) extends Renderable {
         }
 
         val renderer = new StrokeRenderer()
-        renderer.drawStrokeSegment(commonProperties, startPoint, endPoint, processPixel, surface)
+        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface)
 
     }
 

@@ -15,13 +15,13 @@ class Add extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
-    val term1 = getMappedVar( "term1", 0f, variables, variableNameMappings )
-    val term2 = getMappedVar( "term2", 0f, variables, variableNameMappings )
-    val term3 = getMappedVar( "term3", 0f, variables, variableNameMappings )
-    val term4 = getMappedVar( "term4", 0f, variables, variableNameMappings )
+    val term1 = getScaleOffsetVar( "term1", 0f, variables, variableNameMappings )
+    val term2 = getScaleOffsetVar( "term2", 0f, variables, variableNameMappings )
+    val term3 = getScaleOffsetVar( "term3", 0f, variables, variableNameMappings )
+    val term4 = getScaleOffsetVar( "term4", 0f, variables, variableNameMappings )
 
     val value = term1 + term2 + term3 + term4
 
-    setMappedVar( "result", value, variables, variableNameMappings )
+    setScaleOffsetVar( "result", value, variables, variableNameMappings )
   }
 }

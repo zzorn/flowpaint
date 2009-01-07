@@ -8,11 +8,12 @@ package org.flowpaint.pixelprocessor;
 public interface PixelProgram
 {
     /**
-     * Calculates the output value for a pixel based on the specified input values.
-     *
-     * @param variables the variables used by this PixelProgram.  Some may be initialized as input variables.
-     * @param outputOffset the offset to write the output variables at in the outputArray.
-     * @param outputArray an array to write the outputs to.
+     * Calculates the pixel values for a scanline.
      */
-    void calculatePixelValues( float[] variables, int outputOffset, float[] outputArray );
+    void calculateScanline( float[] variablesAtScanlineStart,
+                            float[] variablesAtScanlineEnhd,
+                            float[] workingArray,
+                            int[] destinationBuffer,
+                            int startOffset,
+                            int scanlineLength );
 }

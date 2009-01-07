@@ -10,7 +10,7 @@ import util.DataSample
  * 
  * @author Hans Haggstrom
  */
-class Copy extends PixelProcessor {
+class Assign extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 

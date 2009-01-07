@@ -30,7 +30,7 @@
       </object>
 
       
-      <object type="org.flowpaint.pixelprocessors.Copy">
+      <object type="org.flowpaint.pixelprocessors.Assign">
         <text id="red">value</text>
         <text id="green">value</text>
         <text id="blue">value</text>
@@ -230,18 +230,21 @@
 
 
 
-      <object type="org.flowpaint.pixelprocessors.Wrap">
-        <text id="value">distance</text>
-        <num id="maxWrap">1</num>
-        <num id="inputScale">0.01</num>
-        <text id="result">flowGradientPosition</text>
-      </object>
-
       <object type="org.flowpaint.pixelprocessors.Constant">
         <num id="grA">1</num>
         <num id="grR">1</num>
         <num id="grG">1</num>
         <num id="grB">1</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Noise">
+        <text id="noisePosition1">distance</text>
+        <text id="noisePosition2">positionAcrossStroke</text>
+        <text id="noisePosition1Offset">randomSeed</text>
+        <text id="noisePosition2Offset">randomSeed</text>
+        <num id="noisePosition1Scale">0.05</num>
+        <num id="noisePosition2Scale">1</num>
+        <text id="result">flowGradientPosition</text>
       </object>
 
       <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
@@ -280,17 +283,11 @@
         <text id="result">blue</text>
       </object>
 
-      <object type="org.flowpaint.pixelprocessors.Noise">
-        <text id="noisePosition1">distance</text>
-        <text id="noisePosition2">positionAcrossStroke</text>
-        <text id="noisePosition1Offset">randomSeed</text>
-        <text id="noisePosition2Offset">randomSeed</text>
-        <num id="noisePosition1Scale">0.05</num>
-        <num id="noisePosition2Scale">1</num>
-        <text id="resultScale">alpha</text>
-        <text id="result">alpha</text>
+      <object type="org.flowpaint.pixelprocessors.Multiply">
+        <text id="factor1">blue</text>
+        <text id="factor2">grB</text>
+        <text id="result">blue</text>
       </object>
-
 
 <!--
       <object type="org.flowpaint.pixelprocessors.Checkers">
@@ -321,9 +318,11 @@
       </object>
 
       <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+<!--
         <num id="red">0.5</num>
         <num id="green">0.5</num>
         <num id="blue">0.5</num>
+-->
 
         <text id="hueParameter">hue</text>
         <text id="saturationParameter">saturation</text>
@@ -334,7 +333,7 @@
         <text id="verticalEditedParameter">alpha</text>
         <text id="verticalDescription">Transparency</text>
         <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">25</num>
+        <num id="horizontalEndValue">35</num>
         <text id="horizontalEditedParameter">maxRadius</text>
         <text id="horizontalDescription">Size</text>
       </object>

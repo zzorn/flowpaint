@@ -7,8 +7,8 @@ package org.flowpaint.util
  */
 
 object MathUtils {
-  def lerp(t: Float, a: Float, b: Float): Float = (1.0f - t) * a + t * b
-  def interpolate(t: Float, a: Float, b: Float): Float = lerp( t, a, b )
+  def lerp(t: Float, a: Float, b: Float): Float = a + t * (b - a) // Shorter name..
+  def interpolate(t: Float, a: Float, b: Float): Float = a + t * (b - a)
 
   def interpolate(input: Float, inputStart: Float, inputEnd: Float, outputStart : Float, outputEnd : Float): Float = {
 
@@ -22,6 +22,35 @@ object MathUtils {
 
     outputStart + relativePosition * ( outputEnd - outputStart );
   }
+
+  /**
+   * Interpolates using cosine interpolation to smooth out the curve (start and end tangent the line where a == b)
+   */
+  def interpolateSmoothly(t: Float, a: Float, b: Float): Float = {
+
+    val t2 = (1f - Math.cos(t * Math.Pi)).toFloat * 0.5f
+
+     a + t2 * (b - a)
+  }
+
+  /**
+   * Interpolates using cosine interpolation to smooth out the curve (start and end tangent the line where a == b)
+   */
+  def interpolateSmoothly(input: Float, inputStart: Float, inputEnd: Float, outputStart : Float, outputEnd : Float): Float = {
+
+    // Check for special case where start and end positions are the same.  In this case return the average value.
+    if ( inputStart == inputEnd )
+    {
+        return 0.5f * ( outputStart + outputEnd );
+    }
+
+    val relativePosition =  ( input - inputStart ) / ( inputEnd - inputStart );
+
+    val t = (1f - Math.cos(relativePosition * Math.Pi)).toFloat * 0.5f
+
+    outputStart + t * ( outputEnd - outputStart );
+  }
+
 
 
   def squaredDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = {

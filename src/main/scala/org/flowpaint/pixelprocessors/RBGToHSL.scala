@@ -17,15 +17,15 @@ class RBGToHSL extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 
-    val red = clampToZeroToOne( getMappedVar ( "red", 0, variables, variableNameMappings ) )
-    val green = clampToZeroToOne( getMappedVar ( "green", 0, variables, variableNameMappings ) )
-    val blue = clampToZeroToOne( getMappedVar ( "blue", 0, variables, variableNameMappings ) )
+    val red = clampToZeroToOne( getScaleOffsetVar ( "red", 0, variables, variableNameMappings ) )
+    val green = clampToZeroToOne( getScaleOffsetVar ( "green", 0, variables, variableNameMappings ) )
+    val blue = clampToZeroToOne( getScaleOffsetVar ( "blue", 0, variables, variableNameMappings ) )
 
     val (hue, saturation, lightness )= util.ColorUtils.RGBtoHSL( red, green, blue )
 
-    setMappedVar( "hue", hue, variables,variableNameMappings )
-    setMappedVar( "saturation", saturation, variables,variableNameMappings )
-    setMappedVar( "lightness", lightness, variables,variableNameMappings )
+    setScaleOffsetVar( "hue", hue, variables,variableNameMappings )
+    setScaleOffsetVar( "saturation", saturation, variables,variableNameMappings )
+    setScaleOffsetVar( "lightness", lightness, variables,variableNameMappings )
   }
 
 }

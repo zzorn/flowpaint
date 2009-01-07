@@ -15,15 +15,11 @@ class Wrap extends PixelProcessor {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
-    val value = getMappedVar( "value", 0f, variables, variableNameMappings )
-    val wrapMax = getMappedVar( "wrapMax", 1f, variables, variableNameMappings )
-    val inputScale = getMappedVar( "inputScale", 1f, variables, variableNameMappings )
-    val inputOffset = getMappedVar( "inputOffset", 0f, variables, variableNameMappings )
-    val outputScale = getMappedVar( "outputScale", 1f, variables, variableNameMappings )
-    val outputOffset = getMappedVar( "outputOffset", 0f, variables, variableNameMappings )
+    val value = getScaleOffsetVar( "value", 0f, variables, variableNameMappings )
+    val wrapMax = getScaleOffsetVar( "wrapMax", 1f, variables, variableNameMappings )
 
-    val result = MathUtils.wrap( value * inputScale + inputOffset, wrapMax ) * outputScale + outputOffset
+    val result = MathUtils.wrap( value, wrapMax ) 
 
-    setMappedVar( "result", result, variables, variableNameMappings )
+    setScaleOffsetVar( "result", result, variables, variableNameMappings )
   }
 }

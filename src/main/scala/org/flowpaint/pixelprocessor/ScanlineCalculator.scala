@@ -133,6 +133,20 @@ class ScanlineCalculator {
 
     val variableNum = variableNames.size
 
+    // Generate source for each pixel processor
+    var initCodes : List[String] = Nil
+    var loopCodes : List[String] = Nil
+    processors foreach ( processor => {
+      val (initCode, loopCode) =processor.generateCode( variableNames,
+                                                        nameToIndex,
+                                                        generalSettings,
+                                                        "workingArray",
+                                                        nextUniqueId )
+      initCodes = initCodes ::: List( initCode )
+      loopCodes = loopCodes::: List( loopCode )
+    })
+
+
     source append
     """
     public void calculateScanline( float[] currentVariableValues,
@@ -143,6 +157,13 @@ class ScanlineCalculator {
                             int scanlineLength ) {
 
       float throwAwayValue = 0f;
+     """
+    // NOTE: throwAwayValue is used to assign values to if the correct variable index can not be found, to avoid runtime failure.
+
+    initCodes foreach (source append _ )
+
+    source append
+     """
 
       final int endIndex = startOffset + scanlineLength;
       for ( int i = startOffset; i < endIndex; i++ ) {
@@ -153,17 +174,9 @@ class ScanlineCalculator {
         }
 
     """
-    // NOTE: throwAwayValue is used to assign values to if the correct variable index can not be found, to avoid runtime failure. 
 
-    // Generate source for each pixel processor
-/*
-    processors foreach ( processor => source append
-            processor.generateCode( variableNames,
-                                    nameToIndex,
-                                    generalSettings,
-                                    "workingArray",
-                                    nextUniqueId ) )
-*/
+    loopCodes foreach (source append _ )
+
 
     source append
     """

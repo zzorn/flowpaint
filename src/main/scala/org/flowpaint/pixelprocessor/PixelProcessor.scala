@@ -41,7 +41,8 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
             else Nil
         }
 
-        var entries = tokenize(initializerTemplate)
+        var entries = tokenize(loopedTemplate)
+
 
         var foundNames: List[String] = Nil
 
@@ -65,6 +66,8 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                 entries = entries.tail
             }
         }
+
+      println( "used names: " + foundNames )
 
         foundNames
     }

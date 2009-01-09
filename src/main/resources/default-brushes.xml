@@ -216,6 +216,7 @@
 
     <pixelProcessors>
 
+<!--
       <object type="org.flowpaint.pixelprocessors.HSLToRGB">
       </object>
 
@@ -228,6 +229,37 @@
         <text id="blue"></text>
       </object>
 
+-->
+      <object type="org.flowpaint.pixelprocessors.Sin">
+        <text id="value">distance</text>
+        <text id="result">red</text>
+        <num id="valueScale">0.14</num>
+        <num id="valueOffset">0.4</num>
+        <num id="resultScale">0.5</num>
+        <num id="resultOffset">0.5</num>
+      </object>
+
+
+      <object type="org.flowpaint.pixelprocessors.Sin">
+        <text id="value">distance</text>
+        <text id="result">green</text>
+        <num id="valueScale">0.17</num>
+        <num id="valueOffset">0.56</num>
+        <num id="resultScale">0.5</num>
+        <num id="resultOffset">0.5</num>
+      </object>
+
+
+      <object type="org.flowpaint.pixelprocessors.Sin">
+        <text id="value">distance</text>
+        <text id="result">blue</text>
+        <num id="valueScale">0.1</num>
+        <num id="valueOffset">0.2</num>
+        <num id="resultScale">0.5</num>
+        <num id="resultOffset">0.5</num>
+      </object>
+
+<!--
 
 
       <object type="org.flowpaint.pixelprocessors.Constant">
@@ -288,6 +320,7 @@
         <text id="factor2">grB</text>
         <text id="result">blue</text>
       </object>
+-->
 
 <!--
       <object type="org.flowpaint.pixelprocessors.Checkers">

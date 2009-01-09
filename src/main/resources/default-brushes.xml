@@ -219,6 +219,21 @@
       <object type="org.flowpaint.pixelprocessors.HSLToRGB">
       </object>
 
+      <object type="org.flowpaint.pixelprocessors.Cos">
+        <text id="value">positionAcrossStroke</text>
+        <text id="result">alphaAcrossStroke</text>
+        <num id="valueScale">3.1415926</num> <!-- Pi -->
+        <num id="valueOffset">0</num>
+        <num id="resultScale">0.5</num>
+        <num id="resultOffset">0.5</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">alpha</text>
+        <text id="result">alpha</text>
+        <text id="valueScale">pressure</text>
+        <text id="resultScale">alphaAcrossStroke</text>
+      </object>
       <!--
       <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">positionAcrossStroke</text>
@@ -368,7 +383,7 @@
         <text id="verticalEditedParameter">alpha</text>
         <text id="verticalDescription">Transparency</text>
         <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">35</num>
+        <num id="horizontalEndValue">50</num>
         <text id="horizontalEditedParameter">maxRadius</text>
         <text id="horizontalDescription">Size</text>
       </object>

@@ -27,8 +27,6 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
 
         def getNames(entry: String, prefix: String, postfix: String): List[String] = {
 
-          // TODO: Only return the name if it is used
-
             if (entry startsWith prefix) {
                 val (name, default) = calculateVariableAndDefault(entry.substring(prefix.length), null)
 
@@ -42,6 +40,22 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
             }
             else Nil
         }
+
+      def getReferencedName(entry: String, prefix: String, postfix: String): List[String] = {
+
+          if (entry startsWith prefix) {
+              val (name, default) = calculateVariableAndDefault(entry.substring(prefix.length), null)
+
+              val name1 = name + postfix
+
+              if (name1 != null && getSettings.containsStringProperty( name1 ) ) {
+                
+                  List(getSettings.getStringProperty( name1, null ))
+              }
+              else Nil
+          }
+          else Nil
+      }
 
         var entries = tokenize(loopedTemplate)
 
@@ -58,17 +72,12 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                 foundNames = foundNames ::: getNames(entry, "setString", "")
 
                 foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "")
-              // TODO: Need better handling of created names..  Temporary fix
-/*
-                foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "Scale")
-                foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "Offset")
-*/
+                foundNames = foundNames ::: getReferencedName(entry, "getScaleOffsetFloat", "Scale")
+                foundNames = foundNames ::: getReferencedName(entry, "getScaleOffsetFloat", "Offset")
 
                 foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "")
-/*
-                foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "Scale")
-                foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "Offset")
-*/
+                foundNames = foundNames ::: getReferencedName(entry, "setScaleOffsetFloat", "Scale")
+                foundNames = foundNames ::: getReferencedName(entry, "setScaleOffsetFloat", "Offset")
 
                 entries = entries.tail
             }

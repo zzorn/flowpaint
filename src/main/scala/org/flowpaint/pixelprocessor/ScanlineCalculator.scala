@@ -27,7 +27,7 @@ class ScanlineCalculator {
 
   def init(pixelProcessors : List[PixelProcessor], settings : Data) {
     val emptyMap = new HashMap[String, String]()
-    variableNames = (pixelProcessors flatMap ( processor => {processor.getUsedVariableNames(emptyMap)})).removeDuplicates
+    variableNames = ((pixelProcessors flatMap ( processor => {processor.getUsedVariableNames(emptyMap)})) ::: settings.getFloatPropertyNames) .removeDuplicates
 
     nameToIndexMap = CollectionUtils.listToIndexMap(variableNames)
 

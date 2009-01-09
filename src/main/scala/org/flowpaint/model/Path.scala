@@ -15,8 +15,8 @@ import property.{DataImpl, Data}
  */
 class Path(brush: Brush) extends Renderable {
 
-    private val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
-    private val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
+    val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
+    val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
 
     private var path: List[Data] = Nil
 

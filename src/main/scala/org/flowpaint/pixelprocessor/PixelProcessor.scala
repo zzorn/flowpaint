@@ -22,7 +22,7 @@ abstract class PixelProcessor extends Configuration {
    * Returns the parameter names that are used by this PixelProcessor, if it is called with the specified variableNameMappings.
    * Used to ensure that all variable names are present when compiling PixelProgram:s.
    */
-  def getUsedVariableNames( variableNameMappings : Map[String, String] ) : Set[String] = { throw new UnsupportedOperationException("PixelProgram:s are not yet implemented") }
+  def getUsedVariableNames( variableNameMappings : Map[String, String] ) : List[String] = { throw new UnsupportedOperationException("PixelProgram:s are not yet implemented") }
 
   /**
    * Takes a map from variable names to their position in the variable array.

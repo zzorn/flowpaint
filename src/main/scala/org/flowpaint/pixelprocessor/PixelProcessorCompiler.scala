@@ -12,6 +12,7 @@ import pixelprocessor.{PixelProcessor}
  * 
  * 
  * @author Hans Haggstrom
+ * @deprecated not used
  */
 
 object PixelProcessorCompiler {

@@ -10,8 +10,8 @@ public interface PixelProgram
     /**
      * Calculates the pixel values for a scanline.
      */
-    void calculateScanline( float[] variablesAtScanlineStart,
-                            float[] variablesAtScanlineEnhd,
+    void calculateScanline( float[] initialVariableValues,
+                            float[] variableValueDeltas,
                             float[] workingArray,
                             int[] destinationBuffer,
                             int startOffset,

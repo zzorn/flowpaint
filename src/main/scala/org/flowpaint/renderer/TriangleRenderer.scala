@@ -1,5 +1,6 @@
 package org.flowpaint.renderer
 
+import pixelprocessor.ScanlineCalculator
 import property.{DataImpl, Data}
 import util.{DataSample, PropertyRegister}
 
@@ -21,7 +22,9 @@ class TriangleRenderer {
   def renderTriangle(viewWidth: Int, viewHeight: Int,
                     xi0: Float, yi0: Float, xi1: Float, yi1: Float, xi2: Float, yi2: Float,
                     dataSample0: Data, dataSample1: Data, dataSample2: Data,
-                    pixelCallback: PixelCallback) {
+                    pixelCallback: PixelCallback,
+                    scanlineCalculator : ScanlineCalculator,
+                    surface : RenderSurface) {
 
 
     /**
@@ -29,6 +32,15 @@ class TriangleRenderer {
      */
     def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: Data, endSample: Data) {
 
+        surface.renderScanline(
+            scanline,
+            x_,
+            endX_,
+            startSample.getFloatProperties,
+            endSample.getFloatProperties,
+            scanlineCalculator )
+
+/*
       // Clip top and bottom and off screen
       if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0 && endX_ > x_) {
 
@@ -40,6 +52,7 @@ class TriangleRenderer {
 
         // Precalculate one over length of line
         val divisor = 1f / (endX_ - x_).toFloat
+
 
         // Render scanline
         while (x < endX) {
@@ -53,7 +66,8 @@ class TriangleRenderer {
           pixelCallback(x, scanline, pixelSample)
           x += 1
         }
-      }
+     }
+ */
     }
 
     def rasterizeTrapetzoid(startY: Int, endY: Int,

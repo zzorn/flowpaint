@@ -4,6 +4,7 @@ package org.flowpaint.renderer
 import _root_.org.flowpaint.property.Data
 import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Image, Color}
+import pixelprocessor.ScanlineCalculator
 import util.DataSample
 
 /**
@@ -49,5 +50,12 @@ trait RenderSurface {
   def provideContent(minX: Float, minY: Float, maxX: Float, maxY: Float,
                     colorCalculator: (Int, Int) => Int)
 
+  def renderScanline(
+        scanline : Int,
+        x : Int,
+        endX : Int,
+        startSample : DataSample,
+        endSample : DataSample,
+        scanlineCalculator : ScanlineCalculator )
 
 }

@@ -5,7 +5,7 @@ import _root_.org.flowpaint.util.DataSample
 import brush.Brush
 import filters.{StrokeListener, PathProcessor}
 import ink.Ink
-import pixelprocessor.PixelProcessor
+import pixelprocessor.{PixelProcessor, ScanlineCalculator}
 import property.{DataImpl, Data}
 /**
  *  A path is a sequence of samples, forming a path on a 2D surface.  The Path can be connected to other paths.
@@ -49,6 +49,9 @@ class Path(brush: Brush) extends Renderable {
 
     def renderPoints(surface: RenderSurface, points: List[Data]) {
 
+        val scanlineCalculator = new ScanlineCalculator()
+        scanlineCalculator.init( this )
+
         if (points.isEmpty || points.tail.isEmpty ) return
 
         val segmentStartData: Data = new DataImpl()
@@ -66,14 +69,14 @@ class Path(brush: Brush) extends Renderable {
             segmentStartData.setValuesFrom(previous)
             segmentEndData.setValuesFrom(next)
 
-            renderStrokeSegment(segmentStartData, segmentEndData, surface)
+            renderStrokeSegment(segmentStartData, segmentEndData, surface, scanlineCalculator)
 
             previous = next
             remainingPath = remainingPath.tail
         }
     }
 
-    private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface) {
+    private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface, scanlineCalculator : ScanlineCalculator) {
 
         val emptyMap = Map[String, String]()
 
@@ -82,7 +85,7 @@ class Path(brush: Brush) extends Renderable {
         }
 
         val renderer = new StrokeRenderer()
-        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface)
+        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface, scanlineCalculator)
 
     }
 

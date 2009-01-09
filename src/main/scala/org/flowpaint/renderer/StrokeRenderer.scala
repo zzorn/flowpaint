@@ -3,6 +3,7 @@ package org.flowpaint.renderer
 import brush.Brush
 import java.awt.Color
 import org.flowpaint.brush
+import pixelprocessor.ScanlineCalculator
 import property.{DataImpl, Data}
 import util.MathUtils.squaredDistance
 import util.{DataSample, RectangleInt, PropertyRegister}
@@ -20,7 +21,7 @@ class StrokeRenderer {
   /**
    *     Renders a segment of a stroke.  The segment has start and end coordinates, radius, and angles.
    */
-  def drawStrokeSegment(startData: Data, endData: Data, pixelProcessingFunction: (Data) => Unit, surface: RenderSurface) {
+  def drawStrokeSegment(startData: Data, endData: Data, pixelProcessingFunction: (Data) => Unit, surface: RenderSurface, scanlineCalculator : ScanlineCalculator) {
 
 
     val startX = startData.getFloatProperty(PropertyRegister.PATH_X, 0)
@@ -64,8 +65,8 @@ class StrokeRenderer {
       surface.putPixel( x, y, pixelData )
     }
 
-    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback )
-    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x10, y10, x11, y11, x01, y01, s10, s11, s01, pixelCallback )
+    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x01, y01, x10, y10, x00, y00, s01, s10, s00, pixelCallback, scanlineCalculator, surface  )
+    triangleRenderer.renderTriangle( surface.getWidth, surface.getHeight, x10, y10, x11, y11, x01, y01, s10, s11, s01, pixelCallback, scanlineCalculator, surface  )
 
  
 

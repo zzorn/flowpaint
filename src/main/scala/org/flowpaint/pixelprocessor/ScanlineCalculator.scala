@@ -38,6 +38,9 @@ class ScanlineCalculator {
 
     val source = createSource( path.pixelProcessors, variableNames, nameToIndexMap, path.settings )
 
+      // DEBUG
+      println( "Compiling PixelProgram: /n" + source + "/n/n" )
+
     program = compileProgram( source )
   }
 
@@ -79,13 +82,12 @@ class ScanlineCalculator {
       }
 
       // Render the scanline
-      program.calculateScanline(
-        variablesAtScanlineStart,
-        variableValueDeltas,
-        variableWorkingValues,
-        outputBuffer,
-        outputOffset,
-        scanlineLength )
+      program.calculateScanline( variablesAtScanlineStart,
+                                    variableValueDeltas,
+                                    variableWorkingValues,
+                                    outputBuffer,
+                                    outputOffset,
+                                    scanlineLength )
     }
   }
 
@@ -129,6 +131,8 @@ class ScanlineCalculator {
     val blueExpression = createVariableGetterExpression( PropertyRegister.BLUE, 0 )
     val alphaExpression = createVariableGetterExpression( PropertyRegister.ALPHA, 1 )
 
+    val variableNum = variableNames.size
+
     source append
     """
     void calculateScanline( float[] currentVariableValues,
@@ -138,14 +142,12 @@ class ScanlineCalculator {
                             int startOffset,
                             int scanlineLength ) {
 
-      final int numberOfVariables = initialVariableValues.length;
-
       float throwAwayValue = 0f;
 
       final int endIndex = startOffset + scanlineLength;
       for ( int i = startOffset; i < endIndex; i++ ) {
 
-        for ( int j = 0; j < numberOfVariables; j++ ) {
+        for ( int j = 0; j < """ +variableNum+ """; j++ ) {
           workingArray[j] = currentVariableValues[j];
           currentVariableValues[j] += variableValueDeltas[j];
         }
@@ -154,12 +156,14 @@ class ScanlineCalculator {
     // NOTE: throwAwayValue is used to assign values to if the correct variable index can not be found, to avoid runtime failure. 
 
     // Generate source for each pixel processor
+/*
     processors foreach ( processor => source append
             processor.generateCode( variableNames,
                                     nameToIndex,
                                     generalSettings,
                                     "workingArray",
                                     nextUniqueId ) )
+*/
 
     source append
     """
@@ -184,8 +188,8 @@ class ScanlineCalculator {
           if ( alphaInt < 255 ) {
             final int originalColor = destinationBuffer[ i ];
 
-            final int newFactor = 256 * a;
-            final int originalFactor = 256 - t;
+            final int newFactor = (int) (256 * a);
+            final int originalFactor = 256 - newFactor ;
 
             redInt   = ( ((originalColor >> 16) & 0xff) * originalFactor + redInt   * newFactor ) >> 8;
             greenInt = ( ((originalColor >> 8)  & 0xff) * originalFactor + greenInt * newFactor ) >> 8;

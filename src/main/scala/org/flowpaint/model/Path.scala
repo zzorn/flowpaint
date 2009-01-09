@@ -17,13 +17,12 @@ class Path(brush: Brush) extends Renderable {
 
     val settings = new DataImpl( brush.settings )
 
-    val scanlineCalculator = new ScanlineCalculator()
+    val scanlineCalculator = brush.getScanlineCalculator
   
     val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
     val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
 
 
-    scanlineCalculator.init( this )
 
     private var path: List[Data] = Nil
 

@@ -216,10 +216,10 @@
 
     <pixelProcessors>
 
-<!--
       <object type="org.flowpaint.pixelprocessors.HSLToRGB">
       </object>
 
+      <!--
       <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">positionAcrossStroke</text>
         <text id="gradientProperty">edgeGradient</text>
@@ -230,6 +230,7 @@
       </object>
 
 -->
+<!--
       <object type="org.flowpaint.pixelprocessors.Sin">
         <text id="value">distance</text>
         <text id="result">red</text>
@@ -258,6 +259,7 @@
         <num id="resultScale">0.5</num>
         <num id="resultOffset">0.5</num>
       </object>
+-->
 
 <!--
 

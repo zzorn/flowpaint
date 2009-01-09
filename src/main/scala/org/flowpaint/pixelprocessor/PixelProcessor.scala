@@ -27,6 +27,8 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
 
         def getNames(entry: String, prefix: String, postfix: String): List[String] = {
 
+          // TODO: Only return the name if it is used
+
             if (entry startsWith prefix) {
                 val (name, default) = calculateVariableAndDefault(entry.substring(prefix.length), null)
 
@@ -56,18 +58,25 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                 foundNames = foundNames ::: getNames(entry, "setString", "")
 
                 foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "")
+              // TODO: Need better handling of created names..  Temporary fix
+/*
                 foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "Scale")
                 foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "Offset")
+*/
 
                 foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "")
+/*
                 foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "Scale")
                 foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "Offset")
+*/
 
                 entries = entries.tail
             }
         }
 
+/*
       println( "used names: " + foundNames )
+*/
 
         foundNames
     }
@@ -81,8 +90,10 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                     variableArrayName: String,
                     nextUniqueId: () => Int): (String, String) = {
 
-        (parseTemplate(nameToIndex, initializerTemplate, generalSettings, variableArrayName, nextUniqueId),
-                parseTemplate(nameToIndex, loopedTemplate, generalSettings, variableArrayName, nextUniqueId))
+      val uniqueId = nextUniqueId()
+
+        (parseTemplate(nameToIndex, initializerTemplate, generalSettings, variableArrayName, uniqueId),
+                parseTemplate(nameToIndex, loopedTemplate, generalSettings, variableArrayName, uniqueId))
     }
 
     private def tokenize(s: String): List[String] = if (!s.startsWith("$")) s.split("\\$").toList
@@ -103,7 +114,7 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                              template: String,
                              generalSettings: Data,
                              variableArrayName: String,
-                             nextUniqueId: () => Int): String = {
+                             uniqueId: Int): String = {
 
         def parseFloat(variableName: String, defaultValue: String, code: StringBuilder) {
             val redirectedVariableName = getSourceVariable(variableName)
@@ -143,7 +154,7 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
         def parseUniqueName(variableName: String, defaultValue: String, code: StringBuilder) {
 
             // Generates an unique string for this processor.  Useful for making sure variable names dont clash
-            code append ("pixelProcessor" + nextUniqueId())
+            code append ( variableName + "_id" + uniqueId )
         }
 
         def parseString(variableName: String, defaultValue: String, code: StringBuilder) {
@@ -179,7 +190,7 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                 parseVariable(entry, "getScaleOffsetFloat ", parseGetScaleOffsetFloat, "0f", code)
                 parseVariable(entry, "setScaleOffsetFloat ", parseSetScaleOffsetFloat, "throwAwayValue", code)
                 parseVariable(entry, "setFloat ", parseFloat, "throwAwayValue", code)
-                parseVariable(entry, "uniqueName", parseUniqueName, "", code)
+                parseVariable(entry, "id", parseUniqueName, "", code)
 
                 entries = entries.tail
             }

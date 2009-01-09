@@ -5,7 +5,7 @@ import _root_.scala.xml.Node
 import filters.{StrokeListener, StrokeFilter, PathProcessor}
 import ink.Ink
 import javax.swing.JComponent
-import pixelprocessor.PixelProcessor
+import pixelprocessor.{PixelProcessor, ScanlineCalculator}
 import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
 import ui.editors.Editor
 import ui.slider.InkSliderUi
@@ -54,16 +54,28 @@ class Brush(val identifier: String,
 
     private val listeners = new HashSet[ChangeListener]()
 
+    private var scanlineCalculator : ScanlineCalculator = null
+
 
     type ChangeListener = (Brush) => Unit
 
     private def notifyListenersOnChildListChange = (l: Any) => notifyListeners()
 
-    private def notifyListeners() {listeners foreach {listener => listener(this)}}
-
-
+    private def notifyListeners() {
+      scanlineCalculator = null; // Reset
+      listeners foreach {listener => listener(this)}
+    }
 
     settings.addListener((data: Data, prop: String) => notifyListeners())
+
+    def getScanlineCalculator = {
+      if (scanlineCalculator == null) {
+        scanlineCalculator = new ScanlineCalculator()
+        scanlineCalculator.init( createPixelProcessors(), settings )
+      }
+
+      scanlineCalculator
+    }
 
     def name = identifier
 

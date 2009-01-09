@@ -25,9 +25,9 @@ class ScanlineCalculator {
   private var variableValueDeltas: Array[Float] = null
   private var variableWorkingValues: Array[Float] = null
 
-  def init(path: Path) {
+  def init(pixelProcessors : List[PixelProcessor], settings : Data) {
     val emptyMap = new HashMap[String, String]()
-    variableNames = (path.pixelProcessors flatMap ( processor => {processor.getUsedVariableNames(emptyMap)})).removeDuplicates
+    variableNames = (pixelProcessors flatMap ( processor => {processor.getUsedVariableNames(emptyMap)})).removeDuplicates
 
     nameToIndexMap = CollectionUtils.listToIndexMap(variableNames)
 
@@ -36,10 +36,12 @@ class ScanlineCalculator {
     variableValueDeltas = createVariableArray
     variableWorkingValues = createVariableArray
 
-    val source = createSource( path.pixelProcessors, variableNames, nameToIndexMap, path.settings )
+    val source = createSource( pixelProcessors, variableNames, nameToIndexMap, settings )
 
+/*
       // DEBUG
       println( "Compiling PixelProgram: /n" + source + "/n/n" )
+*/
 
     program = compileProgram( source )
   }

@@ -135,7 +135,7 @@ class ScanlineCalculator {
 
     source append
     """
-    void calculateScanline( float[] currentVariableValues,
+    public void calculateScanline( float[] currentVariableValues,
                             float[] variableValueDeltas,
                             float[] workingArray,
                             int[] destinationBuffer,

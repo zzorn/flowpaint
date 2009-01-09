@@ -17,8 +17,13 @@ class Path(brush: Brush) extends Renderable {
 
     val settings = new DataImpl( brush.settings )
 
+    val scanlineCalculator = new ScanlineCalculator()
+  
     val pixelProcessors : List[PixelProcessor] = brush.createPixelProcessors()
     val pathProcessors : List[PathProcessor]= brush.createPathProcessors()
+
+
+    scanlineCalculator.init( this )
 
     private var path: List[Data] = Nil
 
@@ -48,9 +53,6 @@ class Path(brush: Brush) extends Renderable {
     }
 
     def renderPoints(surface: RenderSurface, points: List[Data]) {
-
-        val scanlineCalculator = new ScanlineCalculator()
-        scanlineCalculator.init( this )
 
         if (points.isEmpty || points.tail.isEmpty ) return
 

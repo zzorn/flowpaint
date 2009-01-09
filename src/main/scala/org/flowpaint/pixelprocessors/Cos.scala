@@ -11,4 +11,4 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Cos extends SingleFunctionPixelProcessor( Math.cos )
+class Cos extends SingleFunctionPixelProcessor( Math.cos, "Math.cos" )

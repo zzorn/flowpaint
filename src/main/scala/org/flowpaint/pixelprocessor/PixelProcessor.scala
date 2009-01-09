@@ -2,6 +2,7 @@ package org.flowpaint.pixelprocessor
 
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.{Set, Map}
+import java.lang.Object
 import util.{DataSample, Configuration}
 
 /**
@@ -10,7 +11,7 @@ import util.{DataSample, Configuration}
  * @author Hans Haggstrom
  */
 
-abstract class PixelProcessor extends Configuration {
+abstract class PixelProcessor( initializerTemplate : String, loopedTemplate : String  ) extends Configuration {
 
   /**
    * Processes the variables.  The variableNameMappings are used to map names used by this PixelProcessor to the ones that are in the variable array.
@@ -27,13 +28,126 @@ abstract class PixelProcessor extends Configuration {
   /**
    * Takes a map from variable names to their position in the variable array.
    */
-  def generateCode( variableIndexes : Map[String, Int] ) : String = { throw new UnsupportedOperationException("PixelProgram:s are not yet implemented") }
+  def generateCode( variableNames : List[String], 
+                    nameToIndex : Map[String,Int],
+                    generalSettings : Data,
+                    variableArrayName : String,
+                    nextUniqueId : () => Int) : (String, String) = {
 
+    ( parseTemplate( nameToIndex, initializerTemplate, generalSettings, variableArrayName, nextUniqueId ),
+      parseTemplate( nameToIndex, loopedTemplate, generalSettings, variableArrayName, nextUniqueId) )
+  }
+
+  /**
+   * Replace accesses to variables with correct array indexing operations or strings
+   */
+  private def parseTemplate( nameToIndex : Map[String,Int],
+                             template : String,
+                             generalSettings : Data,
+                             variableArrayName : String ,
+                             nextUniqueId : () => Int) : String = {
+
+    def tokenize(s : String) : List[String] = if (!s.startsWith("$")) s.split( "\\$" ).toList
+                                              else (" " + s).split( "\\$" ).toList
+
+    def parseFloat( variableName : String, defaultValue: String, code : StringBuilder ) {
+      val redirectedVariableName = getSourceVariable( variableName )
+
+      if ( getSettings.containsFloatProperty( variableName ) ) {
+        code append (getSettings.getFloatProperty( variableName, 0 ).toString + "f")
+      }
+      else if ( nameToIndex.contains( redirectedVariableName ) ) {
+        code append variableArrayName+"["+nameToIndex(redirectedVariableName)+"]"
+      }
+      else {
+        code append defaultValue
+      }
+    }
+
+    def parseGetScaleOffsetFloat( variableName : String, defaultValue: String, code : StringBuilder ) {
+
+      code append " ( "
+      parseFloat( variableName, defaultValue, code )
+      code append " * "
+      parseFloat( variableName + "Scale", "1f", code )
+      code append " + "
+      parseFloat( variableName + "Offset", "0f", code )
+      code append " ) "
+    }
+
+    def parseSetScaleOffsetFloat( variableName : String, defaultValue: String, code : StringBuilder ) {
+
+      parseFloat( variableName, defaultValue, code )
+      code append " = "
+      parseFloat( variableName + "Offset", "0f", code )
+      code append " + "
+      parseFloat( variableName + "Scale", "1f", code )
+      code append " * "
+    }
+
+    def parseUniqueName( variableName : String, defaultValue: String, code : StringBuilder ) {
+
+      // Generates an unique string for this processor.  Useful for making sure variable names dont clash
+      code append ( "pixelProcessor" + nextUniqueId() )
+    }
+
+    def parseString(variableName : String, defaultValue: String, code : StringBuilder ) {
+      val stringValue = getMappedString( variableName , null, generalSettings )
+
+      if (stringValue == null) code append defaultValue
+      else code append ("\"" + stringValue + "\"")
+    }
+
+    def calculateVariableAndDefault( entry : String, defaultDefault : String ) : (String, String) = {
+      val commaIndex = entry.indexOf( "," )
+      val variableName = if (commaIndex < 0) entry else entry.substring( 0, commaIndex )
+      val defaultValue = if (commaIndex < 0 || commaIndex + 1 >= entry.size) defaultDefault else entry.substring( commaIndex + 1 )
+      (variableName, defaultValue)
+    }
+
+    def parseVariable( entry : String, prefix : String, parser : (String,String,StringBuilder) => Unit, defaultValue : String, code : StringBuilder ) {
+      if (entry startsWith prefix ) {
+        val (name, default) = calculateVariableAndDefault(entry.substring( prefix.length ), defaultValue )
+
+        parser( name, default, code )
+      }
+
+    }
+
+    var entries : List[String] = tokenize( template )
+
+    val code = new StringBuilder()
+
+    while ( !entries.isEmpty ) {
+      code append entries.head
+      entries = entries.tail
+
+      if (!entries.isEmpty) {
+        val entry : String = entries.head
+
+        val commaIndex = entry.indexOf( "," )
+        val variableName = (if (commaIndex < 0) entry else entry.substring( 0, commaIndex )).trim
+        val defaultValue = if (commaIndex < 0 || commaIndex + 1 >= entry.size) "0f" else entry.substring( commaIndex + 1 )
+
+        parseVariable( entry, "getString ", parseString, "null", code )
+        parseVariable( entry, "getFloat ", parseFloat, "0f", code )
+        parseVariable( entry, "getScaleOffsetFloat ", parseGetScaleOffsetFloat, "0f", code )
+        parseVariable( entry, "setScaleOffsetFloat ", parseSetScaleOffsetFloat, "throwAwayValue", code )
+        parseVariable( entry, "setFloat ", parseFloat, "throwAwayValue", code )
+        parseVariable( entry, "uniqueName", parseUniqueName, "", code )
+
+        entries = entries.tail
+      }
+    }
+
+    code.toString
+  }
+
+  def getSourceVariable( name : String ) : String = getStringProperty( name, name )
 
   def getSourceVariable( name : String, variableNameMappings : Map[String, String] ) : String = {
-
     // First check if there is some string setting with the same name, allowing configuration time mapping
-    var s = getStringProperty( name, name )
+    var s = getSourceVariable( name )
 
     // Then map using parameter name mapping
     variableNameMappings.get(s) match {
@@ -59,6 +173,13 @@ abstract class PixelProcessor extends Configuration {
 
       variables.getProperty( s, default )
     }
+  }
+
+  protected def getMappedString( name : String, default : String, generalSettings : Data ) : String = {
+    val proeprtyName = getStringProperty( name + "Property", name)
+    val defaultValue = getStringProperty( name, default)
+
+    generalSettings.getStringProperty( proeprtyName, defaultValue )
   }
 
   protected def setMappedVar( name : String, value : Float, variables : DataSample, variableNameMappings : Map[String, String] )  {

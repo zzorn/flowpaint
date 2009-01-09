@@ -9,7 +9,11 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class SingleFunctionPixelProcessor( function : (Double) => Double ) extends PixelProcessor {
+class SingleFunctionPixelProcessor( function : (Double) => Double, stringVersion : String )
+        extends PixelProcessor("",
+  """
+    $setScaleOffsetFloat result$ ( (float) ( """ + stringVersion + """ ( $getScaleOffsetFloat value$ ) ) );
+  """) {
 
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {

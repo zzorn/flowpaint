@@ -1,13 +1,13 @@
 package org.flowpaint.pixelprocessor
 
 import _root_.org.flowpaint.brush.Brush
+import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.immutable.HashMap
 import _root_.scala.collection.Map
 import codehaus.janino.{ScriptEvaluator, ClassBodyEvaluator, Scanner}
 import java.io.StringReader
 import model.Path
-import util.{DataSample, CollectionUtils}
-
+import util.{DataSample, CollectionUtils, PropertyRegister}
 /**
  *
  *
@@ -15,10 +15,12 @@ import util.{DataSample, CollectionUtils}
  */
 
 class ScanlineCalculator {
+
   private var program: PixelProgram = null
 
   private var variableNames: List[String] = Nil
   private var nameToIndexMap: Map[String, Int] = null
+  
   private var variablesAtScanlineStart: Array[Float] = null
   private var variableValueDeltas: Array[Float] = null
   private var variableWorkingValues: Array[Float] = null
@@ -30,16 +32,17 @@ class ScanlineCalculator {
     nameToIndexMap = CollectionUtils.listToIndexMap(variableNames)
 
     def createVariableArray = new Array[Float](numberOfVariables)
-
     variablesAtScanlineStart = createVariableArray
     variableValueDeltas = createVariableArray
     variableWorkingValues = createVariableArray
 
-    createProgram( path.pixelProcessors, variableNames, nameToIndexMap )
+    val source = createSource( path.pixelProcessors, variableNames, nameToIndexMap, path.settings )
 
+    program = compileProgram( source )
   }
 
-  def calculateScanline(start: DataSample, end: DataSample,
+  def calculateScanline(start: DataSample,
+                       end: DataSample,
                        outputBuffer: Array[Int],
                        outputOffset: Int,
                        scanlineLength: Int) {
@@ -86,12 +89,7 @@ class ScanlineCalculator {
     }
   }
 
-  private def createProgram( processors : List[PixelProcessor],
-                               variableNames : List[String],
-                               nameToIndex : Map[String,Int] ): PixelProgram = {
-
-
-    val source = createSource( processors, variableNames, nameToIndex )
+  private def compileProgram( source : String ): PixelProgram = {
 
     try{
 
@@ -106,30 +104,109 @@ class ScanlineCalculator {
     }
   }
 
-
   private def createSource( processors : List[PixelProcessor],
                             variableNames : List[String],
-                            nameToIndex : Map[String,Int] ) : String = {
+                            nameToIndex : Map[String,Int],
+                            generalSettings : Data ) : String = {
+
+    def createVariableGetterExpression( id : Int, default : Float ) : String = {
+      val name = PropertyRegister.getName( id )
+      if (nameToIndex.contains( name ))
+        "workingArray[" + nameToIndex(name) + "]"
+      else
+        default.toString + "f"
+    }
+
+
+    var uniqueId = 0
+    def nextUniqueId() : Int = { uniqueId += 1; uniqueId }
+
 
     val source = new StringBuilder()
 
+    val redExpression = createVariableGetterExpression( PropertyRegister.RED, 0 )
+    val greenExpression = createVariableGetterExpression( PropertyRegister.GREEN, 0 )
+    val blueExpression = createVariableGetterExpression( PropertyRegister.BLUE, 0 )
+    val alphaExpression = createVariableGetterExpression( PropertyRegister.ALPHA, 1 )
+
     source append
     """
-    void calculateScanline( float[] initialVariableValues,
+    void calculateScanline( float[] currentVariableValues,
                             float[] variableValueDeltas,
                             float[] workingArray,
                             int[] destinationBuffer,
                             int startOffset,
                             int scanlineLength ) {
+
+      final int numberOfVariables = initialVariableValues.length;
+
+      float throwAwayValue = 0f;
+
+      final int endIndex = startOffset + scanlineLength;
+      for ( int i = startOffset; i < endIndex; i++ ) {
+
+        for ( int j = 0; j < numberOfVariables; j++ ) {
+          workingArray[j] = currentVariableValues[j];
+          currentVariableValues[j] += variableValueDeltas[j];
+        }
+
+    """
+    // NOTE: throwAwayValue is used to assign values to if the correct variable index can not be found, to avoid runtime failure. 
+
+    // Generate source for each pixel processor
+    processors foreach ( processor => source append
+            processor.generateCode( variableNames,
+                                    nameToIndex,
+                                    generalSettings,
+                                    "workingArray",
+                                    nextUniqueId ) )
+
+    source append
     """
 
-    // TODO: Generate source for each pizel processor
+        float r = """+ redExpression +""";
+        float g = """+ greenExpression +""";
+        float b = """+ blueExpression +""";
+        float a = """+ alphaExpression +""";
 
-    source append "}"
+        if (r <  0f) r = 0f; else if ( r > 1f ) r = 1f;
+        if (g <  0f) g = 0f; else if ( g > 1f ) g = 1f;
+        if (b <  0f) b = 0f; else if ( b > 1f ) b = 1f;
+        if (a <  0f) a = 0f; else if ( a > 1f ) a = 1f;
+
+        int redInt = ((int) ( r * 255 ));
+        int greenInt = ((int) ( g * 255 ));
+        int blueInt = ((int) ( b * 255 ));
+        int alphaInt = ((int) ( a * 255 ));
+
+        if ( alphaInt > 0 ) {
+
+          if ( alphaInt < 255 ) {
+            final int originalColor = destinationBuffer[ i ];
+
+            final int newFactor = 256 * a;
+            final int originalFactor = 256 - t;
+
+            redInt   = ( ((originalColor >> 16) & 0xff) * originalFactor + redInt   * newFactor ) >> 8;
+            greenInt = ( ((originalColor >> 8)  & 0xff) * originalFactor + greenInt * newFactor ) >> 8;
+            blueInt  = ( ( originalColor        & 0xff) * originalFactor + blueInt  * newFactor ) >> 8;
+          }
+
+          destinationBuffer[ i ] =
+                 ( 0xFF                << 24 ) |
+                 ( ( redInt   & 0xFF ) << 16 ) |
+                 ( ( greenInt & 0xFF ) << 8 ) |
+                 ( ( blueInt  & 0xFF ) << 0 );
+        }
+      }
+    }
+    """
 
     source.toString
 
   }
+
+  
 
   private def numberOfVariables = variableNames.size
 

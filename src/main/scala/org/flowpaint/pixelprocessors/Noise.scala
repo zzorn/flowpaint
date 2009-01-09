@@ -13,7 +13,7 @@ import util.{DataSample, PerlinNoise}
  * @author Hans Haggstrom
  */
 
-class Noise extends PixelProcessor {
+class Noise extends PixelProcessor("","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

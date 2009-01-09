@@ -13,7 +13,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class RBGToHSL extends PixelProcessor {
+class RBGToHSL extends PixelProcessor("","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 

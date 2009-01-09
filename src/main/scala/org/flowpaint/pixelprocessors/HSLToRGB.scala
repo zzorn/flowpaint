@@ -12,7 +12,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class HSLToRGB  extends PixelProcessor {
+class HSLToRGB  extends PixelProcessor("","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 

@@ -11,7 +11,7 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Checkers extends PixelProcessor {
+class Checkers extends PixelProcessor("","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

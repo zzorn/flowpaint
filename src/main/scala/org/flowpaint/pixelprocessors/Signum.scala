@@ -10,4 +10,4 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Signum extends  SingleFunctionPixelProcessor( Math.signum )
+class Signum extends  SingleFunctionPixelProcessor( Math.signum, "Math.signum" )

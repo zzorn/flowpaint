@@ -10,4 +10,4 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Sin extends SingleFunctionPixelProcessor( Math.sin ) 
+class Sin extends SingleFunctionPixelProcessor( Math.sin, "Math.sin" ) 

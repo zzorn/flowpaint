@@ -10,13 +10,16 @@ import util.PerformanceTester.time
  * @author Hans Haggstrom
  */
 class Painting extends PictureProvider {
-  var layers: ArrayList[Layer] = new ArrayList()
+
+  private var layers: List[Layer] = List( new Layer )
 
   var backgroundColor = java.awt.Color.WHITE
 
-  clear()
+  def getLayers() : List[Layer] = layers
 
-  def currentLayer: Layer = layers(0)
+  def setLayers( newLayers : List[Layer] ) : Unit =  { layers = newLayers }
+
+  def currentLayer: Layer = layers.head
 
   def updateSurface(surface: RenderSurface) = {
 
@@ -28,8 +31,7 @@ class Painting extends PictureProvider {
   }
 
   def clear() {
-    layers.clear
-    layers.add(new Layer)
+      layers = List( new Layer )
   }
 }
 

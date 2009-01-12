@@ -12,7 +12,7 @@ import input.{InputHandler}
 
 import java.awt.Font
 import javax.swing.SwingUtilities
-import model.{Stroke, Painting, Path}
+import model.{Stroke, Painting, Path, Layer}
 import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
@@ -150,9 +150,7 @@ object FlowPaintController {
 
 
   def clearPictureWithoutMessage() {
-    currentPainting.clear()
-    surface.clear()
-    paintPanel.repaint()
+      doUndoableClear()
   }
 
   def quickSave() {
@@ -220,6 +218,44 @@ object FlowPaintController {
               surface.canUndo
           }) )
   }
+
+    // TODO: Make undo stacks document (= painting or tome) specific.
+    private def doUndoableClear() {
+        commandQueue.queueCommand( new Command(
+            "Clear",
+            () => {
+                surface.undoSnapshot()
+
+                val layers = currentPainting.getLayers
+                currentPainting.clear()
+                surface.clear()
+                paintPanel.repaint()
+
+                layers
+            },
+            (undoData : Object) => {
+
+                val layers = undoData.asInstanceOf[List[Layer]]
+                currentPainting.setLayers( layers )
+                surface.undo()
+                paintPanel.repaint()
+
+                null
+            },
+            (redoData : Object) => {
+                surface.undoSnapshot()
+
+                val layers = currentPainting.getLayers
+                currentPainting.clear()
+                surface.clear()
+                paintPanel.repaint()
+
+                layers
+            },
+            () => {
+                surface.canUndo
+            }) )
+    }
 
   def canUndo() = commandQueue.canUndo && surface.canUndo
 

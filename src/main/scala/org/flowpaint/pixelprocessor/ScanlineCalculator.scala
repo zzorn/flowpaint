@@ -136,18 +136,22 @@ class ScanlineCalculator {
     val variableNum = variableNames.size
 
     // Generate source for each pixel processor
+    var classBodyCodes : List[String] = Nil
     var initCodes : List[String] = Nil
     var loopCodes : List[String] = Nil
     processors foreach ( processor => {
-      val (initCode, loopCode) =processor.generateCode( variableNames,
+      val (classBodyCode, initCode, loopCode) =processor.generateCode( variableNames,
                                                         nameToIndex,
                                                         generalSettings,
                                                         "workingArray",
                                                         nextUniqueId )
+      classBodyCodes = classBodyCodes ::: List( classBodyCode )
       initCodes = initCodes ::: List( initCode )
       loopCodes = loopCodes::: List( loopCode )
     })
 
+
+    classBodyCodes foreach (source append _ )
 
     source append
     """

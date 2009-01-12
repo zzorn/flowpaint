@@ -11,7 +11,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class Interpolate extends PixelProcessor("","") {
+class Interpolate extends PixelProcessor("","","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

@@ -11,7 +11,7 @@ import util.{DataSample, Configuration}
  * @author Hans Haggstrom
  */
 
-abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: String) extends Configuration {
+abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: String, loopedTemplate: String) extends Configuration {
 
     /**
      * Processes the variables.  The variableNameMappings are used to map names used by this PixelProcessor to the ones that are in the variable array.
@@ -97,12 +97,13 @@ abstract class PixelProcessor(initializerTemplate: String, loopedTemplate: Strin
                     nameToIndex: Map[String, Int],
                     generalSettings: Data,
                     variableArrayName: String,
-                    nextUniqueId: () => Int): (String, String) = {
+                    nextUniqueId: () => Int): (String, String, String) = {
 
       val uniqueId = nextUniqueId()
 
-        (parseTemplate(nameToIndex, initializerTemplate, generalSettings, variableArrayName, uniqueId),
-                parseTemplate(nameToIndex, loopedTemplate, generalSettings, variableArrayName, uniqueId))
+        ( parseTemplate(nameToIndex, classBodyTemplate, generalSettings, variableArrayName, uniqueId),
+          parseTemplate(nameToIndex, initializerTemplate, generalSettings, variableArrayName, uniqueId),
+          parseTemplate(nameToIndex, loopedTemplate, generalSettings, variableArrayName, uniqueId) )
     }
 
     private def tokenize(s: String): List[String] = if (!s.startsWith("$")) s.split("\\$").toList

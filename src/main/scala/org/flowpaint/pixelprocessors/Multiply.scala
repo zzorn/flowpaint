@@ -11,7 +11,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class Multiply extends PixelProcessor("","") {
+class Multiply extends PixelProcessor("","","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

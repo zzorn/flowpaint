@@ -11,7 +11,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class Constant extends PixelProcessor("","") {
+class Constant extends PixelProcessor("","","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
 

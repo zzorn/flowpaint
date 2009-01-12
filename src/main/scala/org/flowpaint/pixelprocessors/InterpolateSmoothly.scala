@@ -9,7 +9,7 @@ import util.{DataSample, MathUtils}
  * @author Hans Haggstrom
  */
 
-class InterpolateSmoothly extends PixelProcessor("",
+class InterpolateSmoothly extends PixelProcessor("","",
   """
       
   """ ) {

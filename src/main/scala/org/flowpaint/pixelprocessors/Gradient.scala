@@ -11,7 +11,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class Gradient extends PixelProcessor("","") {
+class Gradient extends PixelProcessor("","","") {
 
   private val temp = new DataImpl()
 

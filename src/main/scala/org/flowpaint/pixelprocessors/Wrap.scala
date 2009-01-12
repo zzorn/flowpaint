@@ -11,7 +11,7 @@ import util.{DataSample, MathUtils}
  * @author Hans Haggstrom
  */
 
-class Wrap extends PixelProcessor("","") {
+class Wrap extends PixelProcessor("","","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

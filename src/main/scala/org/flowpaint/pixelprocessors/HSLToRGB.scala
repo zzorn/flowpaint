@@ -12,7 +12,7 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class HSLToRGB  extends PixelProcessor("",
+class HSLToRGB  extends PixelProcessor("","",
   """
      float h$id$ = $getScaleOffsetFloat hue, 0f$;
      float s$id$ = $getScaleOffsetFloat saturation, 0f$;

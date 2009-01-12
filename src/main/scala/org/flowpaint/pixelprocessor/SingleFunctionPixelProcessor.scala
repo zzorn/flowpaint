@@ -10,7 +10,7 @@ import util.DataSample
  */
 
 class SingleFunctionPixelProcessor( function : (Double) => Double, stringVersion : String )
-        extends PixelProcessor("",
+        extends PixelProcessor("","",
   """
     $setScaleOffsetFloat result$ ( (float) ( """ + stringVersion + """ ( $getScaleOffsetFloat value$ ) ) );
   """) {

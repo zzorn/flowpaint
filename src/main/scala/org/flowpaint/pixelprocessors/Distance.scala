@@ -10,7 +10,7 @@ import util.{DataSample, MathUtils}
  * @author Hans Haggstrom
  */
 
-class Distance extends PixelProcessor("","") {
+class Distance extends PixelProcessor("","","") {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) {
 

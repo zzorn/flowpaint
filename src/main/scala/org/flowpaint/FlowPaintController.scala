@@ -12,11 +12,11 @@ import input.{InputHandler}
 
 import java.awt.Font
 import javax.swing.SwingUtilities
-import model.{Stroke, Painting}
+import model.{Stroke, Painting, Path}
 import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
-import util.{DataSample, LibraryImpl, ResourceLoader, PropertyRegister}
+import util._
 /**
  *         Provides common methods of the application for various tools etc.
  *
@@ -60,6 +60,8 @@ object FlowPaintController {
 
   private val MAX_RECENT_BRUSHES_SIZE = 24
 
+  private val UNDO_QUEUE_SIZE = 8
+
   var brushSets :List[BrushSet] = Nil
 
   val recentBrushes = new FixedBrushSet( "recentBrushes", "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil )
@@ -77,6 +79,8 @@ object FlowPaintController {
 
   // Render cache bitmap
   var surface: SingleRenderSurface = null
+
+  val commandQueue = new CommandQueue()
 
   // Rendering UI
   var paintPanel: PaintPanel = null
@@ -101,7 +105,7 @@ object FlowPaintController {
 
 
     // Render cache bitmap
-    surface = new SingleRenderSurface(currentPainting)
+    surface = new SingleRenderSurface(currentPainting, UNDO_QUEUE_SIZE)
 
     // Rendering UI
     paintPanel = new PaintPanel(surface, true)
@@ -185,6 +189,38 @@ object FlowPaintController {
     val dialog = optionPane.createDialog(FlowPaintUi.frame, FlowPaint.NAME_AND_VERSION);
     dialog.setVisible(true);
   }
+
+
+  def storeStroke( stroke : Stroke ) {
+      println("storing stroke" + stroke)
+      commandQueue.queueCommand( new Command(
+          "Brush Stroke",
+          () => {
+              println("adding stroke" + stroke)
+              //surface.undoSnapshot()
+              // TODO: Make undo stacks document specific
+              FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
+              paintPanel.repaint()
+              stroke
+          },
+          (undoData : Object) => {
+              println("undoing stroke" + stroke)
+              val undoedStroke = undoData.asInstanceOf[Stroke]
+              FlowPaintController.currentPainting.currentLayer.removeStroke( undoedStroke )
+              surface.undo()
+              paintPanel.repaintChanges()
+          } ) )
+  }
+
+  def canUndo() = commandQueue.canUndo && surface.canUndo
+
+  def undo() = commandQueue.undo
+
+  def canRedo() = commandQueue.canRedo
+
+  def redo() = commandQueue.redo
+
+
 
 
 }

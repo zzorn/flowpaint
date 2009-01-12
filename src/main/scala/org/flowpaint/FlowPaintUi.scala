@@ -99,6 +99,8 @@ object FlowPaintUi {
     addToolButton(toolbar, "Quick Save", KeyEvent.VK_S, FlowPaintController.quickSave)
     addToolButton(toolbar, "Quick Save and Clear Picture", KeyEvent.VK_A, FlowPaintController.quickSaveAndClearPicture)
     addToolButton(toolbar, "Clear Picture", KeyEvent.VK_C, FlowPaintController.clearPicture)
+    toolbar.add( FlowPaintController.commandQueue.undoAction )
+    toolbar.add( FlowPaintController.commandQueue.redoAction )
 
     toolbar
   }

@@ -59,6 +59,9 @@ class StrokeTool extends Tool {
             // Skip if we dont have a brush
             if (FlowPaintController.currentBrush == null) return
 
+            // Take a snapshot of the state.
+            FlowPaintController.surface.undoSnapshot()
+
             currentPointIndex = 0
             currentStrokeStartTime = getTime()
             val brush: Brush = FlowPaintController.currentBrush.createCopy
@@ -73,10 +76,6 @@ class StrokeTool extends Tool {
             initialSample.setFloatProperty(PropertyRegister.RANDOM_SEED, Math.random.toFloat)
 
             addStrokePoint(currentStroke, initialSample)
-
-            // Add stroke, so that we get a preview of it
-            // TODO: add with a proper undoable command later
-            FlowPaintController.currentPainting.currentLayer.addStroke(currentStroke)
 
             FlowPaintController.addRecentBrush( currentStroke.brush )
         }
@@ -100,32 +99,8 @@ class StrokeTool extends Tool {
             // Skip if we dont have a  stroke
             if (currentStroke == null) return
 
-            // Temp:
-            //      sketchController.currentPainting.currentLayer.addStroke( stroke )
-
-            // TODO: Add command handling system, to allow undo
-            /*
-                    sketchController.getCommandStack().invoke( new AbstractCommand( "Stroke", true )
-                    {
-
-                        public void doCommand()
-                        {
-                            // Allows us to add the stroke in the startStroke method already, and still undo and redo if needed.
-                            if ( !group.contains( stroke ) )
-                            {
-                                group.add( stroke );
-                            }
-                        }
-
-
-                        @Override
-                        public void undoCommand()
-                        {
-                            group.remove( stroke );
-                        }
-
-                    } );
-            */
+            // Add command handling system, to allow undo
+            FlowPaintController.storeStroke( currentStroke )
 
             currentStroke = null;
         }

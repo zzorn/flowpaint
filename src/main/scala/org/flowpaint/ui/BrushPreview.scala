@@ -46,7 +46,7 @@ class BrushPreview(val brush: Brush,
 
   private val stroke = new Stroke(brush)
   private val painting = new Painting()
-  private val surface = new SingleRenderSurface(painting)
+  private val surface = new SingleRenderSurface(painting, 0)
   private val paintPanel = new PaintPanel(surface, false)
 
   setLayout(new java.awt.BorderLayout())

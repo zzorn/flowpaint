@@ -17,6 +17,10 @@ class Layer extends PictureProvider {
     strokes.add( stroke )
   }
 
+    def removeStroke( stroke:Stroke ) {
+      strokes.remove( stroke )
+    }
+
   def updateSurface(surface: RenderSurface) = {
 
     strokes.foreach( stroke => stroke.updateSurface(surface) )

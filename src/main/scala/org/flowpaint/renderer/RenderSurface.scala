@@ -58,4 +58,15 @@ trait RenderSurface {
         endSample : DataSample,
         scanlineCalculator : ScanlineCalculator )
 
+  def canUndo() : Boolean
+  def canRedo() : Boolean
+  def undo()
+  def redo()
+
+  /**
+   * Takes a snapshot of the current surface for the undo queue.
+   */
+  def undoSnapshot()
+
+
 }

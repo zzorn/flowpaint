@@ -2,8 +2,9 @@ package org.flowpaint.renderer
 
 
 import _root_.org.flowpaint.property.Data
-import java.awt._
+import _root_.scala.compat.Platform
 import java.awt.image.{MemoryImageSource, DirectColorModel, BufferedImage}
+import java.awt.{Toolkit, Graphics, Image, Color}
 import pixelprocessor.ScanlineCalculator
 import util.{DataSample, BoundingBox, PropertyRegister, MathUtils}
 
@@ -12,7 +13,7 @@ import util.{DataSample, BoundingBox, PropertyRegister, MathUtils}
  *
  * @author Hans Haggstrom
  */
-class SingleRenderSurface(override val pictureProvider: PictureProvider) extends RenderSurface {
+class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQueueSize : Int) extends RenderSurface {
     private var width = 0
     private var height = 0
 
@@ -20,14 +21,22 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
     def getHeight = height
 
+
+
+    private var undoQueue : List[Array[Int]] = Nil
+    private var redoQueue : List[Array[Int]] = Nil
+
+    private val currentImageDataIndex = 0
+
     private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
 
     private var imageSource: MemoryImageSource = null
-    private var imageData: Array[Int] = null
     private var image: Image = null
     private var initialized = false
 
     private val updatedArea = new BoundingBox()
+
+    private var imageData: Array[Int] = null
 
     def isInitialized = initialized
 
@@ -70,6 +79,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
 
         // Don't include alpha, as it takes longer to render due to masking
         val rgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff);
+
+        undoQueue = Nil
+        redoQueue = Nil
 
         imageData = new Array[Int](w * h)
         imageSource = new MemoryImageSource(w, h, rgbColorModel, imageData, 0, w)
@@ -260,4 +272,52 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider) extends
             }
 
     }
+
+    private def copyData( src : Array[Int], dest : Array[Int] ) {
+        println("surface copy called src:" + src.hashCode + " dest:"+dest.hashCode)
+        val size = width * height
+        Platform.arraycopy( src, 0, dest, 0, size )
+    }
+
+    def canUndo() : Boolean = !undoQueue.isEmpty
+    def canRedo() : Boolean = false
+    def undo() {
+        if ( canUndo ) {
+            println("surface undo called")
+
+            val undoData = undoQueue.head
+
+            copyData(undoData, imageData)
+
+            undoQueue = undoQueue.tail
+
+            updatedArea.includeArea(0, 0, width, height)
+        }
+    }
+
+    def redo() {
+        // Not implemented yet
+    }
+
+    /**
+     * Takes a snapshot of the current surface for the undo queue.
+     */
+    def undoSnapshot() {
+
+        println("surface snapshot called")
+        
+        // If undo queue is over size, reuse last undo data array, otherwise create new
+        val undoData = if (undoQueue.size >= undoQueueSize) {
+                val lastUndoData = undoQueue.last
+                undoQueue = undoQueue.take( undoQueueSize - 1 )
+                lastUndoData
+            } else {
+                new Array[Int](width * height)
+            }
+
+        copyData( imageData, undoData )
+
+        undoQueue = undoData :: undoQueue
+    }
+
 }

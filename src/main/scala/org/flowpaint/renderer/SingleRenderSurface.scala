@@ -274,7 +274,6 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
     }
 
     private def copyData( src : Array[Int], dest : Array[Int] ) {
-        println("surface copy called src:" + src.hashCode + " dest:"+dest.hashCode)
         val size = width * height
         Platform.arraycopy( src, 0, dest, 0, size )
     }
@@ -283,8 +282,6 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
     def canRedo() : Boolean = false
     def undo() {
         if ( canUndo ) {
-            println("surface undo called")
-
             val undoData = undoQueue.head
 
             copyData(undoData, imageData)
@@ -304,8 +301,6 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
      */
     def undoSnapshot() {
 
-        println("surface snapshot called")
-        
         // If undo queue is over size, reuse last undo data array, otherwise create new
         val undoData = if (undoQueue.size >= undoQueueSize) {
                 val lastUndoData = undoQueue.last

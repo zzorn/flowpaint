@@ -196,7 +196,6 @@ object FlowPaintController {
       commandQueue.queueCommand( new Command(
           "Brush Stroke",
           () => {
-              println("adding stroke" + stroke)
               //surface.undoSnapshot()
               // TODO: Make undo stacks document specific
               FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
@@ -204,7 +203,6 @@ object FlowPaintController {
               stroke
           },
           (undoData : Object) => {
-              println("undoing stroke" + stroke)
               val undoedStroke = undoData.asInstanceOf[Stroke]
               FlowPaintController.currentPainting.currentLayer.removeStroke( undoedStroke )
               surface.undo()

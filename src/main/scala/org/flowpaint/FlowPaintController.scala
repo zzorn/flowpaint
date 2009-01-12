@@ -60,7 +60,7 @@ object FlowPaintController {
 
   private val MAX_RECENT_BRUSHES_SIZE = 24
 
-  private val UNDO_QUEUE_SIZE = 10
+  private val UNDO_QUEUE_SIZE = 8
 
   var brushSets :List[BrushSet] = Nil
 

@@ -60,7 +60,7 @@ object FlowPaintController {
 
   private val MAX_RECENT_BRUSHES_SIZE = 24
 
-  private val UNDO_QUEUE_SIZE = 8
+  private val UNDO_QUEUE_SIZE = 10
 
   var brushSets :List[BrushSet] = Nil
 
@@ -192,13 +192,13 @@ object FlowPaintController {
 
 
   def storeStroke( stroke : Stroke ) {
-      println("storing stroke" + stroke)
       commandQueue.queueCommand( new Command(
           "Brush Stroke",
           () => {
               //surface.undoSnapshot()
               // TODO: Make undo stacks document specific
               FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
+              //stroke.updateSurface( surface )
               paintPanel.repaint()
               stroke
           },
@@ -207,7 +207,18 @@ object FlowPaintController {
               FlowPaintController.currentPainting.currentLayer.removeStroke( undoedStroke )
               surface.undo()
               paintPanel.repaintChanges()
-          } ) )
+              undoedStroke
+          },
+          (redoData : Object) => {
+              val stroke = redoData.asInstanceOf[Stroke]
+              FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
+              stroke.updateSurface( surface )
+              paintPanel.repaint()
+              stroke
+          },
+          () => {
+              surface.canUndo
+          }) )
   }
 
   def canUndo() = commandQueue.canUndo && surface.canUndo

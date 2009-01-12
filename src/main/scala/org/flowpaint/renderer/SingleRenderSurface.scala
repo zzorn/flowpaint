@@ -307,7 +307,12 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
                 undoQueue = undoQueue.take( undoQueueSize - 1 )
                 lastUndoData
             } else {
-                new Array[Int](width * height)
+                try {
+                    new Array[Int](width * height)
+                }
+                catch {
+                    case e : Throwable => {e.printStackTrace ; return } // Don't store undo data if we get out of memory exception or similar
+                }
             }
 
         copyData( imageData, undoData )

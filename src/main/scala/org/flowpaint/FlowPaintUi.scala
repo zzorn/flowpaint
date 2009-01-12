@@ -100,7 +100,10 @@ object FlowPaintUi {
     addToolButton(toolbar, "Quick Save and Clear Picture", KeyEvent.VK_A, FlowPaintController.quickSaveAndClearPicture)
     addToolButton(toolbar, "Clear Picture", KeyEvent.VK_C, FlowPaintController.clearPicture)
     toolbar.add( FlowPaintController.commandQueue.undoAction )
+
+/* TODO: Surface needs redo support first
     toolbar.add( FlowPaintController.commandQueue.redoAction )
+*/
 
     toolbar
   }
@@ -135,6 +138,7 @@ object FlowPaintUi {
     menuBar.add(pictureMenu)
 
     addMenuItem(pictureMenu, "Clear", KeyEvent.VK_C, "Clears the picture", FlowPaintController.clearPicture)
+    pictureMenu .add( FlowPaintController.commandQueue.undoAction )
 
     val helpMenu = new JMenu("Help")
     helpMenu.setMnemonic(KeyEvent.VK_H)
@@ -145,6 +149,7 @@ object FlowPaintUi {
     addMenuItem(helpMenu, "Request Feature", KeyEvent.VK_F, "<html>Report a bug or file a feature request.  Opens in browser.<br/>Requires a Google account, as it uses the Google Code issue tracker.</html>", FlowPaintController.requestFeature)
     helpMenu.add(new JSeparator())
     addMenuItem(helpMenu, "About FlowPaint", KeyEvent.VK_A, "Information about this paint program", FlowPaintController.showAbout)
+
 
     menuBar
   }

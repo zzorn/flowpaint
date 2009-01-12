@@ -5,17 +5,27 @@ import javax.swing.{KeyStroke, AbstractAction, Action}
 
 case class Command(description: String,
                   action: () => Object,
-                  undoAction: (Object) => Unit,
+                  undoAction: (Object) => Object,
+                  redoAction: (Object) => Object,
+                  canUndo : () => Boolean,
                   clearUndoQueue: Boolean) {
     def this(description: String,
             action: () => Object,
-            undoAction: (Object) => Unit) {
-        this (description, action, undoAction, false)
+            undoAction: (Object) => Object,
+            redoAction: (Object) => Object,
+            canUndo : () => Boolean) {
+        this (description, action, undoAction, redoAction, canUndo, false)
+    }
+
+    def this(description: String,
+            action: () => Object,
+            undoAction: (Object) => Object) {
+        this (description, action, undoAction, null, null, false)
     }
 
     def this(description: String,
             action: () => Unit) {
-        this (description, () => {action(); null}, null, false)
+        this (description, () => {action(); null}, null, null, null, false)
     }
 }
 
@@ -27,7 +37,7 @@ case class Command(description: String,
  */
 class CommandQueue {
     private var undoQueue: List[(Command, Object)] = Nil
-    private var redoQueue: List[Command] = Nil
+    private var redoQueue: List[(Command, Object)] = Nil
     private var commandQueue: List[Command] = Nil
 
     private var listeners: List[()=>Unit] = Nil
@@ -44,13 +54,12 @@ class CommandQueue {
             redoQueue = Nil
         }
 
+        if (command != redoCommand && command != undoCommand ) redoQueue = Nil
+
         runCommand( command )
     }
 
     private def runCommand( command : Command ) {
-        println("command run")
-
-
         val undoData = command.action()
 
         if (command.undoAction != null)
@@ -62,13 +71,19 @@ class CommandQueue {
     val undoCommand = new Command("Undo", () => {undo} )
     val redoCommand = new Command("Redo", () => {redo})
 
+    private def updateStatus( action : Action) {
+        action.setEnabled( canUndo )
+    }
+
     val undoAction: Action = new AbstractAction("Undo") {
         putValue(Action.SHORT_DESCRIPTION, "Undo the last operation")
         putValue(Action.LONG_DESCRIPTION, "Undo the last operation")
         putValue(Action.MNEMONIC_KEY, KeyEvent.VK_U)
         putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK))
 
-        addListener( () => {setEnabled( canUndo )} )
+        updateStatus(this)
+
+        addListener( () => {updateStatus(this)} )
 
 /*
         override def isEnabled = {
@@ -88,7 +103,9 @@ class CommandQueue {
         putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R)
         putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK))
 
-        addListener( () => {setEnabled( canRedo )} )
+        updateStatus(this)
+        
+        addListener( () => {updateStatus(this)} )
 
 /*
         override def isEnabled = {
@@ -104,14 +121,13 @@ class CommandQueue {
 
     def undo() {
         if (canUndo) {
-            println("undo called")
 
             val (command, undoData) = undoQueue.head
             undoQueue = undoQueue.tail
 
-            command.undoAction( undoData )
+            val redoData = command.undoAction( undoData )
 
-            redoQueue = command :: redoQueue  
+            redoQueue = (command, redoData) :: redoQueue
 
             notifyListeners()
         }
@@ -119,16 +135,20 @@ class CommandQueue {
 
     def redo() {
         if (canRedo) {
-            println("redo called")
 
-            val command = redoQueue.head
+            val (command, redoData) = redoQueue.head
             redoQueue = redoQueue.tail
 
-            runCommand( command )
+            val undoData = if (command.redoAction != null) command.redoAction( redoData )
+                           else command.action()
+
+            undoQueue = (command, undoData) :: undoQueue
+
+            notifyListeners()
         }
     }
 
-    def canUndo(): Boolean = !undoQueue.isEmpty
+    def canUndo(): Boolean = !undoQueue.isEmpty && undoQueue.head._1.canUndo()
 
     def canRedo(): Boolean = !redoQueue.isEmpty
 

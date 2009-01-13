@@ -128,6 +128,10 @@ class ScanlineCalculator {
 
     val source = new StringBuilder()
 
+    // Standard imports
+    source append "import org.flowpaint.pixelprocessor.NoiseUtils;\n"
+
+
     val redExpression = createVariableGetterExpression( PropertyRegister.RED, 0 )
     val greenExpression = createVariableGetterExpression( PropertyRegister.GREEN, 0 )
     val blueExpression = createVariableGetterExpression( PropertyRegister.BLUE, 0 )

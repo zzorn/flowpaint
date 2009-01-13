@@ -54,6 +54,17 @@ class MultiGradient(val identifier: String) extends Gradient {
     private val myPoints = new ArrayList[GradientPoint]()
     private val tempSearchPoint = new GradientPoint(0, new DataImpl())
 
+    def getPoints() : List[GradientPoint] = {
+      // TODO: Switch completely to scala lists..
+      var points : List[GradientPoint] = Nil
+      var i = myPoints.size() - 1
+      while (i >= 0 ) {
+        points = myPoints.get( i ) :: points
+        i -= 1
+      }
+
+      points
+    }
 
     def getValue( t : Float, outputData : Data )  {
 

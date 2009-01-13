@@ -120,7 +120,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
     /**
      * Replace accesses to variables with correct array indexing operations or strings
      */
-    private def parseTemplate(nameToIndex: Map[String, Int],
+    protected def parseTemplate(nameToIndex: Map[String, Int],
                              template: String,
                              generalSettings: Data,
                              variableArrayName: String,
@@ -140,6 +140,17 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
             }
         }
 
+      def parseSetFloat(variableName: String, defaultValue: String, code: StringBuilder) {
+          val redirectedVariableName = getSourceVariable(variableName)
+
+          if (nameToIndex.contains(redirectedVariableName)) {
+              code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]"
+          }
+          else {
+              code append defaultValue
+          }
+      }
+
         def parseGetScaleOffsetFloat(variableName: String, defaultValue: String, code: StringBuilder) {
 
             code append " ( "
@@ -153,7 +164,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
 
         def parseSetScaleOffsetFloat(variableName: String, defaultValue: String, code: StringBuilder) {
 
-            parseFloat(variableName, defaultValue, code)
+            parseSetFloat(variableName, defaultValue, code)
             code append " = "
             parseFloat(variableName + "Offset", "0f", code)
             code append " + "
@@ -199,7 +210,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
                 parseVariable(entry, "getFloat ", parseFloat, "0f", code)
                 parseVariable(entry, "getScaleOffsetFloat ", parseGetScaleOffsetFloat, "0f", code)
                 parseVariable(entry, "setScaleOffsetFloat ", parseSetScaleOffsetFloat, "throwAwayValue", code)
-                parseVariable(entry, "setFloat ", parseFloat, "throwAwayValue", code)
+                parseVariable(entry, "setFloat ", parseSetFloat, "throwAwayValue", code)
                 parseVariable(entry, "id", parseUniqueName, "", code)
 
                 entries = entries.tail

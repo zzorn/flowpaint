@@ -197,7 +197,8 @@
       <num id="maxRadius">6</num>
       <num id="alpha">1.0</num>
       <num id="lightness">0.5</num>
-      <num id="hue">0.02</num>
+      <num id="hue">0.05</num>
+      <num id="noiseScaleAlongStroke">0.2</num>
       <text id="gradient">default.gradients.black</text>
       <text id="edgeGradient">default.gradients.white</text>
       <text id="flowGradient">default.gradients.rake</text>
@@ -216,16 +217,122 @@
 
     <pixelProcessors>
 
+      <!-- HSL to RGB -->
       <object type="org.flowpaint.pixelprocessors.HSLToRGB">
       </object>
 
-      <object type="org.flowpaint.pixelprocessors.Cos">
+
+      <!-- Noise -->
+<!--
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">radius</text>
+        <num id="resultScale">0.02</num>
+        <text id="result">noiseYScale</text>
+      </object>
+-->
+      <object type="org.flowpaint.pixelprocessors.OneOver">
+        <text id="value">noiseScaleAlongStroke</text>
+        <text id="valueScale">noiseScaleAlongStroke</text>
+        <text id="result">noiseXScale</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Noise2D">
+        <text id="noiseX">distance</text>
+        <text id="noiseY">positionAcrossStroke</text>
+<!--
+        <text id="noiseYScale">noiseYScale</text>
+-->
+        <text id="noiseXScale">noiseXScale</text>
+        <text id="noiseXOffset">randomSeed</text>
+        <text id="result">gradientPosition</text>
+      </object>
+
+      
+      <!-- Gradient -->
+      <object type="org.flowpaint.pixelprocessors.Gradient">
+        <text id="gradientPosition">gradientPosition</text>
+        <text id="gradientProperty">flowGradient</text>
+        <text id="red">gradientRed</text>
+        <text id="green">gradientGreen</text>
+        <text id="blue">gradientBlue</text>
+        <text id="alpha">gradientAlpha</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">gradientRed</text>
+        <text id="result">red</text>
+        <text id="resultScale">red</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">gradientGreen</text>
+        <text id="result">green</text>
+        <text id="resultScale">green</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">gradientBlue</text>
+        <text id="result">blue</text>
+        <text id="resultScale">blue</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">gradientAlpha</text>
+        <text id="result">alpha</text>
+        <text id="resultScale">alpha</text>
+      </object>
+
+
+
+      <!-- Edge softening -->
+      <object type="org.flowpaint.pixelprocessors.Abs">
         <text id="value">positionAcrossStroke</text>
-        <text id="result">alphaAcrossStroke</text>
-        <num id="valueScale">3.1415926</num> <!-- Pi -->
-        <num id="valueOffset">0</num>
+        <text id="result">edgeDistance</text>
+        <num id="resultOffset">1</num>
+        <num id="resultScale">-1</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Cos">
+        <text id="value">edgeDistance</text>
+        <text id="result">edgeAlpha</text>
+        <num id="valueScale">3.1415926</num>
+        <num id="valueOffset">3.1415926</num>
         <num id="resultScale">0.5</num>
         <num id="resultOffset">0.5</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">edgeAlpha</text>
+        <text id="result">alpha</text>
+        <text id="resultScale">alpha</text>
+      </object>
+
+
+      <!-- Pressure effect on alpha-->
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">pressure</text>
+        <text id="result">alpha</text>
+        <text id="resultScale">alpha</text>
+      </object>
+
+
+      <!--
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">red</text>
+        <text id="result">red</text>
+        <text id="valueOffset">redGr</text>
+        <text id="resultScale">0.5</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">green</text>
+        <text id="result">green</text>
+        <text id="valueOffset">greenGr</text>
+        <text id="resultScale">0.5</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">blue</text>
+        <text id="result">blue</text>
+        <text id="valueOffset">blueGr</text>
+        <text id="resultScale">0.5</text>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Copy">
@@ -234,9 +341,11 @@
         <text id="valueScale">pressure</text>
         <text id="resultScale">alphaAcrossStroke</text>
       </object>
-      <!--
-      <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
+
+      <object type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">positionAcrossStroke</text>
+        <num id="gradientPositionScale">0.5</num>
+        <num id="gradientPositionOffset">0.5</num>
         <text id="gradientProperty">edgeGradient</text>
         <text id="alpha">edgeAlpha</text>
         <text id="red"></text>
@@ -244,7 +353,15 @@
         <text id="blue"></text>
       </object>
 
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">alpha</text>
+        <text id="result">alpha</text>
+        <text id="resultScale">edgeAlpha</text>
+      </object>
 -->
+
+
+
 <!--
       <object type="org.flowpaint.pixelprocessors.Sin">
         <text id="value">distance</text>
@@ -355,17 +472,41 @@
     <editors>
 
 
+<!--
       <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
         <text id="editedParameter">edgeGradient</text>
         <text id="tomeType">org.flowpaint.gradient.Gradient</text>
         <text id="description">Edge type</text>
       </object>
+-->
 
       <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
         <text id="editedParameter">flowGradient</text>
         <text id="tomeType">org.flowpaint.gradient.Gradient</text>
         <text id="description">Gradient along stroke</text>
       </object>
+
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">0.5</num>
+        <num id="endValue">25</num>
+        <num id="red">0.4</num>
+        <num id="green">0.4</num>
+        <num id="blue">0.4</num>
+        <text id="editedParameter">noiseScaleAlongStroke</text>
+        <text id="description">Noise Stretching</text>
+      </object>
+
+<!--
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">10</num>
+        <num id="endValue">0</num>
+        <num id="red">0.6</num>
+        <num id="green">0.6</num>
+        <num id="blue">0.6</num>
+        <text id="editedParameter">noiseScaleAcrossStroke</text>
+        <text id="description">Noise stretch across stroke</text>
+      </object>
+-->
 
       <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
 <!--

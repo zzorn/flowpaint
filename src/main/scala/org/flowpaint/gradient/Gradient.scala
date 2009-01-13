@@ -24,6 +24,12 @@ trait Gradient extends Tome {
   }
 
   /**
+   * The datapoints in the gradient.
+   */
+  def getPoints() : List[GradientPoint]
+
+
+  /**
    * Map a floating point value between 0 and 1 to a DataSample, representing a color or other channel values for a picture
    */
   def getValue( zeroToOne : Float, outputData : Data )

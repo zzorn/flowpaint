@@ -199,9 +199,7 @@
       <num id="lightness">0.5</num>
       <num id="hue">0.05</num>
       <num id="noiseScaleAlongStroke">0.2</num>
-      <text id="gradient">default.gradients.black</text>
-      <text id="edgeGradient">default.gradients.white</text>
-      <text id="flowGradient">default.gradients.rake</text>
+      <text id="flowGradient">default.gradients.wood</text>
     </settings>
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>

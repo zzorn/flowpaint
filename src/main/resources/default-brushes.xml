@@ -302,6 +302,38 @@
         <text id="resultScale">alpha</text>
       </object>
 
+      <!-- Testing -->
+<!--
+      <object type="org.flowpaint.pixelprocessors.If">
+        <text id="value">edgeDistance</text>
+        <text id="result">green</text>
+        <num id="threshold1">0.1</num>
+        <num id="value1">1</num>
+        <num id="threshold2">0.5</num>
+        <num id="value2">0.5</num>
+        <num id="threshold3">0.7</num>
+        <num id="value3">0</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Distance">
+        <text id="x1">canvasX</text>
+        <text id="y1">canvasY</text>
+        <num id="x2">422</num>
+        <num id="y2">322</num>
+        <text id="result">red</text>
+        <num id="resultScale">-0.001</num>
+        <num id="resultOffset">1</num>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Checkers">
+        <num id="gridSizeX">16</num>
+        <num id="gridSizeY">16</num>
+        <text id="value1">pressure</text>
+        <num id="value2">1</num>
+        <text id="result">blue</text>
+      </object>
+-->
+
 
       <!-- Pressure effect on alpha-->
       <object type="org.flowpaint.pixelprocessors.Copy">

@@ -27,7 +27,11 @@ class ScanlineCalculator {
 
   def init(pixelProcessors : List[PixelProcessor], settings : Data) {
     val emptyMap = new HashMap[String, String]()
-    variableNames = ((pixelProcessors flatMap ( processor => {processor.getUsedVariableNames(emptyMap)})) ::: settings.getFloatPropertyNames) .removeDuplicates
+    variableNames = ((pixelProcessors flatMap ( processor =>
+               { processor.getUsedVariableNames(emptyMap)})) :::
+            settings.getFloatPropertyNames :::
+            List( "red", "green", "blue", "alpha"  )
+            ) .removeDuplicates
 
     nameToIndexMap = CollectionUtils.listToIndexMap(variableNames)
 
@@ -38,10 +42,8 @@ class ScanlineCalculator {
 
     val source = createSource( pixelProcessors, variableNames, nameToIndexMap, settings )
 
-/*
       // DEBUG
       println( "Compiling PixelProgram: /n" + source + "/n/n" )
-*/
 
     program = compileProgram( source )
   }
@@ -149,9 +151,10 @@ class ScanlineCalculator {
                                                         generalSettings,
                                                         "workingArray",
                                                         nextUniqueId )
-      classBodyCodes = classBodyCodes ::: List( classBodyCode )
-      initCodes = initCodes ::: List( initCode )
-      loopCodes = loopCodes::: List( loopCode )
+      val comment = "\n      // " + processor.getClass.getName + "\n"
+      classBodyCodes = classBodyCodes ::: List( comment, classBodyCode )
+      initCodes = initCodes ::: List( comment, initCode )
+      loopCodes = loopCodes::: List( comment, loopCode )
     })
 
 
@@ -159,6 +162,7 @@ class ScanlineCalculator {
 
     source append
     """
+    // ############# Scanline calculation method
     public void calculateScanline( float[] currentVariableValues,
                             float[] variableValueDeltas,
                             float[] workingArray,
@@ -172,12 +176,15 @@ class ScanlineCalculator {
 
     initCodes foreach (source append _ )
 
+
     source append
      """
 
+    // ######## Scanline calculation loop
       final int endIndex = startOffset + scanlineLength;
       for ( int i = startOffset; i < endIndex; i++ ) {
 
+        // ## Interpolate variables
         for ( int j = 0; j < """ +variableNum+ """; j++ ) {
           workingArray[j] = currentVariableValues[j];
           currentVariableValues[j] += variableValueDeltas[j];
@@ -190,6 +197,7 @@ class ScanlineCalculator {
 
     source append
     """
+        // #### Copy color values to output buffer
 
         float r = """+ redExpression +""";
         float g = """+ greenExpression +""";
@@ -218,6 +226,7 @@ class ScanlineCalculator {
             greenInt = ( ((originalColor >> 8)  & 0xff) * originalFactor + greenInt * newFactor ) >> 8;
             blueInt  = ( ( originalColor        & 0xff) * originalFactor + blueInt  * newFactor ) >> 8;
           }
+
 
           destinationBuffer[ i ] =
                  ( 0xFF                << 24 ) |

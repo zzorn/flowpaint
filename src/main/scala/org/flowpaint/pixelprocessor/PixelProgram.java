@@ -15,5 +15,5 @@ public interface PixelProgram
                             float[] workingArray,
                             int[] destinationBuffer,
                             int startOffset,
-                            int scanlineLength );
+                            int scanlineLength);
 }

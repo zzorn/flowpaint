@@ -133,7 +133,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
                 code append (getSettings.getFloatProperty(variableName, 0).toString + "f")
             }
             else if (nameToIndex.contains(redirectedVariableName)) {
-                code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]"
+                code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]/*"+redirectedVariableName+"*/ "
             }
             else {
                 code append defaultValue
@@ -144,7 +144,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
           val redirectedVariableName = getSourceVariable(variableName)
 
           if (nameToIndex.contains(redirectedVariableName)) {
-              code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]"
+              code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]/*"+redirectedVariableName+"*/ "
           }
           else {
               code append defaultValue
@@ -190,10 +190,19 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
             if (entry startsWith prefix) {
                 val (name, default) = calculateVariableAndDefault(entry.substring(prefix.length), defaultValue)
 
+/* TODO: Need separate opening and closing markers, and matching of them to be able to do recursive parsing.
+                val processedDefault = parseTemplate(nameToIndex,
+                                                     default,
+                                                     generalSettings,
+                                                     variableArrayName,
+                                                     uniqueId)
+*/
+
                 parser(name, default, code)
             }
 
         }
+
 
         var entries: List[String] = tokenize(template)
 

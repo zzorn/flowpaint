@@ -32,6 +32,11 @@ class TriangleRenderer {
      */
     def fillLine(scanline: Int, x_ : Int, endX_ : Int, startSample: Data, endSample: Data) {
 
+        startSample.setFloatProperty( PropertyRegister.CANVAS_X, x_ )
+        endSample.setFloatProperty( PropertyRegister.CANVAS_X, endX_ )
+        startSample.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
+        endSample.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
+
         surface.renderScanline(
             scanline,
             x_,

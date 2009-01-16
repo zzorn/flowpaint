@@ -42,8 +42,10 @@ class ScanlineCalculator {
 
     val source = createSource( pixelProcessors, variableNames, nameToIndexMap, settings )
 
+/*
       // DEBUG
       println( "Compiling PixelProgram: /n" + source + "/n/n" )
+*/
 
     program = compileProgram( source )
   }
@@ -131,6 +133,7 @@ class ScanlineCalculator {
     val source = new StringBuilder()
 
     // Standard imports
+    source append "import java.util.Random;\n"
     source append "import org.flowpaint.pixelprocessor.NoiseUtils;\n"
 
 

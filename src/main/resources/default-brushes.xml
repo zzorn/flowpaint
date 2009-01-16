@@ -325,15 +325,22 @@
         <num id="resultOffset">1</num>
       </object>
 
-      <object type="org.flowpaint.pixelprocessors.Checkers">
-        <num id="gridSizeX">16</num>
-        <num id="gridSizeY">16</num>
-        <text id="value1">pressure</text>
-        <num id="value2">1</num>
-        <text id="result">blue</text>
-      </object>
 -->
 
+<!--
+      <object type="org.flowpaint.pixelprocessors.Cellular">
+        <num id="gridSizeX">30</num>
+        <num id="gridSizeY">30</num>
+        <text id="canvasX">distance</text>
+        <text id="canvasY">positionAcrossStroke</text>
+        <text id="canvasXOffset">randomSeed</text>
+        <text id="canvasYScale">radius</text>
+        <text id="closestDistance">red</text>
+        <num id="closestDistanceScale">-0.12</num>
+        <num id="closestDistanceOffset">1</num>
+        <text id="closestRandom">blue</text>
+      </object>
+-->
 
       <!-- Pressure effect on alpha-->
       <object type="org.flowpaint.pixelprocessors.Copy">

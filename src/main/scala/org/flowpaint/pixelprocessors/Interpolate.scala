@@ -11,7 +11,25 @@ import pixelprocessor.PixelProcessor
  * @author Hans Haggstrom
  */
 
-class Interpolate extends PixelProcessor("","","") {
+class Interpolate extends PixelProcessor("","","""
+    final float input$id$        = $getScaleOffsetFloat input, 0f$;
+    final float inputStart$id$   = $getScaleOffsetFloat inputStart, 0f$;
+    final float inputEnd$id$     = $getScaleOffsetFloat inputEnd, 1f$;
+    final float outputStart$id$  = $getScaleOffsetFloat outputStart, 0f$;
+    final float outputEnd$id$    = $getScaleOffsetFloat outputEnd, 1f$;
+
+    // Check for special case where start and end positions are the same.  In this case return the average value.
+    if ( inputStart$id$ == inputEnd$id$ )
+    {
+        return 0.5f * ( outputStart$id$ + outputEnd$id$ );
+    }
+
+    final float relativePosition$id$ =  ( input$id$ - inputStart$id$ ) / ( inputEnd$id$ - inputStart$id$ );
+
+    final float result$id$ = outputStart$id$ + relativePosition$id$ * ( outputEnd$id$ - outputStart$id$ );
+
+    $setScaleOffsetFloat result$ result$id$;
+  """) {
 
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 

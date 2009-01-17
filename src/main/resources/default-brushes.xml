@@ -24,8 +24,8 @@
       <object type="org.flowpaint.pixelprocessors.Noise">
         <text id="noisePosition1">canvasX</text>
         <text id="noisePosition2">canvasY</text>
-        <num id="noisePosition1Scale">0.01</num>
-        <num id="noisePosition2Scale">0.01</num>
+        <num id="noisePosition1_Scale">0.01</num>
+        <num id="noisePosition2_Scale">0.01</num>
         <text id="result">value</text>
       </object>
 
@@ -39,8 +39,8 @@
 
 <!--
       <object type="org.flowpaint.ink.NoiseInk">
-        <num id="noiseScaleAcross">0.3</num>
-        <num id="noiseScaleAlong">3.0</num>
+        <num id="noise_ScaleAcross">0.3</num>
+        <num id="noise_ScaleAlong">3.0</num>
         <num id="alphaWithDistance">0.8</num>
         <num id="octaves">3.0</num>
         <text id="gradient">default.gradients.charcoal</text>
@@ -217,6 +217,12 @@
 
       <!-- HSL to RGB -->
       <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+        <text id="hue">hue</text>
+        <text id="saturation">saturation</text>
+        <text id="lightness">lightness</text>
+        <text id="red">red</text>
+        <text id="green">green</text>
+        <text id="blue">blue</text>
       </object>
 
 
@@ -225,12 +231,12 @@
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">radius</text>
         <num id="resultScale">0.02</num>
-        <text id="result">noiseYScale</text>
+        <text id="result">noiseY_Scale</text>
       </object>
 -->
       <object type="org.flowpaint.pixelprocessors.OneOver">
         <text id="value">noiseScaleAlongStroke</text>
-        <text id="valueScale">noiseScaleAlongStroke</text>
+        <text id="value_Scale">noiseScaleAlongStroke</text>
         <text id="result">noiseXScale</text>
       </object>
 
@@ -240,8 +246,8 @@
 <!--
         <text id="noiseYScale">noiseYScale</text>
 -->
-        <text id="noiseXScale">noiseXScale</text>
-        <text id="noiseXOffset">randomSeed</text>
+        <text id="noiseX_Scale">noiseXScale</text>
+        <text id="noiseX_Offset">randomSeed</text>
         <text id="result">gradientPosition</text>
       </object>
 
@@ -249,7 +255,7 @@
       <!-- Gradient -->
       <object type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">gradientPosition</text>
-        <text id="gradientProperty">flowGradient</text>
+        <text id="gradient_Property">flowGradient</text>
         <text id="red">gradientRed</text>
         <text id="green">gradientGreen</text>
         <text id="blue">gradientBlue</text>
@@ -259,22 +265,22 @@
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientRed</text>
         <text id="result">red</text>
-        <text id="resultScale">red</text>
+        <text id="result_Scale">red</text>
       </object>
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientGreen</text>
         <text id="result">green</text>
-        <text id="resultScale">green</text>
+        <text id="result_Scale">green</text>
       </object>
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientBlue</text>
         <text id="result">blue</text>
-        <text id="resultScale">blue</text>
+        <text id="result_Scale">blue</text>
       </object>
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientAlpha</text>
         <text id="result">alpha</text>
-        <text id="resultScale">alpha</text>
+        <text id="result_Scale">alpha</text>
       </object>
 
 
@@ -283,27 +289,26 @@
       <object type="org.flowpaint.pixelprocessors.Abs">
         <text id="value">positionAcrossStroke</text>
         <text id="result">edgeDistance</text>
-        <num id="resultOffset">1</num>
-        <num id="resultScale">-1</num>
+        <num id="result_Offset">1</num>
+        <num id="result_Scale">-1</num>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Cos">
         <text id="value">edgeDistance</text>
         <text id="result">edgeAlpha</text>
-        <num id="valueScale">3.1415926</num>
-        <num id="valueOffset">3.1415926</num>
-        <num id="resultScale">0.5</num>
-        <num id="resultOffset">0.5</num>
+        <num id="value_Scale">3.1415926</num>
+        <num id="value_Offset">3.1415926</num>
+        <num id="result_Scale">0.5</num>
+        <num id="result_Offset">0.5</num>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">edgeAlpha</text>
         <text id="result">alpha</text>
-        <text id="resultScale">alpha</text>
+        <text id="result_Scale">alpha</text>
       </object>
 
       <!-- Testing -->
-<!--
       <object type="org.flowpaint.pixelprocessors.If">
         <text id="value">edgeDistance</text>
         <text id="result">green</text>
@@ -321,32 +326,28 @@
         <num id="x2">422</num>
         <num id="y2">322</num>
         <text id="result">red</text>
-        <num id="resultScale">-0.001</num>
-        <num id="resultOffset">1</num>
+        <num id="result_Scale">-0.001</num>
+        <num id="result_Offset">1</num>
       </object>
 
--->
-
-<!--
       <object type="org.flowpaint.pixelprocessors.Cellular">
         <num id="gridSizeX">30</num>
         <num id="gridSizeY">30</num>
         <text id="canvasX">distance</text>
         <text id="canvasY">positionAcrossStroke</text>
-        <text id="canvasXOffset">randomSeed</text>
-        <text id="canvasYScale">radius</text>
+        <text id="canvasX_Offset">randomSeed</text>
+        <text id="canvasY_Scale">radius</text>
         <text id="closestDistance">red</text>
-        <num id="closestDistanceScale">-0.12</num>
-        <num id="closestDistanceOffset">1</num>
+        <num id="closestDistance_Scale">-0.12</num>
+        <num id="closestDistance_Offset">1</num>
         <text id="closestRandom">blue</text>
       </object>
--->
 
       <!-- Pressure effect on alpha-->
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">pressure</text>
         <text id="result">alpha</text>
-        <text id="resultScale">alpha</text>
+        <text id="result_Scale">alpha</text>
       </object>
 
 
@@ -354,35 +355,35 @@
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">red</text>
         <text id="result">red</text>
-        <text id="valueOffset">redGr</text>
-        <text id="resultScale">0.5</text>
+        <text id="value_Offset">redGr</text>
+        <text id="result_Scale">0.5</text>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">green</text>
         <text id="result">green</text>
-        <text id="valueOffset">greenGr</text>
-        <text id="resultScale">0.5</text>
+        <text id="value_Offset">greenGr</text>
+        <text id="result_Scale">0.5</text>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">blue</text>
         <text id="result">blue</text>
-        <text id="valueOffset">blueGr</text>
-        <text id="resultScale">0.5</text>
+        <text id="value_Offset">blueGr</text>
+        <text id="result_Scale">0.5</text>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">alpha</text>
         <text id="result">alpha</text>
-        <text id="valueScale">pressure</text>
-        <text id="resultScale">alphaAcrossStroke</text>
+        <text id="value_Scale">pressure</text>
+        <text id="result_Scale">alphaAcrossStroke</text>
       </object>
 
       <object type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">positionAcrossStroke</text>
-        <num id="gradientPositionScale">0.5</num>
-        <num id="gradientPositionOffset">0.5</num>
+        <num id="gradientPosition_Scale">0.5</num>
+        <num id="gradientPosition_Offset">0.5</num>
         <text id="gradientProperty">edgeGradient</text>
         <text id="alpha">edgeAlpha</text>
         <text id="red"></text>
@@ -393,7 +394,7 @@
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">alpha</text>
         <text id="result">alpha</text>
-        <text id="resultScale">edgeAlpha</text>
+        <text id="result_Scale">edgeAlpha</text>
       </object>
 -->
 
@@ -403,30 +404,30 @@
       <object type="org.flowpaint.pixelprocessors.Sin">
         <text id="value">distance</text>
         <text id="result">red</text>
-        <num id="valueScale">0.14</num>
-        <num id="valueOffset">0.4</num>
-        <num id="resultScale">0.5</num>
-        <num id="resultOffset">0.5</num>
+        <num id="value_Scale">0.14</num>
+        <num id="value_Offset">0.4</num>
+        <num id="result_Scale">0.5</num>
+        <num id="result_Offset">0.5</num>
       </object>
 
 
       <object type="org.flowpaint.pixelprocessors.Sin">
         <text id="value">distance</text>
         <text id="result">green</text>
-        <num id="valueScale">0.17</num>
-        <num id="valueOffset">0.56</num>
-        <num id="resultScale">0.5</num>
-        <num id="resultOffset">0.5</num>
+        <num id="value_Scale">0.17</num>
+        <num id="value_Offset">0.56</num>
+        <num id="result_Scale">0.5</num>
+        <num id="result_Offset">0.5</num>
       </object>
 
 
       <object type="org.flowpaint.pixelprocessors.Sin">
         <text id="value">distance</text>
         <text id="result">blue</text>
-        <num id="valueScale">0.1</num>
-        <num id="valueOffset">0.2</num>
-        <num id="resultScale">0.5</num>
-        <num id="resultOffset">0.5</num>
+        <num id="value_Scale">0.1</num>
+        <num id="value_Offset">0.2</num>
+        <num id="result_Scale">0.5</num>
+        <num id="result_Offset">0.5</num>
       </object>
 -->
 
@@ -443,10 +444,10 @@
       <object type="org.flowpaint.pixelprocessors.Noise">
         <text id="noisePosition1">distance</text>
         <text id="noisePosition2">positionAcrossStroke</text>
-        <text id="noisePosition1Offset">randomSeed</text>
-        <text id="noisePosition2Offset">randomSeed</text>
-        <num id="noisePosition1Scale">0.05</num>
-        <num id="noisePosition2Scale">1</num>
+        <text id="noisePosition1_Offset">randomSeed</text>
+        <text id="noisePosition2_Offset">randomSeed</text>
+        <num id="noisePosition1_Scale">0.05</num>
+        <num id="noisePosition2_Scale">1</num>
         <text id="result">flowGradientPosition</text>
       </object>
 

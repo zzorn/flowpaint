@@ -13,6 +13,10 @@ import util.{DataSample, Configuration}
 
 abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: String, loopedTemplate: String) extends Configuration {
 
+    val scalePostfix = "_Scale"
+    val offsetPostfix = "_Offset"
+    val stringPropertyPostfix = "_Property"
+
     /**
      * Processes the variables.  The variableNameMappings are used to map names used by this PixelProcessor to the ones that are in the variable array.
      * It allows parameter passing (in and out) by name.  If no mapping is specified, the default parameter name is used directly as variable name.
@@ -33,32 +37,18 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
                 val name1 = name + postfix
 
                 if (name1 != null) {
-                    val redirName = getSourceVariable(name1)
-                    List(redirName)
+                    val redirName = getStringProperty(name1, null)
+                    if ( redirName != null )
+                        List(redirName)
+                    else Nil
                 }
                 else Nil
             }
             else Nil
         }
 
-      def getReferencedName(entry: String, prefix: String, postfix: String): List[String] = {
-
-          if (entry startsWith prefix) {
-              val (name, default) = calculateVariableAndDefault(entry.substring(prefix.length), null)
-
-              val name1 = name + postfix
-
-              if (name1 != null && getSettings.containsStringProperty( name1 ) ) {
-                
-                  List(getSettings.getStringProperty( name1, null ))
-              }
-              else Nil
-          }
-          else Nil
-      }
 
         var entries = tokenize(loopedTemplate)
-
 
         var foundNames: List[String] = Nil
 
@@ -72,12 +62,12 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
                 foundNames = foundNames ::: getNames(entry, "setString", "")
 
                 foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", "")
-                foundNames = foundNames ::: getReferencedName(entry, "getScaleOffsetFloat", "Scale")
-                foundNames = foundNames ::: getReferencedName(entry, "getScaleOffsetFloat", "Offset")
+                foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", scalePostfix)
+                foundNames = foundNames ::: getNames(entry, "getScaleOffsetFloat", offsetPostfix)
 
                 foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", "")
-                foundNames = foundNames ::: getReferencedName(entry, "setScaleOffsetFloat", "Scale")
-                foundNames = foundNames ::: getReferencedName(entry, "setScaleOffsetFloat", "Offset")
+                foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", scalePostfix)
+                foundNames = foundNames ::: getNames(entry, "setScaleOffsetFloat", offsetPostfix)
 
                 entries = entries.tail
             }
@@ -127,12 +117,12 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
                              uniqueId: Int): String = {
 
         def parseFloat(variableName: String, defaultValue: String, code: StringBuilder) {
-            val redirectedVariableName = getSourceVariable(variableName)
+            val redirectedVariableName = getStringProperty(variableName, null)
 
             if (getSettings.containsFloatProperty(variableName)) {
                 code append (getSettings.getFloatProperty(variableName, 0).toString + "f")
             }
-            else if (nameToIndex.contains(redirectedVariableName)) {
+            else if (redirectedVariableName != null && nameToIndex.contains(redirectedVariableName)) {
                 code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]/*"+redirectedVariableName+"*/ "
             }
             else {
@@ -141,9 +131,9 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
         }
 
       def parseSetFloat(variableName: String, defaultValue: String, code: StringBuilder) {
-          val redirectedVariableName = getSourceVariable(variableName)
+          val redirectedVariableName = getStringProperty(variableName, null)
 
-          if (nameToIndex.contains(redirectedVariableName)) {
+          if (redirectedVariableName != null && nameToIndex.contains(redirectedVariableName)) {
               code append variableArrayName + "[" + nameToIndex(redirectedVariableName) + "]/*"+redirectedVariableName+"*/ "
           }
           else {
@@ -156,9 +146,9 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
             code append " ( "
             parseFloat(variableName, defaultValue, code)
             code append " * "
-            parseFloat(variableName + "Scale", "1f", code)
+            parseFloat(variableName + scalePostfix, "1f", code)
             code append " + "
-            parseFloat(variableName + "Offset", "0f", code)
+            parseFloat(variableName + offsetPostfix, "0f", code)
             code append " ) "
         }
 
@@ -166,9 +156,9 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
 
             parseSetFloat(variableName, defaultValue, code)
             code append " = "
-            parseFloat(variableName + "Offset", "0f", code)
+            parseFloat(variableName + offsetPostfix, "0f", code)
             code append " + "
-            parseFloat(variableName + "Scale", "1f", code)
+            parseFloat(variableName + scalePostfix, "1f", code)
             code append " * "
         }
 
@@ -229,6 +219,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
         code.toString
     }
 
+
     def getSourceVariable(name: String): String = getStringProperty(name, name)
 
     def getSourceVariable(name: String, variableNameMappings: Map[String, String]): String = {
@@ -262,7 +253,7 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
     }
 
     protected def getMappedString(name: String, default: String, generalSettings: Data): String = {
-        val proeprtyName = getStringProperty(name + "Property", name)
+        val proeprtyName = getStringProperty(name + stringPropertyPostfix, name)
         val defaultValue = getStringProperty(name, default)
 
         generalSettings.getStringProperty(proeprtyName, defaultValue)
@@ -301,8 +292,8 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
 
 
     protected def scaleOffset(value: Float, prefix: String, variables: DataSample, variableNameMappings: Map[String, String]): Float = {
-        val scale = getMappedVar(prefix + "Scale", 1f, variables, variableNameMappings)
-        val offset = getMappedVar(prefix + "Offset", 0f, variables, variableNameMappings)
+        val scale = getMappedVar(prefix + scalePostfix, 1f, variables, variableNameMappings)
+        val offset = getMappedVar(prefix + offsetPostfix, 0f, variables, variableNameMappings)
 
         value * scale + offset
     }

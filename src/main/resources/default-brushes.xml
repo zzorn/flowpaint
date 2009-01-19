@@ -215,15 +215,7 @@
 
     <pixelProcessors>
 
-      <!-- HSL to RGB -->
-      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
-        <text id="hue">hue</text>
-        <text id="saturation">saturation</text>
-        <text id="lightness">lightness</text>
-        <text id="red">red</text>
-        <text id="green">green</text>
-        <text id="blue">blue</text>
-      </object>
+
 
 
       <!-- Noise -->
@@ -256,12 +248,55 @@
       <object type="org.flowpaint.pixelprocessors.Gradient">
         <text id="gradientPosition">gradientPosition</text>
         <text id="gradient_Property">flowGradient</text>
-        <text id="red">gradientRed</text>
-        <text id="green">gradientGreen</text>
-        <text id="blue">gradientBlue</text>
+        <text id="red">red</text>
+        <text id="green">green</text>
+        <text id="blue">blue</text>
         <text id="alpha">gradientAlpha</text>
       </object>
 
+      <!-- RGB to HSL-->
+      <object type="org.flowpaint.pixelprocessors.RGBToHSL">
+        <text id="red">red</text>
+        <text id="green">green</text>
+        <text id="blue">blue</text>
+        <text id="hue">hueGr</text>
+        <text id="saturation">saturationGr</text>
+        <text id="lightness">lightnessGr</text>
+      </object>
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">hue</text>
+        <text id="result">hue</text>
+        <text id="result_Offset">hueGr</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">saturation</text>
+        <text id="result">saturation</text>
+        <text id="result_Scale">saturationGr</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">lightness</text>
+        <text id="result">lightness</text>
+        <text id="result_Scale">lightnessGr</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">gradientAlpha</text>
+        <text id="result">alpha</text>
+        <text id="result_Scale">alpha</text>
+      </object>
+
+      <!-- HSL to RGB -->
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+        <text id="hue">hue</text>
+        <text id="saturation">saturation</text>
+        <text id="lightness">lightness</text>
+        <text id="red">red</text>
+        <text id="green">green</text>
+        <text id="blue">blue</text>
+      </object>
+
+
+<!--
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientRed</text>
         <text id="result">red</text>
@@ -277,6 +312,7 @@
         <text id="result">blue</text>
         <text id="result_Scale">blue</text>
       </object>
+-->
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">gradientAlpha</text>
         <text id="result">alpha</text>
@@ -308,7 +344,10 @@
         <text id="result_Scale">alpha</text>
       </object>
 
-      <!-- Testing -->
+<!--
+      -->
+<!-- Testing -->
+<!--
       <object type="org.flowpaint.pixelprocessors.If">
         <text id="value">edgeDistance</text>
         <text id="result">green</text>
@@ -342,6 +381,7 @@
         <num id="closestDistance_Offset">1</num>
         <text id="closestRandom">blue</text>
       </object>
+-->
 
       <!-- Pressure effect on alpha-->
       <object type="org.flowpaint.pixelprocessors.Copy">

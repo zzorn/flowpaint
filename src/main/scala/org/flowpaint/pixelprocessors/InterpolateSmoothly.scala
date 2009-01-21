@@ -43,3 +43,4 @@ class InterpolateSmoothly extends PixelProcessor("","",
     setScaleOffsetVar( "result", result, variables, variableNameMappings )
   }
 }
+

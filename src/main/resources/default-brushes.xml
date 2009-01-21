@@ -329,6 +329,7 @@
         <num id="result_Scale">-1</num>
       </object>
 
+<!--
       <object type="org.flowpaint.pixelprocessors.Cos">
         <text id="value">edgeDistance</text>
         <text id="result">edgeAlpha</text>
@@ -337,6 +338,17 @@
         <num id="result_Scale">0.5</num>
         <num id="result_Offset">0.5</num>
       </object>
+-->
+
+
+      <object type="org.flowpaint.pixelprocessors.Curve">
+        <text id="value">edgeDistance</text>
+        <text id="curvature">sharpness</text>
+        <text id="result">edgeAlpha</text>
+        <num id="value_Scale">1</num>
+      </object>
+
+
 
       <object type="org.flowpaint.pixelprocessors.Copy">
         <text id="value">edgeAlpha</text>
@@ -572,6 +584,16 @@
         <num id="blue">0.4</num>
         <text id="editedParameter">noiseScaleAlongStroke</text>
         <text id="description">Noise Stretching</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">-5</num>
+        <num id="endValue">5</num>
+        <num id="red">0.2</num>
+        <num id="green">0.2</num>
+        <num id="blue">0.2</num>
+        <text id="editedParameter">sharpness</text>
+        <text id="description">Edge sharpness</text>
       </object>
 
 <!--

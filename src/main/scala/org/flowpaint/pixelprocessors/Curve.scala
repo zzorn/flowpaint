@@ -1,6 +1,7 @@
 package org.flowpaint.pixelprocessors
 
 import _root_.org.flowpaint.property.Data
+import _root_.scala.collection.Map
 import pixelprocessor.PixelProcessor
 import util.DataSample
 
@@ -12,8 +13,18 @@ import util.DataSample
  */
 
 class Curve extends PixelProcessor("","","""
-    final float value$id$ = $getScaleOffsetFloat value, 0f$;
-    final float curvature$id$ = $getScaleOffsetFloat value, 0f$;
+    float value$id$ = $getScaleOffsetFloat value, 0f$;
+    final float curvature$id$ = $getScaleOffsetFloat curvature, 0f$;
+
+    final float sign$id$ = (value$id$ < 0f) ? -1f : 1f;
+    if ( value$id$ < 0f) value$id$ = -value$id$;
+
+/*
+    // Scale input a bit
+    value$id$ = value$id$ * 2;
+    value$id$ *= value$id$ * value$id$;
+*/
+    value$id$ = value$id$ * value$id$;
 
     if ( curvature$id$ == 0f )
     {
@@ -21,15 +32,25 @@ class Curve extends PixelProcessor("","","""
     }
     else
     {
-        final float t$id$ = (float) ( curvature$id$ * -0.5f * (1f + Math.sqrt( 1f + 4f / curvature$id$ ) ) );
+        final float t$id$ = (float) ( curvature$id$ * (-0.5f) * (1f + sign$id$ * Math.sqrt( 1f + 4f / curvature$id$ ) ) );
 
-        final float result$id$ = 1f - ( 1f / ( curvature$id$ * value$id$ + t$id$ ) + t$id$ / curvature$id$ );
+        final float result$id$ = 1f - ( 1f / ( (value$id$ + (1/curvature$id$) * t$id$) * curvature$id$ ) - t$id$ / curvature$id$ );
 
         $setScaleOffsetFloat result$ result$id$;
     }
 
   """) {
 
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {}
 
+    def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {
+/*
+
+        def curve(value : Float, curvature : Float) : Float = {
+            val t = ( curvature * -0.5f * (1f + Math.sqrt( 1f + 4f / curvature ) ) ).toFloat
+
+            1f - ( 1f / ( curvature * value + t ) + t / curvature )
+        }
+*/
+
+    }
 }

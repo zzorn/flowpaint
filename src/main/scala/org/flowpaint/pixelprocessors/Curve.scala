@@ -14,17 +14,10 @@ import util.DataSample
 
 class Curve extends PixelProcessor("","","""
     float value$id$ = $getScaleOffsetFloat value, 0f$;
-    final float curvature$id$ = $getScaleOffsetFloat curvature, 0f$;
+    float curvature$id$ = $getScaleOffsetFloat curvature, 0f$;
 
-    final float sign$id$ = (value$id$ < 0f) ? -1f : 1f;
-    if ( value$id$ < 0f) value$id$ = -value$id$;
-
-/*
-    // Scale input a bit
-    value$id$ = value$id$ * 2;
-    value$id$ *= value$id$ * value$id$;
-*/
-    value$id$ = value$id$ * value$id$;
+    final float sign$id$ = (curvature$id$ < 0f) ? -1f : 1f;
+    if ( curvature$id$ < 0f) curvature$id$ = -curvature$id$;
 
     if ( curvature$id$ == 0f )
     {
@@ -32,6 +25,13 @@ class Curve extends PixelProcessor("","","""
     }
     else
     {
+        // Scale input a bit
+/*
+        value$id$ = value$id$ - 0.5f;
+*/
+        value$id$ = value$id$ * 10f;
+        value$id$ = value$id$ * value$id$ * value$id$;
+
         final float t$id$ = (float) ( curvature$id$ * (-0.5f) * (1f + sign$id$ * Math.sqrt( 1f + 4f / curvature$id$ ) ) );
 
         final float result$id$ = 1f - ( 1f / ( (value$id$ + (1/curvature$id$) * t$id$) * curvature$id$ ) - t$id$ / curvature$id$ );

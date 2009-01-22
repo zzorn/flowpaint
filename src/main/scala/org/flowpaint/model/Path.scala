@@ -79,14 +79,9 @@ class Path(brush: Brush) extends Renderable {
 
     private def renderStrokeSegment(startPoint: Data, endPoint: Data, surface: RenderSurface, scanlineCalculator : ScanlineCalculator) {
 
-        val emptyMap = Map[String, String]()
-
-        def processPixel( pixelData : Data ) {
-          pixelProcessors foreach (_.processPixel(pixelData.getFloatProperties(), emptyMap, brush.settings ))
-        }
-
         val renderer = new StrokeRenderer()
-        renderer.drawStrokeSegment(startPoint, endPoint, processPixel, surface, scanlineCalculator)
+
+        renderer.drawStrokeSegment(startPoint, endPoint, surface, scanlineCalculator)
 
     }
 

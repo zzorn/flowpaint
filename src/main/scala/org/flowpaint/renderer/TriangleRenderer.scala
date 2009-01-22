@@ -10,7 +10,6 @@ import util.{DataSample, PropertyRegister}
  * @author Hans Haggstrom
  */
 class TriangleRenderer {
-  type PixelCallback = (Int, Int, Data) => Unit
 
 
   private val pixelSample = new DataImpl()
@@ -22,7 +21,6 @@ class TriangleRenderer {
   def renderTriangle(viewWidth: Int, viewHeight: Int,
                     xi0: Float, yi0: Float, xi1: Float, yi1: Float, xi2: Float, yi2: Float,
                     dataSample0: Data, dataSample1: Data, dataSample2: Data,
-                    pixelCallback: PixelCallback,
                     scanlineCalculator : ScanlineCalculator,
                     surface : RenderSurface) {
 
@@ -45,34 +43,6 @@ class TriangleRenderer {
             endSample.getFloatProperties,
             scanlineCalculator )
 
-/*
-      // Clip top and bottom and off screen
-      if (scanline >= 0 && scanline < viewHeight && x_ < viewWidth && endX_ >= 0 && endX_ > x_) {
-
-        // Clip left side
-        var x = if (x_ < 0) 0 else x_
-
-        // Clip right side
-        val endX = if (endX_ > viewWidth) viewWidth else endX_
-
-        // Precalculate one over length of line
-        val divisor = 1f / (endX_ - x_).toFloat
-
-
-        // Render scanline
-        while (x < endX) {
-          val positionAlongLine: Float = (x - x_).toFloat * divisor
-
-          pixelSample.interpolate( positionAlongLine,  startSample, endSample )
-
-          pixelSample.setFloatProperty( PropertyRegister.CANVAS_X, x )
-          pixelSample.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
-
-          pixelCallback(x, scanline, pixelSample)
-          x += 1
-        }
-     }
- */
     }
 
     def rasterizeTrapetzoid(startY: Int, endY: Int,

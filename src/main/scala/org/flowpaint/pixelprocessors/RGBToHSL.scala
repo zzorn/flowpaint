@@ -53,19 +53,4 @@ class RGBToHSL extends PixelProcessor("","",
     $setScaleOffsetFloat saturation$ s$id$;
     $setScaleOffsetFloat lightness$ l$id$;
 
-    """) {
-
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) = {
-
-    val red = clampToZeroToOne( getScaleOffsetVar ( "red", 0, variables, variableNameMappings ) )
-    val green = clampToZeroToOne( getScaleOffsetVar ( "green", 0, variables, variableNameMappings ) )
-    val blue = clampToZeroToOne( getScaleOffsetVar ( "blue", 0, variables, variableNameMappings ) )
-
-    val (hue, saturation, lightness )= util.ColorUtils.RGBtoHSL( red, green, blue )
-
-    setScaleOffsetVar( "hue", hue, variables,variableNameMappings )
-    setScaleOffsetVar( "saturation", saturation, variables,variableNameMappings )
-    setScaleOffsetVar( "lightness", lightness, variables,variableNameMappings )
-  }
-
-}
+    """) 

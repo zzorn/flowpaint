@@ -18,12 +18,6 @@ abstract class PixelProcessor( classBodyTemplate: String, initializerTemplate: S
     val stringPropertyPostfix = "_Property"
 
     /**
-     * Processes the variables.  The variableNameMappings are used to map names used by this PixelProcessor to the ones that are in the variable array.
-     * It allows parameter passing (in and out) by name.  If no mapping is specified, the default parameter name is used directly as variable name.
-     */
-    def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data)
-
-    /**
      * Returns the parameter names that are used by this PixelProcessor, if it is called with the specified variableNameMappings.
      * Used to ensure that all variable names are present when compiling PixelProgram:s.
      */

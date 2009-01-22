@@ -22,7 +22,4 @@ class Noise2D extends PixelProcessor(
 
      $setScaleOffsetFloat result$ result$id$;
 
-    """)  {
-  
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {}
-}
+    """)  

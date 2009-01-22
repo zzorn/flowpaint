@@ -10,4 +10,4 @@ import util.DataSample
  * @author Hans Haggstrom
  */
 
-class Tan extends SingleFunctionPixelProcessor( Math.tan, "Math.tan" )
+class Tan extends SingleFunctionPixelProcessor( "Math.tan" )

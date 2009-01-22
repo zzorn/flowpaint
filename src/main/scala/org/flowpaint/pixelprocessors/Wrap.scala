@@ -13,6 +13,7 @@ import util.{DataSample, MathUtils}
 
 class Wrap extends PixelProcessor("","","") {
 
+/*
   def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
 
     val value = getScaleOffsetVar( "value", 0f, variables, variableNameMappings )
@@ -22,4 +23,6 @@ class Wrap extends PixelProcessor("","","") {
 
     setScaleOffsetVar( "result", result, variables, variableNameMappings )
   }
+*/
+    
 }

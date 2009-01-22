@@ -21,11 +21,11 @@
     </pathProcessors>
     <pixelProcessors>
 
-      <object type="org.flowpaint.pixelprocessors.Noise">
-        <text id="noisePosition1">canvasX</text>
-        <text id="noisePosition2">canvasY</text>
-        <num id="noisePosition1_Scale">0.01</num>
-        <num id="noisePosition2_Scale">0.01</num>
+      <object type="org.flowpaint.pixelprocessors.Noise2D">
+        <text id="noiseX">canvasX</text>
+        <text id="noiseY">canvasY</text>
+        <num id="noiseX_Scale">0.01</num>
+        <num id="noiseY_Scale">0.01</num>
         <text id="result">value</text>
       </object>
 

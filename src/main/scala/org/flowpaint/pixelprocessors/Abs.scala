@@ -8,4 +8,4 @@ import util.DataSample
  *
  * @author Hans Haggstrom
  */
-class Abs extends SingleFunctionPixelProcessor( Math.abs, "Math.abs" ) 
+class Abs extends SingleFunctionPixelProcessor( "Math.abs" ) 

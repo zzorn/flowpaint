@@ -18,10 +18,6 @@ class Sigmoid extends PixelProcessor("","",  """
     final float result$id$ = 1.0f / (1.0f + (float)Math.exp( -6f * value$id$ * sharpness$id$ ));
 
     $setScaleOffsetFloat result$ result$id$;
-  """) {
-
-    def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {}
-}
-
+  """) 
 
 

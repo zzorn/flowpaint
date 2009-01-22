@@ -19,18 +19,4 @@ class Clamp extends PixelProcessor("","","""
     final float result$id$ = value$id$ > max$id$ ? max$id$ : ( value$id$ < min$id$ ? min$id$ : value$id$);
 
     $setScaleOffsetFloat result$ result$id$;
-  """) {
-
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings : Data) {
-
-    val value = getScaleOffsetVar( "value", 0f, variables, variableNameMappings )
-    val min = getScaleOffsetVar( "min", 0f, variables, variableNameMappings )
-    val max = getScaleOffsetVar( "max", 1f, variables, variableNameMappings )
-
-    val result = if ( value < min ) min
-                 else if (value > max) max
-                 else value
-
-    setScaleOffsetVar( "result", result, variables, variableNameMappings )
-  }
-}
+  """)

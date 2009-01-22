@@ -39,10 +39,9 @@ class Curve extends PixelProcessor("","","""
         $setScaleOffsetFloat result$ result$id$;
     }
 
-  """) {
+  """)
 
 
-    def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {
 /*
 
         def curve(value : Float, curvature : Float) : Float = {
@@ -51,6 +50,3 @@ class Curve extends PixelProcessor("","","""
             1f - ( 1f / ( curvature * value + t ) + t / curvature )
         }
 */
-
-    }
-}

@@ -35,6 +35,4 @@ class If extends PixelProcessor("","","""
     else if ( value$id$ < upperThreshold5$id$ ) result$id$ = thresholdValue5$id$;
 
     $setScaleOffsetFloat result$ result$id$;
-  """ ) {
-    def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {}
-}
+  """ ) 

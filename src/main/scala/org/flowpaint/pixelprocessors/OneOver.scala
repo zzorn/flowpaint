@@ -7,4 +7,4 @@ import pixelprocessor.SingleFunctionPixelProcessor
  * @author Hans Haggstrom
  */
 
-class OneOver extends SingleFunctionPixelProcessor( x => 1f / x, "1f / " )
+class OneOver extends SingleFunctionPixelProcessor( "1f / " )

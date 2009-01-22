@@ -56,7 +56,7 @@ object Cellular{
   }
 }
 
-class Cellular extends PixelProcessor(
+class Cellular extends PixelProcessor( 
   """
     private final Random random$id$ = new Random(4357);
 
@@ -147,8 +147,4 @@ class Cellular extends PixelProcessor(
     $setScaleOffsetFloat nextY$            nextNeighbourY$id$;
 //    $setScaleOffsetFloat nextSeed$         nextNeighbourSeed$id$;
     $setScaleOffsetFloat nextRandom$       nextRandom$id$;
-  """) {
-
-
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) = {}
-}
+  """) 

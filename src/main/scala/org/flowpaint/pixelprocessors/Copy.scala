@@ -7,4 +7,4 @@ import pixelprocessor.SingleFunctionPixelProcessor
  * @author Hans Haggstrom
  */
 
-class Copy  extends SingleFunctionPixelProcessor( d => d, "" )
+class Copy  extends SingleFunctionPixelProcessor( "" )

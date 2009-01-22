@@ -21,18 +21,4 @@ class Distance extends PixelProcessor("","","""
     final float result$id$ = (float) Math.sqrt( xDiff$id$ * xDiff$id$ + yDiff$id$ * yDiff$id$ );
 
     $setScaleOffsetFloat result$ result$id$;
-  """) {
-
-  def processPixel(variables: DataSample, variableNameMappings: Map[String, String], generalSettings: Data) {
-
-    val x1 = getScaleOffsetVar( "positionX1", 0f, variables, variableNameMappings )
-    val y1 = getScaleOffsetVar( "positionY1", 0f, variables, variableNameMappings )
-    val x2 = getScaleOffsetVar( "positionX2", 0f, variables, variableNameMappings )
-    val y2 = getScaleOffsetVar( "positionY2", 0f, variables, variableNameMappings )
-
-    val result = MathUtils.distance( x1, y1, x2, y2 )
-
-    setScaleOffsetVar( "result", result, variables, variableNameMappings )
-  }
-
-}
+  """) 

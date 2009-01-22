@@ -587,8 +587,8 @@
       </object>
 
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">-20</num>
-        <num id="endValue">20</num>
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
         <num id="red">0.2</num>
         <num id="green">0.2</num>
         <num id="blue">0.2</num>

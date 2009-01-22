@@ -16,21 +16,30 @@ class Curve extends PixelProcessor("","","""
     float value$id$ = $getScaleOffsetFloat value, 0f$;
     float curvature$id$ = $getScaleOffsetFloat curvature, 0f$;
 
-    final float sign$id$ = (curvature$id$ < 0f) ? -1f : 1f;
-    if ( curvature$id$ < 0f) curvature$id$ = -curvature$id$;
-
-    if ( curvature$id$ == 0f )
+    if ( curvature$id$ == 0.5f )
     {
         $setScaleOffsetFloat result$ value$id$;
     }
+    else if ( curvature$id$ <= 0f )
+    {
+        $setScaleOffsetFloat result$ 1f;
+    }
+    else if ( curvature$id$ >= 1f )
+    {
+        $setScaleOffsetFloat result$ 0f;
+    }
     else
     {
-        // Scale input a bit
-/*
-        value$id$ = value$id$ - 0.5f;
-*/
-        value$id$ = value$id$ * 10f;
-        value$id$ = value$id$ * value$id$ * value$id$;
+        // Clamp value
+        if (value$id$ < 0f) value$id$ = 0f;
+        if (value$id$ > 1f) value$id$ = 1f;
+
+        // Scale curvature
+        curvature$id$ = (curvature$id$ - 0.5f) * 10;
+        curvature$id$ = curvature$id$ * curvature$id$ * curvature$id$ * curvature$id$ * curvature$id$;
+
+        final float sign$id$ = (curvature$id$ < 0f) ? -1f : 1f;
+        curvature$id$ = curvature$id$ * sign$id$;
 
         final float t$id$ = (float) ( curvature$id$ * (-0.5f) * (1f + sign$id$ * Math.sqrt( 1f + 4f / curvature$id$ ) ) );
 

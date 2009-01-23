@@ -1,9 +1,7 @@
 package org.flowpaint.filters
 
 import property.Data
-import util.DataSample
-import util.PropertyRegister
-
+import util.{DataSample, PropertyRegister, MathUtils}
 /**
  *  Calculates the edges of a stroke based on its radius and angle.
  *
@@ -18,6 +16,9 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     private var previousLeftY = 0f
     private var previousRightX = 0f
     private var previousRightY = 0f
+
+    private var rightEdgeScale = 1f
+    private var leftEdgeScale = 1f
 
 
     override protected def onInit() {
@@ -40,12 +41,17 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         // Calculate corner points
         val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
         val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
-        val deltaX = Math.cos(angle).toFloat * radius
-        val deltaY = Math.sin(angle).toFloat * radius
-        var leftX = x - deltaX
-        var leftY = y - deltaY
-        var rightX = x + deltaX
-        var rightY = y + deltaY
+
+        var leftX = x - Math.cos(angle).toFloat * radius * leftEdgeScale
+        var leftY = y - Math.sin(angle).toFloat * radius * leftEdgeScale
+
+        var rightX = x + Math.cos(angle).toFloat * radius * rightEdgeScale
+        var rightY = y + Math.sin(angle).toFloat * radius * rightEdgeScale
+
+        val recoverySpeed = getFloatProperty( "cornerScaleRecoverySpeed", 0.03f )
+
+        leftEdgeScale = Math.min( 1f, leftEdgeScale + recoverySpeed )
+        rightEdgeScale = Math.min( 1f, rightEdgeScale + recoverySpeed )
 
         // Check if either edge crosses the previous one.  In that case, use the previous endpoint
         // Do not apply for the first point
@@ -53,11 +59,13 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
             {
                 leftX = previousLeftX
                 leftY = previousLeftY
+                leftEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, leftX, leftY ) / radius
             }
         if (!firstPoint && util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
             {
                 rightX = previousRightX
                 rightY = previousRightY
+                rightEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, rightX, rightY ) / radius
             }
 
         // Store corner points

@@ -18,15 +18,17 @@ class Interpolate extends PixelProcessor("","","""
     final float outputStart$id$  = $getScaleOffsetFloat outputStart, 0f$;
     final float outputEnd$id$    = $getScaleOffsetFloat outputEnd, 1f$;
 
+    float result$id$;
+
     // Check for special case where start and end positions are the same.  In this case return the average value.
     if ( inputStart$id$ == inputEnd$id$ )
     {
-        return 0.5f * ( outputStart$id$ + outputEnd$id$ );
+        result$id$ = 0.5f * ( outputStart$id$ + outputEnd$id$ );
     }
-
-    final float relativePosition$id$ =  ( input$id$ - inputStart$id$ ) / ( inputEnd$id$ - inputStart$id$ );
-
-    final float result$id$ = outputStart$id$ + relativePosition$id$ * ( outputEnd$id$ - outputStart$id$ );
-
+    else {
+        final float relativePosition$id$ =  ( input$id$ - inputStart$id$ ) / ( inputEnd$id$ - inputStart$id$ );
+        result$id$ = outputStart$id$ + relativePosition$id$ * ( outputEnd$id$ - outputStart$id$ );
+    }
+    
     $setScaleOffsetFloat result$ result$id$;
   """) 

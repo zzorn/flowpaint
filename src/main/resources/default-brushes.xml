@@ -321,7 +321,7 @@
 
 
 
-      <!-- Edge softening -->
+      <!-- Edge distance -->
       <object type="org.flowpaint.pixelprocessors.Abs">
         <text id="value">positionAcrossStroke</text>
         <text id="result">edgeDistance</text>
@@ -329,32 +329,28 @@
         <num id="result_Scale">-1</num>
       </object>
 
-<!--
-      <object type="org.flowpaint.pixelprocessors.Cos">
-        <text id="value">edgeDistance</text>
-        <text id="result">edgeAlpha</text>
-        <num id="value_Scale">3.1415926</num>
-        <num id="value_Offset">3.1415926</num>
-        <num id="result_Scale">0.5</num>
-        <num id="result_Offset">0.5</num>
-      </object>
--->
-
-
-      <object type="org.flowpaint.pixelprocessors.Curve">
-        <text id="value">edgeDistance</text>
-        <text id="curvature">sharpness</text>
-        <text id="result">edgeAlpha</text>
-        <num id="value_Scale">1</num>
-      </object>
-
-
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">edgeAlpha</text>
+      <!-- Stroke sharpness -->
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+        <text id="input">edgeDistance</text>
+        <text id="inputEnd">sharpness</text>
+        <num id="inputEnd_Scale">-1</num>
+        <num id="inputEnd_Offset">1.0001</num>
+        <num id="outputStart">0</num>
+        <num id="outputEnd">1</num>
         <text id="result">alpha</text>
         <text id="result_Scale">alpha</text>
       </object>
+
+      <!-- Pressure effect on alpha-->
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+        <text id="input">sharpness</text>
+        <text id="outputStart">pressure</text>
+        <text id="outputStart_Scale">alpha</text>
+        <text id="outputEnd">alpha</text>
+        <text id="result">alpha</text>
+      </object>
+
+
 
 <!--
       -->
@@ -394,13 +390,6 @@
         <text id="closestRandom">blue</text>
       </object>
 -->
-
-      <!-- Pressure effect on alpha-->
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">pressure</text>
-        <text id="result">alpha</text>
-        <text id="result_Scale">alpha</text>
-      </object>
 
 
       <!--

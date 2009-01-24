@@ -20,6 +20,9 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     private var rightEdgeScale = 1f
     private var leftEdgeScale = 1f
 
+    private var previousAngle = 0f
+
+    private val angleScale = 2f * Math.Pi.toFloat
 
     override protected def onInit() {
         previousX = 0f
@@ -28,6 +31,11 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousLeftY = 0f
         previousRightX = 0f
         previousRightY = 0f
+
+        rightEdgeScale = 1f
+        leftEdgeScale = 1f
+
+        previousAngle = 0f
     }
 
 
@@ -53,20 +61,25 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         leftEdgeScale = Math.min( 1f, leftEdgeScale + recoverySpeed )
         rightEdgeScale = Math.min( 1f, rightEdgeScale + recoverySpeed )
 
+        val turningLeft = MathUtils.wrappedClosestDelta( previousAngle / angleScale, angle / angleScale ) > 0f
+
         // Check if either edge crosses the previous one.  In that case, use the previous endpoint
         // Do not apply for the first point
-        if (!firstPoint && util.GeometryUtils.isLineIntersectingLine(x, y, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
-            {
-                leftX = previousLeftX
-                leftY = previousLeftY
-                leftEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, leftX, leftY ) / radius
-            }
-        if (!firstPoint && util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
-            {
-                rightX = previousRightX
-                rightY = previousRightY
-                rightEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, rightX, rightY ) / radius
-            }
+        if (!isFirstPoint) {
+            if ( /*turningLeft &&*/ util.GeometryUtils.isLineIntersectingLine(x, y, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
+                {
+                    leftX = previousLeftX
+                    leftY = previousLeftY
+                    leftEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, leftX, leftY ) / radius
+                }
+            if ( /*!turningLeft &&*/ util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
+                {
+                    rightX = previousRightX
+                    rightY = previousRightY
+                    rightEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, rightX, rightY ) / radius
+                }
+        }
+
 
         // Store corner points
         pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
@@ -80,6 +93,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousLeftY = leftY
         previousRightX = rightX
         previousRightY = rightY
+        previousAngle = angle
 
         // Continue processing the stroke point
         List(pointData)

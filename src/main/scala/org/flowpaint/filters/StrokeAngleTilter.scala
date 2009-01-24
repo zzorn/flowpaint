@@ -1,6 +1,5 @@
-package org.flowpaint.brush
+package org.flowpaint.filters
 
-import filters.{StrokeFilter, PathProcessor}
 import property.{DataImpl, Data}
 import util.DataSample
 import util.MathUtils

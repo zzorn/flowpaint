@@ -157,6 +157,35 @@ object MathUtils {
   }
 
 
+    /**
+     *    The delta from a to b, along the shortest path, when 1 is considered to wrap around to 0.
+     * A number between -1..1
+     */
+    def wrappedClosestDelta(a: Float, b: Float): Float = {
+      // Roll to 0 to 1 range
+      val an = wrapToZeroToOne(a)
+      val bn = wrapToZeroToOne(b)
+
+      // Determine order
+      var smaller = an
+      var larger = bn
+      if (an > bn) {
+        smaller = bn
+        larger = an
+      }
+
+      // Calculate direct distance, and rolled over distance
+      val directDistance = larger - smaller
+      val rolledDistance = smaller + (1 - larger)
+
+      // Return smallest distance
+      if (directDistance < rolledDistance)
+        if (an < bn) directDistance else -directDistance
+      else
+      if (an > bn) rolledDistance else -rolledDistance
+    }
+
+
   def wrappedInterpolate(t: Float, a: Float, b: Float): Float = {
     // Roll to 0 to 1 range
     val an = wrapToZeroToOne(a)

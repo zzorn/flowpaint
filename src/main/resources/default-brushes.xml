@@ -204,12 +204,13 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.35</num>
       </object>
+      <object type="org.flowpaint.filters.CornerRounder" ></object>
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
 

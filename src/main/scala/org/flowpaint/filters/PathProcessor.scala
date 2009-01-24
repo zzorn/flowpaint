@@ -19,6 +19,8 @@ trait PathProcessor extends Configuration {
       firstPoint = true
     }
 
+    def isFirstPoint = firstPoint
+
     def handlePath(pathPointsData: List[Data]) : List[Data] = {
       // NOTE: This can probably be done shorter with some nice list method.
       var result : List[Data] = Nil

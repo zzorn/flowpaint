@@ -572,7 +572,8 @@
         <num id="green">0.4</num>
         <num id="blue">0.4</num>
         <text id="editedParameter">noiseScaleAlongStroke</text>
-        <text id="description">Noise Stretching</text>
+        <text id="title">Noise Stretch</text>
+        <text id="description">Noise Stretching along stroke</text>
       </object>
 
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
@@ -582,6 +583,7 @@
         <num id="green">0.2</num>
         <num id="blue">0.2</num>
         <text id="editedParameter">sharpness</text>
+        <text id="title">Sharpness</text>
         <text id="description">Edge sharpness</text>
       </object>
 

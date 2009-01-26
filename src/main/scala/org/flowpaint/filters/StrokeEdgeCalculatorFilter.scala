@@ -1,6 +1,6 @@
 package org.flowpaint.filters
 
-import property.Data
+import property.{DataImpl, Data}
 import util.{DataSample, PropertyRegister, MathUtils}
 /**
  *  Calculates the edges of a stroke based on its radius and angle.
@@ -38,8 +38,76 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousAngle = 0f
     }
 
+    private def roundCorner(pointData: Data, angle : Float, previousAngle : Float, angleDelta : Float, radius : Float) : List[Data] =  {
+
+        val angleScale = 2f * Math.Pi.toFloat
+        val roundingAngle = 1f / 16f
+
+        var result : List[Data] = Nil
+
+        val turningLeft = angleDelta > 0f
+
+        if (!isFirstPoint) {
+
+            if ( angle != previousAngle ) {
+
+                val normPrevAngle = previousAngle / angleScale
+                val normNewAngle = angle / angleScale
+
+                val distance = MathUtils.wrappedDistance( normPrevAngle, normNewAngle )
+
+                if (distance > roundingAngle ) {
+
+                    // Add rounding points
+                    val steps = (distance / roundingAngle).toInt
+
+                    for ( i <- 0 to steps) {
+
+                        println( "step " + i)
+
+                        val t : Float = (i.toFloat) / (steps.toFloat)
+                        val stepAngle = MathUtils.wrappedInterpolate( t, normPrevAngle, normNewAngle )
+
+                        println( "stepAngle " + stepAngle)
+
+                        val data = new DataImpl( pointData )
+
+                        val cornerAngle = stepAngle * angleScale
+                        data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
+
+                        // Calculate corner points
+                        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
+                        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
+
+                        var leftX = x - (if (turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * leftEdgeScale)
+                        var leftY = y - (if (turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * leftEdgeScale)
+
+                        var rightX = x + (if (!turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * rightEdgeScale)
+                        var rightY = y + (if (!turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * rightEdgeScale)
+
+
+                        // Store corner points
+                        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
+                        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, leftY)
+                        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, rightX)
+                        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, rightY)
+
+
+                        result = result ::: List( data )
+                    }
+
+                }
+            }
+        }
+
+        return result
+    }
+
+
 
     protected def processPathPoint(pointData: Data) : List[Data] =  {
+
+        var result  : List[Data] = Nil
 
         // Determine angle and radius
         val DEFAULT_RADIUS = 10f
@@ -61,8 +129,11 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         leftEdgeScale = Math.min( 1f, leftEdgeScale + recoverySpeed )
         rightEdgeScale = Math.min( 1f, rightEdgeScale + recoverySpeed )
 
-        val turningLeft = MathUtils.wrappedClosestDelta( previousAngle / angleScale, angle / angleScale ) > 0f
+        val angleDelta : Float = MathUtils.wrappedClosestDelta( previousAngle / angleScale, angle / angleScale )
 
+        result = roundCorner( pointData, angle, previousAngle, angleDelta, radius )
+
+        val turningLeft = angleDelta > 0f
         // Check if either edge crosses the previous one.  In that case, use the previous endpoint
         // Do not apply for the first point
         if (!isFirstPoint) {
@@ -96,7 +167,8 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousAngle = angle
 
         // Continue processing the stroke point
-        List(pointData)
+        result = result  ::: List(pointData)
+        result
     }
 
 }

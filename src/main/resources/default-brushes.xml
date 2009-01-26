@@ -1,5 +1,121 @@
 <flowpaint version="1-beta">
 
+
+  <brush description="Color Pen" id="ColorPen">
+    <settings>
+      <num id="maxRadius">20.0</num>
+      <num id="alpha">1.0</num>
+      <num id="saturation">0.0</num>
+      <num id="lightness">0.0</num>
+      <num id="hue">0.0</num>
+      <num id="sharpness">0.5</num>
+    </settings>
+    <pathProcessors>
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.brush.StrokeAngleTilter">
+        <num id="tilt">0.0</num>
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
+        <num id="pressureEffect">1.0</num>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
+    </pathProcessors>
+    <pixelProcessors>
+
+      <!-- HSL to RGB -->
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+        <text id="hue">hue</text>
+        <text id="saturation">saturation</text>
+        <text id="lightness">lightness</text>
+        <text id="red">red</text>
+        <text id="green">green</text>
+        <text id="blue">blue</text>
+      </object>
+
+      <!-- Edge distance -->
+      <object type="org.flowpaint.pixelprocessors.Abs">
+        <text id="value">positionAcrossStroke</text>
+        <text id="result">edgeDistance</text>
+        <num id="result_Offset">1</num>
+        <num id="result_Scale">-1</num>
+      </object>
+
+      <!-- Stroke sharpness -->
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+        <text id="input">edgeDistance</text>
+        <text id="inputEnd">sharpness</text>
+        <num id="inputEnd_Scale">-1</num>
+        <num id="inputEnd_Offset">1.0001</num>
+        <num id="outputStart">0</num>
+        <num id="outputEnd">1</num>
+        <text id="result">alpha</text>
+        <text id="result_Scale">alpha</text>
+      </object>
+
+      <!-- Pressure effect on alpha-->
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+        <text id="input">sharpness</text>
+        <text id="outputStart">pressure</text>
+        <text id="outputStart_Scale">alpha</text>
+        <text id="outputEnd">alpha</text>
+        <text id="result">alpha</text>
+      </object>
+
+    </pixelProcessors>
+    <editors>
+
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <num id="red">0.2</num>
+        <num id="green">0.2</num>
+        <num id="blue">0.2</num>
+        <text id="editedParameter">sharpness</text>
+        <text id="title">Sharpness</text>
+        <text id="description">Edge sharpness</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+        <text id="hueParameter">hue</text>
+        <text id="saturationParameter">saturation</text>
+        <text id="lightnessParameter">lightness</text>
+
+        <num id="verticalStartValue">0</num>
+        <num id="verticalEndValue">1</num>
+        <text id="verticalEditedParameter">alpha</text>
+        <text id="verticalDescription">Transparency</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">50</num>
+        <text id="horizontalEditedParameter">maxRadius</text>
+        <text id="horizontalDescription">Size</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+        <num id="verticalStartValue">0</num>
+        <num id="verticalEndValue">1</num>
+        <text id="verticalEditedParameter">saturation</text>
+        <text id="verticalDescription">Saturation</text>
+        <num id="horizontalStartValue">0</num>
+        <num id="horizontalEndValue">1</num>
+        <text id="horizontalEditedParameter">lightness</text>
+        <text id="horizontalDescription">Lightness</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.HueEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <text id="editedParameter">hue</text>
+        <text id="description">Hue</text>
+      </object>
+
+    </editors>
+  </brush>
+
+
+
+
+
   <brush description="Crayon" id="Crayon">
     <settings>
       <num id="saturationDelta">0.0</num>
@@ -841,6 +957,9 @@
     <brushref>White</brushref>
     <brushref>Spray</brushref>
     <brushref>Dots</brushref>
+  </brushset>
+  <brushset name="Painting" id="Painting">
+    <brushref>ColorPen</brushref>
   </brushset>
   <gradient id="default.gradients.black">
     <gradientPoint position="0.0">

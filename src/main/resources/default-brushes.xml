@@ -326,7 +326,9 @@
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
         <num id="pressureEffect">0.35</num>
       </object>
+<!--
       <object type="org.flowpaint.filters.CornerRounder" ></object>
+-->
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
 

@@ -63,34 +63,43 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
                     for ( i <- 0 to steps) {
 
-                        println( "step " + i)
-
                         val t : Float = (i.toFloat) / (steps.toFloat)
                         val stepAngle = MathUtils.wrappedInterpolate( t, normPrevAngle, normNewAngle )
-
-                        println( "stepAngle " + stepAngle)
+                        val invStepAngle = MathUtils.wrappedInterpolateLongerWay( t, normPrevAngle, normNewAngle )
 
                         val data = new DataImpl( pointData )
 
                         val cornerAngle = stepAngle * angleScale
+                        val invCornerAngle = invStepAngle * angleScale
                         data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
 
                         // Calculate corner points
                         val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
                         val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
 
+                        val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
+                        val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
+
+                        var leftX = x - Math.cos(leftAngle).toFloat * radius * leftEdgeScale
+                        var leftY = y - Math.sin(leftAngle).toFloat * radius * leftEdgeScale
+
+                        var rightX = x + Math.cos(rightAngle).toFloat * radius * rightEdgeScale
+                        var rightY = y + Math.sin(rightAngle).toFloat * radius * rightEdgeScale
+/*
                         var leftX = x - (if (turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * leftEdgeScale)
                         var leftY = y - (if (turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * leftEdgeScale)
 
                         var rightX = x + (if (!turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * rightEdgeScale)
                         var rightY = y + (if (!turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * rightEdgeScale)
-
+*/
 
                         // Store corner points
-                        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
-                        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, leftY)
-                        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, rightX)
-                        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, rightY)
+                        data.setFloatProperty(PropertyRegister.PATH_X, x)
+                        data.setFloatProperty(PropertyRegister.PATH_Y, y)
+                        data.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
+                        data.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, leftY)
+                        data.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, rightX)
+                        data.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, rightY)
 
 
                         result = result ::: List( data )
@@ -100,7 +109,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
             }
         }
 
-        return result
+        result
     }
 
 

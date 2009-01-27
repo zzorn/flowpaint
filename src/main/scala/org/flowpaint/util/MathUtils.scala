@@ -199,6 +199,19 @@ object MathUtils {
       wrapToZeroToOne(interpolate(t, an, bn + 1))
   }
 
+    def wrappedInterpolateLongerWay(t: Float, a: Float, b: Float): Float = {
+      // Roll to 0 to 1 range
+      val an = wrapToZeroToOne(a)
+      val bn = wrapToZeroToOne(b)
+
+      if (Math.abs(an - bn) > 0.5) // Longer through direct path than wrapped path
+        wrapToZeroToOne(interpolate(t, an, bn))
+      else if (an < bn) // Wrap a up, then roll back when interpolation done
+        wrapToZeroToOne(interpolate(t, an + 1, bn))
+      else // Wrap b up, then roll back when interpolation done
+        wrapToZeroToOne(interpolate(t, an, bn + 1))
+    }
+
   /**
    * @return true if c is between a and b.
    */

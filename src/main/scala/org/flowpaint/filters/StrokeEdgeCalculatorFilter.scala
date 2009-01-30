@@ -41,7 +41,8 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     private def roundCorner(pointData: Data, angle : Float, previousAngle : Float, angleDelta : Float, radius : Float) : List[Data] =  {
 
         val angleScale = 2f * Math.Pi.toFloat
-        val roundingAngle = 1f / 16f
+        val roundingAngle = 1f / 8f
+        val roundingSteps = 8
 
         var result : List[Data] = Nil
 
@@ -59,15 +60,18 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
                 if (distance > roundingAngle ) {
 
                     // Add rounding points
-                    val steps = (distance / roundingAngle).toInt
+                    for ( i <- 0 to roundingSteps) {
 
-                    for ( i <- 0 to steps) {
-
-                        val t : Float = (i.toFloat) / (steps.toFloat)
+                        val t : Float = (i.toFloat) / (roundingSteps.toFloat)
                         val stepAngle = MathUtils.wrappedInterpolate( t, normPrevAngle, normNewAngle )
                         val invStepAngle = MathUtils.wrappedInterpolateLongerWay( t, normPrevAngle, normNewAngle )
 
                         val data = new DataImpl( pointData )
+
+/*
+                        if (i == 0) data.setFloatProperty( "FlipLeftRight", 1f )
+                        else data.setFloatProperty( "FlipLeftRight", 0f )
+*/
 
                         val cornerAngle = stepAngle * angleScale
                         val invCornerAngle = invStepAngle * angleScale

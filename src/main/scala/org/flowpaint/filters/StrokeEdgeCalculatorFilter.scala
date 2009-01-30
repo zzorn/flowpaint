@@ -10,6 +10,10 @@ import util.{DataSample, PropertyRegister, MathUtils}
 
 class StrokeEdgeCalculatorFilter extends PathProcessor {
 
+    private val DefaultRadius = 10f
+    private val RoundingSteps = 16
+    private val RoundingAngle = 1f / 8f
+
     private var previousX = 0f
     private var previousY = 0f
     private var previousLeftX = 0f
@@ -22,7 +26,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
     private var previousAngle = 0f
 
-    private val angleScale = 2f * Math.Pi.toFloat
+    private val AngleScale = 2f * Math.Pi.toFloat
 
     override protected def onInit() {
         previousX = 0f
@@ -38,149 +42,154 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         previousAngle = 0f
     }
 
-    private def roundCorner(pointData: Data, angle : Float, previousAngle : Float, angleDelta : Float, radius : Float) : List[Data] =  {
+    private def setCoordinates( pointData : Data, includeStartPoint : Boolean, radius : Float, x : Float, y : Float, leftX : Float, leftY : Float, rightX : Float, rightY: Float  )  {
 
-        val angleScale = 2f * Math.Pi.toFloat
-        val roundingAngle = 1f / 8f
-        val roundingSteps = 8
+        val epsilon = 0.1f   // TODO: May mess things up when extreme zooms or scalings or coordinates are used
+        val x0l = if (includeStartPoint) x else MathUtils.interpolate( epsilon, x, leftX )
+        val y0l = if (includeStartPoint) y else MathUtils.interpolate( epsilon, y, leftY )
+        val x0r = if (includeStartPoint) x else MathUtils.interpolate( epsilon, x, rightX )
+        val y0r = if (includeStartPoint) y else MathUtils.interpolate( epsilon, y, rightY )
+
+        var newLeftX = leftX
+        var newLeftY = leftY
+        var newRightX = rightX
+        var newRightY = rightY
+
+        def intersect( x1 : Float, y1 : Float, x2 : Float, y2 :Float, px1 : Float, py1 : Float, px2 : Float, py2 :Float )  : Boolean = {
+            
+            util.GeometryUtils.isLineIntersectingLine(x1, y1, x2, y2, px1, py1, px2, py2)
+        }
+
+        // Check if either edge crosses the previous one.  In that case, use the previous endpoint
+        // Do not apply for the first point
+        if (!isFirstPoint ) {
+            if ( intersect(x0l, y0l, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
+                {
+                    newLeftX = previousLeftX
+                    newLeftY = previousLeftY
+                    leftEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, newLeftX, newLeftY ) / radius
+                }
+            if ( intersect(x0r, y0r, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
+                {
+                    newRightX = previousRightX
+                    newRightY = previousRightY
+                    rightEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, newRightX, newRightY ) / radius
+                }
+        }
+
+        pointData.setFloatProperty(PropertyRegister.PATH_X, x)
+        pointData.setFloatProperty(PropertyRegister.PATH_Y, y)
+        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_X, newLeftX)
+        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, newLeftY)
+        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, newRightX)
+        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, newRightY)
+
+        previousX =x
+        previousY =y
+        previousLeftX = newLeftX
+        previousLeftY = newLeftY
+        previousRightX = newRightX
+        previousRightY = newRightY
+    }
+
+
+    private def roundCorner(pointData: Data, targetX : Float, targetY : Float, angle : Float, radius : Float) : List[Data] =  {
+
+        val angleDelta : Float = MathUtils.wrappedClosestDelta( previousAngle / AngleScale, angle / AngleScale )
 
         var result : List[Data] = Nil
 
         val turningLeft = angleDelta > 0f
 
-        if (!isFirstPoint) {
+        val normPrevAngle = previousAngle / AngleScale
+        val normNewAngle = angle / AngleScale
 
-            if ( angle != previousAngle ) {
+        val startX = previousX
+        val startY = previousY
 
-                val normPrevAngle = previousAngle / angleScale
-                val normNewAngle = angle / angleScale
+        // Add rounding points
+        for ( i <- 1 to RoundingSteps) {
 
-                val distance = MathUtils.wrappedDistance( normPrevAngle, normNewAngle )
+            val t : Float = (i.toFloat) / (RoundingSteps.toFloat)
+            val stepAngle = MathUtils.wrappedInterpolate( t, normPrevAngle, normNewAngle )
+            val invStepAngle = MathUtils.wrappedInterpolateLongerWay( t,  normPrevAngle, normNewAngle  )
 
-                if (distance > roundingAngle ) {
+            val x = MathUtils.interpolate( 0, startX, targetX )
+            val y = MathUtils.interpolate( 0, startY, targetY )
 
-                    // Add rounding points
-                    for ( i <- 0 to roundingSteps) {
+            val data = new DataImpl( pointData )
 
-                        val t : Float = (i.toFloat) / (roundingSteps.toFloat)
-                        val stepAngle = MathUtils.wrappedInterpolate( t, normPrevAngle, normNewAngle )
-                        val invStepAngle = MathUtils.wrappedInterpolateLongerWay( t, normPrevAngle, normNewAngle )
+            val cornerAngle = stepAngle * AngleScale
+            val invCornerAngle = invStepAngle * AngleScale
+            data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
 
-                        val data = new DataImpl( pointData )
+            // Calculate corner points
+            val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
+            val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
 
-/*
-                        if (i == 0) data.setFloatProperty( "FlipLeftRight", 1f )
-                        else data.setFloatProperty( "FlipLeftRight", 0f )
-*/
+            var leftX = x - Math.cos(leftAngle).toFloat * radius * leftEdgeScale
+            var leftY = y - Math.sin(leftAngle).toFloat * radius * leftEdgeScale
 
-                        val cornerAngle = stepAngle * angleScale
-                        val invCornerAngle = invStepAngle * angleScale
-                        data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
+            var rightX = x + Math.cos(rightAngle).toFloat * radius * rightEdgeScale
+            var rightY = y + Math.sin(rightAngle).toFloat * radius * rightEdgeScale
 
-                        // Calculate corner points
-                        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
-                        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
+            setCoordinates(data, false, radius, x, y, leftX, leftY, rightX, rightY)
 
-                        val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
-                        val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
+            result = result ::: List( data )
 
-                        var leftX = x - Math.cos(leftAngle).toFloat * radius * leftEdgeScale
-                        var leftY = y - Math.sin(leftAngle).toFloat * radius * leftEdgeScale
-
-                        var rightX = x + Math.cos(rightAngle).toFloat * radius * rightEdgeScale
-                        var rightY = y + Math.sin(rightAngle).toFloat * radius * rightEdgeScale
-/*
-                        var leftX = x - (if (turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * leftEdgeScale)
-                        var leftY = y - (if (turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * leftEdgeScale)
-
-                        var rightX = x + (if (!turningLeft) 0f else Math.cos(cornerAngle).toFloat * radius * rightEdgeScale)
-                        var rightY = y + (if (!turningLeft) 0f else Math.sin(cornerAngle).toFloat * radius * rightEdgeScale)
-*/
-
-                        // Store corner points
-                        data.setFloatProperty(PropertyRegister.PATH_X, x)
-                        data.setFloatProperty(PropertyRegister.PATH_Y, y)
-                        data.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
-                        data.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, leftY)
-                        data.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, rightX)
-                        data.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, rightY)
-
-
-                        result = result ::: List( data )
-                    }
-
-                }
-            }
         }
+
 
         result
     }
 
 
-
-    protected def processPathPoint(pointData: Data) : List[Data] =  {
-
-        var result  : List[Data] = Nil
-
-        // Determine angle and radius
-        val DEFAULT_RADIUS = 10f
-        val angle = pointData.getFloatProperty(PropertyRegister.ANGLE, 0f)
-        val radius = pointData.getFloatProperty(PropertyRegister.RADIUS, DEFAULT_RADIUS)
+    private def normalSegment( pointData: Data, x : Float, y : Float, angle : Float, radius : Float ) : List[Data] = {
 
         // Calculate corner points
-        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
-        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
-
         var leftX = x - Math.cos(angle).toFloat * radius * leftEdgeScale
         var leftY = y - Math.sin(angle).toFloat * radius * leftEdgeScale
 
         var rightX = x + Math.cos(angle).toFloat * radius * rightEdgeScale
         var rightY = y + Math.sin(angle).toFloat * radius * rightEdgeScale
 
-        val recoverySpeed = getFloatProperty( "cornerScaleRecoverySpeed", 0.03f )
+        setCoordinates(pointData, true, radius, x, y, leftX, leftY, rightX, rightY)
 
+        List(pointData)
+    }
+
+    private def recoverEdgeScales() {
+        val recoverySpeed = getFloatProperty( "cornerScaleRecoverySpeed", 0.03f )
         leftEdgeScale = Math.min( 1f, leftEdgeScale + recoverySpeed )
         rightEdgeScale = Math.min( 1f, rightEdgeScale + recoverySpeed )
+    }
 
-        val angleDelta : Float = MathUtils.wrappedClosestDelta( previousAngle / angleScale, angle / angleScale )
+    private def shouldRound( angle : Float ) : Boolean = {
 
-        result = roundCorner( pointData, angle, previousAngle, angleDelta, radius )
+        val normPrevAngle = previousAngle / AngleScale
+        val normNewAngle = angle / AngleScale
 
-        val turningLeft = angleDelta > 0f
-        // Check if either edge crosses the previous one.  In that case, use the previous endpoint
-        // Do not apply for the first point
-        if (!isFirstPoint) {
-            if ( /*turningLeft &&*/ util.GeometryUtils.isLineIntersectingLine(x, y, leftX, leftY, previousX, previousY, previousLeftX, previousLeftY))
-                {
-                    leftX = previousLeftX
-                    leftY = previousLeftY
-                    leftEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, leftX, leftY ) / radius
-                }
-            if ( /*!turningLeft &&*/ util.GeometryUtils.isLineIntersectingLine(x, y, rightX, rightY, previousX, previousY, previousRightX, previousRightY))
-                {
-                    rightX = previousRightX
-                    rightY = previousRightY
-                    rightEdgeScale = if (radius == 0) 0 else MathUtils.distance( x, y, rightX, rightY ) / radius
-                }
-        }
+        val turnAmount = MathUtils.wrappedDistance( normPrevAngle, normNewAngle )
 
+        !isFirstPoint && angle != previousAngle && turnAmount > RoundingAngle
+    }
 
-        // Store corner points
-        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_X, leftX)
-        pointData.setFloatProperty(PropertyRegister.LEFT_EDGE_Y, leftY)
-        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_X, rightX)
-        pointData.setFloatProperty(PropertyRegister.RIGHT_EDGE_Y, rightY)
+    protected def processPathPoint(pointData: Data) : List[Data] =  {
 
-        previousX = x
-        previousY = y
-        previousLeftX = leftX
-        previousLeftY = leftY
-        previousRightX = rightX
-        previousRightY = rightY
+        val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
+        val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
+        val angle = pointData.getFloatProperty(PropertyRegister.ANGLE, 0)
+        val radius = pointData.getFloatProperty(PropertyRegister.RADIUS, DefaultRadius)
+
+        recoverEdgeScales()
+
+        val result = if ( shouldRound( angle ) )
+                         roundCorner( pointData, x, y, angle, radius )
+                     else
+                         normalSegment( pointData, x, y, angle, radius )
+
         previousAngle = angle
 
-        // Continue processing the stroke point
-        result = result  ::: List(pointData)
         result
     }
 

@@ -26,6 +26,8 @@ class DistanceCalculatorFilter extends PathProcessor {
     protected def processPathPoint(pointData: Data) : List[Data] = {
 
 
+        // TODO: Calculate distance along outer edge of the stroke at radius distance from center).
+
         val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
         val y = pointData.getFloatProperty(PropertyRegister.PATH_Y, 0)
 

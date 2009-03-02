@@ -281,7 +281,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -395,7 +395,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -489,7 +489,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -527,7 +527,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.8</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -557,7 +557,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.8</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1039,7 +1039,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1069,7 +1069,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1099,7 +1099,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1129,7 +1129,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1159,7 +1159,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
@@ -1197,7 +1197,7 @@
     <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.brush.StrokeAngleTilter">
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">

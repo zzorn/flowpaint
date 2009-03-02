@@ -42,8 +42,10 @@ class ScanlineCalculator {
 
     val source = createSource( pixelProcessors, variableNames, nameToIndexMap, settings )
 
+/*
       // DEBUG
       println( "Compiling PixelProgram: /n" + source + "/n/n" )
+*/
 
     program = compileProgram( source )
   }

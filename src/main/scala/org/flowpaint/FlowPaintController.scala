@@ -2,21 +2,25 @@ package org.flowpaint
 
 
 import _root_.scala.collection.jcl.ArrayList
-import _root_.scala.xml.Elem
+import _root_.scala.io.Source
+import _root_.scala.xml.{Elem, PrettyPrinter}
 import brush._
 import edu.stanford.ejalbert.BrowserLauncher
 import filters._
-import gradient.{MultiGradient, Gradient,  GradientPoint}
+import gradient.{MultiGradient, Gradient, GradientPoint}
 import ink._
 import input.{InputHandler}
 
 import java.awt.Font
-import javax.swing.SwingUtilities
+import java.io.{File, BufferedWriter, Writer, FileWriter}
+
+import javax.swing.{JFileChooser, SwingUtilities}
 import model.{Stroke, Painting, Path, Layer}
 import property.{BrushSliderEditor, GradientSliderEditor}
 import renderer.{SingleRenderSurface, RenderSurface}
 import tools.{StrokeTool, Tool}
 import util._
+
 /**
  *         Provides common methods of the application for various tools etc.
  *
@@ -40,21 +44,21 @@ object FlowPaintController {
 
     if (myCurrentBrush != brush) {
 
-      if (myCurrentBrush != null){
-        myCurrentBrush.removeChangeListener( zeroBrushUsage )
+      if (myCurrentBrush != null) {
+        myCurrentBrush.removeChangeListener(zeroBrushUsage)
       }
 
       myCurrentBrush = brush.createCopy()
 
-      myCurrentBrush.addChangeListener( zeroBrushUsage )
-      zeroBrushUsage( myCurrentBrush )
+      myCurrentBrush.addChangeListener(zeroBrushUsage)
+      zeroBrushUsage(myCurrentBrush)
 
       FlowPaintUi.brushUi.setBrush(myCurrentBrush)
     }
 
   }
 
-  private def zeroBrushUsage( brush : Brush ) {
+  private def zeroBrushUsage(brush: Brush) {
     currentBrushUsageCount = 0
   }
 
@@ -62,9 +66,9 @@ object FlowPaintController {
 
   private val UNDO_QUEUE_SIZE = 8
 
-  var brushSets :List[BrushSet] = Nil
+  var brushSets: List[BrushSet] = Nil
 
-  val recentBrushes = new FixedBrushSet( "recentBrushes", "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil )
+  val recentBrushes = new FixedBrushSet("recentBrushes", "Recent Brushes", MAX_RECENT_BRUSHES_SIZE, Nil)
 
   private var currentBrushUsageCount = 0;
   def addRecentBrush(brush: Brush) {
@@ -73,7 +77,7 @@ object FlowPaintController {
     // Add only when the brush is used the second time
     if (currentBrushUsageCount == 2) {
       // NOTE: This causes some corruption of the next brush stroke sometimes, fix threading design.
-      recentBrushes.addOrMoveBrushFirst( brush.createCopy() )
+      recentBrushes.addOrMoveBrushFirst(brush.createCopy())
     }
   }
 
@@ -97,8 +101,8 @@ object FlowPaintController {
     loadDefaults
 
     // Recent brushes set
-    brushSets = brushSets ::: List( recentBrushes )
-    
+    brushSets = brushSets ::: List(recentBrushes)
+
     // State / datamodel info
     currentTool = new StrokeTool()
     currentPainting = new Painting()
@@ -133,7 +137,7 @@ object FlowPaintController {
 
     FlowPaint.library.fromXML(defaultFlowpaintData)
 
-    brushSets = FlowPaint.library.getTomes( classOf[BrushSet] )
+    brushSets = FlowPaint.library.getTomes(classOf[BrushSet])
     currentBrush = if (!brushSets.isEmpty && !brushSets(0).getBrushes().isEmpty) brushSets(0).getBrushes()(0) else null
 
     if (FlowPaintUi.frame != null) FlowPaintUi.frame.validate
@@ -150,7 +154,7 @@ object FlowPaintController {
 
 
   def clearPictureWithoutMessage() {
-      doUndoableClear()
+    doUndoableClear()
   }
 
   def quickSave() {
@@ -189,73 +193,73 @@ object FlowPaintController {
   }
 
 
-  def storeStroke( stroke : Stroke ) {
-      commandQueue.queueCommand( new Command(
-          "Brush Stroke",
-          () => {
-              //surface.undoSnapshot()
-              // TODO: Make undo stacks document specific
-              FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
-              //stroke.updateSurface( surface )
-              paintPanel.repaint()
-              stroke
-          },
-          (undoData : Object) => {
-              val undoedStroke = undoData.asInstanceOf[Stroke]
-              FlowPaintController.currentPainting.currentLayer.removeStroke( undoedStroke )
-              surface.undo()
-              paintPanel.repaintChanges()
-              undoedStroke
-          },
-          (redoData : Object) => {
-              val stroke = redoData.asInstanceOf[Stroke]
-              FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
-              stroke.updateSurface( surface )
-              paintPanel.repaint()
-              stroke
-          },
-          () => {
-              surface.canUndo
-          }) )
+  def storeStroke(stroke: Stroke) {
+    commandQueue.queueCommand(new Command(
+      "Brush Stroke",
+      () => {
+        //surface.undoSnapshot()
+        // TODO: Make undo stacks document specific
+        FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
+        //stroke.updateSurface( surface )
+        paintPanel.repaint()
+        stroke
+      },
+      (undoData: Object) => {
+        val undoedStroke = undoData.asInstanceOf[Stroke]
+        FlowPaintController.currentPainting.currentLayer.removeStroke(undoedStroke)
+        surface.undo()
+        paintPanel.repaintChanges()
+        undoedStroke
+      },
+      (redoData: Object) => {
+        val stroke = redoData.asInstanceOf[Stroke]
+        FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
+        stroke.updateSurface(surface)
+        paintPanel.repaint()
+        stroke
+      },
+      () => {
+        surface.canUndo
+      }))
   }
 
-    // TODO: Make undo stacks document (= painting or tome) specific.
-    private def doUndoableClear() {
-        commandQueue.queueCommand( new Command(
-            "Clear",
-            () => {
-                surface.undoSnapshot()
+  // TODO: Make undo stacks document (= painting or tome) specific.
+  private def doUndoableClear() {
+    commandQueue.queueCommand(new Command(
+      "Clear",
+      () => {
+        surface.undoSnapshot()
 
-                val layers = currentPainting.getLayers
-                currentPainting.clear()
-                surface.clear()
-                paintPanel.repaint()
+        val layers = currentPainting.getLayers
+        currentPainting.clear()
+        surface.clear()
+        paintPanel.repaint()
 
-                layers
-            },
-            (undoData : Object) => {
+        layers
+      },
+      (undoData: Object) => {
 
-                val layers = undoData.asInstanceOf[List[Layer]]
-                currentPainting.setLayers( layers )
-                surface.undo()
-                paintPanel.repaint()
+        val layers = undoData.asInstanceOf[List[Layer]]
+        currentPainting.setLayers(layers)
+        surface.undo()
+        paintPanel.repaint()
 
-                null
-            },
-            (redoData : Object) => {
-                surface.undoSnapshot()
+        null
+      },
+      (redoData: Object) => {
+        surface.undoSnapshot()
 
-                val layers = currentPainting.getLayers
-                currentPainting.clear()
-                surface.clear()
-                paintPanel.repaint()
+        val layers = currentPainting.getLayers
+        currentPainting.clear()
+        surface.clear()
+        paintPanel.repaint()
 
-                layers
-            },
-            () => {
-                surface.canUndo
-            }) )
-    }
+        layers
+      },
+      () => {
+        surface.canUndo
+      }))
+  }
 
   def canUndo() = commandQueue.canUndo && surface.canUndo
 
@@ -266,6 +270,37 @@ object FlowPaintController {
   def redo() = commandQueue.redo
 
 
+  def exportRecentBrushes() {
+
+    def createXmlExport() = {
+      val pp = new PrettyPrinter(120, 3)
+      val exportedBrushes: List[String] = recentBrushes.getBrushes map { (brush : Brush) => pp.format(brush.toXML())}
+      exportedBrushes.mkString("\n\n")
+    }
+
+    def saveText( file : File, text : String ) {
+      val writer = new BufferedWriter(new FileWriter( file ))
+      try {
+        writer.write( text )
+      }
+      finally {
+        writer.close()
+      }
+    }
+
+    val fc = new JFileChooser()
+    val returnVal = fc.showSaveDialog(FlowPaintUi.frame)
+
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      val file = fc.getSelectedFile()
+      
+      saveText( file, createXmlExport() )
+
+      // TODO: Add exception handling, show error message if save failed
+      
+      FlowPaintUi.showMessage( "Exported recent brushes to " + file.getPath )
+    }
+  }
 
 
 }

@@ -17,6 +17,7 @@
         <include>j3d-org:j3d-org-java3d-all</include>
         <include>browserlauncher2:browserlauncher2</include>
         <include>com.miglayout:miglayout</include>
+        <include>janino:janino</include>
       </includes>
     </dependencySet>
   </dependencySets>

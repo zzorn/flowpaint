@@ -30,6 +30,8 @@ object PropertyRegister {
   val CANVAS_X = getId("canvasX")
   val CANVAS_Y = getId("canvasY")
   val ANGLE = getId("angle")
+  val TURN_AMOUNT= getId("turnAmount")
+  val ROUNDED_CORNER= getId("roundedCorner")
   val SATURATION = getId("saturation")
   val HUE = getId("hue")
   val LIGHTNESS = getId("lightness")

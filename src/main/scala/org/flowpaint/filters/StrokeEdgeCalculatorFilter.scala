@@ -12,7 +12,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
     private val DefaultRadius = 10f
     private val RoundingSteps = 16
-    private val RoundingAngle = 1f / 8f
+    private val RoundingAngle = 1f / 4f
 
     private var previousX = 0f
     private var previousY = 0f
@@ -123,6 +123,12 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
             val invCornerAngle = invStepAngle * AngleScale
             data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
 
+           if ( i < RoundingSteps)
+             pointData.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 1)
+           else
+             pointData.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 0)
+
+
             // Calculate corner points
             val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
             val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
@@ -164,14 +170,20 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         rightEdgeScale = Math.min( 1f, rightEdgeScale + recoverySpeed )
     }
 
-    private def shouldRound( angle : Float ) : Boolean = {
+    private def calculateTurnAmount( angle : Float ) : Float = {
 
+      if (isFirstPoint) 0
+      else {
         val normPrevAngle = previousAngle / AngleScale
         val normNewAngle = angle / AngleScale
 
-        val turnAmount = MathUtils.wrappedDistance( normPrevAngle, normNewAngle )
+        MathUtils.wrappedDistance( normPrevAngle, normNewAngle ) * 2
+      }
+    }
 
-        !isFirstPoint && angle != previousAngle && turnAmount > RoundingAngle
+    private def shouldRound( turnAmount : Float ) : Boolean = {
+
+        !isFirstPoint && turnAmount > RoundingAngle
     }
 
     protected def processPathPoint(pointData: Data) : List[Data] =  {
@@ -181,9 +193,12 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         val angle = pointData.getFloatProperty(PropertyRegister.ANGLE, 0)
         val radius = pointData.getFloatProperty(PropertyRegister.RADIUS, DefaultRadius)
 
+        val turnAmount = calculateTurnAmount( angle )
+        pointData.setFloatProperty(PropertyRegister.TURN_AMOUNT, turnAmount)
+
         recoverEdgeScales()
 
-        val result = if ( shouldRound( angle ) )
+        val result = if ( shouldRound( turnAmount ) )
                          roundCorner( pointData, x, y, angle, radius )
                      else
                          normalSegment( pointData, x, y, angle, radius )

@@ -526,6 +526,19 @@
             <text id="result_Scale">pressure</text>
           </object>
 
+        <object type="org.flowpaint.pixelprocessors.Copy">
+          <text id="value">roundedCorner</text>
+          <text id="value_Scale">hideCorners</text>
+          <text id="result">cornerAlphaAdjust</text>
+          <num id="result_Scale">-1</num>
+          <num id="result_Offset">1</num>
+        </object>
+
+        <object type="org.flowpaint.pixelprocessors.Copy">
+          <text id="value">alpha</text>
+          <text id="value_Scale">cornerAlphaAdjust</text>
+          <text id="result">alpha</text>
+        </object>
 
       </pixelProcessors>
       <editors>
@@ -534,6 +547,13 @@
             <text id="tomeType">org.flowpaint.gradient.Gradient</text>
             <text id="description">Gradient</text>
           </object>
+
+        <object type="org.flowpaint.ui.editors.CheckBoxEditor">
+          <text id="editedParameter">hideCorners</text>
+          <num id="checkedValue">1</num>
+          <num id="uncheckedValue">0</num>
+          <text id="description">Hide Corners</text>
+        </object>
 
         <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
           <num id="red">0.5</num>
@@ -587,22 +607,50 @@
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
     <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.NoiseInk">
-        <num id="noiseScaleAcross">3.7</num>
-        <num id="noiseScaleAlong">0.05</num>
-        <num id="alphaWithDistance">1.0</num>
-        <num id="octaves">3.0</num>
-        <text id="propertyName">distance</text>
+
+
+      <object type="org.flowpaint.pixelprocessors.Copy">
+        <text id="value">roundedCorner</text>
+        <num id="value_Scale">-1</num>
+        <num id="value_Offset">1</num>
+        <text id="result_Scale">alpha</text>
+        <text id="result">alpha</text>
       </object>
-      <object type="org.flowpaint.filters.AlphaFromPressureInk">
-        <num id="pressureEffect">1.0</num>
-      </object>
-      <object type="org.flowpaint.ink.ColorInk"></object>
--->
+
+
     </pixelProcessors>
-    <editors></editors>
+    <editors>
+
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+        <num id="red">0.5</num>
+        <num id="green">0.5</num>
+        <num id="blue">0.5</num>
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">alpha</text>
+        <text id="verticalDescription">Transparency</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">80</num>
+        <text id="horizontalEditedParameter">maxRadius</text>
+        <text id="horizontalDescription">Size</text>
+      </object>
+
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+        <num id="verticalStartValue">1</num>
+        <num id="verticalEndValue">0</num>
+        <text id="verticalEditedParameter">saturation</text>
+        <text id="verticalDescription">Saturation</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">0</num>
+        <text id="horizontalEditedParameter">lightness</text>
+        <text id="horizontalDescription">Lightness</text>
+      </object>
+
+    </editors>
   </brush>
+
+
+
   <brush description="Ink, thick" id="Ink, thick">
     <settings>
       <num id="saturationDelta">0.0</num>

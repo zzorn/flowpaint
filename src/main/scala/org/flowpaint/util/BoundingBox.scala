@@ -1,6 +1,6 @@
 package org.flowpaint.util
 /**
- * 
+ * Axis aligned rectangular area.
  *
  * @author Hans Haggstrom
  */

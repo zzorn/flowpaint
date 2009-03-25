@@ -477,6 +477,94 @@
     </editors>
   </brush>
 
+
+
+
+
+    <brush description="Profile" id="Profile">
+      <settings>
+        <num id="maxRadius">20.0</num>
+        <num id="alpha">1.0</num>
+      </settings>
+      <pathProcessors>
+        <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"/>
+        <object type="org.flowpaint.filters.DistanceCalculatorFilter"/>
+        <object type="org.flowpaint.filters.StrokeAngleTilter">
+          <num id="tilt">0.0</num>
+        </object>
+        <object type="org.flowpaint.filters.RadiusFromPressureFilter">
+          <num id="pressureEffect">0.5</num>
+        </object>
+        <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
+      </pathProcessors>
+
+      <pixelProcessors>
+
+
+          <object type="org.flowpaint.pixelprocessors.Copy">
+            <text id="value">positionAcrossStroke</text>
+            <text id="result">gradientPosition</text>
+            <num id="result_Scale">0.5</num>
+            <num id="result_Offset">0.5</num>
+          </object>
+
+
+          <!-- Gradient -->
+          <object type="org.flowpaint.pixelprocessors.Gradient">
+            <text id="gradientPosition">gradientPosition</text>
+            <text id="gradient_Property">profileGradient</text>
+            <text id="red">red</text>
+            <text id="green">green</text>
+            <text id="blue">blue</text>
+            <text id="alpha">alphaGr</text>
+          </object>
+
+          <object type="org.flowpaint.pixelprocessors.Copy">
+            <text id="value">alphaGr</text>
+            <text id="value_Scale">alpha</text>
+            <text id="result">alpha</text>
+            <text id="result_Scale">pressure</text>
+          </object>
+
+
+      </pixelProcessors>
+      <editors>
+          <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
+            <text id="editedParameter">profileGradient</text>
+            <text id="tomeType">org.flowpaint.gradient.Gradient</text>
+            <text id="description">Gradient</text>
+          </object>
+
+        <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+          <num id="red">0.5</num>
+          <num id="green">0.5</num>
+          <num id="blue">0.5</num>
+          <num id="verticalStartValue">0</num>
+          <num id="verticalEndValue">1</num>
+          <text id="verticalEditedParameter">alpha</text>
+          <text id="verticalDescription">Transparency</text>
+          <num id="horizontalStartValue">1</num>
+          <num id="horizontalEndValue">80</num>
+          <text id="horizontalEditedParameter">maxRadius</text>
+          <text id="horizontalDescription">Size</text>
+        </object>
+
+        <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+          <num id="verticalStartValue">1</num>
+          <num id="verticalEndValue">0</num>
+          <text id="verticalEditedParameter">saturation</text>
+          <text id="verticalDescription">Saturation</text>
+          <num id="horizontalStartValue">1</num>
+          <num id="horizontalEndValue">0</num>
+          <text id="horizontalEditedParameter">lightness</text>
+          <text id="horizontalDescription">Lightness</text>
+        </object>
+
+      </editors>
+    </brush>
+
+    
+
   <brush description="Dots" id="Dots">
     <settings>
       <num id="alpha">1.0</num>
@@ -1218,6 +1306,9 @@
   <brushset name="Sketching" id="Sketching">
     <brushref>Pencil</brushref>
     <brushref>Ink, thin</brushref>
+    <brushref>Profile</brushref>
+
+      <!--
     <brushref>Ink, thick</brushref>
     <brushref>Crayon</brushref>
     <brushref>Rake</brushref>
@@ -1225,6 +1316,7 @@
     <brushref>Shade, black</brushref>
     <brushref>Shade, white</brushref>
     <brushref>White</brushref>
+-->
     <brushref>Spray</brushref>
     <brushref>Dots</brushref>
   </brushset>

@@ -28,6 +28,8 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
     private val AngleScale = 2f * Math.Pi.toFloat
 
+    private var storedFirstPoint : Data = null
+
     override protected def onInit() {
         previousX = 0f
         previousY = 0f
@@ -93,6 +95,56 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     }
 
 
+    private def roundEnd(pointData: Data, x : Float, y : Float, angle : Float, radius : Float) : List[Data] =  {
+
+        val angleDelta : Float = 0.5f
+
+        var result : List[Data] = Nil
+
+        val turningLeft = angleDelta > 0f
+
+        val normAngle = angle / AngleScale
+        val normEndAngle = normAngle + 0.5f
+
+        // Add rounding points
+        for ( i <- 1 to RoundingSteps) {
+
+            val t : Float = (i.toFloat) / (RoundingSteps.toFloat)
+            val stepAngle = MathUtils.wrappedInterpolate( t, normAngle, normEndAngle )
+            val invStepAngle = MathUtils.wrappedInterpolateLongerWay( t,  normAngle, normEndAngle  )
+
+            val data = new DataImpl( pointData )
+
+            val cornerAngle = stepAngle * AngleScale
+            val invCornerAngle = invStepAngle * AngleScale
+            data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
+
+           if ( i < RoundingSteps)
+             data.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 1)
+           else
+             data.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 0)
+
+
+            // Calculate corner points
+            val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
+            val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
+
+            var leftX = x - Math.cos(leftAngle).toFloat * radius * leftEdgeScale
+            var leftY = y - Math.sin(leftAngle).toFloat * radius * leftEdgeScale
+
+            var rightX = x + Math.cos(rightAngle).toFloat * radius * rightEdgeScale
+            var rightY = y + Math.sin(rightAngle).toFloat * radius * rightEdgeScale
+
+            setCoordinates(data, false, radius, x, y, leftX, leftY, rightX, rightY)
+
+            result = result ::: List( data )
+
+        }
+
+
+        result
+    }
+
     private def roundCorner(pointData: Data, targetX : Float, targetY : Float, angle : Float, radius : Float) : List[Data] =  {
 
         val angleDelta : Float = MathUtils.wrappedClosestDelta( previousAngle / AngleScale, angle / AngleScale )
@@ -124,9 +176,9 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
             data.setFloatProperty(PropertyRegister.ANGLE, cornerAngle  )
 
            if ( i < RoundingSteps)
-             pointData.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 1)
+             data.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 1)
            else
-             pointData.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 0)
+             data.setFloatProperty(PropertyRegister.ROUNDED_CORNER, 0)
 
 
             // Calculate corner points
@@ -186,6 +238,25 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         !isFirstPoint && turnAmount > RoundingAngle
     }
 
+
+    private def storeFirstPoint(  point : Data )  : List[Data] = {
+        storedFirstPoint = point
+        Nil
+    }
+
+    private def isSecondPoint = !isFirstPoint && storedFirstPoint != null
+
+    private def handleStartRounding( pointData: Data, targetX : Float, targetY : Float, angle : Float, radius : Float ) : List[Data] = {
+        val x = storedFirstPoint.getFloatProperty(PropertyRegister.PATH_X, 0)
+        val y = storedFirstPoint.getFloatProperty(PropertyRegister.PATH_Y, 0)
+        val oldRadius = storedFirstPoint.getFloatProperty(PropertyRegister.RADIUS, DefaultRadius)
+        previousX = x
+        previousY = y
+        val result = roundCorner( storedFirstPoint, x, y, angle, oldRadius ) ::: normalSegment( pointData, targetX, targetY, angle, radius )
+        storedFirstPoint = null
+        result
+    }
+
     protected def processPathPoint(pointData: Data) : List[Data] =  {
 
         val x = pointData.getFloatProperty(PropertyRegister.PATH_X, 0)
@@ -198,7 +269,11 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         recoverEdgeScales()
 
-        val result = if ( shouldRound( turnAmount ) )
+        val result = if (isFirstPoint)
+                        storeFirstPoint( pointData )
+                     else if ( isSecondPoint )
+                         handleStartRounding( pointData, x, y, angle, radius  )
+                     else if ( shouldRound( turnAmount ) )
                          roundCorner( pointData, x, y, angle, radius )
                      else
                          normalSegment( pointData, x, y, angle, radius )

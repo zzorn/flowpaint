@@ -221,8 +221,8 @@
       </object>
 
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">-0.5</num>
-        <num id="endValue">0.5</num>
+        <num id="startValue">-1</num>
+        <num id="endValue">1</num>
         <num id="red">0.2</num>
         <num id="green">0.2</num>
         <num id="blue">0.2</num>
@@ -233,7 +233,7 @@
 
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
         <num id="startValue">-1</num>
-        <num id="endValue">0</num>
+        <num id="endValue">1</num>
         <num id="red">0.5</num>
         <num id="green">0.5</num>
         <num id="blue">0.5</num>
@@ -493,7 +493,7 @@
           <num id="tilt">0.0</num>
         </object>
         <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-          <num id="pressureEffect">0.5</num>
+          <text id="pressureEffectOnSize">pressureEffectOnSize</text>
         </object>
         <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
       </pathProcessors>
@@ -519,14 +519,60 @@
             <text id="alpha">alphaGr</text>
           </object>
 
+
+          <!-- RGB to HSL-->
+          <object type="org.flowpaint.pixelprocessors.RGBToHSL">
+            <text id="red">red</text>
+            <text id="green">green</text>
+            <text id="blue">blue</text>
+            <text id="hue">hueGr</text>
+            <text id="saturation">saturationGr</text>
+            <text id="lightness">lightnessGr</text>
+          </object>
+
+          <object type="org.flowpaint.pixelprocessors.Copy">
+            <text id="value">hueGr</text>
+            <text id="result">hue</text>
+            <text id="result_Offset">hueDelta</text>
+          </object>
+          <object type="org.flowpaint.pixelprocessors.Copy">
+            <text id="value">saturationGr</text>
+            <text id="result">saturation</text>
+            <text id="result_Offset">saturationDelta</text>
+          </object>
+          <object type="org.flowpaint.pixelprocessors.Copy">
+            <text id="value">lightnessGr</text>
+            <text id="result">lightness</text>
+            <text id="result_Offset">lightnessDelta</text>
+          </object>
+
+          <!-- HSL to RGB -->
+          <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+            <text id="hue">hue</text>
+            <text id="saturation">saturation</text>
+            <text id="lightness">lightness</text>
+            <text id="red">red</text>
+            <text id="green">green</text>
+            <text id="blue">blue</text>
+          </object>
+
+
           <object type="org.flowpaint.pixelprocessors.Copy">
             <text id="value">alphaGr</text>
             <text id="value_Scale">alpha</text>
             <text id="result">alpha</text>
-            <text id="result_Scale">pressure</text>
           </object>
 
-        <object type="org.flowpaint.pixelprocessors.Copy">
+          <!-- Apply pressure effect on opacity -->
+          <object type="org.flowpaint.pixelprocessors.Interpolate">
+            <text id="input">pressureEffectOnOpacity</text>
+            <text id="outputStart">alpha</text>
+            <text id="outputEnd">alpha</text>
+            <text id="outputEnd_Scale">pressure</text>
+            <text id="result">alpha</text>
+          </object>
+
+       <object type="org.flowpaint.pixelprocessors.Copy">
           <text id="value">roundedCorner</text>
           <text id="value_Scale">hideCorners</text>
           <text id="result">cornerAlphaAdjust</text>
@@ -569,21 +615,74 @@
           <text id="horizontalDescription">Size</text>
         </object>
 
-        <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
-          <num id="verticalStartValue">1</num>
-          <num id="verticalEndValue">0</num>
-          <text id="verticalEditedParameter">saturation</text>
-          <text id="verticalDescription">Saturation</text>
-          <num id="horizontalStartValue">1</num>
-          <num id="horizontalEndValue">0</num>
-          <text id="horizontalEditedParameter">lightness</text>
-          <text id="horizontalDescription">Lightness</text>
-        </object>
+
+
+
+          <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+            <num id="startValue">0</num>
+            <num id="endValue">1</num>
+            <num id="red">0.1</num>
+            <num id="green">0.1</num>
+            <num id="blue">0.1</num>
+            <text id="editedParameter">pressureEffectOnSize</text>
+            <text id="title">Pressure effect on size</text>
+            <text id="description">Pressure effect on size</text>
+          </object>
+
+
+          <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+            <num id="startValue">0</num>
+            <num id="endValue">1</num>
+            <num id="red">0.1</num>
+            <num id="green">0.1</num>
+            <num id="blue">0.1</num>
+            <text id="editedParameter">pressureEffectOnOpacity</text>
+            <text id="title">Pressure effect on opacity</text>
+            <text id="description">Pressure effect on opacity</text>
+          </object>
+
+
+          <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+            <num id="startValue">-0.5</num>
+            <num id="endValue">0.5</num>
+            <num id="red">0.1</num>
+            <num id="green">0.1</num>
+            <num id="blue">0.1</num>
+            <text id="editedParameter">hueDelta</text>
+            <text id="title">Hue Adjustment</text>
+            <text id="description">Hue Adjustment</text>
+          </object>
+
+          <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+            <num id="startValue">-1</num>
+            <num id="endValue">1</num>
+            <num id="red">0.2</num>
+            <num id="green">0.2</num>
+            <num id="blue">0.2</num>
+            <text id="editedParameter">lightnessDelta</text>
+            <text id="title">Lightness Adjustment</text>
+            <text id="description">Lightness Adjustment</text>
+          </object>
+
+          <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+            <num id="startValue">-1</num>
+            <num id="endValue">1</num>
+            <num id="red">0.5</num>
+            <num id="green">0.5</num>
+            <num id="blue">0.5</num>
+            <text id="editedParameter">saturationDelta</text>
+            <text id="title">Saturation Adjustment</text>
+            <text id="description">Saturation Adjustment</text>
+          </object>
+
+
+
+
 
       </editors>
     </brush>
 
-    
+
 
   <brush description="Dots" id="Dots">
     <settings>

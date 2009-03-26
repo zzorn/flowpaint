@@ -15,7 +15,7 @@ import util.PropertyRegister
 class RadiusFromPressureFilter() extends PathProcessor {
     protected def processPathPoint(pointData: Data) : List[Data] = {
       
-        val pressureEffect = getFloatProperty("pressureEffect", pointData, 1)
+      val pressureEffect = pointData.getFloatProperty("pressureEffectOnSize", 1)
 
         // NOTE: Workaround for the bug of not registering tablet pressure for first point
         val defaultPressure = if (firstPoint) 0f else 0.5f

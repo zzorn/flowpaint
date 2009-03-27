@@ -22,14 +22,37 @@ class StrokeTool extends Tool {
   var currentPointIndex = 0
   var currentStrokeStartTime = 0L
 
-  private var mouseDetected = false
+  private var mouseDetected = true
   private var mouseDetectionCounter = 0
-  private val MouseDetectionThreshold = 10 // After how many datapoints without pen features do we assume a mouse?
+  private val MouseDetectionThreshold = 8 // After how many datapoints without pen features do we assume a mouse?
+
+
+  private def detectMouse(event: DataSample) {
+    // Temporary workaround solution, in the end would be best to get the information from JPen.
+
+    def isFractionalNumber(n: Float) = Math.abs(n - Math.rint(n)) >= 0.0001f
+
+    val pressure = event.getProperty(PropertyRegister.PRESSURE, 0)
+    val x = event.getProperty(PropertyRegister.CANVAS_X, 0)
+    val y = event.getProperty(PropertyRegister.CANVAS_Y, 0)
+
+    // A mouse will not generate fractional coordinates or pressure, so we can detect it by assuming a
+    // mouse is used if no fractions are detected in these variables for some number of stroke points.
+    if (isFractionalNumber(x) || isFractionalNumber(y) || isFractionalNumber(pressure)) {
+      mouseDetectionCounter = 0
+      mouseDetected = false
+    }
+    else mouseDetectionCounter += 1
+
+    if (mouseDetectionCounter > MouseDetectionThreshold) mouseDetected = true
+  }
 
 
   def onEvent(event: DataSample) = {
 
     currentStatus.setFloatProperties(event)
+
+    detectMouse(event)
 
     if (event.contains(PropertyRegister.LEFT_BUTTON)) {
 
@@ -89,28 +112,6 @@ class StrokeTool extends Tool {
   def addStrokePoint(stroke: Stroke, point: Data)
     {
 
-      def detectMouse() {
-        // Temporary workaround solution, in the end would be best to get the information from JPen,
-        // or by listening to the coordinates before a stroke has started.
-
-        def isFractionalNumber(n: Float) = Math.abs(n - Math.rint(n)) >= 0.0001f
-
-        val pressure = point.getFloatProperty(PropertyRegister.PRESSURE, 0)
-        val x = point.getFloatProperty(PropertyRegister.CANVAS_X, 0)
-        val y = point.getFloatProperty(PropertyRegister.CANVAS_Y, 0)
-
-        // A mouse will not generate fractional coordinates or pressure, so we can detect it by assuming a
-        // mouse is used if no fractions are detected in these variables for some number of stroke points. 
-        if (isFractionalNumber(x) || isFractionalNumber(y) || isFractionalNumber(pressure)) {
-          mouseDetectionCounter = 0
-          mouseDetected = false
-        }
-        else mouseDetectionCounter += 1
-
-        if (mouseDetectionCounter > MouseDetectionThreshold) mouseDetected = true
-      }
-
-      detectMouse()
 
       if (stroke != null) {
         point.setFloatProperty(PropertyRegister.INDEX, currentPointIndex)

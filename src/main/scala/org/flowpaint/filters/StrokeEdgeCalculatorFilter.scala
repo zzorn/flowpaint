@@ -28,7 +28,9 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
     private val AngleScale = 2f * Math.Pi.toFloat
 
+/*
     private var storedFirstPoint : Data = null
+*/
 
     override protected def onInit() {
         previousX = 0f
@@ -95,6 +97,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     }
 
 
+/*
     private def roundEnd(pointData: Data, x : Float, y : Float, angle : Float, radius : Float) : List[Data] =  {
 
         val angleDelta : Float = 0.5f
@@ -144,6 +147,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         result
     }
+*/
 
     private def roundCorner(pointData: Data, targetX : Float, targetY : Float, angle : Float, radius : Float) : List[Data] =  {
 
@@ -239,13 +243,18 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
     }
 
 
+/*
     private def storeFirstPoint(  point : Data )  : List[Data] = {
         storedFirstPoint = point
         Nil
     }
+*/
 
+/*
     private def isSecondPoint = !isFirstPoint && storedFirstPoint != null
+*/
 
+/*
     private def handleStartRounding( pointData: Data, targetX : Float, targetY : Float, angle : Float, radius : Float ) : List[Data] = {
         val x = storedFirstPoint.getFloatProperty(PropertyRegister.PATH_X, 0)
         val y = storedFirstPoint.getFloatProperty(PropertyRegister.PATH_Y, 0)
@@ -256,6 +265,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         storedFirstPoint = null
         result
     }
+*/
 
     protected def processPathPoint(pointData: Data) : List[Data] =  {
 
@@ -269,11 +279,12 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         recoverEdgeScales()
 
-        val result = if (isFirstPoint)
+        val result = /* Rounding code commented out for now as it is unfinished
+                     if (isFirstPoint)
                         storeFirstPoint( pointData )
                      else if ( isSecondPoint )
                          handleStartRounding( pointData, x, y, angle, radius  )
-                     else if ( shouldRound( turnAmount ) )
+                     else*/ if ( shouldRound( turnAmount ) )
                          roundCorner( pointData, x, y, angle, radius )
                      else
                          normalSegment( pointData, x, y, angle, radius )

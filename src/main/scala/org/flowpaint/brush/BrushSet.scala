@@ -43,7 +43,8 @@ object BrushSet {
     val name = (node \ "@name").text
     val refs = (node \ "brushref") map {(n:Node) => n.text}
 
-    val brushes : List[Brush] = (refs map {(s:String) => FlowPaint.library.getTome( s, null.asInstanceOf[Brush] ) }).toList
+    var brushes : List[Brush] = (refs map {(s:String) => FlowPaint.library.getTome( s, null.asInstanceOf[Brush] ) }).toList
+    brushes = brushes.remove( _ == null )
 
     new FixedBrushSet(id, name, brushes )
   }

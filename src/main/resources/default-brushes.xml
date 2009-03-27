@@ -174,6 +174,21 @@
         <text id="description">Gradient along stroke</text>
       </object>
 
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+        <num id="hue">0</num>
+        <num id="saturation">0</num>
+        <num id="lightness">0</num>
+
+        <num id="verticalStartValue">0</num>
+        <num id="verticalEndValue">1</num>
+        <text id="verticalEditedParameter">alpha</text>
+        <text id="verticalDescription">Transparency</text>
+        <num id="horizontalStartValue">1</num>
+        <num id="horizontalEndValue">120</num>
+        <text id="horizontalEditedParameter">maxRadius</text>
+        <text id="horizontalDescription">Size</text>
+      </object>
+
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
         <num id="startValue">0.5</num>
         <num id="endValue">25</num>
@@ -244,21 +259,6 @@
 
 
 
-      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
-        <num id="hue">0</num>
-        <num id="saturation">0</num>
-        <num id="lightness">0</num>
-
-        <num id="verticalStartValue">0</num>
-        <num id="verticalEndValue">1</num>
-        <text id="verticalEditedParameter">alpha</text>
-        <text id="verticalDescription">Transparency</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">120</num>
-        <text id="horizontalEditedParameter">maxRadius</text>
-        <text id="horizontalDescription">Size</text>
-      </object>
-
 
 
     </editors>
@@ -285,7 +285,7 @@
         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">1.0</num>
+        <text id="pressureEffectOnSize">pressureEffectOnSize</text>
       </object>
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
     </pathProcessors>
@@ -321,28 +321,17 @@
         <text id="result_Scale">alpha</text>
       </object>
 
-      <!-- Pressure effect on alpha-->
+      <!-- Apply pressure effect on opacity -->
       <object type="org.flowpaint.pixelprocessors.Interpolate">
-        <text id="input">sharpness</text>
-        <text id="outputStart">pressure</text>
-        <text id="outputStart_Scale">alpha</text>
+        <text id="input">pressureEffectOnOpacity</text>
+        <text id="outputStart">alpha</text>
         <text id="outputEnd">alpha</text>
+        <text id="outputEnd_Scale">pressure</text>
         <text id="result">alpha</text>
       </object>
 
     </pixelProcessors>
     <editors>
-
-      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">0</num>
-        <num id="endValue">1</num>
-        <num id="red">0.2</num>
-        <num id="green">0.2</num>
-        <num id="blue">0.2</num>
-        <text id="editedParameter">sharpness</text>
-        <text id="title">Sharpness</text>
-        <text id="description">Edge sharpness</text>
-      </object>
 
       <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
         <text id="hueParameter">hue</text>
@@ -354,7 +343,7 @@
         <text id="verticalEditedParameter">alpha</text>
         <text id="verticalDescription">Transparency</text>
         <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">50</num>
+        <num id="horizontalEndValue">75</num>
         <text id="horizontalEditedParameter">maxRadius</text>
         <text id="horizontalDescription">Size</text>
       </object>
@@ -377,105 +366,48 @@
         <text id="description">Hue</text>
       </object>
 
-    </editors>
-  </brush>
-
-
-
-
-
-  <brush description="Crayon" id="Crayon">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">20.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">1.0</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-
-      <object type="org.flowpaint.pixelprocessors.Noise2D">
-        <text id="noiseX">canvasX</text>
-        <text id="noiseY">canvasY</text>
-        <num id="noiseX_Scale">0.01</num>
-        <num id="noiseY_Scale">0.01</num>
-        <text id="result">value</text>
-      </object>
-
-      
-      <object type="org.flowpaint.pixelprocessors.Assign">
-        <text id="red">value</text>
-        <text id="green">value</text>
-        <text id="blue">value</text>
-        <text id="alpha">1</text>
-      </object>
-
-<!--
-      <object type="org.flowpaint.ink.NoiseInk">
-        <num id="noise_ScaleAcross">0.3</num>
-        <num id="noise_ScaleAlong">3.0</num>
-        <num id="alphaWithDistance">0.8</num>
-        <num id="octaves">3.0</num>
-        <text id="gradient">default.gradients.charcoal</text>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors>
-      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">0.1</num>
-        <num id="endValue">100</num>
-        <text id="editedParameter">maxRadius</text>
-        <text id="description">Stroke Size</text>
-      </object>
       <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
         <num id="startValue">0</num>
         <num id="endValue">1</num>
-        <num id="red">0.5</num>
-        <num id="green">0.5</num>
-        <num id="blue">0.5</num>
-        <text id="editedParameter">alpha</text>
-        <text id="description">Transparency</text>
+        <num id="red">0.2</num>
+        <num id="green">0.2</num>
+        <num id="blue">0.2</num>
+        <text id="editedParameter">sharpness</text>
+        <text id="title">Sharpness</text>
+        <text id="description">Edge sharpness</text>
       </object>
 
-      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
-        <num id="red">0.5</num>
-        <num id="green">0.5</num>
-        <num id="blue">0.5</num>
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
-        <text id="verticalEditedParameter">alpha</text>
-        <text id="verticalDescription">Transparency</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">80</num>
-        <text id="horizontalEditedParameter">maxRadius</text>
-        <text id="horizontalDescription">Size</text>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <num id="red">0.1</num>
+        <num id="green">0.1</num>
+        <num id="blue">0.1</num>
+        <text id="editedParameter">pressureEffectOnSize</text>
+        <text id="title">Pressure effect on size</text>
+        <text id="description">Pressure effect on size</text>
       </object>
 
-      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
-        <text id="verticalEditedParameter">saturation</text>
-        <text id="verticalDescription">Saturation</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">0</num>
-        <text id="horizontalEditedParameter">lightness</text>
-        <text id="horizontalDescription">Lightness</text>
+
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+        <num id="startValue">0</num>
+        <num id="endValue">1</num>
+        <num id="red">0.1</num>
+        <num id="green">0.1</num>
+        <num id="blue">0.1</num>
+        <text id="editedParameter">pressureEffectOnOpacity</text>
+        <text id="title">Pressure effect on opacity</text>
+        <text id="description">Pressure effect on opacity</text>
       </object>
+
 
     </editors>
   </brush>
+
+
+
+
+
 
 
 
@@ -684,786 +616,497 @@
 
 
 
-  <brush description="Dots" id="Dots">
-    <settings>
+
+
+
+
+
+
+
+
+
+
+  <brush description="Black" id="Black">
+   <settings>
       <num id="alpha">1.0</num>
-      <num id="maxRadius">55.0</num>
-      <num id="lightness">0.3</num>
       <num id="hue">0.0</num>
-      <num id="saturation">0.0</num>
-      <text id="gradient">default.gradients.dots</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.0</num>
-        <num id="maxRadius">55.0</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">roundedCorner</text>
-        <num id="value_Scale">-1</num>
-        <num id="value_Offset">1</num>
-        <text id="result_Scale">alpha</text>
-        <text id="result">alpha</text>
-      </object>
-
-
-    </pixelProcessors>
-    <editors>
-
-      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
-        <num id="red">0.5</num>
-        <num id="green">0.5</num>
-        <num id="blue">0.5</num>
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
-        <text id="verticalEditedParameter">alpha</text>
-        <text id="verticalDescription">Transparency</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">80</num>
-        <text id="horizontalEditedParameter">maxRadius</text>
-        <text id="horizontalDescription">Size</text>
-      </object>
-
-      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
-        <num id="verticalStartValue">1</num>
-        <num id="verticalEndValue">0</num>
-        <text id="verticalEditedParameter">saturation</text>
-        <text id="verticalDescription">Saturation</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">0</num>
-        <text id="horizontalEditedParameter">lightness</text>
-        <text id="horizontalDescription">Lightness</text>
-      </object>
-
-    </editors>
-  </brush>
-
-
-
-  <brush description="Ink, thick" id="Ink, thick">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">12.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.ink</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.8</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">1.0</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">0.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Ink, thin" id="Ink, thin">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">2.7</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.ink</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.8</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">1.0</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">0.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Pencil" id="Pencil">
-    <settings>
-      <num id="saturation">0.7</num>
-      <num id="maxRadius">6</num>
-      <num id="alpha">1.0</num>
-      <num id="lightness">0.5</num>
-      <num id="hue">0.05</num>
-      <num id="noiseScaleAlongStroke">0.2</num>
-      <text id="flowGradient">default.gradients.wood</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.35</num>
-      </object>
-<!--
-      <object type="org.flowpaint.filters.CornerRounder" ></object>
--->
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-
-    <pixelProcessors>
-
-
-
-
-      <!-- Noise -->
-<!--
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">radius</text>
-        <num id="resultScale">0.02</num>
-        <text id="result">noiseY_Scale</text>
-      </object>
--->
-      <object type="org.flowpaint.pixelprocessors.OneOver">
-        <text id="value">noiseScaleAlongStroke</text>
-        <text id="value_Scale">noiseScaleAlongStroke</text>
-        <text id="result">noiseXScale</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Noise2D">
-        <text id="noiseX">distance</text>
-        <text id="noiseY">positionAcrossStroke</text>
-<!--
-        <text id="noiseYScale">noiseYScale</text>
--->
-        <text id="noiseX_Scale">noiseXScale</text>
-        <text id="noiseX_Offset">randomSeed</text>
-        <text id="result">gradientPosition</text>
-      </object>
-
-      
-      <!-- Gradient -->
-      <object type="org.flowpaint.pixelprocessors.Gradient">
-        <text id="gradientPosition">gradientPosition</text>
-        <text id="gradient_Property">flowGradient</text>
-        <text id="red">red</text>
-        <text id="green">green</text>
-        <text id="blue">blue</text>
-        <text id="alpha">gradientAlpha</text>
-      </object>
-
-      <!-- RGB to HSL-->
-      <object type="org.flowpaint.pixelprocessors.RGBToHSL">
-        <text id="red">red</text>
-        <text id="green">green</text>
-        <text id="blue">blue</text>
-        <text id="hue">hueGr</text>
-        <text id="saturation">saturationGr</text>
-        <text id="lightness">lightnessGr</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">hue</text>
-        <text id="result">hue</text>
-        <text id="result_Offset">hueGr</text>
-      </object>
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">saturation</text>
-        <text id="result">saturation</text>
-        <text id="result_Scale">saturationGr</text>
-      </object>
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">lightness</text>
-        <text id="result">lightness</text>
-        <text id="result_Scale">lightnessGr</text>
-      </object>
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">gradientAlpha</text>
-        <text id="result">alpha</text>
-        <text id="result_Scale">alpha</text>
-      </object>
-
-      <!-- HSL to RGB -->
-      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
-        <text id="hue">hue</text>
-        <text id="saturation">saturation</text>
-        <text id="lightness">lightness</text>
-        <text id="red">red</text>
-        <text id="green">green</text>
-        <text id="blue">blue</text>
-      </object>
-
-
-<!--
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">gradientRed</text>
-        <text id="result">red</text>
-        <text id="result_Scale">red</text>
-      </object>
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">gradientGreen</text>
-        <text id="result">green</text>
-        <text id="result_Scale">green</text>
-      </object>
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">gradientBlue</text>
-        <text id="result">blue</text>
-        <text id="result_Scale">blue</text>
-      </object>
--->
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">gradientAlpha</text>
-        <text id="result">alpha</text>
-        <text id="result_Scale">alpha</text>
-      </object>
-
-
-
-      <!-- Edge distance -->
-      <object type="org.flowpaint.pixelprocessors.Abs">
-        <text id="value">positionAcrossStroke</text>
-        <text id="result">edgeDistance</text>
-        <num id="result_Offset">1</num>
-        <num id="result_Scale">-1</num>
-      </object>
-
-      <!-- Stroke sharpness -->
-      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
-        <text id="input">edgeDistance</text>
-        <text id="inputEnd">sharpness</text>
-        <num id="inputEnd_Scale">-1</num>
-        <num id="inputEnd_Offset">1.0001</num>
-        <num id="outputStart">0</num>
-        <num id="outputEnd">1</num>
-        <text id="result">alpha</text>
-        <text id="result_Scale">alpha</text>
-      </object>
-
-      <!-- Pressure effect on alpha-->
-      <object type="org.flowpaint.pixelprocessors.Interpolate">
-        <text id="input">sharpness</text>
-        <text id="outputStart">pressure</text>
-        <text id="outputStart_Scale">alpha</text>
-        <text id="outputEnd">alpha</text>
-        <text id="result">alpha</text>
-      </object>
-
-
-
-<!--
-      -->
-<!-- Testing -->
-<!--
-      <object type="org.flowpaint.pixelprocessors.If">
-        <text id="value">edgeDistance</text>
-        <text id="result">green</text>
-        <num id="threshold1">0.1</num>
-        <num id="value1">1</num>
-        <num id="threshold2">0.5</num>
-        <num id="value2">0.5</num>
-        <num id="threshold3">0.7</num>
-        <num id="value3">0</num>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Distance">
-        <text id="x1">canvasX</text>
-        <text id="y1">canvasY</text>
-        <num id="x2">422</num>
-        <num id="y2">322</num>
-        <text id="result">red</text>
-        <num id="result_Scale">-0.001</num>
-        <num id="result_Offset">1</num>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Cellular">
-        <num id="gridSizeX">30</num>
-        <num id="gridSizeY">30</num>
-        <text id="canvasX">distance</text>
-        <text id="canvasY">positionAcrossStroke</text>
-        <text id="canvasX_Offset">randomSeed</text>
-        <text id="canvasY_Scale">radius</text>
-        <text id="closestDistance">red</text>
-        <num id="closestDistance_Scale">-0.12</num>
-        <num id="closestDistance_Offset">1</num>
-        <text id="closestRandom">blue</text>
-      </object>
--->
-
-
-      <!--
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">red</text>
-        <text id="result">red</text>
-        <text id="value_Offset">redGr</text>
-        <text id="result_Scale">0.5</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">green</text>
-        <text id="result">green</text>
-        <text id="value_Offset">greenGr</text>
-        <text id="result_Scale">0.5</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">blue</text>
-        <text id="result">blue</text>
-        <text id="value_Offset">blueGr</text>
-        <text id="result_Scale">0.5</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">alpha</text>
-        <text id="result">alpha</text>
-        <text id="value_Scale">pressure</text>
-        <text id="result_Scale">alphaAcrossStroke</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Gradient">
-        <text id="gradientPosition">positionAcrossStroke</text>
-        <num id="gradientPosition_Scale">0.5</num>
-        <num id="gradientPosition_Offset">0.5</num>
-        <text id="gradientProperty">edgeGradient</text>
-        <text id="alpha">edgeAlpha</text>
-        <text id="red"></text>
-        <text id="green"></text>
-        <text id="blue"></text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Copy">
-        <text id="value">alpha</text>
-        <text id="result">alpha</text>
-        <text id="result_Scale">edgeAlpha</text>
-      </object>
--->
-
-
-
-<!--
-      <object type="org.flowpaint.pixelprocessors.Sin">
-        <text id="value">distance</text>
-        <text id="result">red</text>
-        <num id="value_Scale">0.14</num>
-        <num id="value_Offset">0.4</num>
-        <num id="result_Scale">0.5</num>
-        <num id="result_Offset">0.5</num>
-      </object>
-
-
-      <object type="org.flowpaint.pixelprocessors.Sin">
-        <text id="value">distance</text>
-        <text id="result">green</text>
-        <num id="value_Scale">0.17</num>
-        <num id="value_Offset">0.56</num>
-        <num id="result_Scale">0.5</num>
-        <num id="result_Offset">0.5</num>
-      </object>
-
-
-      <object type="org.flowpaint.pixelprocessors.Sin">
-        <text id="value">distance</text>
-        <text id="result">blue</text>
-        <num id="value_Scale">0.1</num>
-        <num id="value_Offset">0.2</num>
-        <num id="result_Scale">0.5</num>
-        <num id="result_Offset">0.5</num>
-      </object>
--->
-
-<!--
-
-
-      <object type="org.flowpaint.pixelprocessors.Constant">
-        <num id="grA">1</num>
-        <num id="grR">1</num>
-        <num id="grG">1</num>
-        <num id="grB">1</num>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Noise">
-        <text id="noisePosition1">distance</text>
-        <text id="noisePosition2">positionAcrossStroke</text>
-        <text id="noisePosition1_Offset">randomSeed</text>
-        <text id="noisePosition2_Offset">randomSeed</text>
-        <num id="noisePosition1_Scale">0.05</num>
-        <num id="noisePosition2_Scale">1</num>
-        <text id="result">flowGradientPosition</text>
-      </object>
-
-      <object id="gradientProcessor" type="org.flowpaint.pixelprocessors.Gradient">
-        <text id="gradientPosition">flowGradientPosition</text>
-        <text id="gradientProperty">flowGradient</text>
-        <text id="alpha">grA</text>
-        <text id="red">grR</text>
-        <text id="green">grG</text>
-        <text id="blue">grB</text>
-      </object>
-
-
-
-      <object type="org.flowpaint.pixelprocessors.Multiply">
-        <text id="factor1">alpha</text>
-        <text id="factor2">edgeAlpha</text>
-        <text id="factor3">grA</text>
-        <text id="result">alpha</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Multiply">
-        <text id="factor1">red</text>
-        <text id="factor2">grR</text>
-        <text id="result">red</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Multiply">
-        <text id="factor1">green</text>
-        <text id="factor2">grG</text>
-        <text id="result">green</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Multiply">
-        <text id="factor1">blue</text>
-        <text id="factor2">grB</text>
-        <text id="result">blue</text>
-      </object>
-
-      <object type="org.flowpaint.pixelprocessors.Multiply">
-        <text id="factor1">blue</text>
-        <text id="factor2">grB</text>
-        <text id="result">blue</text>
-      </object>
--->
-
-<!--
-      <object type="org.flowpaint.pixelprocessors.Checkers">
-        <text id="result">red</text>
-        <text id="x">distance</text>
-        <text id="y">positionAcrossStroke</text>
-        <num id="gridSizeY">8</num>
-      </object>
--->
-
-
-
-    </pixelProcessors>
-
-    <editors>
-
-
-<!--
-      <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
-        <text id="editedParameter">edgeGradient</text>
-        <text id="tomeType">org.flowpaint.gradient.Gradient</text>
-        <text id="description">Edge type</text>
-      </object>
--->
-
-      <object type="org.flowpaint.ui.editors.TomeReferenceEditor">
-        <text id="editedParameter">flowGradient</text>
-        <text id="tomeType">org.flowpaint.gradient.Gradient</text>
-        <text id="description">Gradient along stroke</text>
-      </object>
-
-      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">0.5</num>
-        <num id="endValue">25</num>
-        <num id="red">0.4</num>
-        <num id="green">0.4</num>
-        <num id="blue">0.4</num>
-        <text id="editedParameter">noiseScaleAlongStroke</text>
-        <text id="title">Noise Stretch</text>
-        <text id="description">Noise Stretching along stroke</text>
-      </object>
-
-      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">0</num>
-        <num id="endValue">1</num>
-        <num id="red">0.2</num>
-        <num id="green">0.2</num>
-        <num id="blue">0.2</num>
-        <text id="editedParameter">sharpness</text>
-        <text id="title">Sharpness</text>
-        <text id="description">Edge sharpness</text>
-      </object>
-
-<!--
-      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
-        <num id="startValue">10</num>
-        <num id="endValue">0</num>
-        <num id="red">0.6</num>
-        <num id="green">0.6</num>
-        <num id="blue">0.6</num>
-        <text id="editedParameter">noiseScaleAcrossStroke</text>
-        <text id="description">Noise stretch across stroke</text>
-      </object>
--->
-
-      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
-<!--
-        <num id="red">0.5</num>
-        <num id="green">0.5</num>
-        <num id="blue">0.5</num>
--->
-
-        <text id="hueParameter">hue</text>
-        <text id="saturationParameter">saturation</text>
-        <text id="lightnessParameter">lightness</text>
-
-        <num id="verticalStartValue">0</num>
-        <num id="verticalEndValue">1</num>
-        <text id="verticalEditedParameter">alpha</text>
-        <text id="verticalDescription">Transparency</text>
-        <num id="horizontalStartValue">1</num>
-        <num id="horizontalEndValue">50</num>
-        <text id="horizontalEditedParameter">maxRadius</text>
-        <text id="horizontalDescription">Size</text>
-      </object>
-
-      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
-        <num id="verticalStartValue">0</num>
-        <num id="verticalEndValue">1</num>
-        <text id="verticalEditedParameter">saturation</text>
-        <text id="verticalDescription">Saturation</text>
-        <num id="horizontalStartValue">0</num>
-        <num id="horizontalEndValue">1</num>
-        <text id="horizontalEditedParameter">lightness</text>
-        <text id="horizontalDescription">Lightness</text>
-      </object>
-
-      <object type="org.flowpaint.ui.editors.HueEditor">
-        <num id="startValue">0</num>
-        <num id="endValue">1</num>
-        <text id="editedParameter">hue</text>
-        <text id="description">Hue</text>
-      </object>
-
-    </editors>
-  </brush>
-  <brush description="Rake" id="Rake">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">17.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.rake</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">1.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Shade, black" id="Shade, black">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">70.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.smoothBlack</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.5</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">1.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Shade, gray" id="Shade, gray">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">23.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.smoothGrey</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.5</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">1.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Shade, white" id="Shade, white">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">30.0</num>
-      <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.smoothWhite</text>
-    </settings>
-    <pathProcessors>
-      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
-      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
-      <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
-      </object>
-      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.5</num>
-      </object>
-      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">1.0</num>
-      </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="Spray" id="Spray">
-    <settings>
-      <num id="alpha">1.0</num>
-      <num id="maxRadius">26.0</num>
+      <num id="pressureEffectOnSize">1.0</num>
+      <num id="maxRadius">20.0</num>
       <num id="lightness">0.0</num>
-      <num id="hue">0.0</num>
-      <num id="saturation">0.5</num>
-      <text id="gradient">default.gradients.spray</text>
-    </settings>
-    <pathProcessors>
+      <num id="pressureEffectOnOpacity">0.484375</num>
+      <num id="sharpness">0.48958334</num>
+      <num id="saturation">0.0</num>
+   </settings>
+   <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
       <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
+         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">0.5</num>
-        <num id="maxRadius">26.0</num>
+         <text id="pressureEffectOnSize">pressureEffectOnSize</text>
       </object>
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.NoiseInk">
-        <num id="noiseScaleAcross">100.0</num>
-        <num id="noiseScaleAlong">100.0</num>
-        <num id="alphaWithDistance">1.0</num>
-        <num id="octaves">3.0</num>
-        <text id="propertyName">distance</text>
+   </pathProcessors>
+   <pixelProcessors>
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+         <text id="green">green</text>
+         <text id="red">red</text>
+         <text id="hue">hue</text>
+         <text id="saturation">saturation</text>
+         <text id="lightness">lightness</text>
+         <text id="blue">blue</text>
       </object>
-      <object type="org.flowpaint.filters.AlphaFromPressureInk">
-        <num id="pressureEffect">1.0</num>
+      <object type="org.flowpaint.pixelprocessors.Abs">
+         <num id="result_Offset">1.0</num>
+         <num id="result_Scale">-1.0</num>
+         <text id="value">positionAcrossStroke</text>
+         <text id="result">edgeDistance</text>
       </object>
-      <object type="org.flowpaint.ink.ColorInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
-  <brush description="White" id="White">
-    <settings>
-      <num id="saturationDelta">0.0</num>
-      <num id="maxRadius">45.0</num>
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+         <num id="outputEnd">1.0</num>
+         <num id="outputStart">0.0</num>
+         <num id="inputEnd_Offset">1.0001</num>
+         <num id="inputEnd_Scale">-1.0</num>
+         <text id="input">edgeDistance</text>
+         <text id="inputEnd">sharpness</text>
+         <text id="result">alpha</text>
+         <text id="result_Scale">alpha</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+         <text id="outputEnd">alpha</text>
+         <text id="input">pressureEffectOnOpacity</text>
+         <text id="outputStart">alpha</text>
+         <text id="outputEnd_Scale">pressure</text>
+         <text id="result">alpha</text>
+      </object>
+   </pixelProcessors>
+   <editors>
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+         <num id="horizontalStartValue">1.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">75.0</num>
+         <text id="hueParameter">hue</text>
+         <text id="verticalDescription">Transparency</text>
+         <text id="lightnessParameter">lightness</text>
+         <text id="horizontalEditedParameter">maxRadius</text>
+         <text id="saturationParameter">saturation</text>
+         <text id="horizontalDescription">Size</text>
+         <text id="verticalEditedParameter">alpha</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+         <num id="horizontalStartValue">0.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">1.0</num>
+         <text id="verticalDescription">Saturation</text>
+         <text id="horizontalEditedParameter">lightness</text>
+         <text id="horizontalDescription">Lightness</text>
+         <text id="verticalEditedParameter">saturation</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.HueEditor">
+         <num id="startValue">0.0</num>
+         <num id="endValue">1.0</num>
+         <text id="description">Hue</text>
+         <text id="editedParameter">hue</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.2</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.2</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.2</num>
+         <text id="title">Sharpness</text>
+         <text id="description">Edge sharpness</text>
+         <text id="editedParameter">sharpness</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on size</text>
+         <text id="description">Pressure effect on size</text>
+         <text id="editedParameter">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on opacity</text>
+         <text id="description">Pressure effect on opacity</text>
+         <text id="editedParameter">pressureEffectOnOpacity</text>
+      </object>
+   </editors>
+</brush>
+
+
+
+  <brush description="Grey" id="Grey">
+   <settings>
       <num id="alpha">1.0</num>
-      <num id="lightnessDelta">0.0</num>
-      <num id="hueDelta">0.0</num>
-      <text id="gradient">default.gradients.white</text>
-    </settings>
-    <pathProcessors>
+      <num id="hue">0.0</num>
+      <num id="pressureEffectOnSize">1.0</num>
+      <num id="maxRadius">20.0</num>
+      <num id="lightness">0.5</num>
+      <num id="pressureEffectOnOpacity">0.484375</num>
+      <num id="sharpness">0.48958334</num>
+      <num id="saturation">0.0</num>
+   </settings>
+   <pathProcessors>
       <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
       <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
       <object type="org.flowpaint.filters.StrokeAngleTilter">
-        <num id="tilt">0.0</num>
+         <num id="tilt">0.0</num>
       </object>
       <object type="org.flowpaint.filters.RadiusFromPressureFilter">
-        <num id="pressureEffect">1.0</num>
+         <text id="pressureEffectOnSize">pressureEffectOnSize</text>
       </object>
       <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
-    </pathProcessors>
-    <pixelProcessors>
-<!--
-      <object type="org.flowpaint.ink.GradientInk">
-        <num id="alphaPressure">0.0</num>
+   </pathProcessors>
+   <pixelProcessors>
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+         <text id="green">green</text>
+         <text id="red">red</text>
+         <text id="hue">hue</text>
+         <text id="saturation">saturation</text>
+         <text id="lightness">lightness</text>
+         <text id="blue">blue</text>
       </object>
-      <object type="org.flowpaint.ink.AdjustHSLInk"></object>
--->
-    </pixelProcessors>
-    <editors></editors>
-  </brush>
+      <object type="org.flowpaint.pixelprocessors.Abs">
+         <num id="result_Offset">1.0</num>
+         <num id="result_Scale">-1.0</num>
+         <text id="value">positionAcrossStroke</text>
+         <text id="result">edgeDistance</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+         <num id="outputEnd">1.0</num>
+         <num id="outputStart">0.0</num>
+         <num id="inputEnd_Offset">1.0001</num>
+         <num id="inputEnd_Scale">-1.0</num>
+         <text id="input">edgeDistance</text>
+         <text id="inputEnd">sharpness</text>
+         <text id="result">alpha</text>
+         <text id="result_Scale">alpha</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+         <text id="outputEnd">alpha</text>
+         <text id="input">pressureEffectOnOpacity</text>
+         <text id="outputStart">alpha</text>
+         <text id="outputEnd_Scale">pressure</text>
+         <text id="result">alpha</text>
+      </object>
+   </pixelProcessors>
+   <editors>
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+         <num id="horizontalStartValue">1.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">75.0</num>
+         <text id="hueParameter">hue</text>
+         <text id="verticalDescription">Transparency</text>
+         <text id="lightnessParameter">lightness</text>
+         <text id="horizontalEditedParameter">maxRadius</text>
+         <text id="saturationParameter">saturation</text>
+         <text id="horizontalDescription">Size</text>
+         <text id="verticalEditedParameter">alpha</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+         <num id="horizontalStartValue">0.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">1.0</num>
+         <text id="verticalDescription">Saturation</text>
+         <text id="horizontalEditedParameter">lightness</text>
+         <text id="horizontalDescription">Lightness</text>
+         <text id="verticalEditedParameter">saturation</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.HueEditor">
+         <num id="startValue">0.0</num>
+         <num id="endValue">1.0</num>
+         <text id="description">Hue</text>
+         <text id="editedParameter">hue</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.2</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.2</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.2</num>
+         <text id="title">Sharpness</text>
+         <text id="description">Edge sharpness</text>
+         <text id="editedParameter">sharpness</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on size</text>
+         <text id="description">Pressure effect on size</text>
+         <text id="editedParameter">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on opacity</text>
+         <text id="description">Pressure effect on opacity</text>
+         <text id="editedParameter">pressureEffectOnOpacity</text>
+      </object>
+   </editors>
+</brush>
+
+
+  <brush description="White" id="White">
+   <settings>
+      <num id="alpha">1.0</num>
+      <num id="hue">0.0</num>
+      <num id="pressureEffectOnSize">1.0</num>
+      <num id="maxRadius">20.0</num>
+      <num id="lightness">1.0</num>
+      <num id="pressureEffectOnOpacity">0.484375</num>
+      <num id="sharpness">0.48958334</num>
+      <num id="saturation">0.0</num>
+   </settings>
+   <pathProcessors>
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
+         <num id="tilt">0.0</num>
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
+         <text id="pressureEffectOnSize">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
+   </pathProcessors>
+   <pixelProcessors>
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+         <text id="green">green</text>
+         <text id="red">red</text>
+         <text id="hue">hue</text>
+         <text id="saturation">saturation</text>
+         <text id="lightness">lightness</text>
+         <text id="blue">blue</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Abs">
+         <num id="result_Offset">1.0</num>
+         <num id="result_Scale">-1.0</num>
+         <text id="value">positionAcrossStroke</text>
+         <text id="result">edgeDistance</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+         <num id="outputEnd">1.0</num>
+         <num id="outputStart">0.0</num>
+         <num id="inputEnd_Offset">1.0001</num>
+         <num id="inputEnd_Scale">-1.0</num>
+         <text id="input">edgeDistance</text>
+         <text id="inputEnd">sharpness</text>
+         <text id="result">alpha</text>
+         <text id="result_Scale">alpha</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+         <text id="outputEnd">alpha</text>
+         <text id="input">pressureEffectOnOpacity</text>
+         <text id="outputStart">alpha</text>
+         <text id="outputEnd_Scale">pressure</text>
+         <text id="result">alpha</text>
+      </object>
+   </pixelProcessors>
+   <editors>
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+         <num id="horizontalStartValue">1.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">75.0</num>
+         <text id="hueParameter">hue</text>
+         <text id="verticalDescription">Transparency</text>
+         <text id="lightnessParameter">lightness</text>
+         <text id="horizontalEditedParameter">maxRadius</text>
+         <text id="saturationParameter">saturation</text>
+         <text id="horizontalDescription">Size</text>
+         <text id="verticalEditedParameter">alpha</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+         <num id="horizontalStartValue">0.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">1.0</num>
+         <text id="verticalDescription">Saturation</text>
+         <text id="horizontalEditedParameter">lightness</text>
+         <text id="horizontalDescription">Lightness</text>
+         <text id="verticalEditedParameter">saturation</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.HueEditor">
+         <num id="startValue">0.0</num>
+         <num id="endValue">1.0</num>
+         <text id="description">Hue</text>
+         <text id="editedParameter">hue</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.2</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.2</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.2</num>
+         <text id="title">Sharpness</text>
+         <text id="description">Edge sharpness</text>
+         <text id="editedParameter">sharpness</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on size</text>
+         <text id="description">Pressure effect on size</text>
+         <text id="editedParameter">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on opacity</text>
+         <text id="description">Pressure effect on opacity</text>
+         <text id="editedParameter">pressureEffectOnOpacity</text>
+      </object>
+   </editors>
+</brush>
+
+
+  <brush description="Red" id="Red">
+   <settings>
+      <num id="alpha">1.0</num>
+      <num id="hue">0.0</num>
+      <num id="pressureEffectOnSize">1.0</num>
+      <num id="maxRadius">20.0</num>
+      <num id="lightness">0.5</num>
+      <num id="pressureEffectOnOpacity">0.484375</num>
+      <num id="sharpness">0.48958334</num>
+      <num id="saturation">1.0</num>
+   </settings>
+   <pathProcessors>
+      <object type="org.flowpaint.filters.ZeroLengthSegmentFilter"></object>
+      <object type="org.flowpaint.filters.DistanceCalculatorFilter"></object>
+      <object type="org.flowpaint.filters.StrokeAngleTilter">
+         <num id="tilt">0.0</num>
+      </object>
+      <object type="org.flowpaint.filters.RadiusFromPressureFilter">
+         <text id="pressureEffectOnSize">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.filters.StrokeEdgeCalculatorFilter"></object>
+   </pathProcessors>
+   <pixelProcessors>
+      <object type="org.flowpaint.pixelprocessors.HSLToRGB">
+         <text id="green">green</text>
+         <text id="red">red</text>
+         <text id="hue">hue</text>
+         <text id="saturation">saturation</text>
+         <text id="lightness">lightness</text>
+         <text id="blue">blue</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Abs">
+         <num id="result_Offset">1.0</num>
+         <num id="result_Scale">-1.0</num>
+         <text id="value">positionAcrossStroke</text>
+         <text id="result">edgeDistance</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.InterpolateSmoothly">
+         <num id="outputEnd">1.0</num>
+         <num id="outputStart">0.0</num>
+         <num id="inputEnd_Offset">1.0001</num>
+         <num id="inputEnd_Scale">-1.0</num>
+         <text id="input">edgeDistance</text>
+         <text id="inputEnd">sharpness</text>
+         <text id="result">alpha</text>
+         <text id="result_Scale">alpha</text>
+      </object>
+      <object type="org.flowpaint.pixelprocessors.Interpolate">
+         <text id="outputEnd">alpha</text>
+         <text id="input">pressureEffectOnOpacity</text>
+         <text id="outputStart">alpha</text>
+         <text id="outputEnd_Scale">pressure</text>
+         <text id="result">alpha</text>
+      </object>
+   </pixelProcessors>
+   <editors>
+      <object type="org.flowpaint.ui.editors.SizeAlphaEditor">
+         <num id="horizontalStartValue">1.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">75.0</num>
+         <text id="hueParameter">hue</text>
+         <text id="verticalDescription">Transparency</text>
+         <text id="lightnessParameter">lightness</text>
+         <text id="horizontalEditedParameter">maxRadius</text>
+         <text id="saturationParameter">saturation</text>
+         <text id="horizontalDescription">Size</text>
+         <text id="verticalEditedParameter">alpha</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.SaturationLightnessEditor">
+         <num id="horizontalStartValue">0.0</num>
+         <num id="verticalEndValue">1.0</num>
+         <num id="verticalStartValue">0.0</num>
+         <num id="horizontalEndValue">1.0</num>
+         <text id="verticalDescription">Saturation</text>
+         <text id="horizontalEditedParameter">lightness</text>
+         <text id="horizontalDescription">Lightness</text>
+         <text id="verticalEditedParameter">saturation</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.HueEditor">
+         <num id="startValue">0.0</num>
+         <num id="endValue">1.0</num>
+         <text id="description">Hue</text>
+         <text id="editedParameter">hue</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.2</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.2</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.2</num>
+         <text id="title">Sharpness</text>
+         <text id="description">Edge sharpness</text>
+         <text id="editedParameter">sharpness</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on size</text>
+         <text id="description">Pressure effect on size</text>
+         <text id="editedParameter">pressureEffectOnSize</text>
+      </object>
+      <object type="org.flowpaint.ui.editors.VolumeSliderEditor">
+         <num id="red">0.1</num>
+         <num id="endValue">1.0</num>
+         <num id="blue">0.1</num>
+         <num id="startValue">0.0</num>
+         <num id="green">0.1</num>
+         <text id="title">Pressure effect on opacity</text>
+         <text id="description">Pressure effect on opacity</text>
+         <text id="editedParameter">pressureEffectOnOpacity</text>
+      </object>
+   </editors>
+</brush>
+
+
+
   <brushset name="Sketching" id="Sketching">
-    <brushref>Pencil</brushref>
     <brushref>Ink, thin</brushref>
     <brushref>Profile</brushref>
-
-      <!--
-    <brushref>Ink, thick</brushref>
-    <brushref>Crayon</brushref>
-    <brushref>Rake</brushref>
-    <brushref>Shade, gray</brushref>
-    <brushref>Shade, black</brushref>
-    <brushref>Shade, white</brushref>
-    <brushref>White</brushref>
--->
     <brushref>Spray</brushref>
     <brushref>Dots</brushref>
   </brushset>
@@ -1471,8 +1114,21 @@
     <brushref>ColorPen</brushref>
     <brushref>Texture</brushref>
 
+    <brushref>Black</brushref>
+    <brushref>Grey</brushref>
+    <brushref>White</brushref>
+    <brushref>Red</brushref>
+    <brushref>Orange</brushref>
+    <brushref>Yellow</brushref>
+    <brushref>Green</brushref>
+    <brushref>Cyan</brushref>
+    <brushref>Blue</brushref>
+    <brushref>Purple</brushref>
+
+
+
   </brushset>
-  <gradient id="default.gradients.black">
+  <gradient id="default.gradients.grey">
     <gradientPoint position="0.0">
       <num id="red">0.35</num>
       <num id="alpha">0.0</num>
@@ -1620,7 +1276,7 @@
       <num id="green">0.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.lampBlack">
+  <gradient id="default.gradients.blueGrey">
     <gradientPoint position="0.0">
       <num id="red">0.026999999</num>
       <num id="alpha">0.0</num>
@@ -1662,132 +1318,6 @@
       <num id="alpha">0.0</num>
       <num id="blue">0.045</num>
       <num id="green">0.064</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="default.gradients.leaf">
-    <gradientPoint position="0.0">
-      <num id="red">0.1</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.2</num>
-      <num id="green">0.4</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.3</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.1</num>
-      <num id="green">0.5</num>
-    </gradientPoint>
-    <gradientPoint position="0.2">
-      <num id="red">0.0</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.22</num>
-      <num id="green">0.3</num>
-    </gradientPoint>
-    <gradientPoint position="0.8">
-      <num id="red">0.2</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.15</num>
-      <num id="green">0.6</num>
-    </gradientPoint>
-    <gradientPoint position="0.85">
-      <num id="red">0.05</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.15</num>
-      <num id="green">0.15</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">0.0</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.15</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="default.gradients.maroon">
-    <gradientPoint position="0.0">
-      <num id="red">0.54</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.080000006</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.57</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.120000005</num>
-      <num id="green">0.089999996</num>
-    </gradientPoint>
-    <gradientPoint position="0.3">
-      <num id="red">0.6</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.14</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.5">
-      <num id="red">0.6</num>
-      <num id="alpha">0.45</num>
-      <num id="blue">0.16000001</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.7">
-      <num id="red">0.6</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.14</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">0.57</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.120000005</num>
-      <num id="green">0.089999996</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">0.54</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.080000006</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="default.gradients.ocra">
-    <gradientPoint position="0.0">
-      <num id="red">0.80999994</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.56</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.85499996</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.120000005</num>
-      <num id="green">0.63</num>
-    </gradientPoint>
-    <gradientPoint position="0.3">
-      <num id="red">0.9</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.14</num>
-      <num id="green">0.7</num>
-    </gradientPoint>
-    <gradientPoint position="0.5">
-      <num id="red">0.9</num>
-      <num id="alpha">0.45</num>
-      <num id="blue">0.16000001</num>
-      <num id="green">0.7</num>
-    </gradientPoint>
-    <gradientPoint position="0.7">
-      <num id="red">0.9</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.14</num>
-      <num id="green">0.7</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">0.85499996</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.120000005</num>
-      <num id="green">0.63</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">0.80999994</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.56</num>
     </gradientPoint>
   </gradient>
   <gradient id="default.gradients.outline">
@@ -1840,7 +1370,7 @@
       <num id="green">0.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.rake">
+  <gradient id="default.gradients.hatch">
     <gradientPoint position="0.0">
       <num id="red">0.0</num>
       <num id="alpha">0.0</num>
@@ -1944,94 +1474,6 @@
       <num id="green">0.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.sapGreen">
-    <gradientPoint position="0.0">
-      <num id="red">0.27</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.030000001</num>
-      <num id="green">0.48000002</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.285</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.54</num>
-    </gradientPoint>
-    <gradientPoint position="0.3">
-      <num id="red">0.3</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.07</num>
-      <num id="green">0.6</num>
-    </gradientPoint>
-    <gradientPoint position="0.5">
-      <num id="red">0.3</num>
-      <num id="alpha">0.45</num>
-      <num id="blue">0.080000006</num>
-      <num id="green">0.6</num>
-    </gradientPoint>
-    <gradientPoint position="0.7">
-      <num id="red">0.3</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.07</num>
-      <num id="green">0.6</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">0.285</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.54</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">0.27</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.030000001</num>
-      <num id="green">0.48000002</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="default.gradients.sepia">
-    <gradientPoint position="0.0">
-      <num id="red">0.35999998</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.030000001</num>
-      <num id="green">0.2</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.38</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.225</num>
-    </gradientPoint>
-    <gradientPoint position="0.3">
-      <num id="red">0.4</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.07</num>
-      <num id="green">0.25</num>
-    </gradientPoint>
-    <gradientPoint position="0.5">
-      <num id="red">0.4</num>
-      <num id="alpha">0.45</num>
-      <num id="blue">0.080000006</num>
-      <num id="green">0.25</num>
-    </gradientPoint>
-    <gradientPoint position="0.7">
-      <num id="red">0.4</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.07</num>
-      <num id="green">0.25</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">0.38</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.060000002</num>
-      <num id="green">0.225</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">0.35999998</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">0.030000001</num>
-      <num id="green">0.2</num>
-    </gradientPoint>
-  </gradient>
   <gradient id="default.gradients.sky">
     <gradientPoint position="0.0">
       <num id="red">0.0</num>
@@ -2070,6 +1512,139 @@
       <num id="green">0.6</num>
     </gradientPoint>
   </gradient>
+
+  <gradient id="default.gradients.blackWithShadow">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.0</num>
+      <num id="alpha">0.3</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.32">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.68">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.0</num>
+      <num id="alpha">0.3</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.whiteWithShadow">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.1">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.2">
+      <num id="red">0.0</num>
+      <num id="alpha">0.075</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.3">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.32">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.68">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.8</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.7">
+      <num id="red">0.0</num>
+      <num id="alpha">0.1</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.8">
+      <num id="red">0.0</num>
+      <num id="alpha">0.075</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.9">
+      <num id="red">0.0</num>
+      <num id="alpha">0.025</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+
   <gradient id="default.gradients.smoothBlack">
     <gradientPoint position="0.0">
       <num id="red">0.0</num>
@@ -2256,7 +1831,7 @@
       <num id="green">1.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.solidBlack">
+  <gradient id="default.gradients.simpleBlack">
     <gradientPoint position="0.0">
       <num id="red">0.0</num>
       <num id="alpha">0.0</num>
@@ -2276,92 +1851,74 @@
       <num id="green">0.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.spray">
+  <gradient id="default.gradients.solidBlack">
     <gradientPoint position="0.0">
-      <num id="red">1.0</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
     </gradientPoint>
-    <gradientPoint position="0.33">
-      <num id="red">1.0</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
+    <gradientPoint position="1.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
     </gradientPoint>
-    <gradientPoint position="0.4">
-      <num id="red">1.0</num>
-      <num id="alpha">0.5</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
-    </gradientPoint>
-    <gradientPoint position="0.45">
-      <num id="red">1.0</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">1.0</num>
-      <num id="alpha">0.0</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
-    </gradientPoint>
-    <gradientPoint position="0.95">
-      <num id="red">1.0</num>
-      <num id="alpha">0.7</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
+  </gradient>
+  <gradient id="default.gradients.linearBlackToWhite">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
     </gradientPoint>
     <gradientPoint position="1.0">
       <num id="red">1.0</num>
-      <num id="alpha">0.0</num>
+      <num id="alpha">1.0</num>
       <num id="blue">1.0</num>
       <num id="green">1.0</num>
     </gradientPoint>
   </gradient>
-  <gradient id="default.gradients.steel">
+  <gradient id="default.gradients.linearTransparentToBlack">
     <gradientPoint position="0.0">
-      <num id="red">0.17999999</num>
+      <num id="red">0.0</num>
       <num id="alpha">0.0</num>
-      <num id="blue">0.18</num>
-      <num id="green">0.080000006</num>
-    </gradientPoint>
-    <gradientPoint position="0.1">
-      <num id="red">0.19</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.36</num>
-      <num id="green">0.089999996</num>
-    </gradientPoint>
-    <gradientPoint position="0.3">
-      <num id="red">0.2</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.42000002</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.5">
-      <num id="red">0.2</num>
-      <num id="alpha">0.45</num>
-      <num id="blue">0.48000002</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.7">
-      <num id="red">0.2</num>
-      <num id="alpha">0.3825</num>
-      <num id="blue">0.42000002</num>
-      <num id="green">0.1</num>
-    </gradientPoint>
-    <gradientPoint position="0.9">
-      <num id="red">0.19</num>
-      <num id="alpha">0.135</num>
-      <num id="blue">0.36</num>
-      <num id="green">0.089999996</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
     </gradientPoint>
     <gradientPoint position="1.0">
-      <num id="red">0.17999999</num>
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.linearTransparentToWhite">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
       <num id="alpha">0.0</num>
-      <num id="blue">0.18</num>
-      <num id="green">0.080000006</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1.0</num>
+    </gradientPoint>
+  </gradient>
+  <gradient id="default.gradients.linearTransparentToRed">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">0.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
     </gradientPoint>
   </gradient>
   <gradient id="default.gradients.stone">
@@ -2428,6 +1985,129 @@
       <num id="green">0.3</num>
     </gradientPoint>
   </gradient>
+
+  <gradient id="default.gradients.orange">
+    <gradientPoint position="0.0">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">1</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.blues">
+    <gradientPoint position="0.0">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.5</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">0.5</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">1.0</num>
+      <num id="green">1</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.burnt">
+    <gradientPoint position="0.0">
+      <num id="red">0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">1.0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">1</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">1</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.crimson">
+    <gradientPoint position="0.0">
+      <num id="red">0.4</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.0</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.7</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.8</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.4</num>
+      <num id="green">0</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.greens">
+    <gradientPoint position="0.0">
+      <num id="red">0.2</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.8</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.0</num>
+      <num id="green">0.7</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.5</num>
+      <num id="green">0.6</num>
+    </gradientPoint>
+  </gradient>
+
+  <gradient id="default.gradients.browns">
+    <gradientPoint position="0.0">
+      <num id="red">0.7</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.3</num>
+      <num id="green">0.4</num>
+    </gradientPoint>
+    <gradientPoint position="0.5">
+      <num id="red">0.5</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.2</num>
+    </gradientPoint>
+    <gradientPoint position="1.0">
+      <num id="red">0.4</num>
+      <num id="alpha">1.0</num>
+      <num id="blue">0.1</num>
+      <num id="green">0.2</num>
+    </gradientPoint>
+  </gradient>
+
+
+
   <gradient id="default.gradients.white">
     <gradientPoint position="0.0">
       <num id="red">1.0</num>
@@ -2462,20 +2142,6 @@
     <gradientPoint position="1.0">
       <num id="red">1.0</num>
       <num id="alpha">0.0</num>
-      <num id="blue">1.0</num>
-      <num id="green">1.0</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="default.gradients.whiteBlack">
-    <gradientPoint position="0.0">
-      <num id="red">0.0</num>
-      <num id="alpha">1.0</num>
-      <num id="blue">0.0</num>
-      <num id="green">0.0</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="red">1.0</num>
-      <num id="alpha">1.0</num>
       <num id="blue">1.0</num>
       <num id="green">1.0</num>
     </gradientPoint>
@@ -2528,14 +2194,6 @@
       <num id="alpha">1.0</num>
       <num id="blue">0.2</num>
       <num id="green">0.3</num>
-    </gradientPoint>
-  </gradient>
-  <gradient id="greyBlack">
-    <gradientPoint position="0.0">
-      <num id="">1.0</num>
-    </gradientPoint>
-    <gradientPoint position="1.0">
-      <num id="">1.0</num>
     </gradientPoint>
   </gradient>
 </flowpaint>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-      codebase="http://flowpaint.googlecode.com/svn/webstart/unstable/"
+      codebase="http://flowpaint.googlecode.com/svn/webstart/stable/"
       href="flowpaint.jnlp">
   <information>
     <title>Flowpaint</title>

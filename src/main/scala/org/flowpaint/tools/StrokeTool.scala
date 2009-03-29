@@ -22,9 +22,9 @@ class StrokeTool extends Tool {
   var currentPointIndex = 0
   var currentStrokeStartTime = 0L
 
-  private var mouseDetected = true
+  private var mouseDetected = false
   private var mouseDetectionCounter = 0
-  private val MouseDetectionThreshold = 8 // After how many datapoints without pen features do we assume a mouse?
+  private val MouseDetectionThreshold = 10 // After how many datapoints without pen features do we assume a mouse?
 
 
   private def detectMouse(event: DataSample) {

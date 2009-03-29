@@ -131,8 +131,10 @@ object FlowPaintUi {
 
     addMenuItem(fileMenu, "Quick Save", KeyEvent.VK_S, "Saves the current picture with a new default filename in the current directory.", FlowPaintController.quickSave)
     fileMenu.add(new JSeparator())
+/* for development only
     addMenuItem(fileMenu, "Export Recent Brushes", KeyEvent.VK_R, "Saves the current recent brushes to the specified file, overwriting any earlier content.", FlowPaintController.exportRecentBrushes)
     fileMenu.add(new JSeparator())
+*/
     addMenuItem(fileMenu, "Exit", KeyEvent.VK_X, "Closes the program immediately.  Unsaved changes will be lost.", FlowPaintController.quit)
 
     val pictureMenu = new JMenu("Picture")

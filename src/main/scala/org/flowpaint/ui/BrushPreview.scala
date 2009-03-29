@@ -50,8 +50,8 @@ class BrushPreview(val brush: Brush,
   private val paintPanel = new PaintPanel(surface, false)
 
   setLayout(new java.awt.BorderLayout())
-  setPreferredSize(new Dimension(SIZE, SIZE))
-  setMinimumSize(new Dimension(8, 8))
+  setPreferredSize(new Dimension(SIZE, 24))
+  setMinimumSize(new Dimension(24,24))
   setMaximumSize(new Dimension(10000, 10000))
   setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1))
 

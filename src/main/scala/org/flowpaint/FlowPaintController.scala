@@ -62,7 +62,7 @@ object FlowPaintController {
     currentBrushUsageCount = 0
   }
 
-  private val MAX_RECENT_BRUSHES_SIZE = 24
+  private val MAX_RECENT_BRUSHES_SIZE = 18
 
   private val UNDO_QUEUE_SIZE = 8
 

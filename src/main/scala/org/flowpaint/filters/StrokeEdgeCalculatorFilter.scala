@@ -132,8 +132,12 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
             val leftAngle = if (!turningLeft) cornerAngle else invCornerAngle
             val rightAngle = if (turningLeft) cornerAngle else invCornerAngle
 
+            var leftX = x
+            var leftY = y
+/*
             var leftX = x - Math.cos(leftAngle).toFloat * radius * leftEdgeScale
             var leftY = y - Math.sin(leftAngle).toFloat * radius * leftEdgeScale
+*/
 
             var rightX = x + Math.cos(rightAngle).toFloat * radius * rightEdgeScale
             var rightY = y + Math.sin(rightAngle).toFloat * radius * rightEdgeScale
@@ -261,7 +265,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
         val oldRadius = storedFirstPoint.getFloatProperty(PropertyRegister.RADIUS, DefaultRadius)
         previousX = x
         previousY = y
-        val result = roundCorner( storedFirstPoint, x, y, angle, oldRadius ) ::: normalSegment( pointData, targetX, targetY, angle, radius )
+        val result = roundEnd( storedFirstPoint, x, y, angle, oldRadius ) ::: normalSegment( pointData, targetX, targetY, angle, radius )
         storedFirstPoint = null
         result
     }

@@ -4,7 +4,7 @@
   <!-- Basics -->
   <groupId>org.flowpaint</groupId>
   <artifactId>flowpaint</artifactId>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
 
   <!-- Project Information -->
   <name>FlowPaint</name>
@@ -203,9 +203,9 @@
 
   <!-- Configure the version control system used. -->
   <scm>
-      <connection>scm:svn:https://flowpaint.googlecode.com/svn/tags/flowpaint-0.2</connection>
-      <developerConnection>scm:svn:https://flowpaint.googlecode.com/svn/tags/flowpaint-0.2</developerConnection>
-      <url>http://flowpaint.googlecode.com/svn/tags/flowpaint-0.2</url>
+      <connection>scm:svn:https://flowpaint.googlecode.com/svn/trunk</connection>
+      <developerConnection>scm:svn:https://flowpaint.googlecode.com/svn/trunk</developerConnection>
+      <url>http://flowpaint.googlecode.com/svn/trunk/</url>
   </scm>
 
 

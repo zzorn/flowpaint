@@ -19,8 +19,8 @@ googleCodeProjectId=flowpaint
 compiledJar=target/flowpaint-executable.jar
 jnlpFileLocation=src/main/webstart/FlowPaint.jnlp
 issueReleasePrefix=Release-
-keystoreFile=FlowPaintKeystore
-keystoreUser=zzorn
+keystoreFile=$appName-keystore
+keystoreUser=$appName
 appProperties=src/main/resources/application.properties
 homepage=www.flowpaint.org
 bugReportUrl=http://code.google.com/p/flowpaint/issues/entry?template=Defect%20report%20from%20user
@@ -41,17 +41,19 @@ echo "##### It doesn't deploy them, but requires the passwords to the keystore u
 # Start with asking the passwords, so that the process can run autonomously afterwards.
 # The passwords are not passed as command line arguments, as that would leave them in the command history
 
-echo -n "Keystore password for $keystoreFile: "
+echo -n "Keystore (and user $keystoreUser's) password for $keystoreFile: "
 stty -echo
 read storepass
 stty echo
 echo ""
 
-echo -n "Keystore user password for user $keystoreUser: "
-stty -echo
-read keypass
-stty echo
-echo ""
+# Assume same password for keystore user
+keypass=$storepass
+#echo -n "Keystore user password for user $keystoreUser: "
+#stty -echo
+#read keypass
+#stty echo
+#echo ""
 
 
 ###########################################################################

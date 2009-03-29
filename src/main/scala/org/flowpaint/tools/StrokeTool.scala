@@ -33,8 +33,8 @@ class StrokeTool extends Tool {
     def isFractionalNumber(n: Float) = Math.abs(n - Math.rint(n)) >= 0.0001f
 
     val pressure = event.getProperty(PropertyRegister.PRESSURE, 0)
-    val x = event.getProperty(PropertyRegister.CANVAS_X, 0)
-    val y = event.getProperty(PropertyRegister.CANVAS_Y, 0)
+    val x = event.getProperty(PropertyRegister.PATH_X, 0)
+    val y = event.getProperty(PropertyRegister.PATH_Y, 0)
 
     // A mouse will not generate fractional coordinates or pressure, so we can detect it by assuming a
     // mouse is used if no fractions are detected in these variables for some number of stroke points.

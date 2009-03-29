@@ -4,7 +4,7 @@
   <!-- Basics -->
   <groupId>org.flowpaint</groupId>
   <artifactId>flowpaint</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.2.1-SNAPSHOT</version>
 
   <!-- Project Information -->
   <name>FlowPaint</name>

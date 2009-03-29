@@ -6785,19 +6785,19 @@
     </gradientPoint>
     <gradientPoint position="0.1">
       <num id="red">0.0</num>
-      <num id="alpha">0.8</num>
+      <num id="alpha">0.92</num>
       <num id="blue">0.13</num>
       <num id="green">0.0</num>
     </gradientPoint>
     <gradientPoint position="0.5">
       <num id="red">0.0</num>
-      <num id="alpha">0.9</num>
+      <num id="alpha">0.98</num>
       <num id="blue">0.0</num>
       <num id="green">0.0</num>
     </gradientPoint>
     <gradientPoint position="0.9">
       <num id="red">0.0</num>
-      <num id="alpha">0.8</num>
+      <num id="alpha">0.92</num>
       <num id="blue">0.13</num>
       <num id="green">0.0</num>
     </gradientPoint>
@@ -7682,8 +7682,8 @@
     <gradientPoint position="1.0">
       <num id="red">0</num>
       <num id="alpha">1.0</num>
-      <num id="blue">0.5</num>
-      <num id="green">0.6</num>
+      <num id="blue">0.4</num>
+      <num id="green">0.45</num>
     </gradientPoint>
   </gradient>
 

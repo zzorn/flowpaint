@@ -220,19 +220,28 @@ class ScanlineCalculator {
         if ( alphaInt > 0 ) {
 
           if ( alphaInt < 255 ) {
+            // Alpha composition formula (T top layer, B bottom layer, X result)
+            // X.a = T.a + B.a * (1 - T.a)
+            // X.r = (T.r * T.a + B.r * B.a * (1 - T.a)) / X.a
+
+            final int topAlpha = alphaInt;
+            final int invTopAlpha = 255 - topAlpha;
+
             final int originalColor = destinationBuffer[ i ];
-
-            final int newFactor = (int) (256 * a);
-            final int originalFactor = 256 - newFactor ;
-
-            redInt   = ( ((originalColor >> 16) & 0xff) * originalFactor + redInt   * newFactor ) >> 8;
-            greenInt = ( ((originalColor >> 8)  & 0xff) * originalFactor + greenInt * newFactor ) >> 8;
-            blueInt  = ( ( originalColor        & 0xff) * originalFactor + blueInt  * newFactor ) >> 8;
+            final int bottomAlpha = (originalColor >> 24) & 0xff;
+            final int bottomRed = (originalColor >> 16) & 0xff;
+            final int bottomGreen = (originalColor >> 8) & 0xff;
+            final int bottomBlue = (originalColor ) & 0xff;
+            
+            alphaInt = topAlpha + (bottomAlpha * invTopAlpha) / 255;
+            redInt   = ( redInt   * topAlpha + (bottomRed   * bottomAlpha * invTopAlpha) / 255 ) / alphaInt;
+            greenInt = ( greenInt * topAlpha + (bottomGreen * bottomAlpha * invTopAlpha) / 255 ) / alphaInt;
+            blueInt  = ( blueInt  * topAlpha + (bottomBlue  * bottomAlpha * invTopAlpha) / 255 ) / alphaInt;
           }
 
 
           destinationBuffer[ i ] =
-                 ( 0xFF                << 24 ) |
+                 ( ( alphaInt & 0xFF ) << 24 ) |
                  ( ( redInt   & 0xFF ) << 16 ) |
                  ( ( greenInt & 0xFF ) << 8 ) |
                  ( ( blueInt  & 0xFF ) << 0 );

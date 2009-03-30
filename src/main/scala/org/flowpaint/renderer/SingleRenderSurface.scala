@@ -28,7 +28,8 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
     private val currentImageDataIndex = 0
 
-    private val TRANSPARENT_COLOR = new Color(0, 0, 0, 0).getRGB()
+    private val TRANSPARENT = new Color(0.5f, 0.5f, 0.5f, 0f)
+    private val TRANSPARENT_COLOR = TRANSPARENT.getRGB()
 
     private var imageSource: MemoryImageSource = null
     private var image: Image = null
@@ -41,7 +42,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
     def isInitialized = initialized
 
     def clear() {
-        clearToColor(java.awt.Color.WHITE)
+        clearToColor(TRANSPARENT)
     }
 
     def clearToColor(color: Color) {
@@ -77,8 +78,8 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
     private def initialize(w: Int, h: Int) {
 
-        // Don't include alpha, as it takes longer to render due to masking
-        val rgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff);
+        // Don't include alpha for normal on screen rendering, as it takes longer due to masking
+        val rgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff)
 
         undoQueue = Nil
         redoQueue = Nil
@@ -89,6 +90,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
         image = Toolkit.getDefaultToolkit().createImage(imageSource)
 
+
+        clear()
+
         initialized = true
     }
 
@@ -98,7 +102,14 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
         if (!initialized) return null
 
         val buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-        renderFullArea(buf.getGraphics)
+
+        val transparentRgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff, 0xff000000)
+        val transparentImageSource = new MemoryImageSource(width, height, transparentRgbColorModel, imageData, 0, width)
+        val transparentImage = Toolkit.getDefaultToolkit().createImage(imageSource)
+
+        //imageSource.newPixels(updatedArea.getMinX, updatedArea.getMinY,updatedArea.getWidth, updatedArea.getHeight)
+
+        buf.getGraphics.drawImage(transparentImage, 0, 0, null)
 
         buf
     }

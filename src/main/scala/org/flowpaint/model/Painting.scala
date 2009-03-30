@@ -23,9 +23,13 @@ class Painting extends PictureProvider {
 
   def updateSurface(surface: RenderSurface) = {
 
-    val color = if (backgroundColor == null) java.awt.Color.WHITE else backgroundColor
 
+/* Just clearing to transparent.
+    val color = if (backgroundColor == null) java.awt.Color.WHITE else backgroundColor
     surface.clearToColor( color )
+*/
+
+    surface.clear
     layers.foreach(layer => layer.updateSurface(surface))
 
   }

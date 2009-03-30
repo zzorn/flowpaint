@@ -126,7 +126,6 @@ object FlowPaintController {
 
     FlowPaintUi.init()
 
-
     FlowPaintUi.frame.show
   }
 

@@ -28,8 +28,10 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
     private val currentImageDataIndex = 0
 
+    private val BACKGROUND = new Color(0.5f,0.5f,0.5f,1f)
     private val TRANSPARENT = new Color(0.5f, 0.5f, 0.5f, 0f)
     private val TRANSPARENT_COLOR = TRANSPARENT.getRGB()
+
 
     private var imageSource: MemoryImageSource = null
     private var image: Image = null
@@ -79,7 +81,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
     private def initialize(w: Int, h: Int) {
 
         // Don't include alpha for normal on screen rendering, as it takes longer due to masking
-        val rgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff)
+
+      
+        val rgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff, 0xff000000)
 
         undoQueue = Nil
         redoQueue = Nil
@@ -103,13 +107,17 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
         val buf = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
+/*
         val transparentRgbColorModel: DirectColorModel = new DirectColorModel(32, 0xff0000, 0x00ff00, 0x0000ff, 0xff000000)
         val transparentImageSource = new MemoryImageSource(width, height, transparentRgbColorModel, imageData, 0, width)
         val transparentImage = Toolkit.getDefaultToolkit().createImage(imageSource)
+*/
 
-        //imageSource.newPixels(updatedArea.getMinX, updatedArea.getMinY,updatedArea.getWidth, updatedArea.getHeight)
 
-        buf.getGraphics.drawImage(transparentImage, 0, 0, null)
+//        buf.getGraphics.drawImage(transparentImage, 0, 0, null)
+
+        updateImage
+        buf.getGraphics.drawImage(image, 0, 0, null)
 
         buf
     }
@@ -119,6 +127,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
         if (initialized) {
 
             updateImage
+
+            context.setColor( BACKGROUND )
+            context.fillRect( 0,0,getWidth, getHeight )
 
             context.drawImage(image, 0, 0, null)
         }
@@ -135,6 +146,9 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
             val y2 = updatedArea.getMaxY + 1
 
             updateImage
+
+            context.setColor( Color.WHITE )
+            context.fillRect( x1, y1 , updatedArea.getWidth, updatedArea.getHeight  )
 
             context.drawImage(image, x1, y1, x2, y2, x1, y1, x2, y2, null)
         }

@@ -38,8 +38,12 @@ class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JP
 
   override def paintComponent(g: Graphics): Unit = {
 
+/* Disabled for now as it doesn't work with transparent canvas so well for some reason
     if (requestPartialRepaint) surface.renderChangedArea( g )
     else surface.renderFullArea( g )
+*/
+
+    surface.renderFullArea( g )
 
     requestPartialRepaint = false
   }

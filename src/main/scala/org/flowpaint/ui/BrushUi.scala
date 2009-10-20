@@ -1,6 +1,6 @@
 package org.flowpaint.ui
 import org.flowpaint.brush.Brush
-import org.flowpaint.editors.Editor
+import org.flowpaint.ui.editors.Editor
 import java.awt.{Dimension, Color}
 import javax.swing.{JPanel, JLabel}
 import net.miginfocom.swing.MigLayout

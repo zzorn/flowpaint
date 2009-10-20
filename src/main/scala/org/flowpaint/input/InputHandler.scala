@@ -6,9 +6,9 @@ import java.util.ArrayList
 import java.util.concurrent.{ArrayBlockingQueue, BlockingQueue}
 import jpen._
 import jpen.event.PenListener
-import util.DataSample
-import util.PerformanceTester.time
-import util.PropertyRegister
+import org.flowpaint.util.DataSample
+import org.flowpaint.util.PerformanceTester.time
+import org.flowpaint.util.PropertyRegister
 
 /**
  *  Recieves pen events, and turns them into data samples, that are sent to the specified sampleListener.

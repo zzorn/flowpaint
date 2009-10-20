@@ -3,7 +3,7 @@ package org.flowpaint.ui
 import _root_.org.flowpaint.util.DataSample
 import java.awt.BorderLayout
 import javax.swing.{JPanel, JComponent}
-import property.Data
+import org.flowpaint.property.Data
 
 /**
  * A trait for ui components that can be used to adjust parameters.

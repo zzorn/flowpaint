@@ -5,10 +5,10 @@ import _root_.org.flowpaint.util.DataSample
 import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 
 
-import brush.{Brush}
+import org.flowpaint.brush.{Brush}
 import java.awt.{Graphics2D, BasicStroke, Polygon, Color}
 import javax.swing.JComponent
-import property.Data
+import org.flowpaint.property.Data
 
 
 abstract sealed class SliderOrientation

@@ -1,13 +1,13 @@
 package org.flowpaint.ui
 
-import brush.{Brush}
+import org.flowpaint.brush.{Brush}
 import java.awt.event.{MouseEvent, MouseWheelEvent, MouseAdapter, MouseListener}
 
 import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
 import javax.swing.JComponent
-import property.Data
-import renderer.{SingleRenderSurface, RenderSurface}
-import util.{DataSample, PropertyRegister}
+import org.flowpaint.property.Data
+import org.flowpaint.renderer.{SingleRenderSurface, RenderSurface}
+import org.flowpaint.util.{DataSample, PropertyRegister}
 
 
 /**

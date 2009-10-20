@@ -1,11 +1,11 @@
 package org.flowpaint.ui
 
-import brush.Brush
+import org.flowpaint.brush.Brush
 import java.awt.Color
 import java.awt.event.{ComponentListener, MouseAdapter}
 
 import javax.swing.JComponent
-import util.DataSample
+import org.flowpaint.util.DataSample
 
 /**
  * A button showing a preview of a brush, which can be clicked to select the brush in the flowpaint controller.

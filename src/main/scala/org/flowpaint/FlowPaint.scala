@@ -1,15 +1,15 @@
 package org.flowpaint
 
-import _root_.org.flowpaint.brush.Brush
-import _root_.org.flowpaint.gradient.MultiGradient
+import org.flowpaint.brush.Brush
+import org.flowpaint.gradient.MultiGradient
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Dimension, BorderLayout}
 import java.io.{IOException, Reader}
 import java.util.Properties
 import javax.swing._
-import model.{Stroke, Painting}
-import renderer.SingleRenderSurface
-import util.{TomeLoader, DataSample, LibraryImpl, ResourceLoader}
+import org.flowpaint.model.{Stroke, Painting}
+import org.flowpaint.renderer.SingleRenderSurface
+import org.flowpaint.util.{TomeLoader, DataSample, LibraryImpl, ResourceLoader}
 import org.flowpaint.brush.BrushSet
 
 /**

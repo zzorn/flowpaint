@@ -12,7 +12,7 @@ import _root_.org.flowpaint.gradient.{MultiGradient, Gradient, GradientPoint}
 
 import _root_.org.flowpaint.property.{BrushSliderEditor, GradientSliderEditor, Data, DataImpl}
 import _root_.scala.xml.{Elem, XML, Node}
-import util.{DataSample, ListenableList, ResourceLoader, PropertyRegister}
+import org.flowpaint.util.{DataSample, ListenableList, ResourceLoader, PropertyRegister}
 
 /**
  *  Specifies all the default brushes.

@@ -1,10 +1,10 @@
 package org.flowpaint.ui
-import brush.Brush
-import editors.Editor
+import org.flowpaint.brush.Brush
+import org.flowpaint.editors.Editor
 import java.awt.{Dimension, Color}
 import javax.swing.{JPanel, JLabel}
 import net.miginfocom.swing.MigLayout
-import property.DataEditor
+import org.flowpaint.property.DataEditor
 
 /**
  * 

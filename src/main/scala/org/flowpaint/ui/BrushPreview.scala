@@ -1,15 +1,15 @@
 package org.flowpaint.ui
 
-import brush.Brush
-import filters.StrokeListener
-import ink.Ink
+import org.flowpaint.brush.Brush
+import org.flowpaint.filters.StrokeListener
+import org.flowpaint.ink.Ink
 import java.awt.event.{ComponentListener, MouseAdapter}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.JPanel
-import model.{Stroke, Painting, Path}
-import property.{Data, DataImpl}
-import renderer.SingleRenderSurface
-import util.{DataSample, PropertyRegister}
+import org.flowpaint.model.{Stroke, Painting, Path}
+import org.flowpaint.property.{Data, DataImpl}
+import org.flowpaint.renderer.SingleRenderSurface
+import org.flowpaint.util.{DataSample, PropertyRegister}
 
 object BrushPreview {
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, data:Data) {

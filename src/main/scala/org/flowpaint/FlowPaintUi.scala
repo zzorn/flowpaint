@@ -1,14 +1,14 @@
 package org.flowpaint
 
 
-import brush.BrushSet
+import org.flowpaint.brush.BrushSet
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Dimension, BorderLayout}
 import javax.swing._
 import javax.swing.plaf.ColorUIResource
 import java.awt.event.KeyEvent
 import net.miginfocom.swing.MigLayout
-import ui.{ParameterPanel, BrushSelectionUi, BrushUi}
+import org.flowpaint.ui.{ParameterPanel, BrushSelectionUi, BrushUi}
 /**
  *
  *

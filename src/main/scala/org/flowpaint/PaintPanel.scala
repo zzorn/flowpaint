@@ -4,7 +4,7 @@ import java.awt._
 import java.awt.event.{ComponentListener, ComponentEvent}
 import java.awt.image.BufferedImage
 import javax.swing.JPanel
-import renderer.RenderSurface
+import org.flowpaint.renderer.RenderSurface
 
 /**
  *  A swing component that can be painted on.

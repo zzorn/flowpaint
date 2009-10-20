@@ -1,25 +1,25 @@
 package org.flowpaint
 
 
-import _root_.scala.collection.jcl.ArrayList
-import _root_.scala.io.Source
-import _root_.scala.xml.{Elem, PrettyPrinter}
-import brush._
+import scala.collection.jcl.ArrayList
+import scala.io.Source
+import scala.xml.{Elem, PrettyPrinter}
+import org.flowpaint.brush._
 import edu.stanford.ejalbert.BrowserLauncher
-import filters._
-import gradient.{MultiGradient, Gradient, GradientPoint}
-import ink._
+import org.flowpaint.filters._
+import org.flowpaint.gradient.{MultiGradient, Gradient, GradientPoint}
+import org.flowpaint.ink._
 import input.{InputHandler}
 
 import java.awt.Font
 import java.io.{File, BufferedWriter, Writer, FileWriter}
 
 import javax.swing.{JFileChooser, SwingUtilities}
-import model.{Stroke, Painting, Path, Layer}
-import property.{BrushSliderEditor, GradientSliderEditor}
-import renderer.{SingleRenderSurface, RenderSurface}
-import tools.{StrokeTool, Tool}
-import util._
+import org.flowpaint.model.{Stroke, Painting, Path, Layer}
+import org.flowpaint.property.{BrushSliderEditor, GradientSliderEditor}
+import org.flowpaint.renderer.{SingleRenderSurface, RenderSurface}
+import org.flowpaint.tools.{StrokeTool, Tool}
+import org.flowpaint.util._
 
 /**
  *         Provides common methods of the application for various tools etc.

@@ -2,7 +2,7 @@ package org.flowpaint.ui
 
 import _root_.org.flowpaint.util.DataSample
 import _root_.scala.collection.jcl.ArrayList
-import brush.{Brush, BrushSet}
+import org.flowpaint.brush.{Brush, BrushSet}
 import javax.swing.{JPanel, JLabel}
 import net.miginfocom.swing.MigLayout
 

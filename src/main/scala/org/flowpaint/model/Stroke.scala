@@ -6,7 +6,7 @@ import filters.StrokeListener
 import property.Data
 import renderer.{PictureProvider, RenderSurface}
 import renderer.StrokeRenderer
-import util.{DataSample, RectangleInt}
+import util.{DataSample, Rectangle}
 
 /**
  *      A brush stroke on some layer.

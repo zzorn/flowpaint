@@ -6,7 +6,7 @@ import org.flowpaint.brush
 import pixelprocessor.ScanlineCalculator
 import property.{DataImpl, Data}
 import util.MathUtils.squaredDistance
-import util.{DataSample, RectangleInt, PropertyRegister}
+import util.{DataSample, Rectangle, PropertyRegister}
 
 /**
  *     Renders a stroke segment.

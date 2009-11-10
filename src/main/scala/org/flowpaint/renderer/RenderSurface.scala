@@ -45,6 +45,10 @@ trait RenderSurface {
 
   def putPixel( x : Int, y : Int, sample : Data )
 
+  /**
+   * Returns the colorcode for the pixel at the specified location, or -1 if not available.
+   */
+  def getPixel(x : Int, y : Int) : Int
 
 
   def provideContent(minX: Float, minY: Float, maxX: Float, maxY: Float,
@@ -70,3 +74,4 @@ trait RenderSurface {
 
 
 }
+

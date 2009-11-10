@@ -208,7 +208,18 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
         }
     }
 
-    def provideContent(minX: Float, minY: Float,
+
+
+  def getPixel(x: Int, y: Int) : Int = {
+    if (initialized &&
+        x >= 0 && y >= 0 &&
+        x < width && y < height) {
+        imageData(x + y * width)
+    }
+    else -1
+  }
+
+  def provideContent(minX: Float, minY: Float,
                       maxX: Float, maxY: Float,
                       colorCalculator: (Int, Int) => Int) {
 

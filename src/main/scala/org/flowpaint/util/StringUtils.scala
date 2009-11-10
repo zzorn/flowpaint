@@ -38,5 +38,15 @@ object StringUtils {
     return numZeropad
   }
 
+  /**
+   * True if s is a java style identifier (starts with letter, followed by numbers and letters, should be non-empty).
+   */
+  def isIdentifier( s : String ) : Boolean = {
+    if (s == null || s.length <= 0) false
+    else if ( !Character.isJavaIdentifierStart( s.charAt( 0 ) ) ) false
+    else {
+      s forall Character.isJavaIdentifierPart
+    }
+  }
 
 }

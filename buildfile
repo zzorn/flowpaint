@@ -31,5 +31,4 @@ define "flowpaint" do
   
   package :jar
 
-
 end

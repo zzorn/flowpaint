@@ -7,6 +7,9 @@ package org.flowpaint.renderer.packedsurface
  */
 
 class RasterLayer extends Layer {
+
+  private var channels : Map[Channel, Raster] = Map()
+
   
 }
 

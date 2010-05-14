@@ -14,7 +14,7 @@
 
   <!-- Scala version property -->
   <properties>
-    <scala.version>2.8.0.RC2</scala.version>
+    <scala.version>2.8.0.RC1</scala.version>
   </properties>
 
   <!-- Places to retrieve external libraries from -->
@@ -24,7 +24,7 @@
       <name>Scala-Tools Maven2 Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
     </repository>
-
+    
     <repository>
       <id>JBOSS</id>
       <name>JBoss Repository</name>

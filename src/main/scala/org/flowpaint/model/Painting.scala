@@ -1,7 +1,7 @@
 package org.flowpaint.model
 
+import _root_.org.flowpaint.renderer.{RenderSurface, PictureProvider}
 import _root_.scala.collection.jcl.ArrayList
-import renderer.{PictureProvider, RenderSurface}
 import util.PerformanceTester.time
 
 /**

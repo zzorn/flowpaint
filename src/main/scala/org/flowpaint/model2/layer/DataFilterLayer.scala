@@ -3,10 +3,9 @@ package org.flowpaint.model2.layer
 import _root_.org.flowpaint.model2.Layer
 
 /**
- * A group of layers, rendered as one.
+ * Applies a filter to select data objects.
  */
-
-class LayerGroup extends Layer{
+class DataFilterLayer extends Layer{
   
 }
 

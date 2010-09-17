@@ -1,11 +1,10 @@
 package org.flowpaint.filters
 
-import property.{DataImpl, Data}
-import util.DataSample
-import util.MathUtils
+import org.flowpaint.property.{DataImpl, Data}
 import Math.abs
 
-import util.PropertyRegister
+import org.flowpaint.util.PropertyRegister
+import org.flowpaint.util.{PropertyRegister, DataSample, MathUtils}
 
 /**
  *    Tilts the angle of a stroke to be perpendicular to its direction
@@ -46,10 +45,10 @@ class StrokeAngleTilter() extends PathProcessor {
 
         val angle = HALF_Pi + Math.atan2(yDiff, xDiff).toFloat
 
-        val normalizedAngle = util.MathUtils.normalizeAngle(angle)
+        val normalizedAngle = MathUtils.normalizeAngle(angle)
 
         val smoothing = if (firstPoint || firstPointData != null) 0f else smooth
-        val smoothedAngle = util.MathUtils.wrappedInterpolate(smoothing, normalizedAngle, previousAngle)
+        val smoothedAngle = MathUtils.wrappedInterpolate(smoothing, normalizedAngle, previousAngle)
         previousAngle = smoothedAngle
 
         /*

@@ -1,8 +1,7 @@
 package org.flowpaint.filters
 
-import property.{DataImpl, Data}
-import util.DataSample
-import util.PropertyRegister
+import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.util.{MathUtils, DataSample, PropertyRegister}
 
 /**
  *  Removes segments with zero length, and merges their properties with subsequent points
@@ -38,8 +37,8 @@ class ZeroLengthSegmentFilter extends PathProcessor {
 
         val smooth = if (firstPoint) 0f else smoothing
 
-        val newX = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_X, oldX2), oldX2)
-        val newY = util.MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_Y, oldY2), oldY2)
+        val newX = MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_X, oldX2), oldX2)
+        val newY = MathUtils.interpolate(smooth, pointData.getFloatProperty(PropertyRegister.PATH_Y, oldY2), oldY2)
         /*
             val newX = pointData.getProperty("x",0)
             val newY = pointData.getProperty("y",0)
@@ -51,7 +50,7 @@ class ZeroLengthSegmentFilter extends PathProcessor {
         oldX2 = newX
         oldY2 = newY
 
-        if (util.MathUtils.squaredDistance(oldX, oldY, newX, newY) <= FILTER_DISTANCE * FILTER_DISTANCE)
+        if (MathUtils.squaredDistance(oldX, oldY, newX, newY) <= FILTER_DISTANCE * FILTER_DISTANCE)
             {
                 previousData.setValuesFrom(pointData)
 

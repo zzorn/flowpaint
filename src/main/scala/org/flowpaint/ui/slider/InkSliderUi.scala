@@ -1,11 +1,13 @@
 package org.flowpaint.ui.slider
 
-import _root_.org.flowpaint.brush.{Brush}
-import _root_.org.flowpaint.ink.{PixelProcessorMetadata, AlphaTransparencyBackgroundInk, Ink}
+import org.flowpaint.brush.{Brush}
+import org.flowpaint.ink.{PixelProcessorMetadata, AlphaTransparencyBackgroundInk, Ink}
 import org.flowpaint.util.{DataSample, ListenableList, PropertyRegister}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.{JPanel, JComponent}
 import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.ui.SliderUi
+
 /**
  *
  *

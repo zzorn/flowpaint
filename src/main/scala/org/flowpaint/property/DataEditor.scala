@@ -1,7 +1,7 @@
 package org.flowpaint.property
 
-import _root_.org.flowpaint.util.DataSample
-import brush.Brush
+import org.flowpaint.util.DataSample
+import org.flowpaint.brush.Brush
 import javax.swing.JComponent
 
 /**

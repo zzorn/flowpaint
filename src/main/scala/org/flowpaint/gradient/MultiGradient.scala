@@ -1,12 +1,10 @@
 package org.flowpaint.gradient
 
-import _root_.org.flowpaint.property.{Data, DataImpl}
-import _root_.scala.xml.{Elem, Node}
+import org.flowpaint.property.{Data, DataImpl}
+import scala.xml.{Elem, Node}
 import java.awt.Color
 import java.util.ArrayList
-
-
-import util.DataSample
+import org.flowpaint.util.DataSample
 
 case class GradientPoint(var position: Float, data: Data) extends Comparable[GradientPoint] {
     def compareTo(p1: GradientPoint): Int = {

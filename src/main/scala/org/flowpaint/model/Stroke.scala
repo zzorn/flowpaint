@@ -1,12 +1,12 @@
 package org.flowpaint.model
 
 
-import brush.Brush
-import filters.StrokeListener
-import property.Data
-import renderer.{PictureProvider, RenderSurface}
-import renderer.StrokeRenderer
-import util.{DataSample, Rectangle}
+import org.flowpaint.brush.Brush
+import org.flowpaint.filters.StrokeListener
+import org.flowpaint.property.Data
+import org.flowpaint.renderer.{PictureProvider, RenderSurface}
+import org.flowpaint.renderer.StrokeRenderer
+import org.flowpaint.util.{DataSample, Rectangle}
 
 /**
  *      A brush stroke on some layer.

@@ -1,8 +1,8 @@
 package org.flowpaint.util
 
 
-import _root_.scala.xml.{Elem, Node}
-import property.{Data, DataImpl}
+import scala.xml.{Elem, Node}
+import org.flowpaint.property.{Data, DataImpl}
 
 
 

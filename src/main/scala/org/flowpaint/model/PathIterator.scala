@@ -1,5 +1,5 @@
 package org.flowpaint.model
-import property.Data
+import org.flowpaint.property.Data
 
 /**
  * Can be used to iterate a Path.  

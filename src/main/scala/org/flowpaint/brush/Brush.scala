@@ -1,17 +1,17 @@
 package org.flowpaint.brush
 
-import _root_.scala.collection.jcl.{HashSet, ArrayList}
-import _root_.scala.xml.Node
-import filters.{StrokeListener, StrokeFilter, PathProcessor}
-import ink.Ink
+import scala.xml.Node
+import org.flowpaint.filters.{StrokeListener, StrokeFilter, PathProcessor}
+import org.flowpaint.ink.Ink
 import javax.swing.JComponent
-import pixelprocessor.{PixelProcessor, ScanlineCalculator}
-import property.{DataEditor, GradientSliderEditor, DataImpl, Data}
-import ui.editors.Editor
-import ui.slider.InkSliderUi
-import ui.{BrushSliderUi, ParameterUi}
-import util.{DataSample, ListenableList, Tome}
+import org.flowpaint.pixelprocessor.{PixelProcessor, ScanlineCalculator}
+import org.flowpaint.property.{DataEditor, GradientSliderEditor, DataImpl, Data}
+import org.flowpaint.ui.editors.Editor
+import org.flowpaint.ui.slider.InkSliderUi
+import org.flowpaint.ui.{BrushSliderUi, ParameterUi}
+import org.flowpaint.util.{DataSample, ListenableList, Tome}
 import org.flowpaint.util.ConfigurationMetadata
+import java.util.HashSet
 
 
 /**

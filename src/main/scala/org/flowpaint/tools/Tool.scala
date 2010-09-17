@@ -1,6 +1,6 @@
 package org.flowpaint.tools
 
-import util.DataSample
+import org.flowpaint.util.DataSample
 
 /**
  * Something that recieves events from the input devices.

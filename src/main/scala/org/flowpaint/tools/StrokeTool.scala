@@ -1,13 +1,11 @@
 package org.flowpaint.tools
 
-import _root_.org.flowpaint.brush.Brush
-import _root_.org.flowpaint.property.{Data, DataImpl}
-import filters.StrokeListener
-import javax.swing.SwingUtilities
-import model.Stroke
-import util.DataSample
+import org.flowpaint.brush.Brush
+import org.flowpaint.property.{Data, DataImpl}
+import org.flowpaint.model.Stroke
 
-import util.PropertyRegister
+import org.flowpaint.util.{PropertyRegister, DataSample}
+import org.flowpaint.FlowPaintController
 
 /**
  *

@@ -1,10 +1,7 @@
 package org.flowpaint.filters
 
-import property.Data
-import util.DataSample
-
-
-import util.PropertyRegister
+import org.flowpaint.property.Data
+import org.flowpaint.util.{MathUtils, PropertyRegister, DataSample}
 
 /**
  *
@@ -23,7 +20,7 @@ class RadiusFromPressureFilter() extends PathProcessor {
         val pressure = pointData.getFloatProperty(PropertyRegister.PRESSURE, defaultPressure)
         val maxRadius = getFloatProperty(PropertyRegister.MAX_RADIUS, pointData, 10)
 
-        val radius = util.MathUtils.interpolate(pressureEffect, maxRadius, pressure * maxRadius)
+        val radius = MathUtils.interpolate(pressureEffect, maxRadius, pressure * maxRadius)
 
         pointData.setFloatProperty(PropertyRegister.RADIUS, radius)
 

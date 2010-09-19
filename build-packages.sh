@@ -5,7 +5,7 @@
 
 # Application specific variables:
 version=`cat VERSION`
-revision=`svnversion -n`
+revision=`git describe --dirty`
 releaseDate=`date +"%d %B %Y"`
 userReadableName=Flowpaint
 appName=flowpaint

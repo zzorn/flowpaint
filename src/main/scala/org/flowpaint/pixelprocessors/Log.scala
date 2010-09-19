@@ -1,5 +1,5 @@
 package org.flowpaint.pixelprocessors
-import pixelprocessor.SingleFunctionPixelProcessor
+import org.flowpaint.pixelprocessor.SingleFunctionPixelProcessor
 
 /**
  * 

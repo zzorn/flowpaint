@@ -1,14 +1,8 @@
 package org.flowpaint.ui.editors
-/**
- * 
- * 
- * @author Hans Haggstrom
- */
-
 
 import java.awt.{Graphics2D, Color}
-import util.GraphicsUtils._
-import util.{ColorUtils, PropertyRegister, MathUtils}
+import org.flowpaint.util.GraphicsUtils._
+import org.flowpaint.util.{ColorUtils, PropertyRegister, MathUtils}
 /**
  * A 2D slider editor visualizing the editor background with saturation - luminance gradients.
  *

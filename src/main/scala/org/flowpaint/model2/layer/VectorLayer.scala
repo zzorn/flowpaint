@@ -1,11 +1,12 @@
 package org.flowpaint.model2.layer
 
-import _root_.org.flowpaint.model2.Layer
+import org.flowpaint.util.Rectangle
+import org.flowpaint.model2.{DataMap, Raster, Layer}
 
 /**
  * Renders data as strokes and shapes and fills, removing those data objects at the same time.
  */
 class VectorLayer extends Layer {
-  
+  def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) = null
 }
 

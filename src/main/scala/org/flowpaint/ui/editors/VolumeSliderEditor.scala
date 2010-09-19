@@ -1,8 +1,8 @@
 package org.flowpaint.ui.editors
 import java.awt.{Graphics2D, BorderLayout, Color}
 import javax.swing.{SwingConstants, JLabel}
-import util.{MathUtils}
-import util.GraphicsUtils._
+import org.flowpaint.util.{MathUtils}
+import org.flowpaint.util.GraphicsUtils._
 /**
  * A simple slider editor, showing as image a simple triangle that grows to the right.
  *

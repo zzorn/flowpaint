@@ -3,6 +3,7 @@ package org.flowpaint.model
 
 import org.flowpaint.renderer.{PictureProvider, RenderSurface}
 import java.util.ArrayList
+import scala.collection.JavaConversions._
 
 /**
  * A layer of a painting.

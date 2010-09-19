@@ -2,6 +2,7 @@ package org.flowpaint.model2
 
 import _root_.java.awt.image.BufferedImage
 import collection.mutable.HashMap
+import collection._
 
 /**
  * Block of data for a quadratic region of pixels of the specified size along the sides,
@@ -11,9 +12,9 @@ import collection.mutable.HashMap
 case class Block(size: Int, cellX: Int, cellY: Int, x: Int, y: Int) {
   
   // Map from channel name to data of the channel
-  private val data: Map[Symbol, Array[Float]] = new HashMap()
+  private val data: mutable.Map[Symbol, Array[Float]] = new HashMap()
   
-  def channel(name: Symbol): Array[Float] = data.get(name)
+  def channel(name: Symbol): Array[Float] = data(name)
 
   def render(image: BufferedImage,
              x: Double = 0,

@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial
+
+import org.flowpaint.util.ListenableList
+
 /**
  * A Geometry that consists of a sequence of child Geometries.
  *

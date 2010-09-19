@@ -12,7 +12,7 @@ import org.flowpaint.ui.{BrushSliderUi, ParameterUi}
 import org.flowpaint.util.{DataSample, ListenableList, Tome}
 import org.flowpaint.util.ConfigurationMetadata
 import java.util.HashSet
-
+import scala.collection.JavaConversions._
 
 /**
  * Contains deserialization code for brushes.

@@ -1,6 +1,6 @@
 package org.flowpaint.filters
 
-import util.DataSample
+import org.flowpaint.util.DataSample
 
 /**
  * 

@@ -10,6 +10,7 @@ import org.flowpaint.model.{Stroke, Painting, Path}
 import org.flowpaint.property.{Data, DataImpl}
 import org.flowpaint.renderer.SingleRenderSurface
 import org.flowpaint.util.{DataSample, PropertyRegister}
+import org.flowpaint.PaintPanel
 
 object BrushPreview {
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, data:Data) {

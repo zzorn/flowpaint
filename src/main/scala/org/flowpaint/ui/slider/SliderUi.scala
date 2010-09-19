@@ -1,7 +1,6 @@
 package org.flowpaint.ui
 
 
-import _root_.org.flowpaint.util.DataSample
 import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
 
 
@@ -9,6 +8,7 @@ import org.flowpaint.brush.{Brush}
 import java.awt.{Graphics2D, BasicStroke, Polygon, Color}
 import javax.swing.JComponent
 import org.flowpaint.property.Data
+import org.flowpaint.util.{MathUtils, DataSample}
 
 
 abstract sealed class SliderOrientation
@@ -148,7 +148,7 @@ abstract class SliderUi(editedData: Data,
     else
       relativePosition = (1.0f * x) / (1.0f * preview.getWidth())
 
-    relativePosition = util.MathUtils.clampToZeroToOne(relativePosition)
+    relativePosition = MathUtils.clampToZeroToOne(relativePosition)
 
     updateBrush()
   }
@@ -163,7 +163,7 @@ abstract class SliderUi(editedData: Data,
     override def mouseWheelMoved(e: MouseWheelEvent) {
       val amount = e.getWheelRotation()
 
-      relativePosition = util.MathUtils.clampToZeroToOne(relativePosition + WHEEL_STEP * amount)
+      relativePosition = MathUtils.clampToZeroToOne(relativePosition + WHEEL_STEP * amount)
 
       updateBrush()
     }
@@ -171,7 +171,7 @@ abstract class SliderUi(editedData: Data,
 
 
   private def updateBrush() {
-    editedData.setFloatProperty(editedParameter, util.MathUtils.interpolate(relativePosition, startValue, endValue))
+    editedData.setFloatProperty(editedParameter, MathUtils.interpolate(relativePosition, startValue, endValue))
   }
 
 

@@ -2,6 +2,7 @@ package org.flowpaint.model2
 
 import _root_.org.flowpaint.util.Rectangle
 import collection.mutable.HashMap
+import collection._
 
 /**
  * 
@@ -15,7 +16,7 @@ class Raster {
   private var channels: List[String] = Nil
   
   // Map from row indexes to map from column indexes to blocks of pixel data.
-  private val blocks: Map[Int, Map[Int, Block]] = new HashMap()
+  private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
 
   def getBlocks(area: Rectangle): List[Block] = {
     val xc1 = area.x1 / blockSize
@@ -23,7 +24,7 @@ class Raster {
     val xc2 = area.x2 / blockSize
     val yc2 = area.y2 / blockSize
 
-    var result = Nil
+    var result: List[Block] = Nil
 
     var yc = yc1
     while(yc <= yc2) {
@@ -42,12 +43,15 @@ class Raster {
       yc += 1
     }
 
+    result
   }
 
   /**
    * Renders the specified raster on top of this raster, for the specified area.
    */
-  def overlay(raster: Raster, area: Rectangle)
+  def overlay(raster: Raster, area: Rectangle) {
+    // TODO
+  }
 
 }
 

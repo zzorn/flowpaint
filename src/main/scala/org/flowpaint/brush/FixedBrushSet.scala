@@ -1,9 +1,10 @@
 package org.flowpaint.brush
 
 
-import _root_.scala.collection.jcl.HashSet
 import _root_.scala.xml.Elem
-import util.Tome
+import scala.collection.JavaConversions._
+import org.flowpaint.util.Tome
+import java.util.HashSet
 
 
 /**
@@ -17,7 +18,7 @@ class FixedBrushSet(id : String, name_ : String, maxSize : Int, initialBrushes :
 
   def identifier: String = id
 
-  private var brushes : List[Brush] = initialBrushes.subseq(0, maxSize).toList
+  private var brushes : List[Brush] = initialBrushes.slice(0, maxSize)
   private val listeners : HashSet[()=>Unit] = new HashSet()
 
   def this( id : String, name_ : String, maxSize : Int  ) {
@@ -54,7 +55,7 @@ class FixedBrushSet(id : String, name_ : String, maxSize : Int, initialBrushes :
 
     if (brushes.size >= maxSize)
       {
-        brushes = brushes.subseq( 0, maxSize-1 ).toList
+        brushes = brushes.slice( 0, maxSize-1 )
       }
 
     brushes = brushes ::: List(brush)
@@ -77,7 +78,7 @@ class FixedBrushSet(id : String, name_ : String, maxSize : Int, initialBrushes :
 
     if (brushes.size > maxSize)
       {
-        brushes = brushes.subseq( 0, maxSize ).toList
+        brushes = brushes.slice( 0, maxSize )
       }
 
     notifyListeners()

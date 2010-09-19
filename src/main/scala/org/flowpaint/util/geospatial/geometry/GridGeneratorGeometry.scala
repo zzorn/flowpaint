@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial.geometry
+
+import org.flowpaint.util.geospatial.Geometry
+
 /**
  * Generates some other Geometries in a randomized position inside grid cells of some size
  * (basically providing a random fill of copies of a Geometry).

@@ -4,6 +4,7 @@ import edu.stanford.ejalbert.BrowserLauncher
 import edu.stanford.ejalbert.exception.{UnsupportedOperatingSystemException, BrowserLaunchingInitializingException, BrowserLaunchingExecutionException}
 import java.net.URL
 import javax.swing.{JDialog, JOptionPane, JTextField}
+import org.flowpaint.FlowPaintUi
 
 /**
  * 
@@ -20,7 +21,7 @@ object InternetUtils {
 
       // Well, this is going pretty far, but lets check if the clipboard is available too..
       // Who knows how well it works from java on various linux flavours
-      val clipboardAvailable = util.ClipboardUtils.isCliboardAvailable
+      val clipboardAvailable = ClipboardUtils.isCliboardAvailable
 
       val field = new JTextField(url)
       field.setEditable(false)
@@ -60,7 +61,7 @@ object InternetUtils {
 
 
       if ( clipboardAvailable && selectedValue == JOptionPane.OK_OPTION)
-        util.ClipboardUtils.setClipboardContents( url )
+        ClipboardUtils.setClipboardContents( url )
     }
 
     val launcher = new BrowserLauncher()

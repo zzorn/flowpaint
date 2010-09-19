@@ -4,6 +4,6 @@ package org.flowpaint.model2
  * 
  */
 class Picture {
-  var layers: List[Layer]
+  var layers: List[Layer] = Nil
 }
 

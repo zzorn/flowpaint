@@ -1,8 +1,8 @@
 package org.flowpaint.ink
 
-import _root_.org.flowpaint.property.Data
-import util.DataSample
-import util.PropertyRegister
+import org.flowpaint.property.Data
+import org.flowpaint.util.DataSample
+import org.flowpaint.util.PropertyRegister
 
 /**
  *  A checker-pattern ink, using the absolue screen coordinates (=used for alpha transparency background).

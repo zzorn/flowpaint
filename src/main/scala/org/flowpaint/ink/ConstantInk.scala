@@ -1,6 +1,6 @@
 package org.flowpaint.ink
-import _root_.org.flowpaint.property.Data
-import util.DataSample
+import org.flowpaint.property.Data
+import org.flowpaint.util.DataSample
 
 /**
  * An ink that sets some of the ink properties to fixed values.

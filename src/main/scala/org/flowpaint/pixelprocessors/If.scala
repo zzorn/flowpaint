@@ -2,8 +2,8 @@ package org.flowpaint.pixelprocessors
 
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
-import pixelprocessor.PixelProcessor
-import util.DataSample
+import org.flowpaint.pixelprocessor.PixelProcessor
+import org.flowpaint.util.DataSample
 
 /**
  * Provides an if clause with up to 5 thresholds.

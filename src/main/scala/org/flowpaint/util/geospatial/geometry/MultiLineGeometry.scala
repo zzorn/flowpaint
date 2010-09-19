@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial.geometry
+
+import org.flowpaint.util.geospatial.Geometry
+
 /**
  * A Geometry that instantiates a MultiLine.
  *

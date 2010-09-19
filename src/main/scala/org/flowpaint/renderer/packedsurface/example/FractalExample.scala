@@ -1,7 +1,8 @@
 package org.flowpaint.renderer.packedsurface.example
 
 
-import util.SimpleFrame
+import org.flowpaint.util.SimpleFrame
+import org.flowpaint.renderer.packedsurface.VisibleSurface
 
 /**
  * 

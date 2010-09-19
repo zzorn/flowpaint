@@ -2,8 +2,8 @@ package org.flowpaint.pixelprocessors
 
 import _root_.org.flowpaint.property.Data
 import _root_.scala.collection.Map
-import util.DataSample
-import pixelprocessor.PixelProcessor
+import org.flowpaint.util.DataSample
+import org.flowpaint.pixelprocessor.PixelProcessor
 
 /**
  * 

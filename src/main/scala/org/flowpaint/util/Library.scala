@@ -1,7 +1,9 @@
 package org.flowpaint.util
 
-import _root_.scala.collection.jcl.HashMap
-import _root_.scala.xml.{Elem, NodeSeq, Node}
+import scala.xml.{Elem, NodeSeq, Node}
+import java.util.HashMap
+import scala.collection.JavaConversions._
+
 /**
  *
  *
@@ -55,8 +57,8 @@ class LibraryImpl(initialLoaders : TomeLoader* ) extends Library {
 
     def getTome[T <: Tome](identifier: String, default: T): T = {
         tomes.get(identifier) match {
-            case None => default
-            case Some(v) => v.asInstanceOf[T]
+            case null => default
+            case v : Tome => v.asInstanceOf[T]
         }
     }
 

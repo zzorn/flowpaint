@@ -6,6 +6,7 @@ import java.awt.event.{ComponentListener, MouseAdapter}
 
 import javax.swing.JComponent
 import org.flowpaint.util.DataSample
+import org.flowpaint.FlowPaintController
 
 /**
  * A button showing a preview of a brush, which can be clicked to select the brush in the flowpaint controller.

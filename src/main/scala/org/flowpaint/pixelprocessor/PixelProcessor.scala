@@ -1,9 +1,9 @@
 package org.flowpaint.pixelprocessor
 
-import _root_.org.flowpaint.property.Data
-import _root_.scala.collection.{Set, Map}
 import java.lang.Object
-import util.{DataSample, Configuration}
+import org.flowpaint.property.Data
+import scala.collection.{Set, Map}
+import org.flowpaint.util.{DataSample, Configuration}
 
 /**
  *

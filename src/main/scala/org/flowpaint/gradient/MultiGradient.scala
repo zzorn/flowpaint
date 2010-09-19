@@ -5,6 +5,7 @@ import scala.xml.{Elem, Node}
 import java.awt.Color
 import java.util.ArrayList
 import org.flowpaint.util.DataSample
+import scala.collection.JavaConversions._
 
 case class GradientPoint(var position: Float, data: Data) extends Comparable[GradientPoint] {
     def compareTo(p1: GradientPoint): Int = {
@@ -165,7 +166,7 @@ class MultiGradient(val identifier: String) extends Gradient {
         }
 
 
-    def toXML() : Elem = <gradient id={identifier}>{scala.collection.jcl.Conversions.convertList( myPoints) map ( _.toXML() ) }</gradient>
+    def toXML() : Elem = <gradient id={identifier}>{myPoints map ( _.toXML() ) }</gradient>
 }
 
 

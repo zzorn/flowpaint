@@ -1,7 +1,7 @@
 package org.flowpaint.filters
 import _root_.org.flowpaint.property.Data
-import ink.Ink
-import util.{DataSample, PropertyRegister}
+import org.flowpaint.ink.Ink
+import org.flowpaint.util.{MathUtils, DataSample, PropertyRegister}
 
 /**
  * 
@@ -18,7 +18,7 @@ class AlphaFromPressureInk() extends Ink {
     val pressure = pixelData.getFloatProperty( PropertyRegister.PRESSURE, 0.5f )
     val oldAlpha = pixelData.getFloatProperty( PropertyRegister.ALPHA, 1 )
 
-    val alpha = util.MathUtils.interpolate( pressureEffect, oldAlpha, pressure * oldAlpha )
+    val alpha = MathUtils.interpolate( pressureEffect, oldAlpha, pressure * oldAlpha )
 
     pixelData.setFloatProperty( PropertyRegister.ALPHA, alpha )
     

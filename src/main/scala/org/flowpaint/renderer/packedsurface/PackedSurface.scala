@@ -2,9 +2,10 @@ package org.flowpaint.renderer.packedsurface
 
 
 import java.awt.{Color, Graphics}
-import property.Data
-import pixelprocessor.ScanlineCalculator
-import util.DataSample
+import org.flowpaint.property.Data
+import org.flowpaint.pixelprocessor.ScanlineCalculator
+import org.flowpaint.util.DataSample
+import org.flowpaint.renderer.PictureProvider
 
 
 /**

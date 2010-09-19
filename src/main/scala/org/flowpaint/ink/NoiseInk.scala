@@ -1,10 +1,9 @@
 package org.flowpaint.ink
 
-import _root_.org.flowpaint.property.Data
-import gradient.Gradient
-import util.DataSample
-
-import util.PropertyRegister
+import org.flowpaint.property.Data
+import org.flowpaint.gradient.Gradient
+import org.flowpaint.FlowPaint
+import org.flowpaint.util.{PerlinNoise, PropertyRegister, DataSample}
 
 /**
  *
@@ -37,7 +36,7 @@ class NoiseInk extends Ink{
         var scale = 1f
         var amplitude = 1f
         while (i < octaves) {
-            n += util.PerlinNoise.noise3(u * scale, v * scale, w) * amplitude
+            n += PerlinNoise.noise3(u * scale, v * scale, w) * amplitude
             scale *= 2f
             amplitude *= 0.5f
             u += 213.1234f

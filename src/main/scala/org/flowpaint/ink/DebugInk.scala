@@ -1,7 +1,7 @@
 package org.flowpaint.ink
 
-import _root_.org.flowpaint.property.Data
-import util.DataSample
+import org.flowpaint.property.Data
+import org.flowpaint.util.DataSample
 
 /**
  *  Used for debugging stroke rendering.

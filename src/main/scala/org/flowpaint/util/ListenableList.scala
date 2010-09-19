@@ -1,7 +1,7 @@
 package org.flowpaint.util
 
-import _root_.scala.collection.mutable.HashSet
-import brush.Brush
+import scala.collection.mutable.HashSet
+import org.flowpaint.brush.Brush
 
 /**
  *    Encapsulates a list that can be added and removed from, and that notifies specified listeners when items are added or removed.

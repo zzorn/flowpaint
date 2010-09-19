@@ -1,10 +1,10 @@
 package org.flowpaint.ui.editors
 
-import _root_.org.flowpaint.property.Data
 import java.awt.Dimension
 import java.awt.event.ActionListener
 import javax.swing.{JCheckBox, JComponent}
-import util.Tome
+import org.flowpaint.property.Data
+import org.flowpaint.util.Tome
 
 /**
  *

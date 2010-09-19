@@ -1,6 +1,9 @@
 package org.flowpaint.actions
 
 import java.io.File
+import org.flowpaint.{FlowPaintController, FlowPaint, FlowPaintUi}
+import org.flowpaint.util.StringUtils
+import org.flowpaint.file.PngExporter
 
 /**
  * 
@@ -28,7 +31,7 @@ object QuickSave {
     if (image == null) return "Image not rendered yet"
 
     // Try to export
-    val exportResult = file.PngExporter.exportPng( image, fileName )
+    val exportResult = PngExporter.exportPng( image, fileName )
 
     // Show message if we succeeded
     if (exportResult == null) FlowPaintUi.showMessage( "Saved current picture to '"+fileName.getAbsolutePath().toString+"'" )
@@ -44,7 +47,7 @@ object QuickSave {
 
     for ( i <- 1 to 9999 ) {
 
-      val name =  baseName + util.StringUtils.zeroPadInteger( i, 3 ) + suffix
+      val name =  baseName + StringUtils.zeroPadInteger( i, 3 ) + suffix
 
       val file = new File( name )
 

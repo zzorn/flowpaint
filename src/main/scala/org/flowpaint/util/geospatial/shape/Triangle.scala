@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial.shape
+
+import org.flowpaint.util.geospatial.Shape
+
 /**
  * A triangle shape.  Can contain user defined content for each corner.
  * 

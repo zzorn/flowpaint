@@ -7,8 +7,7 @@ import java.awt.{Graphics2D, BorderLayout, BasicStroke, Graphics}
 import javax.swing.JComponent
 import org.flowpaint.property.Data
 import org.flowpaint.renderer.{SingleRenderSurface, RenderSurface}
-import org.flowpaint.util.{DataSample, PropertyRegister}
-
+import org.flowpaint.util.{MathUtils, DataSample, PropertyRegister}
 
 /**
  *  A slider with a brush stroke as a background.
@@ -47,7 +46,7 @@ class BrushSliderUi(editedData: Data,
 
     dataSample.setFloatProperty(PropertyRegister.PRESSURE, 0.5f)
     dataSample.setFloatProperty(PropertyRegister.TIME, f * 0.5f)
-    dataSample.setFloatProperty(editedParameter, util.MathUtils.interpolate(f, startValue, endValue))
+    dataSample.setFloatProperty(editedParameter, MathUtils.interpolate(f, startValue, endValue))
 
   }
 

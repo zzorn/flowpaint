@@ -1,6 +1,7 @@
 package org.flowpaint.util.geospatial.shape
 
-import property.Data
+import org.flowpaint.property.Data
+import org.flowpaint.util.geospatial.Vector2
 
 /**
  * Used for Triangle corners.  Contains a location, and optionally user specified content.

@@ -1,7 +1,7 @@
 package org.flowpaint.renderer.packedsurface
 
 
-import util.TimerUtil._
+import org.flowpaint.util.TimerUtil._
 
 /**
  * Comparing performance of int and float multiplication.

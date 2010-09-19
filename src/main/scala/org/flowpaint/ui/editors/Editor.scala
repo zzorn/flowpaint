@@ -3,7 +3,7 @@ package org.flowpaint.ui.editors
 
 import _root_.org.flowpaint.property.Data
 import javax.swing.{JPanel, JComponent}
-import util.Configuration
+import org.flowpaint.util.Configuration
 
 /**
  * Something that can edit some properties of a Data.

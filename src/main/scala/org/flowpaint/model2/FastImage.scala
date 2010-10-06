@@ -1,13 +1,13 @@
 package org.flowpaint.model2
 
 import java.awt.image.{BufferedImage, DirectColorModel, MemoryImageSource}
-import org.flowpaint.util.BoundingBox
 import java.awt.{Color, Graphics, Toolkit, Image}
+import org.flowpaint.util.{RectangleImpl, Rectangle, BoundingBox}
 
 /**
  * Fast, low level access image container.
  */
-class Canvas(val width: Int, val height: Int) {
+class FastImage(val width: Int, val height: Int) {
   require(width > 0, "Width should be positive")
   require(height > 0, "Height should be positive")
 
@@ -45,6 +45,15 @@ class Canvas(val width: Int, val height: Int) {
     val c = color.getRGB
     var i = 0
     while (i < imageData.length) {imageData(i) = c; i += 1}
+
+    updatedArea.includeArea(0, 0, width, height)
+  }
+
+  def renderRaster(raster: Raster, viewX: Int, viewY: Int) {
+    val area = new RectangleImpl(viewX, viewY, width, height)
+    raster.getBlocks(area) foreach { block =>
+      block.copyToRgbImage(imageData, area)
+    }
 
     updatedArea.includeArea(0, 0, width, height)
   }

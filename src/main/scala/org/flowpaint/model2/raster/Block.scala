@@ -10,8 +10,7 @@ import org.flowpaint.util.Rectangle
  * Block of data for a quadratic region of pixels of the specified size along the sides,
  * with the pixel data for each channel (if present).
  */
-// TODO: Use own memory management for these with weak references or such, as long as the size is constant
-case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) extends Rectangle {
+final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) extends Rectangle {
   require(width > 0, "Width should be positive")
   require(height > 0, "Height should be positive")
 
@@ -29,14 +28,14 @@ case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) extends Re
 
   def channel(name: Symbol): Tile = channelTiles(name)
 
-  def copyToRgbImage(imageData: Array[Int], imageWidth: Int, area: Rectangle,
+  def copyToRgbImage(imageData: Array[Int], imageWidth: Int, areaToRender: Rectangle,
                   alphaGridSize: Int = 16, alphaLuminance1 : Float = 0.5f, alphaLuminance2: Float = 0.7f) {
     val red: Tile = channel('red)
     val green: Tile = channel('green)
     val blue: Tile = channel('blue)
     val alpha: Tile = channel('alpha)
 
-    val renderArea: Rectangle = union(area)
+    val renderArea: Rectangle = union(areaToRender)
     val vy1: Int = renderArea.y1
     val vx2: Int = renderArea.x2
     val vy2: Int = renderArea.y2

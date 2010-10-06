@@ -13,7 +13,7 @@ class Raster {
   private val blockSize = 64
 
   // The channels present in this raster
-  private var channels: List[String] = Nil
+  private var channels: Set[Symbol] = Nil
   
   // Map from row indexes to map from column indexes to blocks of pixel data.
   private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()

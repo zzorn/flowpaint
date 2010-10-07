@@ -5,10 +5,10 @@ import org.flowpaint.model2.raster.Tile
 /**
  * 
  */
-object OneTile extends Tile {
-  def getByte(index: Int) = 255
-  def getFloat(index: Int) = 1
+object OneTile extends SingleValueTile {
+  def value = 0f
+  def apply(index: Int) = 1f
+  def update(index: Int, value: Float) = throw UnsupportedOperationException("Not supported")
+  def copy() = this
 
-  def setByte(index: Int, value: Byte) = throw UnsupportedOperationException("Not available")
-  def setFloat(index: Int, value: Float) = throw UnsupportedOperationException("Not available")
 }

@@ -4,6 +4,7 @@ import _root_.org.flowpaint.util.Rectangle
 import blend.Blender
 import collection.mutable.HashMap
 import collection._
+import raster.Channel
 
 /**
  * 
@@ -11,11 +12,8 @@ import collection._
 // TODO: Undo history saving - but do it with the command history - they can store the blocks of the layers that they changed
 class Raster {
 
-  private val blockSize = 64
+  private var channels: Map[Symbol, Channel] = Map()
 
-  // The channels present in this raster
-  private var channels: Set[Symbol] = Nil
-  
   // Map from row indexes to map from column indexes to blocks of pixel data.
   private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
 

@@ -3,13 +3,14 @@ package org.flowpaint.model2
 import _root_.java.awt.image.BufferedImage
 import collection.mutable.HashMap
 import collection._
-import raster.{FloatTile, Tile}
+import raster.{DataTile, Tile}
 import org.flowpaint.util.Rectangle
 
 /**
  * Block of data for a quadratic region of pixels of the specified size along the sides,
  * with the pixel data for each channel (if present).
  */
+@Deprecated
 final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) extends Rectangle {
   require(width > 0, "Width should be positive")
   require(height > 0, "Height should be positive")
@@ -21,7 +22,7 @@ final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) exte
   private val channelTiles: mutable.Map[Symbol, Tile] = new HashMap()
 
   def addChannel(name: Symbol): Tile = {
-    val channel: Tile = new FloatTile(width, height)
+    val channel: Tile = new DataTile(width, height)
     channelTiles(name) = channel
     channel
   }

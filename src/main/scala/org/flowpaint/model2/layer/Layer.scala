@@ -1,11 +1,18 @@
-package org.flowpaint.model2
+package org.flowpaint.model2.layer
 
-import _root_.org.flowpaint.util.Rectangle
+import org.flowpaint.model2.raster.Channel
+import org.flowpaint.model2.{DataMap, Raster}
+import org.flowpaint.util.Rectangle
+
 
 /**
  * 
  */
 trait Layer {
+
+  def identifier: Symbol
+  
+  def channel(name: Symbol): Option[Channel]
 
   /**
    * Render the layer on top of the specified target raster and data.

@@ -5,12 +5,19 @@ package org.flowpaint.model2.raster
  */
 trait Tile {
 
-  def apply(index: Int): Float = getFloat(index)
-  def update(index: Int, value: Float) = setFloat(index, value)
+  final def width = TileService.tileWidth
+  final def height = TileService.tileHeight
 
-  def getFloat(index: Int): Float
-  def setFloat(index: Int, value: Float)
-  def getByte(index: Int): Int
-  def setByte(index: Int, value: Byte)
+  def apply(index: Int): Float
+  def update(index: Int, value: Float)
+
+  final def getByte(index: Int): Int = (255 * apply()).toInt
+
+  /**
+   * A new tile which is a copy of this tile.
+   * Any changed to this tile will not affect the created copy.
+   */
+  def copy(): Tile
+  
 
 }

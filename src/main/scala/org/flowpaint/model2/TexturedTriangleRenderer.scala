@@ -2,8 +2,8 @@ package org.flowpaint.model2
 
 import org.flowpaint.pixelprocessor.ScanlineCalculator
 import org.flowpaint.property.{DataImpl, Data}
-import raster.Tile
 import org.flowpaint.util.{MathUtils, Rectangle, DataSample, PropertyRegister}
+import raster.{DataTile, Tile}
 
 /**
  *        Renders a triangle
@@ -21,7 +21,7 @@ class TexturedTriangleRenderer {
 
   def renderTriangle(t0: Vec2i, t1: Vec2i, t2: Vec2i,
                      s0: Vec2f, s1: Vec2f, s2: Vec2f,
-                     target: Tile, source: Tile,
+                     target: DataTile, source: Tile,
                      area: Rectangle, sourceArea: Rectangle) {
 
     // Sort points according to y coordinate so that y0 <= y1 <= y2
@@ -67,7 +67,7 @@ class TexturedTriangleRenderer {
   private def rasterizeTrapetzoid(startY: Int, endY: Int,
                           aX: Int, aY: Int, aD: Float, aS: Vec2f, aS2: Vec2f, aDeltaFactor: Float,
                           bX: Int, bY: Int, bD: Float, bS: Vec2f, bS2: Vec2f, bDeltaFactor: Float,
-                          target: Tile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
+                          target: DataTile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
 
     var y = 0f
     var aXCoord: Int = 0
@@ -104,7 +104,7 @@ class TexturedTriangleRenderer {
    *    Renders a part of a scanline
    */
   private def fillLine(scanline: Int, x_ : Int, endX_ : Int, leftTexture: Vec2f, rightTexture: Vec2f,
-                       target: Tile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
+                       target: DataTile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
 
     val tileY = scanline - area.y1
 
@@ -173,7 +173,9 @@ class TexturedTriangleRenderer {
 
           while (index < endIndex) {
 
-            target.setFloat(index, source.)
+            // TODO: Needs to be antialiased source picking
+            // TODO: Cache two (or more?) latest hit source (and target?) tiles
+            //target.data(index) =  source.
 
             u += uDelta
             v += vDelta

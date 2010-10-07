@@ -52,7 +52,7 @@ class FastImage(val width: Int, val height: Int) {
   def renderRaster(raster: Raster, viewX: Int, viewY: Int) {
     val area = new RectangleImpl(viewX, viewY, width, height)
     raster.getBlocks(area) foreach { block =>
-      block.copyToRgbImage(imageData, area)
+      block.copyToRgbImage(imageData, width, area)
     }
 
     updatedArea.includeArea(0, 0, width, height)

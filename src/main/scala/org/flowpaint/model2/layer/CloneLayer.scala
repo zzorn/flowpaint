@@ -1,7 +1,7 @@
 package org.flowpaint.model2.layer
 
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.{DataMap, Raster, Layer}
+import org.flowpaint.model2.{DataMap, Raster}
 
 /**
  * 

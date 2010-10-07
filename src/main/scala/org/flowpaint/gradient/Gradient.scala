@@ -1,8 +1,8 @@
 package org.flowpaint.gradient
 
-import _root_.scala.xml.Elem
-import property.{DataImpl, Data}
-import util.{DataSample, AbstractTome, Tome}
+import scala.xml.Elem
+import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.util.{DataSample, AbstractTome, Tome}
 /**
  * 
  * 

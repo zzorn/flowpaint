@@ -1,8 +1,8 @@
 package org.flowpaint.ui.editors
 
 import _root_.scala.xml.Node
-import property.{Data, DataImpl}
-import util.ConfigurationMetadata
+import org.flowpaint.property.{Data, DataImpl}
+import org.flowpaint.util.ConfigurationMetadata
 
 /**
  * Metadata that can be used to specify and create instances of editors.

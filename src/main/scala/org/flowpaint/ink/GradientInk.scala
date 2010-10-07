@@ -1,9 +1,9 @@
 package org.flowpaint.ink
 
 import _root_.org.flowpaint.property.Data
-import gradient.{MultiGradient, Gradient}
-import util.DataSample
-import util.PropertyRegister
+import org.flowpaint.gradient.{MultiGradient, Gradient}
+import org.flowpaint.FlowPaint
+import org.flowpaint.util.{MathUtils, PropertyRegister}
 
 object GradientInk {
     val defaultGradient = new MultiGradient("defaultGradient")
@@ -30,7 +30,7 @@ class GradientInk() extends Ink {
 
         val gradientAlpha: Float = data.getFloatProperty(PropertyRegister.ALPHA, 1)
         val pressure = pixelData.getFloatProperty(PropertyRegister.PRESSURE, 0.5f)
-        val alpha = strokeAlpha * util.MathUtils.interpolate(alphaPressure, gradientAlpha, gradientAlpha * pressure)
+        val alpha = strokeAlpha * MathUtils.interpolate(alphaPressure, gradientAlpha, gradientAlpha * pressure)
 
         pixelData.setValuesFrom(data)
         pixelData.setFloatProperty(PropertyRegister.ALPHA, alpha)

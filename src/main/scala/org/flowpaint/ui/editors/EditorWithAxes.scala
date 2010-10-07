@@ -7,7 +7,7 @@ import java.awt.event._
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.{JPanel, JComponent}
 import java.awt.image.BufferedImage
-import util.{GraphicsUtils, StringUtils, MathUtils}
+import org.flowpaint.util.{GraphicsUtils, StringUtils, MathUtils}
 /**
  * Provides Axis utility class.
  *

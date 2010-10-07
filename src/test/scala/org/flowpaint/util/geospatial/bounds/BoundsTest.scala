@@ -1,9 +1,8 @@
 package org.flowpaint.util.geospatial.bounds
 
-
 import org.junit._
 import Assert._
-
+import org.flowpaint.util.geospatial.{RectangularBounds, Vector2}
 
 /**
  *

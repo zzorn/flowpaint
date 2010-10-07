@@ -1,8 +1,9 @@
 package org.flowpaint.property
 
-import _root_.scala.collection.mutable.Map
-import _root_.scala.xml.{Elem, Node}
-import util.{DataSample, Tome, PropertyRegister, Library}
+import scala.collection.mutable.Map
+import scala.xml.{Elem, Node}
+import org.flowpaint.util.{DataSample, Tome, PropertyRegister, Library}
+
 /**
  *  Contains deserialization.
  */

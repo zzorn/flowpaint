@@ -1,14 +1,13 @@
 package org.flowpaint.renderer
 
 
-import _root_.junit.framework.TestCase
+import junit.framework.TestCase
 import org.junit._
 import Assert._
 import java.awt.Color
 import java.awt.image.BufferedImage
-import packedsurface.PackedSurface
-import property.Data
-import util.ColorUtils
+import org.flowpaint.property.Data
+import org.flowpaint.util.ColorUtils
 
 /**
  * 

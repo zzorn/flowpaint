@@ -1,9 +1,9 @@
 package org.flowpaint.util
 
-import gradient.Gradient
 import java.awt.RenderingHints.Key
 import java.awt.{Graphics2D, Graphics, Color, RenderingHints}
-import property.{DataImpl, Data}
+import org.flowpaint.gradient.Gradient
+import org.flowpaint.property.{DataImpl, Data}
 /**
  * 
  * 

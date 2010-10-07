@@ -1,8 +1,8 @@
 package org.flowpaint.filters
 
-import model.Path
-import property.Data
-import util.{DataSample, Configuration}
+import org.flowpaint.model.Path
+import org.flowpaint.property.Data
+import org.flowpaint.util.{DataSample, Configuration}
 
 /**
  *

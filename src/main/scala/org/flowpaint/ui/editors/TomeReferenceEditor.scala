@@ -3,7 +3,8 @@ package org.flowpaint.ui.editors
 import java.awt.Dimension
 import java.awt.event.ActionListener
 import javax.swing.JComponent
-import util.Tome
+import org.flowpaint.util.Tome
+import org.flowpaint.FlowPaint
 
 object NullTome extends Tome {
   def identifier = ""

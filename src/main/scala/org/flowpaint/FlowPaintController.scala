@@ -1,7 +1,6 @@
 package org.flowpaint
 
 
-import scala.collection.jcl.ArrayList
 import scala.io.Source
 import scala.xml.{Elem, PrettyPrinter}
 import org.flowpaint.brush._

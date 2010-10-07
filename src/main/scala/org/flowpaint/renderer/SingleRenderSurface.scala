@@ -1,12 +1,12 @@
 package org.flowpaint.renderer
 
 
-import _root_.org.flowpaint.property.Data
-import _root_.scala.compat.Platform
+import org.flowpaint.property.Data
+import scala.compat.Platform
 import java.awt.image.{MemoryImageSource, DirectColorModel, BufferedImage}
 import java.awt.{Toolkit, Graphics, Image, Color}
-import pixelprocessor.ScanlineCalculator
-import util.{DataSample, BoundingBox, PropertyRegister, MathUtils}
+import org.flowpaint.pixelprocessor.ScanlineCalculator
+import org.flowpaint.util._
 
 /**
  *          A RenderSurface implementation that uses a single surface to render on, the same size as the screen
@@ -179,7 +179,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
                 val imageDataIndex = x + y * width
 
-                var color = util.ColorUtils.createRGBAColor(
+                var color = ColorUtils.createRGBAColor(
                     MathUtils.clampToZeroToOne(sample.getFloatProperty(PropertyRegister.RED, 0)),
                     MathUtils.clampToZeroToOne(sample.getFloatProperty(PropertyRegister.GREEN, 0)),
                     MathUtils.clampToZeroToOne(sample.getFloatProperty(PropertyRegister.BLUE, 0)),
@@ -187,7 +187,7 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
                 if (alpha < 1) {
                     val originalColor = imageData(imageDataIndex)
-                    color = util.ColorUtils.mixRGBWithAlpha(color, originalColor)
+                    color = ColorUtils.mixRGBWithAlpha(color, originalColor)
                 }
 
                 imageData(imageDataIndex) = color
@@ -241,14 +241,14 @@ class SingleRenderSurface(override val pictureProvider: PictureProvider, undoQue
 
                         var color: Int = colorCalculator(x, y)
 
-                        val alpha = util.ColorUtils.getAlpha(color)
+                        val alpha = ColorUtils.getAlpha(color)
                         if (alpha > 0) {
 
                             val imageDataIndex = x + y * width
 
                             if (alpha < 1) {
                                 val originalColor = imageData(imageDataIndex)
-                                color = util.ColorUtils.mixRGBWithAlpha(color, originalColor)
+                                color = ColorUtils.mixRGBWithAlpha(color, originalColor)
                             }
 
                             imageData(imageDataIndex) = color

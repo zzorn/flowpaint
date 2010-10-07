@@ -1,8 +1,8 @@
 package org.flowpaint.property
 
-import _root_.org.flowpaint.brush.Brush
+import org.flowpaint.brush.Brush
 import javax.swing.JComponent
-import ui.BrushSliderUi
+import org.flowpaint.ui.BrushSliderUi
 
 /**
  * 

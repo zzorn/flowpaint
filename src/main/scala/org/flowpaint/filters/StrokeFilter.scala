@@ -1,6 +1,6 @@
 package org.flowpaint.filters
 
-import util.DataSample
+import org.flowpaint.util.DataSample
 
 /**
  * A StrokeFilter is a way to modify a stroke path as it is being created.

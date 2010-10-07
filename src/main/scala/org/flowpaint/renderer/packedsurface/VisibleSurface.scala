@@ -4,7 +4,8 @@ package org.flowpaint.renderer.packedsurface
 import java.awt.event._
 import java.awt.{Graphics2D, Color, Graphics}
 import javax.swing.JPanel
-import util._
+import org.flowpaint.util.{ColorUtils, RightMouse, DragListener, MouseEventMixin}
+
 /**
  *
  *

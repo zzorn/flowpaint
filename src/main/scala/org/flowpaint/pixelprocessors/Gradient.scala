@@ -2,9 +2,10 @@ package org.flowpaint.pixelprocessors
 
 import _root_.org.flowpaint.property.{Data, DataImpl}
 import _root_.scala.collection.Map
-import gradient.GradientPoint
-import pixelprocessor.PixelProcessor
-import util.{DataSample, PropertyRegister}
+import org.flowpaint.gradient.GradientPoint
+import org.flowpaint.pixelprocessor.PixelProcessor
+import org.flowpaint.util.{DataSample, PropertyRegister}
+import org.flowpaint.FlowPaint
 
 /**
  * 

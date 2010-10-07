@@ -1,11 +1,13 @@
 package org.flowpaint.ui.slider
 
-import _root_.org.flowpaint.brush.{Brush}
-import _root_.org.flowpaint.ink.{PixelProcessorMetadata, AlphaTransparencyBackgroundInk, Ink}
-import org.flowpaint.util.{DataSample, ListenableList, PropertyRegister}
+import org.flowpaint.brush.{Brush}
+import org.flowpaint.ink.{PixelProcessorMetadata, AlphaTransparencyBackgroundInk, Ink}
 import java.awt.{Graphics2D, Dimension, Graphics, Color}
 import javax.swing.{JPanel, JComponent}
 import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.ui.SliderUi
+import org.flowpaint.util.{MathUtils, DataSample, ListenableList, PropertyRegister}
+
 /**
  *
  *
@@ -68,7 +70,7 @@ class InkSliderUi(editedData: Data,
                         sample.setFloatProperty("time", along / 2f)
 
                         val n = if (isVertical) ny else nx
-                        sample.setFloatProperty(property, util.MathUtils.interpolate(n, min, max))
+                        sample.setFloatProperty(property, MathUtils.interpolate(n, min, max))
 
                         pixelPrcessors.foreach((ink: Ink) => {
                             ink.processPixel(sample)

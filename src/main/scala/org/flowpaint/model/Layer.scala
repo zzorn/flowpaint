@@ -1,8 +1,9 @@
 package org.flowpaint.model
 
 
-import _root_.scala.collection.jcl.ArrayList
-import renderer.{PictureProvider, RenderSurface}
+import org.flowpaint.renderer.{PictureProvider, RenderSurface}
+import java.util.ArrayList
+import scala.collection.JavaConversions._
 
 /**
  * A layer of a painting.

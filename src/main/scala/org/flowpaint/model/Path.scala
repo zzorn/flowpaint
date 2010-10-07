@@ -1,12 +1,12 @@
 package org.flowpaint.model
 
-import _root_.org.flowpaint.renderer.{StrokeRenderer, RenderSurface}
-import _root_.org.flowpaint.util.DataSample
-import brush.Brush
-import filters.{StrokeListener, PathProcessor}
-import ink.Ink
-import pixelprocessor.{PixelProcessor, ScanlineCalculator}
-import property.{DataImpl, Data}
+import org.flowpaint.renderer.{StrokeRenderer, RenderSurface}
+import org.flowpaint.util.DataSample
+import org.flowpaint.brush.Brush
+import org.flowpaint.filters.{StrokeListener, PathProcessor}
+import org.flowpaint.ink.Ink
+import org.flowpaint.pixelprocessor.{PixelProcessor, ScanlineCalculator}
+import org.flowpaint.property.{DataImpl, Data}
 /**
  *  A path is a sequence of samples, forming a path on a 2D surface.  The Path can be connected to other paths.
  *  A path can be iterated in both directions, and it can be tested for overlap with a rectangular area.

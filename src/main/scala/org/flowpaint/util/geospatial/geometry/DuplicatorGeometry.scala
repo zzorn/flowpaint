@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial.geometry
+
+import org.flowpaint.util.geospatial.Geometry
+
 /**
  * Adds several instances of a geometry, altering the parameters for each instance using some formulas.
  *

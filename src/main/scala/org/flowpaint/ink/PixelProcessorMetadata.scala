@@ -1,8 +1,8 @@
 package org.flowpaint.ink
 
-import _root_.scala.xml.Node
-import property.{Data, DataImpl}
-import util.ConfigurationMetadata
+import scala.xml.Node
+import org.flowpaint.property.{Data, DataImpl}
+import org.flowpaint.util.ConfigurationMetadata
 
 
 

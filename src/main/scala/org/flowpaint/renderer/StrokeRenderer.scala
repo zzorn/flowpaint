@@ -1,12 +1,12 @@
 package org.flowpaint.renderer
 
-import brush.Brush
 import java.awt.Color
+import org.flowpaint.brush.Brush
 import org.flowpaint.brush
-import pixelprocessor.ScanlineCalculator
-import property.{DataImpl, Data}
-import util.MathUtils.squaredDistance
-import util.{DataSample, Rectangle, PropertyRegister}
+import org.flowpaint.pixelprocessor.ScanlineCalculator
+import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.util.MathUtils.squaredDistance
+import org.flowpaint.util.{DataSample, Rectangle, PropertyRegister}
 
 /**
  *     Renders a stroke segment.

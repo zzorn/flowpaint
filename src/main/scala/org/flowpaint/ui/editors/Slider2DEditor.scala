@@ -1,11 +1,11 @@
 package org.flowpaint.ui.editors
 
-import _root_.org.flowpaint.property.Data
 import java.awt._
 import javax.swing.{JPanel, JComponent}
 import java.awt.event.{MouseEvent, MouseAdapter, MouseWheelEvent}
-import util.GraphicsUtils._
-import util.{StringUtils, MathUtils}
+import org.flowpaint.property.Data
+import org.flowpaint.util.GraphicsUtils._
+import org.flowpaint.util.{StringUtils, MathUtils}
 /**
  * A slider for editing two BrushProperties (or one wrapped on many lines),
  * with some undefined background (specified by implementing classes).
@@ -60,7 +60,7 @@ abstract class Slider2DEditor extends EditorWithAxes {
   }
 
   protected def updateAxisFromMouseWheelEvent(rotation: Int)  {
-    horizontalAxis.relativePosition = util.MathUtils.clampToZeroToOne(horizontalAxis.relativePosition + WHEEL_STEP * rotation)
+    horizontalAxis.relativePosition = MathUtils.clampToZeroToOne(horizontalAxis.relativePosition + WHEEL_STEP * rotation)
   }
 
 

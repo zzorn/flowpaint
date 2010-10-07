@@ -1,8 +1,8 @@
 package org.flowpaint.renderer
 
-import pixelprocessor.ScanlineCalculator
-import property.{DataImpl, Data}
-import util.{DataSample, PropertyRegister}
+import org.flowpaint.pixelprocessor.ScanlineCalculator
+import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.util.{DataSample, PropertyRegister}
 
 /**
  *        Renders a triangle

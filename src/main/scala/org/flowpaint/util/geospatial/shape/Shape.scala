@@ -1,5 +1,5 @@
 package org.flowpaint.util.geospatial
-import property.Data
+import org.flowpaint.property.Data
 
 /**
  * A concrete shape of some kind (instantiated geometry).

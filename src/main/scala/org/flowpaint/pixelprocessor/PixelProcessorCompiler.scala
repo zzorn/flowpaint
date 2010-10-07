@@ -1,12 +1,12 @@
 package org.flowpaint.brush
 
-import _root_.org.flowpaint.ink.PixelProcessorMetadata
-import _root_.org.flowpaint.property.Data
-import _root_.scala.collection._
-import _root_.scala.collection
-import _root_.scala.collection.immutable.HashMap
-import pixelprocessor.{PixelProgram}
-import pixelprocessor.{PixelProcessor}
+import org.flowpaint.ink.PixelProcessorMetadata
+import org.flowpaint.property.Data
+import scala.collection._
+import scala.collection
+import scala.collection.immutable.HashMap
+import org.flowpaint.pixelprocessor.{PixelProgram}
+import org.flowpaint.pixelprocessor.{PixelProcessor}
 
 /**
  * 

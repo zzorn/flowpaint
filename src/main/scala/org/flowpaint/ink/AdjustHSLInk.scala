@@ -1,6 +1,6 @@
 package org.flowpaint.ink
 import _root_.org.flowpaint.property.Data
-import util.{DataSample, PropertyRegister, MathUtils}
+import org.flowpaint.util.{ColorUtils, DataSample, PropertyRegister, MathUtils}
 
 /**
  * An ink that adjusts the red, green, and blue components using the hueDelta, saturationDelta, and lightnessDelta values.
@@ -24,7 +24,7 @@ class AdjustHSLInk extends Ink {
       val b = pixelData.getFloatProperty(PropertyRegister.BLUE,0.5f)
 
       // Convert current color to hsl space
-      var (h, s, l)= util.ColorUtils.RGBtoHSL( r, g, b )
+      var (h, s, l)= ColorUtils.RGBtoHSL( r, g, b )
 
       // Apply the delta
       h = MathUtils.wrapToZeroToOne( h + hueD )
@@ -32,7 +32,7 @@ class AdjustHSLInk extends Ink {
       l = MathUtils.clampToZeroToOne( l + lightnessD )
 
       // Move back to rgb space
-      val (r2, g2, b2)= util.ColorUtils.HSLtoRGB( h, s, l)
+      val (r2, g2, b2)= ColorUtils.HSLtoRGB( h, s, l)
 
       // Store adjusted color
       pixelData.setFloatProperty( PropertyRegister.RED, r2 )

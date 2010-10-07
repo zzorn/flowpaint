@@ -1,9 +1,9 @@
 package org.flowpaint.ui.editors
 
 import java.awt.{Graphics2D, Color}
-import util.GraphicsUtils._
-import util.MathUtils._
-import util.{ColorUtils, MathUtils}
+import org.flowpaint.util.GraphicsUtils._
+import org.flowpaint.util.MathUtils._
+import org.flowpaint.util.{ColorUtils, MathUtils}
 /**
  * A 2D slider editor visualizing the editor with a volume triangle and a fade.
  * 

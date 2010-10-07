@@ -1,10 +1,10 @@
 package org.flowpaint.property
 
-import _root_.org.flowpaint.ink.{PixelProcessorMetadata, Ink}
-import util.ListenableList
-import brush.Brush
+import org.flowpaint.ink.{PixelProcessorMetadata, Ink}
+import org.flowpaint.util.ListenableList
+import org.flowpaint.brush.Brush
 import javax.swing.JComponent
-import ui.slider.InkSliderUi
+import org.flowpaint.ui.slider.InkSliderUi
 
 /**
  * 

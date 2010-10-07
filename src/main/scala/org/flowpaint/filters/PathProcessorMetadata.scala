@@ -1,8 +1,8 @@
 package org.flowpaint.filters
 
-import _root_.org.flowpaint.property.{DataImpl, Data}
-import _root_.scala.xml.Node
-import util.ConfigurationMetadata
+import org.flowpaint.property.{DataImpl, Data}
+import scala.xml.Node
+import org.flowpaint.util.ConfigurationMetadata
 
 
 /**

@@ -1,8 +1,8 @@
 package org.flowpaint.ui.editors
 import _root_.scala.Math
 import java.awt.{Graphics2D, Color}
-import util.GraphicsUtils._
-import util.{ColorUtils, PropertyRegister, MathUtils}
+import org.flowpaint.util.GraphicsUtils._
+import org.flowpaint.util.{ColorUtils, PropertyRegister, MathUtils}
 
 
 /**

@@ -1,6 +1,8 @@
 package org.flowpaint.model2
 
 import _root_.java.util.ArrayList
+import _root_.org.flowpaint.util.Rectangle
+import collection.mutable.HashMap
 
 
 /**
@@ -10,7 +12,22 @@ import _root_.java.util.ArrayList
 class DataMap {
 
   // TODO: Rtree or similar fast location data hash?
-  var data: ArrayList[Data] = new ArrayList()
+  val dataEntries: ArrayList[Data] = new ArrayList()
+
+  def add(data: Data) {
+    dataEntries.add(data)
+  }
+
+  def remove(data: Data) {
+    dataEntries.remove(data)
+  }
+
+  /**
+   * Adds the specified data on top of this raster, for the specified area.
+   */
+  def overlay(dataMap: DataMap, area: Rectangle) {
+    dataEntries.addAll(dataMap.dataEntries)
+  }
 
 }
 

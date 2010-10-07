@@ -1,8 +1,9 @@
 package org.flowpaint.brush
 
 
-import _root_.scala.xml.Node
-import util.Tome
+import scala.xml.Node
+import org.flowpaint.util.Tome
+import org.flowpaint.FlowPaint
 
 /**
  * A collection of, or view to, a set of Brushes.

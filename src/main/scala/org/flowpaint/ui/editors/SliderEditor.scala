@@ -1,14 +1,15 @@
 package org.flowpaint.ui.editors
 
 
-import _root_.org.flowpaint.property.Data
 import java.awt._
 import java.awt.event._
 
 import java.awt.image.BufferedImage
 import javax.swing.{JPanel, JComponent}
 
-import util.GraphicsUtils._
+import org.flowpaint.property.Data
+import org.flowpaint.util.GraphicsUtils._
+import org.flowpaint.util.MathUtils
 
 abstract sealed class SliderOrientation
 case object VerticalSlider extends SliderOrientation()
@@ -81,11 +82,11 @@ abstract class SliderEditor extends EditorWithAxes {
     if (isVertical) axis.relativePosition = relativeY
     else axis.relativePosition = relativeX
 
-    axis.relativePosition = util.MathUtils.clampToZeroToOne(axis.relativePosition)
+    axis.relativePosition = MathUtils.clampToZeroToOne(axis.relativePosition)
   }
 
   protected def updateAxisFromMouseWheelEvent(rotation: Int) {
-    axis.relativePosition = util.MathUtils.clampToZeroToOne(axis.relativePosition + WHEEL_STEP * rotation)
+    axis.relativePosition = MathUtils.clampToZeroToOne(axis.relativePosition + WHEEL_STEP * rotation)
   }
 
   protected def updateBrush() {

@@ -1,13 +1,14 @@
 package org.flowpaint.pixelprocessor
 
-import _root_.org.flowpaint.brush.Brush
-import _root_.org.flowpaint.property.Data
-import _root_.scala.collection.immutable.HashMap
-import _root_.scala.collection.Map
-import codehaus.janino.{ScriptEvaluator, ClassBodyEvaluator, Scanner}
+import org.flowpaint.brush.Brush
+import org.flowpaint.property.Data
+import scala.collection.immutable.HashMap
+import scala.collection.Map
+import org.codehaus.janino.{ScriptEvaluator, ClassBodyEvaluator, Scanner}
 import java.io.StringReader
-import model.Path
-import util.{DataSample, CollectionUtils, PropertyRegister}
+import org.flowpaint.model.Path
+import org.flowpaint.util.{DataSample, CollectionUtils, PropertyRegister}
+
 /**
  *
  *

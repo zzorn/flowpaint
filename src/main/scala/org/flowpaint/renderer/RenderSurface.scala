@@ -1,11 +1,11 @@
 package org.flowpaint.renderer
 
 
-import _root_.org.flowpaint.property.Data
+import org.flowpaint.property.Data
 import java.awt.image.BufferedImage
 import java.awt.{Graphics2D, Graphics, Image, Color}
-import pixelprocessor.ScanlineCalculator
-import util.DataSample
+import org.flowpaint.pixelprocessor.ScanlineCalculator
+import org.flowpaint.util.DataSample
 
 /**
  *  Represents a surface that can be rendered to.

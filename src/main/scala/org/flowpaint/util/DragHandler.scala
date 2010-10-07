@@ -71,22 +71,23 @@ class DragHandler[T <: AnyRef]( dragButton : MouseButton, listener : DragListene
       case NoDrag => if ( dragButtonUsed ) dragButtonPressed( e )
       case DragButtonPressed => if( !dragButtonUsed ) resetDrag
       case DragOngoing =>if (!dragButtonUsed) cancelDrag( e )
+      case _ =>
     }
   }
 
   override def mouseReleased(e: MouseEvent) {
     if( dragButton usedInEvent e) dragState match {
-      case NoDrag =>
       case DragButtonPressed => resetDrag
       case DragOngoing => dragUpdate( e ) ; endDrag( e )
+      case _ =>
     }
-  }
+}
 
   override def mouseDragged(e: MouseEvent) {
     if (dragButton pressedInEvent  e) dragState match {
-      case NoDrag =>
       case DragButtonPressed => startDrag( e ) ; dragUpdate( e )
       case DragOngoing => dragUpdate( e )
+      case _ =>
     }
   }
 

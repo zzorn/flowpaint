@@ -1,9 +1,8 @@
 package org.flowpaint.ink
 
-import _root_.org.flowpaint.property.Data
-import gradient.Gradient
-import util.DataSample
-import util.PropertyRegister
+import org.flowpaint.property.Data
+import org.flowpaint.gradient.Gradient
+import org.flowpaint.util.{ColorUtils, DataSample, PropertyRegister}
 
 /**
  * Multiplies existing color with the color derived from the hue, sat, lightness -properties,
@@ -20,7 +19,7 @@ class ColorInk() extends Ink {
     val saturation = pixelData.getFloatProperty( PropertyRegister.SATURATION, 0 )
     val lightness = pixelData.getFloatProperty( PropertyRegister.LIGHTNESS, 0 )
 
-    val (red, green, blue )= util.ColorUtils.HSLtoRGB( hue, saturation, lightness )
+    val (red, green, blue )= ColorUtils.HSLtoRGB( hue, saturation, lightness )
 
     val r = pixelData.getFloatProperty(PropertyRegister.RED,1) * red
     val g = pixelData.getFloatProperty(PropertyRegister.GREEN,1) * green

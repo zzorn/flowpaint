@@ -1,8 +1,6 @@
 package org.flowpaint.model
 
-import _root_.org.flowpaint.renderer.{RenderSurface, PictureProvider}
-import _root_.scala.collection.jcl.ArrayList
-import util.PerformanceTester.time
+import org.flowpaint.renderer.{RenderSurface, PictureProvider}
 
 /**
  *   The central datamodel for pictures in FlowPaint.

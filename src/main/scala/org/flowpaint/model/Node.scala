@@ -1,7 +1,7 @@
 package org.flowpaint.model
 
-import renderer.RenderSurface
-import util.ListenableList
+import org.flowpaint.util.ListenableList
+import org.flowpaint.renderer.RenderSurface
 
 /**
  * A node can contain various renderable objects.

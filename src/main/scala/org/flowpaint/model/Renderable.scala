@@ -1,6 +1,6 @@
 package org.flowpaint.model
 
-import renderer.RenderSurface
+import org.flowpaint.renderer.RenderSurface
 
 /**
  * Something that can be rendered to a surface.

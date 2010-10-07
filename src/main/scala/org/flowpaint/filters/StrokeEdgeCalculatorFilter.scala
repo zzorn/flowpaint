@@ -1,7 +1,8 @@
 package org.flowpaint.filters
 
-import property.{DataImpl, Data}
-import util.{DataSample, PropertyRegister, MathUtils}
+import org.flowpaint.property.{DataImpl, Data}
+import org.flowpaint.util.{GeometryUtils, DataSample, PropertyRegister, MathUtils}
+
 /**
  *  Calculates the edges of a stroke based on its radius and angle.
  *
@@ -61,7 +62,7 @@ class StrokeEdgeCalculatorFilter extends PathProcessor {
 
         def intersect( x1 : Float, y1 : Float, x2 : Float, y2 :Float, px1 : Float, py1 : Float, px2 : Float, py2 :Float )  : Boolean = {
             
-            util.GeometryUtils.isLineIntersectingLine(x1, y1, x2, y2, px1, py1, px2, py2)
+            GeometryUtils.isLineIntersectingLine(x1, y1, x2, y2, px1, py1, px2, py2)
         }
 
         // Check if either edge crosses the previous one.  In that case, use the previous endpoint

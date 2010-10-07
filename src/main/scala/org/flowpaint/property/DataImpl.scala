@@ -2,8 +2,8 @@
 package org.flowpaint.property
 
 
-import _root_.scala.collection.mutable.{HashMap, HashSet, Map}
-import util.{DataSample, Tome, PropertyRegister, Library}
+import scala.collection.mutable.{HashMap, HashSet, Map}
+import org.flowpaint.util.{DataSample, Tome, PropertyRegister, Library}
 /**
  *  Default implementation of Data.
  *

@@ -1,9 +1,9 @@
 package org.flowpaint.brush
 
-import _root_.org.flowpaint.property.Data
-import ink.Ink
-import util.DataSample
-import util.PropertyRegister
+import org.flowpaint.property.Data
+import org.flowpaint.ink.Ink
+import org.flowpaint.util.{PerlinNoise, MathUtils, DataSample, PropertyRegister}
+
 /**
  *   Just a simple test brush.
  *
@@ -30,8 +30,8 @@ class GradientTestInk extends Ink {
     val time: Float = pixelData.getFloatProperty("time", 0)
 
     //val dots = noise.noise2( time*0.1f, positionAcrossStroke*5 )
-    val noise = 0.5f+0.5f*util.PerlinNoise.noise3( time*60f, positionAcrossStroke*2.3f, 1.1f )
-    val dots2 = util.MathUtils.interpolate(bumpiness, 1f, noise)
+    val noise = 0.5f+0.5f*PerlinNoise.noise3( time*60f, positionAcrossStroke*2.3f, 1.1f )
+    val dots2 = MathUtils.interpolate(bumpiness, 1f, noise)
     val stripes = 0.25f + 0.25f * Math.sin(time*8).toFloat
 
     val red = stripes + 0.5f

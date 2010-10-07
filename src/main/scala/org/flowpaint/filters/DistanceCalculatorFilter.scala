@@ -1,7 +1,7 @@
 package org.flowpaint.filters
 
-import property.Data
-import util.{DataSample, PropertyRegister, MathUtils}
+import org.flowpaint.property.Data
+import org.flowpaint.util.{DataSample, PropertyRegister, MathUtils}
 
 /**
  *  Calculates the distance along the line, as well as the length of the previous stroke.

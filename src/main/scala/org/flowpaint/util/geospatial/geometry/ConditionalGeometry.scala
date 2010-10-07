@@ -1,4 +1,7 @@
 package org.flowpaint.util.geospatial.geometry
+
+import org.flowpaint.util.geospatial.Geometry
+
 /**
  * Adds zero or more of several alternative Geometries (or zero or one?), based on the value of an expression,
  * which can depend on field variables at the location of the geometry, and presence of shapes and their

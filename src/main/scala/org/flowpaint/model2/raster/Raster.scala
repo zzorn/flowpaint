@@ -1,6 +1,7 @@
 package org.flowpaint.model2
 
 import _root_.org.flowpaint.util.Rectangle
+import blend.Blender
 import collection.mutable.HashMap
 import collection._
 
@@ -18,6 +19,10 @@ class Raster {
   // Map from row indexes to map from column indexes to blocks of pixel data.
   private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
 
+  // TODO: The default tiles for each channel for this raster (-> procedural tiles could also be used - converted to actual raster when modified)
+  // TODO: Should getBlocks instantiate missing blocks with default tiles in that case? do we even need it?
+
+
   def getBlocks(area: Rectangle): List[Block] = {
     val xc1 = area.x1 / blockSize
     val yc1 = area.y1 / blockSize
@@ -28,14 +33,12 @@ class Raster {
 
     var yc = yc1
     while(yc <= yc2) {
-      val columns = blocks.get(yc)
-
+      val columns = blocks.getOrElse(yc, null)
       if (columns != null) {
         var xc = xc1
         while(xc <= xc2) {
-          val block = columns.get(xc)
+          val block = columns.getOrElse(xc, null)
           if (block != null) result = block :: result
-
           xc += 1
         }
       }
@@ -47,9 +50,11 @@ class Raster {
   }
 
   /**
-   * Renders the specified raster on top of this raster, for the specified area.
+   * Renders the specified raster on top of this raster, for the specified area, with the specified blending function.
+   * The blending function to use is channel specific.
    */
-  def overlay(raster: Raster, area: Rectangle) {
+  def overlay(raster: Raster, area: Rectangle, channelBlenders: Symbol => Blender) {
+    
     // TODO
   }
 

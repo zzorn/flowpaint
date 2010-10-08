@@ -3,7 +3,7 @@ package org.flowpaint.model2
 import org.flowpaint.pixelprocessor.ScanlineCalculator
 import org.flowpaint.property.{DataImpl, Data}
 import org.flowpaint.util.{MathUtils, Rectangle, DataSample, PropertyRegister}
-import raster.{DataTile, Tile}
+import raster.{TileId, DataTile, Tile}
 
 /**
  *        Renders a triangle
@@ -18,6 +18,16 @@ class TexturedTriangleRenderer {
   private var vDelta: Float = 0f
   private var u: Float = 0f
   private var v: Float = 0f
+
+  private var targetTile: Tile = null
+  private var targetTileId: TileId = null
+  private var previousTargetTile: Tile = null
+  private var previousTargetTileId: TileId = null
+
+  private var sourceTile: Tile = null
+  private var sourceTileId: TileId = null
+  private var previousSourceTile: Tile = null
+  private var previousSourceTileId: TileId = null
 
   def renderTriangle(t0: Vec2i, t1: Vec2i, t2: Vec2i,
                      s0: Vec2f, s1: Vec2f, s2: Vec2f,
@@ -108,18 +118,6 @@ class TexturedTriangleRenderer {
 
     val tileY = scanline - area.y1
 
-    startSample.setFloatProperty( PropertyRegister.CANVAS_X, x_ )
-    rightTexture.setFloatProperty( PropertyRegister.CANVAS_X, endX_ )
-    leftTexture.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
-    rightTexture.setFloatProperty( PropertyRegister.CANVAS_Y, scanline )
-
-    surface.renderScanline(
-        scanline,
-        x_,
-        endX_,
-        leftTexture.getFloatProperties,
-        rightTexture.getFloatProperties,
-        scanlineCalculator )
 
     // Clip top and bottom and off screen
     if (scanline >= area.y1 && scanline < area.y2 && x_ < area.x2 && endX_ >= area.x1 && endX_ > x_) {
@@ -145,14 +143,8 @@ class TexturedTriangleRenderer {
       val length = endX - x
       var index = (scanline - area.y1) * area.width + (x - area.x1)
       val endIndex = index + length
-      scanlineCalculator.calculateScanline(startSample, endSample, imageData, startIndex, length)
 
       if (length > 0) {
-
-
-        // Get start and end values for variables
-        copyInitialVariables(variablesAtScanlineStart, start)
-        copyInitialVariables(variableValueDeltas, end)
 
         // NOTE: By passing in initial value and delta (instead of value at start and end),
         // we make it easier to later use the same pixel program code to generate only the parts
@@ -184,13 +176,6 @@ class TexturedTriangleRenderer {
 
         }
 
-        // Render the scanline
-        program.calculateScanline( variablesAtScanlineStart,
-                                      variableValueDeltas,
-                                      variableWorkingValues,
-                                      outputBuffer,
-                                      outputOffset,
-                                      scanlineLength )
       }
 
 //      updatedArea.includeArea(x, scanline, endX, scanline)

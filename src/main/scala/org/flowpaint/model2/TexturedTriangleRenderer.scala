@@ -3,7 +3,7 @@ package org.flowpaint.model2
 import org.flowpaint.pixelprocessor.ScanlineCalculator
 import org.flowpaint.property.{DataImpl, Data}
 import org.flowpaint.util.{MathUtils, Rectangle, DataSample, PropertyRegister}
-import raster.{TileId, DataTile, Tile}
+import raster._
 
 /**
  *        Renders a triangle
@@ -29,10 +29,61 @@ class TexturedTriangleRenderer {
   private var previousSourceTile: Tile = null
   private var previousSourceTileId: TileId = null
 
+  private class MiniTileCache(channel: Channel) {
+    private var tile: Tile = null
+    private var tileId: TileId = null
+    private var previousTile: Tile = null
+    private var previousTileId: TileId = null
+
+    def getValue(x: Int, y: Int): Float = {
+      val tileX = x / TileService.tileWidth - (if (x < 0) 1 else 0)
+      val tileY = y / TileService.tileHeight  - (if (y < 0) 1 else 0)
+      val t = if (tileId != null && tileX == tileId.x && tileY == tileId.y) tile
+      else if (previousTileId != null && tileX == previousTileId.x && tileY == previousTileId.y) previousTile
+      else {
+        previousTileId = tileId
+        previousTile = tile
+        tileId = TileId(tileX, tileY)
+        tile = channel.getTile(tileId)
+        tile
+      }
+      t(x - tileX*TileService.tileWidth, y - tileY*TileService.tileHeight)
+    }
+
+    def setValue(x: Int, y: Int, value: Float) {
+      val tileX = x / TileService.tileWidth - (if (x < 0) 1 else 0)
+      val tileY = y / TileService.tileHeight  - (if (y < 0) 1 else 0)
+      val t = if (tileId != null && tileX == tileId.x && tileY == tileId.y) tile
+      else if (previousTileId != null && tileX == previousTileId.x && tileY == previousTileId.y) previousTile
+      else {
+        previousTileId = tileId
+        previousTile = tile
+        tileId = TileId(tileX, tileY)
+        tile = channel.getTile(tileId)
+        tile
+      }
+      t.update(x - tileX*TileService.tileWidth, y - tileY*TileService.tileHeight, value)
+    }
+
+    def getAntialiasedValue(x: Float, y: Float): Float = {
+      val tileX = x / TileService.tileWidth - (if (x < 0) 1 else 0)
+      val tileY = y / TileService.tileHeight  - (if (y < 0) 1 else 0)
+      val t = if (tileId != null && tileX == tileId.x && tileY == tileId.y) tile
+      else if (previousTileId != null && tileX == previousTileId.x && tileY == previousTileId.y) previousTile
+      else {
+        previousTileId = tileId
+        previousTile = tile
+        tileId = TileId(tileX, tileY)
+        tile = channel.getTile(tileId)
+        tile
+      }
+      t.apply(x - tileX*TileService.tileWidth, y - tileY*TileService.tileHeight)
+    }
+  }
+
   def renderTriangle(t0: Vec2i, t1: Vec2i, t2: Vec2i,
                      s0: Vec2f, s1: Vec2f, s2: Vec2f,
-                     target: DataTile, source: Tile,
-                     area: Rectangle, sourceArea: Rectangle) {
+                     target: Channel, source: Channel) {
 
     // Sort points according to y coordinate so that y0 <= y1 <= y2
     if (t1.y < t0.y) {
@@ -66,18 +117,18 @@ class TexturedTriangleRenderer {
     rasterizeTrapetzoid(t0.y, t1.y,
                         t0.x, t0.y, d02, s0, s2, oneOverSteps0to2,
                         t0.x, t0.y, d01, s0, s1, oneOverSteps0to1,
-                        target, source, area, sourceArea)
+                        target, source)
     rasterizeTrapetzoid(t1.y, t2.y,
                         t0.x, t0.y, d02, s0, s2, oneOverSteps0to2,  
                         t1.x, t1.y, d12, s1, s2, oneOverSteps1to2,
-                        target, source, area, sourceArea)
+                        target, source)
 
   }
 
   private def rasterizeTrapetzoid(startY: Int, endY: Int,
                           aX: Int, aY: Int, aD: Float, aS: Vec2f, aS2: Vec2f, aDeltaFactor: Float,
                           bX: Int, bY: Int, bD: Float, bS: Vec2f, bS2: Vec2f, bDeltaFactor: Float,
-                          target: DataTile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
+                          target: Channel, source: Channel) {
 
     var y = 0f
     var aXCoord: Int = 0
@@ -99,10 +150,10 @@ class TexturedTriangleRenderer {
         bTexture.interpolate( linesFromBStart * bDeltaFactor, bS, bS2 )
 
         if (aXCoord < bXCoord) {
-          fillLine(scanline, aXCoord, bXCoord, aTexture, bTexture, target, source, area, sourceArea);
+          fillLine(scanline, aXCoord, bXCoord, aTexture, bTexture, target, source);
         }
         else {
-          fillLine(scanline, bXCoord, aXCoord, bTexture, aTexture, target, source, area, sourceArea);
+          fillLine(scanline, bXCoord, aXCoord, bTexture, aTexture, target, source);
         }
       }
 
@@ -114,7 +165,7 @@ class TexturedTriangleRenderer {
    *    Renders a part of a scanline
    */
   private def fillLine(scanline: Int, x_ : Int, endX_ : Int, leftTexture: Vec2f, rightTexture: Vec2f,
-                       target: DataTile, source: Tile, area: Rectangle, sourceArea: Rectangle) {
+                       target: Channel, source: Channel) {
 
     val tileY = scanline - area.y1
 
@@ -165,9 +216,39 @@ class TexturedTriangleRenderer {
 
           while (index < endIndex) {
 
+            // NOTE: We cache the two last used source & target tiles, to handle e.g. antialiased sampling near a tile edge efficiently
+
+            // Get source tile
+            val sourceU = u / TileService.tileWidth - (if (u < 0) 1 else 0)
+            val sourceV = v / TileService.tileHeight  - (if (v < 0) 1 else 0)
+            val sTile = if (sourceTileId != null && sourceU == sourceTileId.x && sourceV == sourceTileId.y) sourceTile
+            else if (previousSourceTileId != null && sourceU == previousSourceTileId.x && sourceV == previousSourceTileId.y) previousSourceTile
+            else {
+              previousSourceTileId = sourceTileId
+              previousSourceTile = sourceTile
+              sourceTileId = TileId(sourceU, sourceV)
+              sourceTile = source.getTile(sourceTileId)
+              sourceTile
+            }
+
+            // Get target tile
+            val targetTileX = x / TileService.tileWidth - (if (u < 0) 1 else 0)
+            val targetTileY = y / TileService.tileHeight  - (if (v < 0) 1 else 0)
+            val tTile = if (targetTileId != null && targetTileX == targetTileId.x && targetTileY == targetTileId.y) targetTile
+            else if (previousTargetTileId != null && targetTileX == previousTargetTileId.x && targetTileY == previousTargetTileId.y) previousTargetTile
+            else {
+              previousTargetTileId = targetTileId
+              previousTargetTile = targetTile
+              targetTileId = TileId(targetTileX, targetTileY)
+              targetTile = target.getTile(targetTileId)
+              targetTile
+            }
+
             // TODO: Needs to be antialiased source picking
             // TODO: Cache two (or more?) latest hit source (and target?) tiles
             //target.data(index) =  source.
+
+
 
             u += uDelta
             v += vDelta

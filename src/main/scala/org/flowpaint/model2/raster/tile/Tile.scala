@@ -8,6 +8,8 @@ trait Tile {
   final def width = TileService.tileWidth
   final def height = TileService.tileHeight
 
+  final def apply(tileX: Int, tileY: Int): Float = apply(tileY * TileService.tileWidth + tileX)
+  final def update(tileX: Int, tileY: Int, value: Float) = update(tileY * TileService.tileWidth + tileX, value)
   def apply(index: Int): Float
   def update(index: Int, value: Float)
 

@@ -28,6 +28,37 @@ final class ChannelImpl(val identifier: Symbol) extends Channel {
   }
 
   def getTile(tileId: TileId): Tile = tiles.get(tileId).getOrElse(defaultTile)
+  def getTileAt(x: Int, y: Int): Tile = tiles.get(TileId.forLocation(x, y)).getOrElse(defaultTile)
+
+  def getValueAt(x: Int, y: Int) {
+    val tileId = TileId.forLocation(x, y)
+    val tile: Tile = getTile(tileId)
+    tile(x - tileId.tileX * TileService.tileWidth, y - tileId.tileY * TileService.tileHeight)
+  }
+
+  def getAntialiasedValueAt(x: Float, y: Float) {
+    val x1 = x.floor.toInt
+    val x2 = x.ceil.toInt
+    val y1 = y.floor.toInt
+    val y2 = y.ceil.toInt
+
+    if (x1 == x2 && y1 == y2) getValueAt(x1, y1)
+    else {
+      val xf = x - x1
+      val yf = y - y1
+
+      val v1 = getValueAt(x1, y1) * (1f - xf) + getValueAt(x2, y1) * xf
+      val v2 = getValueAt(x1, y2) * (1f - xf) + getValueAt(x2, y2) * xf
+
+      v1 * (1f - yf) + v2 * yf
+    }
+  }
+
+  def setValueAt(x: Int, y: Int, value: Float) {
+    val tileId: TileId = TileId.forLocation(x, y)
+    getTileForModification(tileId).update(x - tileId.tileX * TileService.tileWidth, y - tileId.tileY * TileService.tileHeight, value)
+  }
+
 
   def runOperation(operation: Operation) {
     val affectedTiles = operation.affectedTiles(identifier)

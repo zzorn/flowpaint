@@ -29,20 +29,30 @@ trait Channel {
   def getTile(tileId: TileId): Tile
 
   /**
+   * Returns the tile at the specified coordinates.
+   */
+  def getTileAt(canvasX: Int, canvasY: Int): Tile
+
+  /**
    * Returns the data tiles defined in this channel.
    * The data tiles should not be directly modified.
    */
   def tiles: Map[TileId, DataTile]
 
-  /* *
+  /**
    * Value at the specified canvas location.
    */
-//  def getValueAt(x: Int, y: Int): Float
+  def getValueAt(x: Int, y: Int): Float
 
-  /* *
+  /**
    * Interpolated value at the specified fractional canvas location.
    */
-//  def getAntialiasedValueAt(x: Float, y: Float): Float
+  def getAntialiasedValueAt(x: Float, y: Float): Float
+
+  /**
+   * Sets the value at the specified canvas location.
+   */
+  def setValueAt(x: Int, y: Int, value: Float)
 
   /**
    * Runs an operation that can change the channel values.

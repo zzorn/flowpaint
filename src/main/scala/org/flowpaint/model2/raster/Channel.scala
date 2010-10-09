@@ -44,6 +44,8 @@ trait Channel {
    */
   def getValueAt(x: Int, y: Int): Float
 
+  final def getByteValueAt(x: Int, y: Int): Float = (getValueAt(x, y) * 255).toInt
+  
   /**
    * Interpolated value at the specified fractional canvas location.
    */

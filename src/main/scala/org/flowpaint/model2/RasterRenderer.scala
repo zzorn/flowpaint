@@ -5,9 +5,10 @@ import java.awt.Image
 import org.flowpaint.util.Rectangle
 
 /**
- * Renders a raster to a java image, allowing it to be displayed or saved in simple image formats.
+ * Renders a raster to an int array of packed rgba pixels, allowing it to be displayed or saved in simple image formats.
  */
 trait RasterRenderer {
-  def render(raster: Raster, area: Rectangle, image: BufferedImage)
+  def render(source: Raster, sourceArea: Rectangle, targetArea: Rectangle,
+             target: Array[Int], targetWidth: Int, targetHeight: Int)
 }
 

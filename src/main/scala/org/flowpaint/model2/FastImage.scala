@@ -16,6 +16,7 @@ class FastImage(val width: Int, val height: Int) {
   private val updatedArea = new BoundingBox()
   private var imageData: Array[Int] = null
 
+
   initialize()
 
   private def initialize() {
@@ -49,7 +50,10 @@ class FastImage(val width: Int, val height: Int) {
     updatedArea.includeArea(0, 0, width, height)
   }
 
+  /*
   def renderRaster(raster: Raster, viewX: Int, viewY: Int) {
+    rasterRenderer.render(raster, )
+
     val area = new RectangleImpl(viewX, viewY, width, height)
     raster.getBlocks(area) foreach { block =>
       block.copyToRgbImage(imageData, width, area)
@@ -57,7 +61,7 @@ class FastImage(val width: Int, val height: Int) {
 
     updatedArea.includeArea(0, 0, width, height)
   }
-
+*/
   def getImage: Image = image
 
   def renderToGraphics(context: Graphics) {

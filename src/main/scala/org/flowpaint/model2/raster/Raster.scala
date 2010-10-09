@@ -12,10 +12,12 @@ import raster.Channel
 // TODO: Undo history saving - but do it with the command history - they can store the blocks of the layers that they changed
 class Raster {
 
-  private var channels: Map[Symbol, Channel] = Map()
+  private var _channels: Map[Symbol, Channel] = Map()
 
   // Map from row indexes to map from column indexes to blocks of pixel data.
   private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
+
+  def channels: Map[Channel] = _channels
 
   // TODO: The default tiles for each channel for this raster (-> procedural tiles could also be used - converted to actual raster when modified)
   // TODO: Should getBlocks instantiate missing blocks with default tiles in that case? do we even need it?

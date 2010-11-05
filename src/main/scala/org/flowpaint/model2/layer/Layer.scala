@@ -10,9 +10,9 @@ import org.flowpaint.util.Rectangle
  */
 trait Layer {
 
-  def identifier: Symbol
+  var identifier: Symbol = null
   
-  def channel(name: Symbol): Option[Channel]
+  def channel(name: Symbol): Option[Channel] = None
 
   /**
    * Render the layer on top of the specified target raster and data.

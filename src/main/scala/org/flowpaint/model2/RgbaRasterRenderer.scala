@@ -47,9 +47,9 @@ final class RgbaRasterRenderer(renderAlphaAsCheckers: Boolean = true, alphaGridS
             val alphaLuminance = if (! ((x % alphaGridSize * 2 < alphaGridSize) == (y % alphaGridSize * 2 < alphaGridSize))) alphaLuminance1 else alphaLuminance2
             val preMultipliedAlphaLuminance = (1f - a) * alphaLuminance
 
-            val r = (255 * (preMultipliedAlphaLuminance + red(index)   * a)).toInt
-            val g = (255 * (preMultipliedAlphaLuminance + green(index) * a)).toInt
-            val b = (255 * (preMultipliedAlphaLuminance + blue(index)  * a)).toInt
+            val r = (255 * (preMultipliedAlphaLuminance + red.getValueAt(x, y)   * a)).toInt
+            val g = (255 * (preMultipliedAlphaLuminance + green.getValueAt(x, y) * a)).toInt
+            val b = (255 * (preMultipliedAlphaLuminance + blue.getValueAt(x, y)  * a)).toInt
 
             target(i) = 0xFF000000 | (r << 16) | (g << 8) | b
           }
@@ -60,10 +60,10 @@ final class RgbaRasterRenderer(renderAlphaAsCheckers: Boolean = true, alphaGridS
       else
         // Render alpha value into highest byte
         while (x < endX) {
-          target(i) = (alpha.getByteValue(x,y) << 24) |
-                      (red.getByteValue(x,y)   << 16) |
-                      (green.getByteValue(x,y) <<  8) |
-                      blue.getByteValue(x,y)
+          target(i) = (alpha.getByteValueAt(x,y) << 24) |
+                      (red.getByteValueAt(x,y)   << 16) |
+                      (green.getByteValueAt(x,y) <<  8) |
+                      blue.getByteValueAt(x,y)
 
           i += 1
           x += 1

@@ -15,14 +15,15 @@ class Raster {
   private var _channels: Map[Symbol, Channel] = Map()
 
   // Map from row indexes to map from column indexes to blocks of pixel data.
-  private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
+//  private val blocks: mutable.Map[Int, Map[Int, Block]] = new HashMap()
 
-  def channels: Map[Channel] = _channels
+  def channels: Map[Symbol, Channel] = _channels
 
   // TODO: The default tiles for each channel for this raster (-> procedural tiles could also be used - converted to actual raster when modified)
   // TODO: Should getBlocks instantiate missing blocks with default tiles in that case? do we even need it?
 
 
+/*
   def getBlocks(area: Rectangle): List[Block] = {
     val xc1 = area.x1 / blockSize
     val yc1 = area.y1 / blockSize
@@ -48,6 +49,7 @@ class Raster {
 
     result
   }
+*/
 
   /**
    * Renders the specified raster on top of this raster, for the specified area, with the specified blending function.

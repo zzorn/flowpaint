@@ -22,7 +22,7 @@ final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) exte
   private val channelTiles: mutable.Map[Symbol, Tile] = new HashMap()
 
   def addChannel(name: Symbol): Tile = {
-    val channel: Tile = new DataTile(width, height)
+    val channel: Tile = new DataTile()
     channelTiles(name) = channel
     channel
   }
@@ -52,7 +52,7 @@ final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) exte
       imageIndex = y * imageWidth + x
       while(x < vx2) {
 
-        val a = alpha.getFloat(index)
+        val a = alpha(index)
         val colorCode: Int = if (a < 1f) {
           // Calculate checkerboard alpha pattern if we have some transparency
           val preMultipliedAlphaLuminance = (1f - a) * (if (! ((x % alphaGridSize * 2 < alphaGridSize) == (y % alphaGridSize * 2 < alphaGridSize))) alphaLuminance1 else alphaLuminance2)

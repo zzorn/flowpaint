@@ -13,7 +13,7 @@ final class ChannelImpl(val identifier: Symbol) extends Channel {
   var tiles: Map[TileId, DataTile] = Map()
 
   private var dirtyTiles: Set[TileId] = Set()
-  private var allDirty: Boolean = true
+  var allDirty: Boolean = true
 
   private var oldTiles: Map[TileId, DataTile] = Map()
   private var newTiles: Map[TileId, DataTile] = Map()
@@ -30,13 +30,13 @@ final class ChannelImpl(val identifier: Symbol) extends Channel {
   def getTile(tileId: TileId): Tile = tiles.get(tileId).getOrElse(defaultTile)
   def getTileAt(x: Int, y: Int): Tile = tiles.get(TileId.forLocation(x, y)).getOrElse(defaultTile)
 
-  def getValueAt(x: Int, y: Int) {
+  def getValueAt(x: Int, y: Int): Float = {
     val tileId = TileId.forLocation(x, y)
     val tile: Tile = getTile(tileId)
     tile(x - tileId.tileX * TileService.tileWidth, y - tileId.tileY * TileService.tileHeight)
   }
 
-  def getAntialiasedValueAt(x: Float, y: Float) {
+  def getAntialiasedValueAt(x: Float, y: Float): Float = {
     val x1 = x.floor.toInt
     val x2 = x.ceil.toInt
     val y1 = y.floor.toInt

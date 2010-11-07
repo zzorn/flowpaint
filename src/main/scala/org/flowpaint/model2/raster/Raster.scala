@@ -1,7 +1,7 @@
 package org.flowpaint.model2
 
 import _root_.org.flowpaint.util.Rectangle
-import blend.Blender
+import blend.{OpaqueBlender, Blender}
 import collection.mutable.HashMap
 import collection._
 import raster.{ChannelImpl, Channel}
@@ -66,7 +66,7 @@ class Raster {
       if (!_channels.contains(channelId)) _channels += channelId -> new ChannelImpl(channelId)
 
       // Get blending func
-      val blender = channelBlenders(channelId)
+      val blender = channelBlenders.getOrElse(channelId, OpaqueBlender)
 
       // Overlay
       _channels(channelId).blend(c, area, alpha, blender)

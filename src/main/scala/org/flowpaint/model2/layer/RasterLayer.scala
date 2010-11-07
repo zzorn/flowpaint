@@ -14,5 +14,6 @@ class RasterLayer extends Layer {
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
     targetRaster.overlay(raster, area)
   }
+
 }
 

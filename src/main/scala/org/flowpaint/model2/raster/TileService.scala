@@ -14,6 +14,8 @@ object TileService {
   val tileWidth = 1 << tileWidthShift
   val tileHeight = 1 << tileHeightShift
 
+  val tilePixels: Int = tileWidth * tileHeight
+
   def tileIdForLocation(canvasX: Int, canvasY: Int): TileId = TileId.forLocation(canvasX, canvasY)
 
   // TODO: Implement tile pooling
@@ -25,7 +27,7 @@ object TileService {
 
     sourceTile match {
       case dataTile: DataTile =>
-        Array.copy(dataTile.data, 0, newTile.data, 0, dataTile.data.length)
+        newTile.copyDataFrom(dataTile)
       case valueTile: SingleValueTile =>
         val v = valueTile.value
         var i = newTile.data.length - 1

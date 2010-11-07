@@ -13,4 +13,8 @@ final class DataTile() extends Tile {
 
   def copy(): DataTile =  TileService.allocateDataTile(this)
 
+  def copyDataFrom(source: DataTile) {
+    Array.copy(source.data, 0, data, 0, source.data.length)
+  }
+
 }

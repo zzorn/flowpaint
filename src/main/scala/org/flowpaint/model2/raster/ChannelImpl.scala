@@ -1,13 +1,14 @@
 package org.flowpaint.model2.raster
 
-import tile.ZeroTile
 import org.flowpaint.model2.blend.Blender
+import org.flowpaint.util.Rectangle
+import tile.{OneTile, ZeroTile}
 
 /**
  * 
  */
 // IDEA: As a memory optimization, we could check if a tile is 100% the same value after a brush stroke, and replace it with a solid tile in that case..
-final class ChannelImpl(val identifier: Symbol) extends Channel {
+final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true) extends Channel {
 
   var defaultTile: Tile = ZeroTile
   var tiles: Map[TileId, DataTile] = Map()
@@ -20,15 +21,33 @@ final class ChannelImpl(val identifier: Symbol) extends Channel {
   private var oldDefaultTile: Tile = null
 
   def setDefaultTile(newDefaultTile: Tile) {
-    if (newDefaultTile != defaultTile) {
-      oldDefaultTile = defaultTile
-      defaultTile = newDefaultTile
-      allDirty = true
+    if (undoEnabled) {
+      if (newDefaultTile != defaultTile) {
+        oldDefaultTile = defaultTile
+        defaultTile = newDefaultTile
+        allDirty = true
+      }
     }
+    else defaultTile = newDefaultTile
   }
 
   def getTile(tileId: TileId): Tile = tiles.get(tileId).getOrElse(defaultTile)
   def getTileAt(x: Int, y: Int): Tile = tiles.get(TileId.forLocation(x, y)).getOrElse(defaultTile)
+  def getTilesIn(area: Rectangle): Set[Tile] = {
+    var result = Set[Tile]()
+    tiles.iterator foreach { entry =>
+      if (entry._1.intersects(area)) result += entry._2
+    }
+    result
+  }
+
+  def getTileIdsIn(area: Rectangle): Set[TileId] = {
+    var result = Set[TileId]()
+    tiles.iterator foreach { entry =>
+      if (entry._1.intersects(area)) result += entry._1
+    }
+    result
+  }
 
   def getValueAt(x: Int, y: Int): Float = {
     val tileId = TileId.forLocation(x, y)
@@ -68,31 +87,37 @@ final class ChannelImpl(val identifier: Symbol) extends Channel {
       addDirtyTile(affectedTile)
     }
   }
-  
-  def blend(over: Channel, alpha: Channel, blender: Blender) {
-    // Blend the background
-    defaultTile = blender.blendBackground(defaultTile, over.defaultTile, alpha.defaultTile)
 
-    // Find the tiles with some content in this layer, the layer to blend, or the channel to blend by
-    val tilesToBlend = tiles.keySet ++ over.tiles.keySet ++ alpha.tiles.keySet
+
+  def blend(over: Channel, area: Rectangle, alpha: Option[Channel], blender: Blender) {
+    // Blend the background
+    defaultTile = blender.blendBackground(defaultTile, over.defaultTile, if (alpha.isDefined) alpha.get.defaultTile else OneTile)
+
+    // Find the tiles in the area with some content in this layer, the layer to blend, or the channel to blend by
+    var tilesToBlend: Set[TileId] = getTileIdsIn(area) ++ over.getTileIdsIn(area)
+    if (alpha.isDefined) tilesToBlend ++= alpha.get.getTileIdsIn(area)
 
     // Blend tiles with data
     tilesToBlend foreach { (tid: TileId) =>
-      blender.blendData(getTileForModification(tid), over.getTile(tid), alpha.getTile(tid))
+      val alphaTile = if (alpha.isDefined) alpha.get.getTile(tid) else OneTile
+      blender.blendData(getTileForModification(tid), over.getTile(tid), alphaTile)
     }
   }
 
   private def getTileForModification(tileId: TileId): DataTile = {
-    if (!newTiles.contains(tileId)) {
-      // Store the current state of the tile, so we can undo to it, if there was any edits for the tile
-      if (tiles.contains(tileId)) oldTiles += tileId -> tiles(tileId)
+    if (undoEnabled) {
+      if (!newTiles.contains(tileId)) {
+        // Store the current state of the tile, so we can undo to it, if there was any edits for the tile
+        if (tiles.contains(tileId)) oldTiles += tileId -> tiles(tileId)
 
-      // Create and return a new copy to work on 
-      val newTile = TileService.allocateDataTile(getTile(tileId))
-      newTiles += tileId -> newTile
-      tiles -= tileId
-      tiles += tileId -> newTile
-      newTile
+        // Create and return a new copy to work on
+        val newTile = TileService.allocateDataTile(getTile(tileId))
+        newTiles += tileId -> newTile
+        tiles -= tileId
+        tiles += tileId -> newTile
+        newTile
+      }
+      else tiles(tileId)
     }
     else tiles(tileId)
   }

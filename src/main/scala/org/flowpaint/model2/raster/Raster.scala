@@ -4,7 +4,7 @@ import _root_.org.flowpaint.util.Rectangle
 import blend.Blender
 import collection.mutable.HashMap
 import collection._
-import raster.Channel
+import raster.{ChannelImpl, Channel}
 
 /**
  * 
@@ -55,9 +55,22 @@ class Raster {
    * Renders the specified raster on top of this raster, for the specified area, with the specified blending function.
    * The blending function to use is channel specific.
    */
-  def overlay(raster: Raster, area: Rectangle, channelBlenders: Symbol => Blender) {
-    
-    // TODO
+  def overlay(raster: Raster, area: Rectangle, channelBlenders: Map[Symbol, Blender] = Map()) {
+
+    val alpha = raster.channels.get('alpha)
+
+    raster.channels.values foreach { c =>
+      val channelId = c.identifier
+
+      // Add missing channels
+      if (!_channels.contains(channelId)) _channels += channelId -> new ChannelImpl(channelId)
+
+      // Get blending func
+      val blender = channelBlenders(channelId)
+
+      // Overlay
+      _channels(channelId).blend(c, area, alpha, blender)
+    }
   }
 
 }

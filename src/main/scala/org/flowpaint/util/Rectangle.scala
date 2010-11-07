@@ -20,6 +20,11 @@ trait Rectangle {
 
   def contains( x : Int, y : Int ) = x >= x1 && x < x2 && y >= y1 && y < y2
 
+  def intersects(x: Int, y: Int, w: Int, h: Int): Boolean = {
+    return x1 < x + w && x < x2 &&
+           y1 < y + h && y < y2
+  }
+
   def union( r2 : Rectangle ) : Rectangle = {
     val nx1 = x1 min r2.x1
     val ny1 = y1 min r2.y1

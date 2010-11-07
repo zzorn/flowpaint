@@ -1,6 +1,7 @@
 package org.flowpaint.model2.raster
 
 import org.flowpaint.model2.blend.Blender
+import org.flowpaint.util.Rectangle
 
 /**
  * A channel of data, e.g. red, green, blue, alpha, height data, x normals, etc..
@@ -32,6 +33,16 @@ trait Channel {
    * Returns the tile at the specified coordinates.
    */
   def getTileAt(canvasX: Int, canvasY: Int): Tile
+
+  /**
+   * The tiles intersecting with the specified area
+   */
+  def getTilesIn(area: Rectangle): Set[Tile]
+
+  /**
+   * The ids of the tiles intersecting with the specified area
+   */
+  def getTileIdsIn(area: Rectangle): Set[TileId]
 
   /**
    * Returns the data tiles defined in this channel.
@@ -88,6 +99,6 @@ trait Channel {
    * Blends in the specified channel on top of this channel, using the specified blend function
    * and the specified alpha / blend parameter channel.
    */
-  def blend(over: Channel, alpha: Channel, blender: Blender)
+  def blend(over: Channel, area: Rectangle, alpha: Option[Channel], blender: Blender)
 
 }

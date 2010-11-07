@@ -4,13 +4,15 @@ import _root_.org.flowpaint.util.Rectangle
 import layer.Layer
 
 /**
- * A layer wit raster data, rendering the data on top of the provided raster data.
+ * A layer with raster data, rendering the data on top of the provided raster data.
  */
 class RasterLayer extends Layer {
   var raster: Raster = new Raster()
 
+  override def channel(name: Symbol) = raster.channels.get(name)
+
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
-    targetRaster.overlay(raster, area, null)
+    targetRaster.overlay(raster, area)
   }
 }
 

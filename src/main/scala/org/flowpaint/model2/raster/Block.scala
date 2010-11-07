@@ -9,6 +9,7 @@ import org.flowpaint.util.Rectangle
 /**
  * Block of data for a quadratic region of pixels of the specified size along the sides,
  * with the pixel data for each channel (if present).
+ * @deprecated
  */
 @Deprecated
 final case class Block(width: Int, height: Int, canvasX: Int, canvasY: Int) extends Rectangle {

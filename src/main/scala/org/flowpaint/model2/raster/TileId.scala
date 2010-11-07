@@ -1,9 +1,18 @@
 package org.flowpaint.model2.raster
 
+import org.flowpaint.util.Rectangle
+
 /**
  * Identifier for a cell at the specified cell indexes.
  */
-case class TileId(tileX: Int, tileY: Int)
+case class TileId(tileX: Int, tileY: Int) {
+  def intersects(area: Rectangle): Boolean = {
+    area.intersects(tileX * TileService.tileWidth,
+                    tileY * TileService.tileHeight,
+                    TileService.tileWidth,
+                    TileService.tileHeight)
+  }
+}
 
 object TileId {
 

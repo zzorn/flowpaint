@@ -10,8 +10,8 @@ import org.flowpaint.util.Rectangle
  */
 trait Layer {
 
-  var identifier: Symbol = null
-  
+  var identifier: Symbol = 'layer
+
   def channel(name: Symbol): Option[Channel] = None
 
   /**

@@ -10,5 +10,9 @@ import org.flowpaint.util.Rectangle
 trait RasterRenderer {
   def render(source: Raster, sourceArea: Rectangle, targetArea: Rectangle,
              target: Array[Int], targetWidth: Int, targetHeight: Int)
+
+  def render(source: Raster, sourceArea: Rectangle, targetArea: Rectangle, target: FastImage) {
+    render(source, sourceArea, targetArea, target.buffer, target.width, target.height)
+  }
 }
 

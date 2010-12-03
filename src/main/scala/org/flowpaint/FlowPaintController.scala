@@ -1,6 +1,8 @@
 package org.flowpaint
 
 
+import model2.Picture
+import picture.Pictures
 import scala.io.Source
 import scala.xml.{Elem, PrettyPrinter}
 import org.flowpaint.brush._
@@ -28,10 +30,12 @@ import org.flowpaint.util._
 // TODO: Extract the default brush setup code..
 object FlowPaintController {
 
+  val pictures: Pictures = new Pictures()
 
   // State / datamodel info
   var currentTool: Tool = null
-  var currentPainting: Painting = null
+
+  def currentPainting: Picture = pictures.currentPicture
 
 
   private var myCurrentBrush: Brush = null
@@ -104,14 +108,15 @@ object FlowPaintController {
 
     // State / datamodel info
     currentTool = new StrokeTool()
-    currentPainting = new Painting()
 
+
+    pictures.newPicture()
 
     // Render cache bitmap
-    surface = new SingleRenderSurface(currentPainting, UNDO_QUEUE_SIZE)
+    //surface = new SingleRenderSurface(currentPainting, UNDO_QUEUE_SIZE)
 
     // Rendering UI
-    paintPanel = new PaintPanel(surface, true)
+    paintPanel = new PaintPanel(pictures.currentPicture, true)
 
     // Input source
     penInput = new InputHandler((sample: DataSample) => {

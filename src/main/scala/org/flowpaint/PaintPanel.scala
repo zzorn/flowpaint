@@ -4,6 +4,7 @@ import java.awt._
 import java.awt.event.{ComponentListener, ComponentEvent}
 import java.awt.image.BufferedImage
 import javax.swing.JPanel
+import model2.{Picture, FastImage}
 import org.flowpaint.renderer.RenderSurface
 
 /**
@@ -11,13 +12,14 @@ import org.flowpaint.renderer.RenderSurface
  *
  * @author Hans Haggstrom
  */
-class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JPanel {
+class PaintPanel(picture: Picture, useCrosshairCursor: Boolean) extends JPanel {
 
   val THIN_CROSSHAIR_CURSOR = createThinCrosshairCursor()
 
 
   private var requestPartialRepaint = false
 
+  private var fastImage: FastImage = null
 
   addComponentListener(new ComponentListener {
     def componentMoved(e: ComponentEvent) = {}
@@ -28,7 +30,9 @@ class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JP
 
     def componentResized(e: ComponentEvent) = {
 
-      surface.setViewPortSize(getWidth, getHeight)
+      fastImage = new FastImage(getWidth, getHeight)
+
+      //surface.setViewPortSize(getWidth, getHeight)
     }
   })
 
@@ -43,7 +47,9 @@ class PaintPanel(surface: RenderSurface, useCrosshairCursor: Boolean) extends JP
     else surface.renderFullArea( g )
 */
 
-    surface.renderFullArea( g )
+    fastImage.renderToGraphics(g)
+
+    //surface.renderFullArea( g )
 
     requestPartialRepaint = false
   }

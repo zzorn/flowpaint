@@ -10,7 +10,22 @@ import org.flowpaint.util.Rectangle
  */
 trait Layer {
 
-  var identifier: Symbol = 'layer
+  type LayerListener = () => Unit
+
+  private var listeners: Set[LayerListener] = Set()
+  private var _identifier: Symbol = 'layer
+
+  def identifier(): Symbol = _identifier
+  def setIdentifier(id: Symbol) {
+    require(id != null)
+    _identifier = id
+    onLayerChanged()
+  }
+
+  def addListener(listener: LayerListener) = listeners += listener
+  def removeListener(listener: LayerListener) = listeners -= listener
+
+  protected def onLayerChanged() = listeners foreach (_())
 
   def channel(name: Symbol): Option[Channel] = None
 

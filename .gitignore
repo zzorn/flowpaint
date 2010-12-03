@@ -6,3 +6,6 @@ target/
 *.iws
 out/
 changes.txt
+Flowpaint-QuickSave-*.png
+readme.txt
+

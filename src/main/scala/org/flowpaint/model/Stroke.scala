@@ -7,6 +7,7 @@ import org.flowpaint.property.Data
 import org.flowpaint.renderer.{PictureProvider, RenderSurface}
 import org.flowpaint.renderer.StrokeRenderer
 import org.flowpaint.util.{DataSample, Rectangle}
+import org.flowpaint.model2.Picture
 
 /**
  *      A brush stroke on some layer.
@@ -48,6 +49,12 @@ case class Stroke(brush: Brush) extends PictureProvider {
         paths = Nil
     }
 
+  def renderTo(picture: Picture) {
+    // TODO
+
+    // Notify listeners (e.g. paint panel)
+    picture.onPictureChanged()
+  }
 
     def updateSurface(surface: RenderSurface) = {
 

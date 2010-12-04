@@ -2,8 +2,7 @@ package org.flowpaint.model2.layer
 
 import org.flowpaint.model2.{DataMap, Raster}
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.raster.{TileId, Channel}
-
+import org.flowpaint.model2.raster.{Changes, Change, TileId, Channel}
 
 /**
  * 
@@ -15,7 +14,7 @@ trait Layer {
   private var listeners: Set[LayerListener] = Set()
   private var _identifier: Symbol = 'layer
 
-  def identifier(): Symbol = _identifier
+  def identifier: Symbol = _identifier
   def setIdentifier(id: Symbol) {
     require(id != null)
     _identifier = id
@@ -52,6 +51,10 @@ trait Layer {
    */
   def clearDirtyTiles() {
     channels.values foreach (_.cleanDirtyTiles())
+  }
+
+  def takeUndoSnapshot(): Change = {
+    Changes(channels.values.map(_.takeSnapshot(identifier)))
   }
 
 }

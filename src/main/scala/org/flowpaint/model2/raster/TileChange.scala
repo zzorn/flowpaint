@@ -15,10 +15,12 @@ case class TileChange(layer: Symbol, channel: Symbol,
 
   def undo(picture: Picture) {
     getChannel(picture).undoChange(this)
+    picture.onPictureChanged()
   }
 
   def redo(picture: Picture) {
     getChannel(picture).redoChange(this)
+    picture.onPictureChanged()
   }
 
   private def getChannel(picture: Picture): Channel = {

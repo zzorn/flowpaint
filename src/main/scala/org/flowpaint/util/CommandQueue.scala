@@ -3,29 +3,32 @@ package org.flowpaint.util
 import java.awt.event.{ActionEvent, KeyEvent}
 import javax.swing.{KeyStroke, AbstractAction, Action}
 
-case class Command(description: String,
-                  action: () => Object,
-                  undoAction: (Object) => Object,
-                  redoAction: (Object) => Object,
-                  canUndo : () => Boolean,
+/**
+ * T is the document the command should be applied to.
+ */
+case class Command[T](description: String,
+                  action: (T) => Object,
+                  undoAction: (T, Object) => Object,
+                  redoAction: (T, Object) => Object,
+                  canUndo : (T) => Boolean,
                   clearUndoQueue: Boolean) {
     def this(description: String,
-            action: () => Object,
-            undoAction: (Object) => Object,
-            redoAction: (Object) => Object,
-            canUndo : () => Boolean) {
+            action: (T) => Object,
+            undoAction: (T, Object) => Object,
+            redoAction: (T, Object) => Object,
+            canUndo : (T) => Boolean) {
         this (description, action, undoAction, redoAction, canUndo, false)
     }
 
     def this(description: String,
-            action: () => Object,
-            undoAction: (Object) => Object) {
+            action: (T) => Object,
+            undoAction: (T, Object) => Object) {
         this (description, action, undoAction, null, null, false)
     }
 
     def this(description: String,
-            action: () => Unit) {
-        this (description, () => {action(); null}, null, null, null, false)
+            action: (T) => Unit) {
+        this (description, (T) => {action(); null}, null, null, null, false)
     }
 }
 
@@ -35,17 +38,18 @@ case class Command(description: String,
  *
  * @author Hans Haggstrom
  */
-class CommandQueue {
-    private var undoQueue: List[(Command, Object)] = Nil
-    private var redoQueue: List[(Command, Object)] = Nil
-    private var commandQueue: List[Command] = Nil
+class CommandQueue[T](document: T) {
+
+    private var undoQueue: List[(Command[T], Object)] = Nil
+    private var redoQueue: List[(Command[T], Object)] = Nil
+    private var commandQueue: List[Command[T]] = Nil
 
     private var listeners: List[()=>Unit] = Nil
 
     def addListener( listener : ()=>Unit ) : Unit = listeners = listener :: listeners
     private def notifyListeners() : Unit = listeners foreach ( _() )
 
-    def queueCommand(command: Command) {
+    def queueCommand(command: Command[T]) {
 
         // TODO: Could implement different running strategies, e.g. run in separate worker thread.  But it could cause problems if swing is accessed.
 
@@ -56,10 +60,10 @@ class CommandQueue {
 
         if (command != redoCommand && command != undoCommand ) redoQueue = Nil
 
-        runCommand( command )
+        runCommand(command)
     }
 
-    private def runCommand( command : Command ) {
+    private def runCommand(command : Command[T]) {
         val undoData = command.action()
 
         if (command.undoAction != null)
@@ -68,11 +72,11 @@ class CommandQueue {
         notifyListeners()
     }
 
-    val undoCommand = new Command("Undo", () => {undo} )
-    val redoCommand = new Command("Redo", () => {redo})
+    val undoCommand = new Command[T]("Undo", () => {undo()})
+    val redoCommand = new Command[T]("Redo", () => {redo()})
 
-    private def updateStatus( action : Action) {
-        action.setEnabled( canUndo )
+    private def updateStatus(action : Action) {
+        action.setEnabled(canUndo)
     }
 
     val undoAction: Action = new AbstractAction("Undo") {
@@ -125,7 +129,7 @@ class CommandQueue {
             val (command, undoData) = undoQueue.head
             undoQueue = undoQueue.tail
 
-            val redoData = command.undoAction( undoData )
+            val redoData = command.undoAction(document, undoData)
 
             redoQueue = (command, redoData) :: redoQueue
 
@@ -139,8 +143,8 @@ class CommandQueue {
             val (command, redoData) = redoQueue.head
             redoQueue = redoQueue.tail
 
-            val undoData = if (command.redoAction != null) command.redoAction( redoData )
-                           else command.action()
+            val undoData = if (command.redoAction != null) command.redoAction(document, redoData)
+                           else command.action(document)
 
             undoQueue = (command, undoData) :: undoQueue
 
@@ -148,7 +152,7 @@ class CommandQueue {
         }
     }
 
-    def canUndo(): Boolean = !undoQueue.isEmpty && undoQueue.head._1.canUndo()
+    def canUndo(): Boolean = !undoQueue.isEmpty && undoQueue.head._1.canUndo(document)
 
     def canRedo(): Boolean = !redoQueue.isEmpty
 

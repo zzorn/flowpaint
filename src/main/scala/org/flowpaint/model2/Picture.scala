@@ -1,7 +1,8 @@
 package org.flowpaint.model2
 
 import layer.Layer
-import raster.TileId
+import org.flowpaint.util.CommandQueue
+import raster.{Changes, Change, TileId}
 
 /**
  * 
@@ -12,6 +13,16 @@ class Picture {
 
   private var listeners: List[PictureListener] = Nil
   private var _layers: List[Layer] = Nil
+  private var _currentLayer: Layer = null
+
+  def currentLayer: Layer = _currentLayer
+  def setCurrentLayer(layer: Layer) {
+    require(layer == null || _layers.contains(layer))
+    _currentLayer = layer
+  }
+
+
+  val commandQueue = new CommandQueue[Picture](this)
 
   def layer(name: Symbol): Option[Layer] = layers.find(_.identifier == name)
 
@@ -40,7 +51,7 @@ class Picture {
   def addListener(listener: PictureListener) = listeners ::= listener
   def removeListener(listener: PictureListener) = listeners -= listener
 
-  private def onPictureChanged() = listeners foreach (_(this))
+  def onPictureChanged() = listeners foreach (_(this))
 
   /**
    * Retrieves the id:s of the tiles that need to be redrawn, and clears the dirty status at the same time.
@@ -65,6 +76,10 @@ class Picture {
    */
   def clearDirtyTiles() {
     _layers foreach (_.clearDirtyTiles())
+  }
+
+  def takeUndoSnapshot(): Change = {
+    Changes(_layers.map(_.takeUndoSnapshot()))
   }
 
   def hasDirtyTiles(): Boolean = !getDirtyTiles().isEmpty

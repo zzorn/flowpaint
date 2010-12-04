@@ -2,6 +2,7 @@ package org.flowpaint
 
 
 import model2.Picture
+import model2.raster.Change
 import picture.Pictures
 import scala.io.Source
 import scala.xml.{Elem, PrettyPrinter}
@@ -35,7 +36,7 @@ object FlowPaintController {
   // State / datamodel info
   var currentTool: Tool = null
 
-  def currentPainting: Picture = pictures.currentPicture
+  def currentPicture: Picture = pictures.currentPicture
 
 
   private var myCurrentBrush: Brush = null
@@ -87,7 +88,7 @@ object FlowPaintController {
   // Render cache bitmap
   var surface: SingleRenderSurface = null
 
-  val commandQueue = new CommandQueue()
+//  val commandQueue = new CommandQueue()
 
   // Rendering UI
   var paintPanel: PaintPanel = null
@@ -197,32 +198,24 @@ object FlowPaintController {
 
 
   def storeStroke(stroke: Stroke) {
-    commandQueue.queueCommand(new Command(
+    currentPicture.commandQueue.queueCommand(new Command[Picture](
       "Brush Stroke",
-      () => {
-        //surface.undoSnapshot()
-        // TODO: Make undo stacks document specific
-        FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
-        //stroke.updateSurface( surface )
-        paintPanel.repaint()
-        stroke
+      (picture: Picture) => {
+        stroke.renderTo(picture)
+        picture.takeUndoSnapshot()
       },
-      (undoData: Object) => {
-        val undoedStroke = undoData.asInstanceOf[Stroke]
-        FlowPaintController.currentPainting.currentLayer.removeStroke(undoedStroke)
-        surface.undo()
-        paintPanel.repaintChanges()
-        undoedStroke
+      (picture: Picture, undoData: Object) => {
+        val change = undoData.asInstanceOf[Change]
+        change.undo(picture)
+        change
       },
-      (redoData: Object) => {
-        val stroke = redoData.asInstanceOf[Stroke]
-        FlowPaintController.currentPainting.currentLayer.addStroke(stroke)
-        stroke.updateSurface(surface)
-        paintPanel.repaint()
-        stroke
+      (picture: Picture, redoData: Object) => {
+        val change = redoData.asInstanceOf[Change]
+        change.redo(picture)
+        change
       },
-      () => {
-        surface.canUndo
+      (picture: Picture) => {
+        true
       }))
   }
 
@@ -233,8 +226,8 @@ object FlowPaintController {
       () => {
         surface.undoSnapshot()
 
-        val layers = currentPainting.getLayers
-        currentPainting.clear()
+        val layers = currentPicture.getLayers
+        currentPicture.clear()
         surface.clear()
         paintPanel.repaint()
 
@@ -243,7 +236,7 @@ object FlowPaintController {
       (undoData: Object) => {
 
         val layers = undoData.asInstanceOf[List[Layer]]
-        currentPainting.setLayers(layers)
+        currentPicture.setLayers(layers)
         surface.undo()
         paintPanel.repaint()
 
@@ -252,8 +245,8 @@ object FlowPaintController {
       (redoData: Object) => {
         surface.undoSnapshot()
 
-        val layers = currentPainting.getLayers
-        currentPainting.clear()
+        val layers = currentPicture.getLayers
+        currentPicture.clear()
         surface.clear()
         paintPanel.repaint()
 

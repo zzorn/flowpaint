@@ -45,9 +45,29 @@ class Picture {
   /**
    * Retrieves the id:s of the tiles that need to be redrawn, and clears the dirty status at the same time.
    */
-  def getAndClearDirtyTiles(): Set[TileId]
+  def getAndClearDirtyTiles(): Set[TileId] = {
+    val tiles = getDirtyTiles()
+    clearDirtyTiles
+    tiles
+  }
 
-  def hasDirtyTiles(): Boolean
+  /**
+   * Retrieves the id:s of the tiles that need to be redrawn.
+   */
+  def getDirtyTiles(): Set[TileId] = {
+    var dirty: Set[TileId] = Set()
+    _layers foreach (l => dirty ++= l.getDirtyTiles())
+    dirty
+  }
+
+  /**
+   * Clears the dirty status of the tiles in the picture.
+   */
+  def clearDirtyTiles() {
+    _layers foreach (_.clearDirtyTiles())
+  }
+
+  def hasDirtyTiles(): Boolean = !getDirtyTiles().isEmpty
 
 }
 

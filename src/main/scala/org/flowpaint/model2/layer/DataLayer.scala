@@ -14,5 +14,7 @@ class DataLayer extends Layer {
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
     targetData.overlay(data, area)
   }
+
+  def channels = Map()
 }
 

@@ -12,5 +12,7 @@ class RasterFilterLayer extends Layer {
     // TODO
   }
 
+
+  def channels = Map()
 }
 

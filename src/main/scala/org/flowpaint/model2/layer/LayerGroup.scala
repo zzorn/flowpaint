@@ -9,5 +9,8 @@ import org.flowpaint.model2.{DataMap, Raster}
 
 class LayerGroup extends Layer  {
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) = null
+  def channels = Map()
+
+  // TODO: Override getdirty tiles etc
 }
 

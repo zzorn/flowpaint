@@ -11,6 +11,8 @@ class RasterLayer extends Layer {
 
   override def channel(name: Symbol) = raster.channels.get(name)
 
+  def channels = raster.channels
+
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
     targetRaster.overlay(raster, area)
   }

@@ -8,5 +8,7 @@ import org.flowpaint.model2.{DataMap, Raster}
  */
 class DataFilterLayer extends Layer {
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) = null
+
+  def channels = Map()
 }
 

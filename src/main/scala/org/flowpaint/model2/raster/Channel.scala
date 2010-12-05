@@ -2,6 +2,7 @@ package org.flowpaint.model2.raster
 
 import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
+import org.flowpaint.model2.Operation
 
 /**
  * A channel of data, e.g. red, green, blue, alpha, height data, x normals, etc..

@@ -1,8 +1,8 @@
 package org.flowpaint.model2.layer
 
-import org.flowpaint.model2.{DataMap, Raster}
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.raster.{Changes, Change, TileId, Channel}
+import org.flowpaint.model2.raster._
+import org.flowpaint.model2.{Picture, Operation, DataMap, Raster}
 
 /**
  * 
@@ -13,6 +13,7 @@ trait Layer {
 
   private var listeners: Set[LayerListener] = Set()
   private var _identifier: Symbol = 'layer
+  def picture: Picture
 
   def identifier: Symbol = _identifier
   def setIdentifier(id: Symbol) {
@@ -56,6 +57,11 @@ trait Layer {
   def takeUndoSnapshot(): Change = {
     Changes(channels.values.map(_.takeSnapshot(identifier)))
   }
+
+  def runOperation(operation: Operation) {
+    throw new UnsupportedOperationException("Not implemented for this layer type")
+  }
+
 
 }
 

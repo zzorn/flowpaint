@@ -3,6 +3,7 @@ package org.flowpaint.model2.raster
 import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
 import tile.{OneTile, ZeroTile}
+import org.flowpaint.model2.Picture
 
 /**
  * 
@@ -81,6 +82,9 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
 
   def runOperation(operation: Operation) {
     val affectedTiles = operation.affectedTiles(identifier)
+
+    // TODO: Here we could split processing up into several threads if we run on a multi-core processor.
+    
     affectedTiles foreach { (affectedTile: TileId) =>
       val dataTile = getTileForModification(affectedTile)
       operation.processTile(identifier, affectedTile, dataTile)

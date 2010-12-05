@@ -1,8 +1,8 @@
 package org.flowpaint
 
 
-import model2.Picture
 import model2.raster.Change
+import model2.{Operation, Picture}
 import picture.Pictures
 import scala.io.Source
 import scala.xml.{Elem, PrettyPrinter}
@@ -198,25 +198,9 @@ object FlowPaintController {
 
 
   def storeStroke(stroke: Stroke) {
-    currentPicture.commandQueue.queueCommand(new Command[Picture](
-      "Brush Stroke",
-      (picture: Picture) => {
-        stroke.renderTo(picture)
-        picture.takeUndoSnapshot()
-      },
-      (picture: Picture, undoData: Object) => {
-        val change = undoData.asInstanceOf[Change]
-        change.undo(picture)
-        change
-      },
-      (picture: Picture, redoData: Object) => {
-        val change = redoData.asInstanceOf[Change]
-        change.redo(picture)
-        change
-      },
-      (picture: Picture) => {
-        true
-      }))
+    val brushOp: Operation = null // TODO: Implement BrushOperation
+    
+    currentPicture.commandQueue.queueCommand(new OperationCommand(brushOp))
   }
 
   // TODO: Make undo stacks document (= painting or tome) specific.

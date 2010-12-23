@@ -28,7 +28,7 @@ case class Command[T](description: String,
 
     def this(description: String,
             action: (T) => Unit) {
-        this (description, (T) => {action(); null}, null, null, null, false)
+        this (description, (x: T) => {action(x); null}, null, null, null, false)
     }
 }
 
@@ -64,7 +64,7 @@ class CommandQueue[T](document: T) {
     }
 
     private def runCommand(command : Command[T]) {
-        val undoData = command.action()
+        val undoData = command.action(document)
 
         if (command.undoAction != null)
             undoQueue = (command, undoData) :: undoQueue

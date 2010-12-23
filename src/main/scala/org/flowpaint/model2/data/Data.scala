@@ -1,4 +1,4 @@
-package org.flowpaint.model2
+package org.flowpaint.model2.data
 
 /**
  * Data node.

@@ -1,4 +1,4 @@
-package org.flowpaint.model2
+package org.flowpaint.model2.data
 
 import _root_.java.util.ArrayList
 import _root_.org.flowpaint.util.Rectangle

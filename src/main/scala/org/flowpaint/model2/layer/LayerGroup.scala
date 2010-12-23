@@ -1,7 +1,9 @@
 package org.flowpaint.model2.layer
 
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.{Picture, DataMap, Raster}
+import org.flowpaint.model2.{Picture}
+import org.flowpaint.model2.raster.Raster
+import org.flowpaint.model2.data.DataMap
 
 /**
  * A group of layers, rendered as one.

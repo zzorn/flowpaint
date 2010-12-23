@@ -1,6 +1,7 @@
 package org.flowpaint.model2.blend
 
-import org.flowpaint.model2.raster.{TileService, Tile, DataTile}
+import org.flowpaint.model2.raster.{TileService}
+import org.flowpaint.model2.raster.tile.{Tile, DataTile}
 
 /**
  * Copies data from the source using the alpha tile as a mask.

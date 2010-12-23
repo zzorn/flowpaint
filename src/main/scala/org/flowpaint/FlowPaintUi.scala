@@ -99,7 +99,9 @@ object FlowPaintUi {
     addToolButton(toolbar, "Quick Save", KeyEvent.VK_S, FlowPaintController.quickSave)
     addToolButton(toolbar, "Quick Save and Clear Picture", KeyEvent.VK_A, FlowPaintController.quickSaveAndClearPicture)
     addToolButton(toolbar, "Clear Picture", KeyEvent.VK_C, FlowPaintController.clearPicture)
-    toolbar.add( FlowPaintController.commandQueue.undoAction )
+
+    // TODO: Listen to change of picture
+    toolbar.add( FlowPaintController.currentPicture.commandQueue.undoAction )
 
 /* TODO: Surface needs redo support first
     toolbar.add( FlowPaintController.commandQueue.redoAction )
@@ -142,7 +144,9 @@ object FlowPaintUi {
     menuBar.add(pictureMenu)
 
     addMenuItem(pictureMenu, "Clear", KeyEvent.VK_C, "Clears the picture", FlowPaintController.clearPicture)
-    pictureMenu .add( FlowPaintController.commandQueue.undoAction )
+
+    // TODO: Listen to picture change
+    pictureMenu .add( FlowPaintController.currentPicture.commandQueue.undoAction )
 
     val helpMenu = new JMenu("Help")
     helpMenu.setMnemonic(KeyEvent.VK_H)

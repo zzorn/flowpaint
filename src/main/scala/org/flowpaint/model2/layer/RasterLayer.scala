@@ -1,7 +1,9 @@
 package org.flowpaint.model2
 
 import _root_.org.flowpaint.util.Rectangle
+import data.DataMap
 import layer.Layer
+import raster.Raster
 
 /**
  * A layer with raster data, rendering the data on top of the provided raster data.

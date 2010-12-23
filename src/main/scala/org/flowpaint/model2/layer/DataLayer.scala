@@ -1,7 +1,9 @@
 package org.flowpaint.model2.layer
 
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.{Picture, Raster, DataMap}
+import org.flowpaint.model2.{Picture}
+import org.flowpaint.model2.raster.Raster
+import org.flowpaint.model2.data.DataMap
 
 /**
  * Contains located data points, that can be linked to each other to form vector graphics objects.

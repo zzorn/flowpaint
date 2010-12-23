@@ -3,8 +3,8 @@ package org.flowpaint.model2
 import _root_.java.awt.image.BufferedImage
 import collection.mutable.HashMap
 import collection._
-import raster.{DataTile, Tile}
 import org.flowpaint.util.Rectangle
+import raster.tile.{DataTile, Tile}
 
 /**
  * Block of data for a quadratic region of pixels of the specified size along the sides,

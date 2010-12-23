@@ -5,9 +5,6 @@ import junit.framework.TestCase
 import org.junit._
 import Assert._
 import java.awt.Color
-import java.awt.image.BufferedImage
-import org.flowpaint.property.Data
-import org.flowpaint.util.ColorUtils
 
 /**
  * 

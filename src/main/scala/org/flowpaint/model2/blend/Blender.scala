@@ -1,6 +1,7 @@
 package org.flowpaint.model2.blend
 
-import org.flowpaint.model2.raster.{TileService, DataTile, Tile}
+import org.flowpaint.model2.raster.tile.{DataTile, Tile}
+import org.flowpaint.model2.raster.TileService
 
 /**
  * Trait for functions that blend a layer with an underlying one.

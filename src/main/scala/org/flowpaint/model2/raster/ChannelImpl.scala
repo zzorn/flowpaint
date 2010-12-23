@@ -2,8 +2,8 @@ package org.flowpaint.model2.raster
 
 import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
-import tile.{OneTile, ZeroTile}
-import org.flowpaint.model2.Picture
+import org.flowpaint.model2.{Operation}
+import tile.{DataTile, Tile, OneTile, ZeroTile}
 
 /**
  * 

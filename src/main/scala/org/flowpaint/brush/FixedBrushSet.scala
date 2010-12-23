@@ -70,7 +70,7 @@ class FixedBrushSet(id : String, name_ : String, maxSize : Int, initialBrushes :
    */
   def addOrMoveBrushFirst( brush : Brush ) {
 
-    // Reove earlier brushes with same hashcode (= same settigns)
+    // Remove earlier brushes with same hashcode (= same settings)
     val brushHash = brush.hashCode
     brushes = brushes.remove( (b:Brush)=> b.hashCode == brushHash  )
     

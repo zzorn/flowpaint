@@ -1,6 +1,6 @@
 package org.flowpaint.model2.raster
 
-import tile.SingleValueTile
+import tile.{Tile, DataTile, SingleValueTile}
 
 /**
  * 

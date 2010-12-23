@@ -1,6 +1,7 @@
 package org.flowpaint.model2.raster
 
 import org.flowpaint.model2.Picture
+import tile.{Tile, DataTile}
 
 /**
  * Some change to a tile channel

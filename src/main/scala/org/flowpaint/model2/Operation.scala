@@ -1,7 +1,8 @@
 package org.flowpaint.model2
 
 import layer.Layer
-import raster.{DataTile, TileId}
+import raster.tile.DataTile
+import raster.TileId
 
 /**
  * Some operation that can be applied to a picture.

@@ -1,8 +1,7 @@
 package org.flowpaint.model2
 
-import _root_.java.awt.image.BufferedImage
-import java.awt.Image
 import org.flowpaint.util.Rectangle
+import raster.Raster
 
 /**
  * Renders a raster to an int array of packed rgba pixels, allowing it to be displayed or saved in simple image formats.

@@ -1,6 +1,5 @@
 package org.flowpaint.model2.raster.tile
 
-import org.flowpaint.model2.raster.{Tile, TileId}
 
 /**
  * A tile with a fixed color. 

@@ -1,4 +1,6 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.model2.raster.tile
+
+import org.flowpaint.model2.raster.TileService
 
 /**
  * 

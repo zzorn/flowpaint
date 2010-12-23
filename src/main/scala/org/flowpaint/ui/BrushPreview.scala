@@ -11,6 +11,7 @@ import org.flowpaint.property.{Data, DataImpl}
 import org.flowpaint.renderer.SingleRenderSurface
 import org.flowpaint.util.{DataSample, PropertyRegister}
 import org.flowpaint.PaintPanel
+import org.flowpaint.model2.Picture
 
 object BrushPreview {
   def brushPreviewStrokeGenerator(f:Float, w:Float, h:Float, data:Data) {
@@ -47,7 +48,7 @@ class BrushPreview(val brush: Brush,
 
   private val stroke = new Stroke(brush)
   private val painting = new Painting()
-  private val surface = new SingleRenderSurface(painting, 0)
+  private val surface = new Picture() // TODO: Render the painting to the surface
   private val paintPanel = new PaintPanel(surface, false)
 
   setLayout(new java.awt.BorderLayout())

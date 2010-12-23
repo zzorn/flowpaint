@@ -158,7 +158,8 @@ object FlowPaintController {
 
 
   def clearPictureWithoutMessage() {
-    doUndoableClear()
+    // TODO
+    // doUndoableClear()
   }
 
   def quickSave() {
@@ -204,8 +205,9 @@ object FlowPaintController {
   }
 
   // TODO: Make undo stacks document (= painting or tome) specific.
+  /*
   private def doUndoableClear() {
-    commandQueue.queueCommand(new Command(
+    currentPicture.commandQueue.queueCommand(new Command(
       "Clear",
       () => {
         surface.undoSnapshot()
@@ -240,14 +242,15 @@ object FlowPaintController {
         surface.canUndo
       }))
   }
+  */
 
-  def canUndo() = commandQueue.canUndo && surface.canUndo
+  def canUndo() = currentPicture.commandQueue.canUndo && surface.canUndo
 
-  def undo() = commandQueue.undo
+  def undo() = currentPicture.commandQueue.undo
 
-  def canRedo() = commandQueue.canRedo
+  def canRedo() = currentPicture.commandQueue.canRedo
 
-  def redo() = commandQueue.redo
+  def redo() = currentPicture.commandQueue.redo
 
 
   def exportRecentBrushes() {

@@ -72,8 +72,8 @@ class CommandQueue[T](document: T) {
         notifyListeners()
     }
 
-    val undoCommand = new Command[T]("Undo", () => {undo()})
-    val redoCommand = new Command[T]("Redo", () => {redo()})
+    val undoCommand = null//new Command[T]("Undo", () => {undo()})
+    val redoCommand = null//new Command[T]("Redo", () => {redo()})
 
     private def updateStatus(action : Action) {
         action.setEnabled(canUndo)

@@ -1,4 +1,4 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster
 
 import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
@@ -81,6 +81,7 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
 
 
   def runOperation(operation: Operation) {
+    /*
     val affectedTiles = operation.affectedTiles(identifier)
 
     // TODO: Here we could split processing up into several threads if we run on a multi-core processor.
@@ -90,6 +91,7 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
       operation.processTile(identifier, affectedTile, dataTile)
       addDirtyTile(affectedTile)
     }
+    */
   }
 
 

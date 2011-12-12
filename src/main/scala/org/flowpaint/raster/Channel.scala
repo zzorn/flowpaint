@@ -1,4 +1,4 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster
 
 import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
@@ -24,6 +24,9 @@ trait Channel {
    */
   def setDefaultTile(defaultTile: Tile)
 
+  /**
+   * The tile to use as default for this channel (e.g. a solid value)
+   */
   def defaultTile: Tile
 
   /**
@@ -68,11 +71,6 @@ trait Channel {
    * Sets the value at the specified canvas location.
    */
   def setValueAt(x: Int, y: Int, value: Float)
-
-  /**
-   * Runs an operation that can change the channel values.
-   */
-  def runOperation(operation: Operation)
 
   /**
    * Takes a snapshot of the changes since the last snapshot, used for undo data.

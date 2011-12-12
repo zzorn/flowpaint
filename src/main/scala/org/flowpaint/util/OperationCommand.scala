@@ -10,8 +10,8 @@ class OperationCommand(operation: Operation) extends Command[Picture](
   operation.description,
   // Action
   (picture: Picture) => {
-    val tiles = operation.getAffectedTiles(picture)
-    operation.renderToTiles(picture, tiles)
+//    val tiles = operation.getAffectedTiles(picture)
+//    operation.renderToTiles(picture, tiles)
     picture.takeUndoSnapshot()
   },
   // Undo action

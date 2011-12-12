@@ -1,4 +1,4 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster
 
 import org.flowpaint.model2.Picture
 import tile.{Tile, DataTile}

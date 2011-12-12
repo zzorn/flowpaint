@@ -116,7 +116,7 @@ class BrushPreview(val brush: Brush,
       generatePoint(i)
     }
 
-    surface.updateSurface()
+//    surface.updateSurface()
 
     repaint()
   }

@@ -1,16 +1,15 @@
-package org.flowpaint.model2.raster.tile
+package org.flowpaint.raster.tile
 
-import org.flowpaint.model2.raster.TileService
+import org.flowpaint.raster.TileService
 
 /**
- * 
+ * A tile with custom data for each position.
  */
-// TODO: Use own memory management for these with weak references or such, as long as the size is constant
 final class DataTile() extends Tile {
 
   val data: Array[Float] = new Array[Float](width * height)
 
-  def update(index: Int, value: Float) = data(index) = value
+  def update(index: Int, value: Float) {data(index) = value}
   def apply(index: Int) = data(index)
 
   def copy(): DataTile =  TileService.allocateDataTile(this)

@@ -56,7 +56,7 @@ trait Layer {
   }
 
   def takeUndoSnapshot(): Change = {
-    Changes(channels.values.map(_.takeSnapshot(identifier)))
+    null//Changes(channels.values.map(_.takeSnapshot(identifier)))
   }
 
   def runOperation(operation: Operation) {

@@ -21,8 +21,8 @@ trait Rectangle {
   def contains( x : Int, y : Int ) = x >= x1 && x < x2 && y >= y1 && y < y2
 
   def intersects(x: Int, y: Int, w: Int, h: Int): Boolean = {
-    return x1 < x + w && x < x2 &&
-           y1 < y + h && y < y2
+    x1 < x + w && x < x2 &&
+    y1 < y + h && y < y2
   }
 
   def union( r2 : Rectangle ) : Rectangle = {
@@ -35,14 +35,24 @@ trait Rectangle {
 
   def iterate( minX : Float, minY : Float,maxX : Float,maxY : Float, visitor: (Int, Int) => Unit) {
 
-    // Use segment bounding box to reudce the area needed to be iterated through
-    val sX = Math.max ( minX.toInt, x1 )
-    val sY = Math.max ( minY.toInt, y1 )
-    val eX = Math.min ( maxX.toInt, x2 )
-    val eY = Math.min ( maxY.toInt, y2 )
+    // Use segment bounding box to reduce the area needed to be iterated through
+    val sX = math.max ( minX.toInt, x1 )
+    val sY = math.max ( minY.toInt, y1 )
+    val eX = math.min ( maxX.toInt, x2 )
+    val eY = math.min ( maxY.toInt, y2 )
 
-    for (y <- sY to eY;
-         x <- sX to eX) visitor(x, y)
+    var y = sY
+    while(y <= eY) {
 
+      var x = sX
+      while(x <= eX) {
+
+        visitor(x, y)
+
+        x += 1
+      }
+
+      y += 1
+    }
   }
 }

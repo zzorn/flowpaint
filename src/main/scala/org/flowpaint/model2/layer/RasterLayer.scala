@@ -13,7 +13,7 @@ class RasterLayer(val picture: Picture) extends Layer {
 
   override def channel(name: Symbol) = raster.channels.get(name)
 
-  def channels = raster.channels
+  def channels = null//raster.channels
 
   def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
     targetRaster.overlay(raster, area)
@@ -25,7 +25,7 @@ class RasterLayer(val picture: Picture) extends Layer {
 
     tiles foreach {tileId =>
       val tiles =  affectedChannels map ( c => (c, channel(c).get)) toMap
-      operation.renderToTile(picture, this, tileId, tiles)
+      //operation.renderToTile(picture, this, tileId, tiles)
     }
   }
 

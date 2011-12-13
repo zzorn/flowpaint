@@ -1,7 +1,7 @@
 package org.flowpaint.model2
 
 import org.flowpaint.util.Rectangle
-import raster.{Raster, Channel}
+import org.flowpaint.raster.channel.{Channel, Raster}
 
 /**
  * 

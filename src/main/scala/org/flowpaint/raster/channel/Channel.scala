@@ -1,9 +1,9 @@
-package org.flowpaint.raster
+package org.flowpaint.raster.channel
 
-import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.Operation
-import tile.{DataTile, Tile}
+import org.flowpaint.raster.tile.{DataTile, TileId, Tile}
+import org.flowpaint.raster.change.TileChange
+import org.flowpaint.raster.blend.Blender
 
 /**
  * A channel of data, e.g. red, green, blue, alpha, height data, x normals, etc..
@@ -38,6 +38,11 @@ trait Channel {
    * Returns the tile at the specified coordinates.
    */
   def getTileAt(canvasX: Int, canvasY: Int): Tile
+
+  /**
+   * Returns the tile at the specified coordinates, ready for modification.
+   */
+  def getTileForModification(tileId: TileId): DataTile
 
   /**
    * The tiles intersecting with the specified area

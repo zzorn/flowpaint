@@ -1,26 +1,35 @@
-package org.flowpaint.raster
+package org.flowpaint.raster.tile
 
 import org.flowpaint.util.Rectangle
+
+trait TileId extends Rectangle {
+  def width = TileService.tileWidth
+  def height = TileService.tileHeight
+}
 
 /**
  * Identifier for a cell at the specified cell indexes.
  */
-final case class TileId(tileX: Int, tileY: Int) {
-  def intersects(area: Rectangle): Boolean = {
-    area.intersects(tileX * TileService.tileWidth,
-                    tileY * TileService.tileHeight,
-                    TileService.tileWidth,
-                    TileService.tileHeight)
-  }
+final case class TilePosId(tileX: Int, tileY: Int) extends TileId {
+  def x1 = tileX * TileService.tileWidth
+  def y1 = tileY * TileService.tileHeight
+}
+
+/**
+ * Identifier for the default cell used for unchanged backgrounds.
+ */
+case object DefaultTileId extends TileId {
+  def x1 = 0
+  def y1 = 0
 }
 
 object TileId {
 
   private val tileIdCacheSizeX = 50
   private val tileIdCacheSizeY = 50
-  private val tileIdCache: Array[TileId] = new Array[TileId](tileIdCacheSizeX * tileIdCacheSizeY);
+  private val tileIdCache: Array[TilePosId] = new Array[TilePosId](tileIdCacheSizeX * tileIdCacheSizeY);
 
-  def forLocation(canvasX: Int, canvasY: Int): TileId = {
+  def forLocation(canvasX: Int, canvasY: Int): TilePosId = {
     // Integer division is truncated towards zero, so if the canvas coordinates are less
     // than zero we subtract one to ensure the negative tile indexes start with -1.
     val tileX = canvasX / TileService.tileWidth - (if (canvasX < 0) 1 else 0)
@@ -34,7 +43,7 @@ object TileId {
 
       var cachedId = tileIdCache(index)
       if (cachedId == null) {
-        cachedId = new TileId(tileX, tileY)
+        cachedId = new TilePosId(tileX, tileY)
         tileIdCache(index) = cachedId
       }
 
@@ -42,7 +51,7 @@ object TileId {
     }
     else {
       // Outside cached area, create new
-      new TileId(tileX, tileY)
+      new TilePosId(tileX, tileY)
     }
   }
 

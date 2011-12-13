@@ -17,6 +17,13 @@ object StringUtils {
     else prefix + capitalize( body )
   }
 
+  def removeSuffix(s: String, suffix: String): String = {
+    if (s.endsWith(suffix)) {
+      s.substring(0, s.length() - suffix.length())
+    }
+    else s
+  }
+
   /**
    * Changes the first letter to upper case of the string.
    */

@@ -1,8 +1,9 @@
-package org.flowpaint.model2
+package org.flowpaint.raster.picture
 
-import layer.Layer
 import org.flowpaint.util.CommandQueue
-import raster.{Changes, Change, TileId}
+import org.flowpaint.raster.layer.Layer
+import org.flowpaint.raster.tile.TileId
+import org.flowpaint.raster.change.{Change, Changes}
 
 /**
  * 
@@ -48,26 +49,35 @@ class Picture {
     onPictureChanged()
   }
   
-  def addListener(listener: PictureListener) = listeners ::= listener
-  def removeListener(listener: PictureListener) = listeners -= listener
+  def addListener(listener: PictureListener) {
+    listeners ::= listener
+  }
 
-  def onPictureChanged() = listeners foreach (_(this))
+  def removeListener(listener: PictureListener) {
+    listeners -= listener
+  }
+
+  def onPictureChanged() {
+    listeners foreach (_(this))
+  }
 
   /**
    * Retrieves the id:s of the tiles that need to be redrawn, and clears the dirty status at the same time.
    */
   def getAndClearDirtyTiles(): Set[TileId] = {
-    val tiles = getDirtyTiles()
-    clearDirtyTiles
+    val tiles = dirtyTiles
+    clearDirtyTiles()
     tiles
   }
 
   /**
    * Retrieves the id:s of the tiles that need to be redrawn.
    */
-  def getDirtyTiles(): Set[TileId] = {
-    var dirty: Set[TileId] = Set()
-    _layers foreach (l => dirty ++= l.getDirtyTiles())
+  def dirtyTiles: Set[TileId] = {
+    var dirty: Set[TileId] = Set[TileId]()
+    _layers foreach {(l : Layer) =>
+      dirty ++= l.getDirtyTiles
+    }
     dirty
   }
 
@@ -82,7 +92,7 @@ class Picture {
     Changes(_layers.map(_.takeUndoSnapshot()))
   }
 
-  def hasDirtyTiles(): Boolean = !getDirtyTiles().isEmpty
+  def hasDirtyTiles: Boolean = !dirtyTiles.isEmpty
 
 }
 

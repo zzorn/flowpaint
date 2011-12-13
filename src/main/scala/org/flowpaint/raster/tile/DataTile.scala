@@ -1,6 +1,5 @@
 package org.flowpaint.raster.tile
 
-import org.flowpaint.raster.TileService
 
 /**
  * A tile with custom data for each position.

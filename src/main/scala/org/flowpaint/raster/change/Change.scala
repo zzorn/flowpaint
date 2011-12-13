@@ -1,6 +1,7 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster.change
 
-import org.flowpaint.model2.Picture
+import org.flowpaint.raster.picture.Picture
+
 
 /**
  * Stores a change done to a picture, to allow undoing and redoing it.

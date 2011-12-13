@@ -20,6 +20,10 @@ trait Rectangle {
 
   def contains( x : Int, y : Int ) = x >= x1 && x < x2 && y >= y1 && y < y2
 
+  def intersects(other: Rectangle): Boolean = {
+    intersects(other.x1, other.y1, other.width, other.height)
+  }
+
   def intersects(x: Int, y: Int, w: Int, h: Int): Boolean = {
     x1 < x + w && x < x2 &&
     y1 < y + h && y < y2

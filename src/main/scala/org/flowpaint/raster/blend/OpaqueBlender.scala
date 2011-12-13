@@ -1,7 +1,7 @@
-package org.flowpaint.model2.blend
+package org.flowpaint.raster.blend
 
-import org.flowpaint.model2.raster.{TileService}
-import org.flowpaint.model2.raster.tile.{Tile, DataTile}
+import org.flowpaint.raster.tile.{TileService, Tile, DataTile}
+
 
 /**
  * Replaces the target completely with the source without using alpha.

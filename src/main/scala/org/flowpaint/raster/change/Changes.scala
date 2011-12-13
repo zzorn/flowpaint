@@ -1,6 +1,6 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster.change
 
-import org.flowpaint.model2.Picture
+import org.flowpaint.raster.picture.Picture
 
 /**
  * Several changes

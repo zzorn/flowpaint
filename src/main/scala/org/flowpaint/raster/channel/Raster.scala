@@ -1,9 +1,8 @@
-package org.flowpaint.model2.raster
+package org.flowpaint.raster.channel
 
 import _root_.org.flowpaint.util.Rectangle
-import collection.mutable.HashMap
 import collection._
-import org.flowpaint.model2.blend.{OpaqueBlender, Blender}
+import org.flowpaint.raster.blend.{OpaqueBlender, Blender}
 
 /**
  * 

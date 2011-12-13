@@ -1,6 +1,5 @@
-package org.flowpaint.raster
+package org.flowpaint.raster.tile
 
-import tile.{Tile, DataTile, SingleValueTile}
 
 /**
  * 

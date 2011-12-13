@@ -1,12 +1,15 @@
-package org.flowpaint.model2.blend
+package org.flowpaint.raster.blend
 
-import org.flowpaint.model2.raster.tile.{DataTile, Tile}
-import org.flowpaint.model2.raster.TileService
+import org.flowpaint.raster.tile.{TileService, DataTile, Tile}
+import org.flowpaint.util.StringUtils
+
 
 /**
  * Trait for functions that blend a layer with an underlying one.
  */
 trait Blender {
+
+  def name: String = getClass.getSimpleName
 
   def blendBackground(under: Tile, over: Tile, alpha: Tile): Tile = {
     val result = TileService.allocateDataTile(under)

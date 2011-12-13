@@ -1,14 +1,14 @@
-package org.flowpaint.raster
+package org.flowpaint.raster.channel
 
-import org.flowpaint.model2.blend.Blender
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.{Operation}
-import tile.{DataTile, Tile, OneTile, ZeroTile}
+import org.flowpaint.raster.tile._
+import org.flowpaint.raster.blend.Blender
+import org.flowpaint.raster.change.TileChange
 
 /**
  * 
  */
-// IDEA: As a memory optimization, we could check if a tile is 100% the same value after a brush stroke, and replace it with a solid tile in that case..
+// TODO: As a memory optimization, we could check if a tile is 100% the same value after a brush stroke, and replace it with a solid tile in that case..
 final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true) extends Channel {
 
   var defaultTile: Tile = ZeroTile
@@ -34,10 +34,10 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
 
   def getTile(tileId: TileId): Tile = tiles.get(tileId).getOrElse(defaultTile)
   def getTileAt(x: Int, y: Int): Tile = tiles.get(TileId.forLocation(x, y)).getOrElse(defaultTile)
-  def getTilesIn(area: Rectangle): Set[Tile] = {
-    var result = Set[Tile]()
+  def getTilesIn(area: Rectangle): Map[TileId, Tile] = {
+    var result = Map[TileId, Tile]()
     tiles.iterator foreach { entry =>
-      if (entry._1.intersects(area)) result += entry._2
+      if (entry._1.intersects(area)) result += entry
     }
     result
   }
@@ -75,28 +75,16 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
   }
 
   def setValueAt(x: Int, y: Int, value: Float) {
-    val tileId: TileId = TileId.forLocation(x, y)
+    val tileId = TileId.forLocation(x, y)
     getTileForModification(tileId).update(x - tileId.tileX * TileService.tileWidth, y - tileId.tileY * TileService.tileHeight, value)
   }
 
 
-  def runOperation(operation: Operation) {
-    /*
-    val affectedTiles = operation.affectedTiles(identifier)
-
-    // TODO: Here we could split processing up into several threads if we run on a multi-core processor.
-    
-    affectedTiles foreach { (affectedTile: TileId) =>
-      val dataTile = getTileForModification(affectedTile)
-      operation.processTile(identifier, affectedTile, dataTile)
-      addDirtyTile(affectedTile)
-    }
-    */
-  }
 
 
   def blend(over: Channel, area: Rectangle, alpha: Option[Channel], blender: Blender) {
     // Blend the background
+    // TODO: Handle undo queue for bg tile too
     defaultTile = blender.blendBackground(defaultTile, over.defaultTile, if (alpha.isDefined) alpha.get.defaultTile else OneTile)
 
     // Find the tiles in the area with some content in this layer, the layer to blend, or the channel to blend by
@@ -110,7 +98,10 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
     }
   }
 
-  private def getTileForModification(tileId: TileId): DataTile = {
+  def getTileForModification(tileId: TileId): DataTile = {
+
+    addDirtyTile(tileId)
+
     if (undoEnabled) {
       if (!newTiles.contains(tileId)) {
         // Store the current state of the tile, so we can undo to it, if there was any edits for the tile
@@ -178,6 +169,6 @@ final class ChannelImpl(val identifier: Symbol, val undoEnabled: Boolean = true)
 
   def dirtyTileIds = dirtyTiles
 
-  private def addDirtyTile(tileId: TileId) = dirtyTiles += tileId
+  private def addDirtyTile(tileId: TileId) { dirtyTiles += tileId }
 
 }

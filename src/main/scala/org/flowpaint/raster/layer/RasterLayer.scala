@@ -1,9 +1,9 @@
-package org.flowpaint.model2
+package org.flowpaint.raster.layer
 
 import _root_.org.flowpaint.util.Rectangle
-import data.DataMap
-import layer.Layer
-import raster.Raster
+import org.flowpaint.raster.picture.Picture
+import org.flowpaint.model2.Operation
+import org.flowpaint.raster.channel.Raster
 
 /**
  * A layer with raster data, rendering the data on top of the provided raster data.
@@ -15,7 +15,7 @@ class RasterLayer(val picture: Picture) extends Layer {
 
   def channels = null//raster.channels
 
-  def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap) {
+  def renderLayer(area: Rectangle, targetRaster: Raster) {
     targetRaster.overlay(raster, area)
   }
 
@@ -24,7 +24,7 @@ class RasterLayer(val picture: Picture) extends Layer {
     val tiles = operation.affectedTiles(picture, this)
 
     tiles foreach {tileId =>
-      val tiles =  affectedChannels map ( c => (c, channel(c).get)) toMap
+      val tiles =  (affectedChannels map ( c => (c, channel(c).get))).toMap
       //operation.renderToTile(picture, this, tileId, tiles)
     }
   }

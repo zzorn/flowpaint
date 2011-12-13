@@ -1,9 +1,11 @@
-package org.flowpaint.model2.layer
+package org.flowpaint.raster.layer
 
 import org.flowpaint.util.Rectangle
-import org.flowpaint.model2.raster._
-import org.flowpaint.model2.{Picture, Operation}
-import org.flowpaint.model2.data.DataMap
+import org.flowpaint.raster._
+import change.Change
+import channel.{Raster, Channel}
+import picture.Picture
+import tile.TileId
 
 /**
  * 
@@ -23,10 +25,10 @@ trait Layer {
     onLayerChanged()
   }
 
-  def addListener(listener: LayerListener) = listeners += listener
-  def removeListener(listener: LayerListener) = listeners -= listener
+  def addListener(listener: LayerListener) { listeners += listener }
+  def removeListener(listener: LayerListener) { listeners -= listener }
 
-  protected def onLayerChanged() = listeners foreach (_())
+  protected def onLayerChanged() { listeners foreach (_()) }
 
   def channel(name: Symbol): Option[Channel] = None
 
@@ -37,12 +39,12 @@ trait Layer {
    * The target raster and data already contain the combined underlying layer raster and data information.
    * Only the area falling within the specified area need to be rendered.
    */
-  def renderLayer(area: Rectangle, targetRaster: Raster, targetData: DataMap)
+  def renderLayer(area: Rectangle, targetRaster: Raster)//, targetData: DataMap)
 
   /**
    * Retrieves the id:s of the tiles that need to be redrawn.
    */
-  def getDirtyTiles(): Set[TileId] = {
+  def getDirtyTiles: Set[TileId] = {
     var dirty: Set[TileId] = Set()
     channels.values foreach (c => dirty ++= c.dirtyTileIds)
     dirty
@@ -59,10 +61,11 @@ trait Layer {
     null//Changes(channels.values.map(_.takeSnapshot(identifier)))
   }
 
+  /*
   def runOperation(operation: Operation) {
     throw new UnsupportedOperationException("Not implemented for this layer type")
   }
-
+*/
 
 }
 
